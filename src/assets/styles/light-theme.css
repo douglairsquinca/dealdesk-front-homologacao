@@ -25,7 +25,7 @@ body #app .rf_background {
     background-color: #fff!important;    
 }
 body.bg-dark {
-	background: var(--fundo)!important;
+	background: var(--branco)!important;
 }
 body #app .bg-dark {
     background-color: var(--fundo)!important;
