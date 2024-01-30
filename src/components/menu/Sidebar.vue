@@ -1,184 +1,67 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark ">
+  <nav class="navbar navbar-expand-lg navbar-dark"
+    :class="{ 'header_dark': theme === 'dark', 'header_light': theme === 'light' }">
     <div class="container-fluid">
       <a class="navbar-brand logo">
-        <img :src="end_logo"  alt="Bootstrap" width="137" height="50" />
-      </a>
+        <img src="../../assets/logo.png" alt="Bootstrap" width="137" height="50" />
+      </a> 
 
-      <button class="navbar-toggler" style="margin-left: 2rem" type="button" data-bs-toggle="collapse"
-        data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false"
-        aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
       <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
-
         <ul class="navbar-nav">
-         
-          <li id="rf_parametros" class="nav-item dropdown">
-            <button v-if="showAdminBoard" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              <!--Colocar um icone aqui-->
-              Parâmetros
-            </button>
-            <ul class="dropdown-menu dropdown-menu-dark">
+          <li id="rf_parametros" class="nav-item dropdown"><button class="btn btn-dark dropdown-toggle show"
+              data-bs-toggle="dropdown" aria-expanded="true"> Parâmetros </button>
+            <ul class="dropdown-menu dropdown-menu-dark " data-bs-popper="static">
+              <li class="nav-item m-1"><a href="/admin/acessorios" class="nav-link p-2"> Acessórios </a></li>
+              <li class="nav-item m-1"><a href="/admin/clientes" class="nav-link p-2"> Clientes </a></li>
+              <li class="nav-item m-1"><a href="/admin/empresas" class="nav-link p-2"> Empresas </a></li>
+              <li class="nav-item m-1"><a href="/admin/midias" class="nav-link p-2"> Mídias </a></li>
+              <li class="nav-item m-1"><a href="/admin/usuarios" class="nav-link p-2"> Usuários </a></li>
               <li class="nav-item m-1">
-                <router-link :to="{ name: 'acessorios' }" class="nav-link p-2">
-                  <!-- <font-awesome-icon icon="user" /> -->
-                  Acessórios
-                </router-link>
+                <hr class="dropdown-divider">
               </li>
-              <li class="nav-item m-1">
-                <router-link to="/admin/clientes" class="nav-link p-2">
-                  <!-- <font-awesome-icon icon="user" /> -->
-                  Clientes
-                </router-link>
-              </li>
-              <li class="nav-item m-1">
-                <router-link to="/admin/empresas" class="nav-link p-2">
-                  <!-- <font-awesome-icon icon="user" /> -->
-                  Empresas
-                </router-link>
-              </li>
-
-              <li class="nav-item m-1">
-                <router-link to="/admin/midias" class="nav-link p-2">
-                  <!-- <font-awesome-icon icon="user" /> -->
-                  Mídias
-                </router-link>
-              </li>
-              <li class="nav-item m-1">
-                <router-link to="/admin/usuarios" class="nav-link p-2">
-                  <!-- <font-awesome-icon icon="user" /> -->
-                  Usuários
-                </router-link>
-              </li>
-
-              <li class="nav-item m-1">
-                <hr class="dropdown-divider" />
-              </li>
-              <li class="nav-item m-1">
-                <router-link to="/admin/bancos" class="nav-link p-2">
-                  <!-- <font-awesome-icon icon="user" /> -->
-                  Bancos
-                </router-link>
-              </li>
-              <li class="nav-item m-1">
-                <router-link to="/admin/custos_variaveis" class="nav-link p-2">
-                  <!-- <font-awesome-icon icon="user" /> -->
-                  Custos Variáveis
-                </router-link>
-              </li>
-
-              <li class="nav-item m-1">
-                <router-link to="/admin/taxas" class="nav-link p-2">
-                  Taxas
-                </router-link>
-              </li>
+              <li class="nav-item m-1"><a href="/admin/bancos" class="nav-link p-2"> Bancos </a></li>
+              <li class="nav-item m-1"><a href="/admin/custos_variaveis" class="nav-link p-2"> Custos Variáveis </a></li>
+              <li class="nav-item m-1"><a href="/admin/taxas" class="nav-link p-2"> Taxas </a></li>
               <li>
-                <hr class="dropdown-divider" />
+                <hr class="dropdown-divider">
               </li>
-              <li class="nav-item m-1">
-                <router-link to="/admin/combustiveis" class="nav-link p-2">
-                  Combustíveis
-                </router-link>
+              <li class="nav-item m-1"><a href="/admin/combustiveis" class="nav-link p-2"> Combustíveis </a></li>
+              <li class="nav-item m-1"><a href="/admin/cor_veiculos" class="nav-link p-2"> Cor Veículo </a></li>
+              <li class="nav-item m-1"><a href="/admin/familia_veiculos" class="nav-link p-2"> Família Veículos </a></li>
+              <li class="nav-item m-1"><a href="/admin/marca_veiculos" class="nav-link p-2"> Marca Veículos </a></li>
+              <li class="nav-item m-1"><a href="/admin/modelo_veiculos" class="nav-link p-2"> Modelo Veículos </a></li>
+              <li class="nav-item m-1"><a href="/admin/estoque_veiculos" class="nav-link p-2"> Sincronizar Estoque </a>
               </li>
-              <li class="nav-item m-1">
-                <router-link to="/admin/cor_veiculos" class="nav-link p-2">
-                  Cor Veículo
-                </router-link>
-              </li>
-              <li class="nav-item m-1">
-                <router-link to="/admin/familia_veiculos" class="nav-link p-2">
-                  Família Veículos
-                </router-link>
-              </li>
-              <li class="nav-item m-1">
-                <router-link to="/admin/marca_veiculos" class="nav-link p-2">
-                  Marca Veículos
-                </router-link>
-              </li>
-              <li class="nav-item m-1">
-                <router-link to="/admin/modelo_veiculos" class="nav-link p-2">
-                  Modelo Veículos
-                </router-link>
-              </li>
-              <li class="nav-item m-1">
-                <router-link to="/admin/estoque_veiculos" class="nav-link p-2">
-                  Sincronizar Estoque
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link to="/admin/veiculos_vendido_estoque" class="nav-link p-2">
-                  Aguardando Faturamento
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link to="/admin/situacao_veiculo" class="nav-link p-2">
-                  Situação Veículo
-                </router-link>
-              </li>
-            </ul>
-          </li>
-          <li id="rf_atendimentos" class="nav-item dropdown">
-            <button v-if="showAtendimentoBoard" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              Atendimento
-            </button>
-            <ul class="dropdown-menu dropdown-menu-dark">
-              <li class="nav-item">
-                <router-link to="/atendimento/dashboard" class="nav-link p-2">
-                  Dashboard
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link to="/atendimento/proposta" class="nav-link p-2">
-                  Novo Atendimento
-                </router-link>
-              </li>
-            </ul>
-          </li>
-          <li id="rf_gerenciamento" class="nav-item dropdown">
-            <button v-if="showModeratorBoard" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              Gerenciamento
-            </button>
-            <ul class="dropdown-menu dropdown-menu-dark">
-              <li class="nav-item">
-                <router-link to="/desk/index" class="nav-link p-2">
-                  Desk
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link to="/desk/reabrirProposta" class="nav-link p-2">
-                  Reabrir Proposta
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link to="/desk/relatorio" class="nav-link p-2">
-                  Relatórios
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link to="/desk/situacaoGeral" class="nav-link p-2">
-                  Situação Geral
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link to="/desk/vendidosEstoque" class="nav-link p-2">
-                  Aguardando Faturamento
-                </router-link>
-              </li>
-              
-
+              <li class="nav-item"><a href="/admin/veiculos_vendido_estoque" class="nav-link p-2"> Aguardando Faturamento
+                </a></li>
+              <li class="nav-item"><a href="/admin/situacao_veiculo" class="nav-link p-2"> Situação Veículo </a></li>
             </ul>
           </li>
           
+          <li id="rf_atendimentos" class="nav-item dropdown"><button class="btn btn-dark dropdown-toggle"
+              data-bs-toggle="dropdown" aria-expanded="false"> Atendimento </button>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li class="nav-item"><a href="/atendimento/dashboard" class="nav-link p-2"> Dashboard </a></li>
+              <li class="nav-item"><a href="/atendimento/proposta" class="nav-link p-2"> Novo Atendimento </a></li>
+            </ul>
+          </li>
+          <li id="rf_gerenciamento" class="nav-item dropdown"><button class="btn btn-dark dropdown-toggle"
+              data-bs-toggle="dropdown" aria-expanded="false"> Gerenciamento </button>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li class="nav-item"><a href="/desk/index" class="nav-link p-2"> Desk </a></li>
+              <li class="nav-item"><a href="/desk/reabrirProposta" class="nav-link p-2"> Reabrir Proposta </a></li>
+              <li class="nav-item"><a href="/desk/relatorio" class="nav-link p-2"> Relatórios </a></li>
+              <li class="nav-item"><a href="/desk/situacaoGeral" class="nav-link p-2"> Situação Geral </a></li>
+              <li class="nav-item"><a href="/desk/vendidosEstoque" class="nav-link p-2"> Aguardando Faturamento </a></li>
+            </ul>
+          </li>
         </ul>
       </div>
+
       <div id="rf_profile" v-if="currentUser">
         <ul class="nav nav-item justify-content-end rf_texto">
 
-          <li class="nav-item ">
+          <!-- <li class="nav-item ">
             <router-link to="" id="theme-style" class="nav-link " @click="toggleTheme">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-circle-half"
                 viewBox="0 0 16 16">
@@ -188,7 +71,7 @@
             </router-link>
 
 
-          </li>
+          </li> -->
           <li class="nav-item ">
             <router-link to="" class="nav-link ">
               <font-awesome-icon icon="user" />
@@ -228,17 +111,18 @@ export default {
       dados_user: "",
       company_id: "",
       darkMode: false,
-      end_logo:""
+      end_logo: '@/assets/logo.png',
+      theme: 'light'
     }
 
   },
   mounted() {
     //this.retrieveEmpresas();
     this.getToken();
-    let darkModeFromStorage = localStorage.getItem('darkMode');
-    this.darkMode = darkModeFromStorage ? darkModeFromStorage === 'true' : false;
-    document.getElementById('theme-style').href = this.darkMode ? '../../assets/styles/light-theme.css' : '../../assets/styles/dark-theme.css';
-    this.logo()
+    // let darkModeFromStorage = localStorage.getItem('darkMode');
+    // this.darkMode = darkModeFromStorage ? darkModeFromStorage === 'true' : false;
+    // document.getElementById('theme-style').href = this.darkMode ? '../../assets/styles/light-theme.css' : '../../assets/styles/dark-theme.css';
+    // this.logo()
   },
   computed: {
     currentUser() {
@@ -278,9 +162,11 @@ export default {
     logo() {
       if (this.darkMode) {
         this.end_logo = require('@/assets/logo.png');
+        this.theme = 'light'
         console.log("Usar logo claro");
       } else {
         console.log("Usar logo Escuro");
+        this.theme = 'dark'
         this.end_logo = require('@/assets/logo_branco.png');
       }
     },

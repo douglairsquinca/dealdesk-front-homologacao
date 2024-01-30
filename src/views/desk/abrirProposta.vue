@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="modal-content bg-dark ">
+    <div class="modal-content ">
       <div class="modal-body ">
         <!--Bloco do Cliente-->
-        <nav class="navbar navbar-expand-lg rf_bg_form rf_texto ">
+         <nav class="navbar navbar-expand-lg rf_bg_form rf_texto rf_container">
           <div class="container-fluid">
             <div>
               <i class="bi bi-sliders fs-5"> Informações do Cliente </i>
@@ -18,7 +18,7 @@
             <div class="row g-2 p-2">
               <div class="col-1">
                 <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="id_proposta" :disabled="true" />
+                  <input type="text" class="form-control rf_bg_form  rf_texto" v-model="id_proposta" :disabled="true" />
                   <label for="valid_descricao" class="rf_texto">Nº Proposta</label>
                 </div>
               </div>
@@ -558,7 +558,7 @@
         <!--Bloco Resumo da Proposta-->
         <div class="row mt-2">
           <div class="col-6">
-            <div class="card rf_bg_form mt-3">
+            <div class="card rf_bg_form  mt-3">
               <nav class="navbar navbar-expand-lg rf_bg_form rf_texto">
                 <div class="container-fluid">
                   <div>
@@ -573,7 +573,7 @@
                 <!--Valores do Veículo-->
                 <div class="col">
                   <div class="form-floating">
-                    <nav class="navbar navbar-expand-lg rf_header rf_texto">
+                    <nav class="navbar navbar-expand-lg box-atendimento">
                       <div class="container-fluid">
                         <div>
                           <h5>Valores do Veículo</h5>
@@ -609,13 +609,13 @@
                         <tr>
                           <th scope="row">Desconto</th>
                           <td>
-                            <input type="text" class="rf_form_control rf_texto rf_titulo_fonte" v-model="desconto"
+                            <input type="text" class="form-control rf_bg_form rf_texto" v-model="desconto"
                               v-on:blur="inserir_desconto" @input="desconto = formatarValor(desconto)" />
 
                           </td>
                           <th scop="row">Acréscimo</th>
                           <td>
-                            <input type="text" class="rf_form_control rf_texto rf_titulo_fonte" v-model="adicional"
+                            <input type="text" class="form-control rf_bg_form rf_texto" v-model="adicional"
                               v-on:blur="inserir_acrescimo" @input="adicional = formatarValor(adicional)" />
 
                           </td>
@@ -647,7 +647,7 @@
                 <!--Resultado Operacional-->
                 <div class="col">
                   <div class="form-floating">
-                    <nav class="navbar navbar-expand-lg rf_header rf_texto">
+                    <nav class="navbar navbar-expand-lg box-atendimento rf_texto">
                       <div class="container-fluid">
                         <div>
                           <h5>Resultado Operacional / Gerencial</h5>
@@ -706,7 +706,7 @@
                 <!--Avaliação do Veículo-->
                 <div class="col">
                   <div class="form-floating">
-                    <nav class="navbar navbar-expand-lg rf_header rf_texto">
+                    <nav class="navbar navbar-expand-lg box-atendimento rf_texto">
                       <div class="container-fluid">
                         <div>
                           <h5>Avaliação do Veículo</h5>
@@ -736,10 +736,10 @@
                         </tr>
                         <tr>
                           <td>
-                            <input type="text" class="rf_form_control rf_texto rf_titulo_fonte" :disabled="true" />
+                            <input type="text" class="input-proposta" :disabled="true" />
                           </td>
                           <td>
-                            <input type="text" class="rf_form_control rf_texto rf_titulo_fonte" :disabled="true" />
+                            <input type="text" class="input-proposta" :disabled="true" />
                           </td>
                         </tr>
                         <tr>
@@ -759,7 +759,7 @@
                 <!--Informação Sobre o financiamento-->
                 <div class="col">
                   <div class="form-floating">
-                    <nav class="navbar navbar-expand-lg rf_header rf_texto">
+                    <nav class="navbar navbar-expand-lg box-atendimento rf_texto">
                       <div class="container-fluid">
                         <div>
                           <h5>Informações sobre o Financiamento</h5>
@@ -813,7 +813,7 @@
               <div class="row g-2 p-2">
                 <div class="col">
                   <div class="form-floating">
-                    <nav class="navbar navbar-expand-lg rf_header rf_texto">
+                    <nav class="navbar navbar-expand-lg box-atendimento rf_texto">
                       <div class="container-fluid">
                         <div>
                           <h5>Valores do Veículo</h5>
@@ -874,7 +874,7 @@
                           </th>
                           <td>
                             <div class="form-floating">
-                              <input type="text" class="form-control-plaintext rf_texto" v-model="entrada_1"
+                              <input type="text" class="form-control rf_bg_form rf_texto" v-model="entrada_1"
                                 v-on:blur="calcular_real_1" :disabled="bloquear_entrada"
                                 @input="entrada_1 = formatarValor(entrada_1)" />
                               <label class="rf_texto">Entrada R$</label>
@@ -883,7 +883,7 @@
                           </td>
                           <td>
                             <div class="form-floating">
-                              <input type="text" class="form-control-plaintext rf_texto" :disabled="bloquear_entrada"
+                              <input type="text" class="form-control rf_bg_form rf_texto" :disabled="bloquear_entrada"
                                 v-model="entrada_1_perc" @input="calcular_perc_1()" />
                               <label class="rf_texto">Entrada %</label>
                             </div>
@@ -924,7 +924,7 @@
                           </th>
                           <td>
                             <div class="form-floating">
-                              <input type="text" class="form-control-plaintext rf_texto" v-model="entrada_2"
+                              <input type="text" class="form-control rf_bg_form rf_texto rf_texto" v-model="entrada_2"
                                 :disabled="bloquear_entrada" v-on:blur="calcular_real_2"
                                 @input="entrada_2 = formatarValor(entrada_2)" />
                               <label class="rf_texto">Entrada R$</label>
@@ -932,7 +932,7 @@
                           </td>
                           <td>
                             <div class="form-floating">
-                              <input type="text" class="form-control-plaintext rf_texto" :disabled="bloquear_entrada"
+                              <input type="text" class="form-control rf_bg_form rf_texto rf_texto" :disabled="bloquear_entrada"
                                 v-model="entrada_2_perc" @input="calcular_perc_2()" />
                               <label class="rf_texto">Entrada %</label>
                             </div>
@@ -973,7 +973,7 @@
                           </th>
                           <td>
                             <div class="form-floating">
-                              <input type="text" class="form-control-plaintext rf_texto" v-model="entrada_3"
+                              <input type="text" class="form-control rf_bg_form rf_texto rf_texto" v-model="entrada_3"
                                 :disabled="bloquear_entrada" v-on:blur="calcular_real_3"
                                 @input="entrada_3 = formatarValor(entrada_3)" />
                               <label class="rf_texto">Entrada R$</label>
@@ -981,7 +981,7 @@
                           </td>
                           <td>
                             <div class="form-floating">
-                              <input type="text" class="form-control-plaintext rf_texto" :disabled="bloquear_entrada"
+                              <input type="text" class="form-control rf_bg_form rf_texto rf_texto" :disabled="bloquear_entrada"
                                 v-model="entrada_3_perc" @input="calcular_perc_3()" />
                               <label class="rf_texto">Entrada %</label>
                             </div>
@@ -1015,7 +1015,7 @@
                         <tr>
                           <td>
                             <div class="d-grid gap-2">
-                              <button class="btn btn-lg btn-secondary mt-1" @click="limpar_financiamento">
+                              <button class="btn btn-secondary mt-1" @click="limpar_financiamento">
                                 Limpar Entradas
                               </button>
                             </div>
@@ -2543,10 +2543,7 @@
 
 
   </div>
-  <footer class="py-3 my-4">
-    <ul class="nav justify-content-center border-bottom pb-3 mb-3"></ul>
-    <p class="text-center rf_texto">© 2023 Rfmobi Solution</p>
-  </footer>
+  <RodapeVue/>
 </template>
 <script>
 //import SidebarVue from "../../components/menu/Sidebar.vue";
@@ -2561,7 +2558,7 @@ import html2pdf from 'html2pdf.js';
 import router from "../../router";
 import TokenService from "../../services/token.service";
 import jwt_decode from 'jwt-decode';
-
+import RodapeVue from "../../components/menu/Rodape.vue";
 
 
 export default {
@@ -2571,7 +2568,9 @@ export default {
     //SidebarVue,
     Pagination,
     Message,
-    MessageAtualizar
+    MessageAtualizar,
+    RodapeVue
+
 
   },
   directives: {
@@ -7207,4 +7206,3 @@ export default {
 };
 </script>
     
-<style>@import "../../assets/styles/rfCss.css";</style>

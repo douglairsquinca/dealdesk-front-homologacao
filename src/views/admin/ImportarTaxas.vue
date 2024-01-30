@@ -12,7 +12,7 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link rf_texto disabled">Taxas</a>
+            <a class="nav-link rf_texto_adisabled">Taxas</a>
           </li>
         </ul>
       </div>
@@ -270,10 +270,7 @@
         </div>
       </div>
     </div>
-  <footer class="py-3 my-4">
-    <ul class="nav justify-content-center border-bottom pb-3 mb-3"></ul>
-    <p class="text-center rf_texto">© 2023 Rfmobi Solution</p>
-  </footer>
+    <RodapeVue/>
 </template>
 <script>
 import SidebarVue from "../../components/menu/Sidebar.vue";
@@ -281,12 +278,14 @@ import userService from "../../services/user.service";
 import Pagination from "../../components/Pagination.vue";
 import axios from "axios";
 import Message from "../../components/modal/Message.vue";
+import RodapeVue from "../../components/menu/Rodape.vue";
 
 export default {
   components: {
     SidebarVue,
     Pagination,
-    Message
+    Message,
+    RodapeVue
 
   },
   data: () => ({
@@ -501,6 +500,3 @@ export default {
 };
 </script>
   
-<style>
-@import "../../assets/styles/rfCss.css";
-</style>

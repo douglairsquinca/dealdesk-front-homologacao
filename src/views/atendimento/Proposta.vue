@@ -10,7 +10,7 @@
               <router-link class="nav-link rf_texto active" to="/atendimento/dashboard">Dashboard /</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link rf_texto disabled">Novo Atendimento</a>
+              <a class="nav-link rf_texto_a disabled">Novo Atendimento</a>
             </li>
           </ul>
         </div>
@@ -29,9 +29,9 @@
           <!--Telefone-->
           <div class="col-md-2">
             <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" :disabled="habilitar_telefone" v-model="tel"
+              <input type="text" class="form-control " :disabled="habilitar_telefone" v-model="tel"
                 v-on:blur="vTel" />
-              <label for="valid_nome" class="rf_texto">Telefone</label>
+              <label for="valid_nome">Telefone</label>
             </div>
           </div>
           <!--Telefone 2 -->
@@ -60,17 +60,17 @@
           </div>
         </div>
       </form>
-      <div class="row g-2 p-2">
+      <div class="row">
         <div class="col-1 ">
           <div class="form-floating">
-            <button type="submit" :disabled="habilitar_cadastro" @click="cadastrar_cliente" class="btn btn-secondary">
+            <button type="submit" :disabled="habilitar_cadastro" @click="cadastrar_cliente" class="btn btn-secondary m-2">
               Cadastrar
             </button>
           </div>
         </div>
         <div class="col-1 ">
           <div class="form-floating">
-            <button type="submit" :disabled="habilitar_proposta" @click="update_cliente" class="btn btn-secondary">
+            <button type="submit" :disabled="habilitar_proposta" @click="update_cliente" class="btn btn-secondary m-2">
               Editar
             </button>
           </div>
@@ -85,15 +85,15 @@
       <div class="modal" id="modal_cadastrar_cliente">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content rf_bg_form">
-            <div class="modal-header bg-dark rf_border">
-              <h5 class="modal-title fs-5 rf_texto" id="staticBackdropLabel">
+            <div class="modal-header bg-dark rf_border box-atendimento">
+              <h5 class="modal-title fs-5" id="staticBackdropLabel">
                 Cadastrar Cliente
               </h5>
             </div>
-            <div class="modal-body bg-secondary">
+            <div class="modal-body ">
               <p class="fs-6 fw-bold">Cliente não encontrado na base de dados, deseja cadastrar?</p>
             </div>
-            <div class="modal-footer bg-secondary rf_border">
+            <div class="modal-footer rf_border">
               <button type="button" class="btn btn-dark" data-bs-dismiss="modal" @click="modal_cliente">
                 Sim
               </button>
@@ -108,12 +108,12 @@
       <div class="modal" id="modal_justificar">
         <div class="modal-dialog modal-dialog-centered ">
           <div class="modal-content rf_bg_form">
-            <div class="modal-header bg-dark rf_border">
-              <h5 class="modal-title fs-5 rf_texto" id="staticBackdropLabel">
+            <div class="modal-header bg-dark rf_border box-atendimento">
+              <h5 class="modal-title fs-5 " id="staticBackdropLabel">
                 Você está trocando a ordem do vendedor!
               </h5>
             </div>
-            <div class="modal-body bg-secondary">
+            <div class="modal-body ">
               <p class="fs-6 fw-bold">Escolha um das justificativas abaixo para prosseguir!</p>
               <div class="form-floating">
                 <select class="form-select fw-bold" id="valid_funcao" required v-model="dialog_justificativa">
@@ -124,7 +124,7 @@
                 <label class="fw-bold">Justificativa</label>
               </div>
             </div>
-            <div class="modal-footer bg-secondary rf_border">
+            <div class="modal-footer rf_border">
               <button type="button" class="btn btn-dark" data-bs-dismiss="modal" @click="Justificar">
                 Justificar
               </button>
@@ -214,10 +214,7 @@
     </div>
 
     <!-- <button class="btn" @click="open_modal">open</button> -->
-    <footer class="py-3 my-4">
-      <ul class="nav justify-content-center border-bottom pb-3 mb-3"></ul>
-      <p class="text-center rf_texto">© 2023 Rfmobi Solution</p>
-    </footer>
+    <RodapeVue />
   </div>
 </template>
 <script>
@@ -227,6 +224,7 @@ import Message from "../../components/modal/Message.vue";
 import axios from "axios";
 import TokenService from "../../services/token.service";
 import jwt_decode from 'jwt-decode';
+import RodapeVue from "../../components/menu/Rodape.vue";
 
 
 export default {
@@ -234,6 +232,7 @@ export default {
   components: {
     SidebarVue,
     Message,
+    RodapeVue
   },
 
   data() {
@@ -1559,6 +1558,3 @@ export default {
   },
 };
 </script>
-<style>
-@import "../../assets/styles/rfCss.css";
-</style>

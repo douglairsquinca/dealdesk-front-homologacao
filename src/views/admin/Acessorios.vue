@@ -12,7 +12,7 @@
                 >Dashboard /</router-link>              
             </li>    
             <li class="nav-item">
-              <a class="nav-link rf_texto disabled">Acessório</a>
+              <a class="nav-link rf_texto_a disabled">Acessório</a>
             </li>
           </ul>
         </div>
@@ -29,7 +29,7 @@
           <div class="col-1">
             <div class="form-floating">
               <select
-                class="form-select rf_bg_form rf_texto"
+                class="form-select "
                 v-model="item"         
                 required
               >
@@ -72,7 +72,7 @@
             <div class="form-floating">
               <input
                 type="text"
-                class="form-control rf_bg_form rf_texto"
+                class="form-control  "
                 v-model="descricao"
                 required
               />
@@ -439,10 +439,7 @@
         </div>
       </div>
     </div>
-    <footer class="py-3 my-4">
-      <ul class="nav justify-content-center border-bottom pb-3 mb-3"></ul>
-      <p class="text-center rf_texto">© 2023 Rfmobi Solution</p>
-    </footer>
+    <RodapeVue />
   </template>
 
 <script>
@@ -453,12 +450,15 @@ import userService from "../../services/user.service";
 import Pagination from "../../components/Pagination.vue";
 import Message from "../../components/modal/Message.vue";
 
+import RodapeVue from '../../components/menu/Rodape.vue';
+
 export default {
   name: "Usuários",
   components: {
     SidebarVue,
     Pagination,
     Message,
+    RodapeVue
   },
   data() {
     return {

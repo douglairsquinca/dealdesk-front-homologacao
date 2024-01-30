@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <div class="container-fluid rf_background">
+    <div class="g-sidenav-show   bg-gray-100">
+ 
       <router-view />
     </div>
   </div>

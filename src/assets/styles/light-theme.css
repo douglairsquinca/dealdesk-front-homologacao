@@ -3,6 +3,7 @@
 * {
 	font-family: 'Ubuntu', sans-serif;
 }
+
 :root {
 	--escuro: #131313;
 	--cinza: #565656;
@@ -14,6 +15,9 @@
 }
 .rf_texto, .nav-link {
 	color: var(--cinza)!important;
+}
+.rf_texto_a{
+	color: var(--branco)!important;
 }
 input, select {
 	box-shadow: 0 15px 10px -10px rgb(0 0 0 / 3%);
@@ -28,13 +32,13 @@ body.bg-dark {
 	background: var(--branco)!important;
 }
 body #app .bg-dark {
-    background-color: var(--fundo)!important;
+    background-color: var(--branco)!important;
 }
 .rf_background[data-v-4c7f493a] {
 	background: unset!important;
 }
 body #app .navbar.bg-dark{
-	background-color: unset!important;
+	background-color: var(--branco)!important;
 }
 .rf_texto i {
 	font-style: normal;
@@ -44,7 +48,7 @@ span[style="color: aliceblue;"] {
 	display: none;
 }
 .form-floating>label {
-	color: #1b1b1b!important;
+	/* color: #1b1b1b!important; */
 }
 
 
@@ -126,17 +130,17 @@ nav.navbar.rf_texto div i:before {
     color: var(--branco);
 }
 
-.form-floating input, .form-floating select, .form-select {
+/* .form-floating input, .form-floating select, .form-select {
     background-color: var(--branco)!important;
     color: var(--cinza)!important;
     outline: 0;
     border: 0;
 	filter: drop-shadow(0px 10px 20px rgb(0 0 0 / 5%));    
-}
+} */
 .form-floating input:focus, .form-floating select:focus {
-	box-shadow: none;
+	/* box-shadow: none;
 	border: 0;
-	filter: brightness(1.8);
+	filter: brightness(1.8); */
 }
 ul.pagination {
 	margin-top: 40px;
@@ -329,10 +333,10 @@ div[data-v-f14c8d80].container-fluid.rf_background .rf_bg_form {
 	border-radius: 8px;
 }
 select.form-select.rf_bg_form.rf_texto {
-	color: #1b1b1b!important;	
+	
 }
 select option {
-	color: #1b1b1b!important;
+	/* color: #1b1b1b!important; */
 }
 div[data-v-f14c8d80].container-fluid.rf_background .modal-content.rf_bg_form {
 	background-color: #fff!important;
@@ -399,3 +403,103 @@ nav.navbar.navbar-expand-lg.rf_bg_form.rf_texto.rf_container i {
 nav.navbar.navbar-expand-lg.rf_bg_form.rf_texto.rf_container .nav-link.rf_texto.active {
 	color: #fff!important;
 }
+
+
+
+/*# Classes Particulares */
+
+.dd_login_light {
+    margin-top: 15%;
+}
+
+.btn_login_light {
+    background-color: #FE2434;
+    color: #fff;
+}
+
+/* .btn_login_light {
+    --bs-btn-color: #ffff;
+    --bs-btn-bg: #f5365c;
+    --bs-btn-border-color: #f5365c;
+     --bs-btn-hover-color: #837575; 
+    --bs-btn-hover-bg: #FE2434;
+    --bs-btn-hover-border-color: #f64a6c;
+    --bs-btn-focus-shadow-rgb: 208, 46, 78;
+    --bs-btn-active-color: #ffff;
+    --bs-btn-active-bg: #d32f2f;
+    --bs-btn-active-border-color: #f64a6c;
+    --bs-btn-active-shadow: none;
+    --bs-btn-disabled-color: #000;
+    --bs-btn-disabled-bg: #f5365c;
+    --bs-btn-disabled-border-color: #f5365c;
+
+} */
+
+.btn_menu {
+    margin-top: 25px;
+    margin-left: 10px;
+
+}
+
+.btn_menu_color_light {
+    background-color: #FE2434;
+    color: #fff;
+}
+
+.btn_login_dark {
+    background-color: #252837;
+    color: #fff;
+}
+.header_light{
+    background-color: #FAFAFA;
+}
+.header_dark{
+    background-color: #47494D;
+}
+
+.rf_margin{
+	margin-top: 25px;
+}
+
+.table-success {
+    background-color: #c3e6cb; /* verde */
+    background: linear-gradient(90deg, #9effb5 0%, #c3e6cb 100%);
+  }
+  
+  .table-warning {
+    /* background-color: #ffbf00; amarelo */
+    background: linear-gradient(90deg, #ffeeba 0%, rgb(255, 243, 206) 100%);
+  }
+  .table-working {
+    background-color: #00aeff; /* amarelo */
+    background: linear-gradient(90deg, #4fc7ff 0%, #b4e7ff 100%);
+  }
+
+  .btn-atendimento {
+    background: #a1a0a0 !important;
+    border-color: transparent;
+    color: var(--branco) !important;
+}
+.box-atendimento{
+    background: linear-gradient(90deg, rgba(185,46,46,1) 0%, rgba(239,93,93,1) 100%);
+    color: #fff !important;
+}
+.label-proposta{
+    background-color: #00aeff !important;
+    
+}
+.input-proposta{
+    background-color: #ffffff;
+    box-shadow: 0 15px 10px -10px rgb(0 0 0 / 3%);
+    margin: 5px;
+    border: 1px solid #ffffff!important;
+}
+.input-desc{
+    background-color: #ffffff;
+    box-shadow: 0 15px 10px -10px rgb(0 0 0 / 3%);
+    margin: 5px;
+    border: 3px solid #acacac!important;
+}
+.custom-highlight-row {
+    background-color: pink;
+  }

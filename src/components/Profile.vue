@@ -74,10 +74,7 @@
     <div v-if="abrir_modal">
         <Message :msg="msg" v-show="msg" />
       </div>
-    <footer class="py-3 my-4">
-      <ul class="nav justify-content-center border-bottom pb-3 mb-3"></ul>
-      <p class="text-center rf_texto">© 2023 Rfmobi Solution</p>
-    </footer>
+    <RodapeVue />
 
  
   </div>
@@ -87,13 +84,14 @@
 import SidebarVue from "./menu/Sidebar.vue";
 import axios from "axios";
 import Message from "../components/modal/Message.vue";
-
+import RodapeVue from "./menu/Rodape.vue";
 
 export default {
   name: "Profile",
   components: {
     SidebarVue,
     Message,
+    RodapeVue
   },
   data() {
     return {
@@ -162,6 +160,3 @@ export default {
 };
 </script>
 <style src="@vueform/multiselect/themes/default.css"></style> 
-<style>
-@import "../assets/styles/rfCss.css";
-</style>

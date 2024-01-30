@@ -1,6 +1,7 @@
-<template>
+<template> 
+    
     <SidebarVue />
-    <nav class="navbar navbar-expand-lg rf_bg_form rf_texto rf_container">
+    <nav class="navbar navbar-expand-lg rf_bg_form rf_texto rf_container ">
       <div class="container-fluid">
         <div><i class="bi bi-sliders fs-5"> Administração - Dashboard </i></div>
         <div></div>
@@ -157,10 +158,8 @@
       </div>
     </div>
 
-    <footer class="py-3 my-4">
-      <ul class="nav justify-content-center border-bottom pb-3 mb-3"></ul>
-      <p class="text-center rf_texto">© 2023 Rfmobi Solution</p>
-    </footer>
+    <Rodape />
+
 
 </template>
 
@@ -168,17 +167,25 @@
 import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
 import SidebarVue from "./menu/Sidebar.vue";
+import Rodape from "./menu/Rodape.vue";
 
 export default {
   components: {
     SidebarVue,
+    Rodape
   },
   data() {
     return {
       content: "",
     };
   },
+  computed: {
+    currentTheme() {
+      return this.$store.getters.currentTheme;
+    },
+  },
   mounted() {
+    console.log("Tema selecionado ------ " + this.$store.getters.currentTheme);
     UserService.getAdminBoard().then(
       (response) => {
         this.content = response.data;

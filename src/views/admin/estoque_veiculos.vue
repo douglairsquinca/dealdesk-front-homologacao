@@ -10,7 +10,7 @@
                 <router-link class="nav-link rf_texto active" to="/admin">Dashboard /</router-link>
               </li>
               <li class="nav-item">
-                <a class="nav-link rf_texto disabled">Estoque</a>
+                <a class="nav-link rf_texto_a disabled">Estoque</a>
               </li>
             </ul>
           </div>
@@ -111,10 +111,7 @@
         <pagination v-if="estoque.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
           @change-page="handlePageChange" />
       </div>   
-      <footer class="py-3 my-4">
-        <ul class="nav justify-content-center border-bottom pb-3 mb-3"></ul>
-        <p class="text-center rf_texto">© 2023 Rfmobi Solution</p>
-      </footer>
+      <RodapeVue />
     </div>
   </template>
   <script>
@@ -124,12 +121,13 @@
   import Message from "../../components/modal/Message.vue";
   import TokenService from "../../services/token.service";
   import jwt_decode from 'jwt-decode';
-
+  import RodapeVue from "../../components/menu/Rodape.vue";
   export default {
     components: {
       SidebarVue,
       Pagination,
-      Message
+      Message,
+      RodapeVue
     },
     data() {
       return {
@@ -279,6 +277,3 @@
   };
   </script>
     
-  <style>
-  @import "../../assets/styles/rfCss.css";
-  </style>

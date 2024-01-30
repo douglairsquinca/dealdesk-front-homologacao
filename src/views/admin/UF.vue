@@ -6,21 +6,17 @@
           <h1 class="rf_texto">Estados</h1>
         </div>
       </section>
-      <footer class="py-3 my-4">
-        <ul class="nav justify-content-center border-bottom pb-3 mb-3"></ul>
-        <p class="text-center rf_texto">© 2023 Rfmobi Solution</p>
-      </footer>
+      <RodapeVue/>
     </div>
   </template>
   <script>
   import SidebarVue from "../../components/menu/Sidebar.vue";
+  import RodapeVue from "../../components/menu/Rodape.vue";
   export default {
     components: {
       SidebarVue,
+      RodapeVue
     },
   };
   </script>
   
-  <style>
-  @import "../../assets/styles/rfCss.css";
-  </style>

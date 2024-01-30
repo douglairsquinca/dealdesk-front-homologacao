@@ -677,10 +677,7 @@
     </div>
 
 
-    <footer class="py-3 my-4">
-      <ul class="nav justify-content-center border-bottom pb-3 mb-3"></ul>
-      <p class="text-center rf_texto">© 2023 Rfmobi Solution</p>
-    </footer>
+    <RodapeVue />
   </div>
 
   <!--Scripts para trabalhar com gráficos-->
@@ -704,6 +701,7 @@ import Message from "../../components/modal/Message.vue";
 import VueApexCharts from "vue3-apexcharts";
 import axios from "axios";
 import moment from 'moment';
+import RodapeVue from "../../components/menu/Rodape.vue";
 
 export default {
   name: "Usuários",
@@ -713,6 +711,7 @@ export default {
     Pagination,
     Message,
     apexchart: VueApexCharts,
+    RodapeVue
 
 
   },

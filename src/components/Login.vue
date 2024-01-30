@@ -1,45 +1,73 @@
 <template>
-  <div class="col-12">
-    <div class="card card-container rf_bg_form rf_texto">
-      <img id="profile-img" src="../assets/logo.png" class=" img-fluid" />
-      <Form @submit="handleLogin" :validation-schema="schema">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <Field name="email" type="email" class="form-control" />
-          <ErrorMessage name="email" class="error-feedback" />
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <Field name="password" type="password" class="form-control" />
-          <ErrorMessage name="password" class="error-feedback" />
-        </div>
-        <br />
-        <div class="form-group">
-          <button class="btn btn-secondary btn-block" :disabled="loading">
-            <span v-show="loading" class="spinner-border spinner-border-sm"></span>
-            <span>Login</span>
-          </button>
-        </div>
-     
-        <div class="form-group">
-          <label class="rf_texto">Empresa</label>
-          <div class="form-floating">
-            <select class="form-select" v-model="empresaSelecionada" @change="redirecionar">
-              <option value="">Selecione a empresa</option>
-              <option v-for="empresa in empresasLiberadas" :value="empresa.id" :key="empresa.id">{{ empresa.nome }}
-              </option>
-            </select>
-          </div>
-        </div>
-        
+  <div class="main-content">
+    <div class="mt--8 pb-5 container dd_login">
+      <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-5">
+          <div class="card  border-0 mb-0">
+            <div class="card-body px-lg-5 py-lg-5"><!----><!---->
+              <div class="text-center text-muted mb-4">
+                <img id="profile-img" src="../assets/logo.png" class=" img-fluid" />
+              </div>
+              <Form @submit="handleLogin" :validation-schema="schema">
+                <div class="form-group">
+                  <label for="email">Email</label>
 
-        <div class="form-group">
-          <div v-if="message" class="alert alert-danger" role="alert">
-            {{ message }}
+                  <Field name="email" type="email" class="form-control" placeholder="Digite seu e-mail" />
+                  <ErrorMessage name="email" class="error-feedback" />
+                </div>
+
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <Field name="password" type="password" class="form-control" placeholder="Digite sua Senha" />
+                  <ErrorMessage name="password" class="error-feedback" />
+                </div>
+                <br />
+                <div class="form-group">
+                  <button class="btn btn_login btn-block" :disabled="loading">
+                    <span v-show="loading" class="spinner-border spinner-border-sm"></span>
+                    <span>Login</span>
+                  </button>
+                </div>
+
+                <div class="form-group">
+                  <label class="rf_texto">Empresa</label>
+                  <div class="form-floating">
+                    <select class="form-select" v-model="empresaSelecionada" @change="redirecionar">
+                      <option value="">Selecione a empresa</option>
+                      <option v-for="empresa in empresasLiberadas" :value="empresa.id" :key="empresa.id">{{ empresa.nome
+                      }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+
+                <div class="form-group">
+                  <div v-if="message" class="alert alert-danger" role="alert">
+                    {{ message }}
+                  </div>
+                </div>
+              </Form>
+
+            </div><!----><!---->
           </div>
+
         </div>
-      </Form>
+      </div>
     </div>
+    <footer id="footer-main" class="py-5">
+      <div class="container">
+        <div class="row justify-content-xl-between align-items-center">
+          <div class="col-xl-12">
+            <div class="copyright text-center text-xl-center text-muted">
+              © 2024 <a href="https://www.dealdesksystems.com.br" target="_blank" class="font-weight-bold ml-1">DealDesk
+                Systems</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -166,11 +194,11 @@ export default {
     //     const tokenResponse = await axios.post(`${process.env.VUE_APP_API_URL}auth/getToken`, {
     //       selectedCompanyId: selectedCompanyId,
     //       user_id: this.$store.state.auth.user.id
-          
+
     //     });
 
     //     tokenResponse.data.accessToken;        
-           
+
 
     //         if (this.showAdminBoard) {
     //           this.$router.push("/admin");
@@ -181,8 +209,8 @@ export default {
     //         } else {
     //           this.$router.push("/profile");
     //         }
-          
-          
+
+
     //   } catch (error) {
     //     console.error(error);
     //   }
@@ -220,7 +248,7 @@ export default {
       try {
         // Agora, o usuário seleciona uma empresa
         const selectedCompanyId = this.empresaSelecionada;
-            // Obtenha o ID do usuário logado
+        // Obtenha o ID do usuário logado
         const userId = this.$store.state.auth.user.id;
 
         // Faça a chamada para o servidor para obter o token JWT com a empresa selecionada
@@ -244,47 +272,8 @@ export default {
         }
       }
     },
-  
+
   },
 };
 </script>
 
-<style scoped>
-label {
-  display: block;
-  margin-top: 10px;
-}
-
-.card-container.card {
-  max-width: 350px !important;
-  padding: 40px 40px;
-}
-
-.card {
-  background-color: #fff;
-  padding: 20px 25px 30px;
-  margin: 0 auto 25px;
-  margin-top: 50px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  border: none;
-}
-
-.profile-img-card {
-  width: 96px;
-  height: 96px;
-  margin: 0 auto 10px;
-  display: block;
-  -moz-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
-}
-
-.error-feedback {
-  color: red;
-}
-</style>

@@ -4,6 +4,3 @@
     </div>
 </template>
 
-<style>
-@import "../../assets/styles/rfCss.css";
-</style>

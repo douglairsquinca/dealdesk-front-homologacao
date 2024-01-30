@@ -11,7 +11,9 @@ import Pagination from 'v-pagination-3';
 import VueApexCharts from 'vue3-apexcharts'; // Importe o pacote vue3-apexcharts
 
 
-// import "https://beehavemarketing.com.br/oda/estilo.css";
+//import "../src/assets/styles/dealdesk.css";
+import "../src/assets/styles/light-theme.css";
+//import "../src/assets/styles/dark-theme.css";
 
 setupInterceptors(store);
 

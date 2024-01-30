@@ -12,7 +12,7 @@
               <router-link class="nav-link rf_texto active" to="/admin">Dashboard /</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link rf_texto disabled">Custo Variável</a>
+              <a class="nav-link rf_texto_a disabled">Custo Variável</a>
             </li>
           </ul>
         </div>
@@ -294,10 +294,7 @@
     </div>
     <!-- Button trigger modal -->
 
-    <footer class="py-3 my-4">
-      <ul class="nav justify-content-center border-bottom pb-3 mb-3"></ul>
-      <p class="text-center rf_texto">© 2023 Rfmobi Solution</p>
-    </footer>
+    <RodapeVue />
   </div>
 </template>
 <script>
@@ -307,6 +304,7 @@ import axios from "axios";
 import userService from "../../services/user.service";
 import Pagination from "../../components/Pagination.vue";
 import Message from "../../components/modal/Message.vue";
+import RodapeVue from "../../components/menu/Rodape.vue";
 
 
 export default {
@@ -315,6 +313,7 @@ export default {
     SidebarVue,
     Pagination,
     Message,
+    RodapeVue
   },
   data() {
     return {
@@ -629,6 +628,3 @@ export default {
 };
 </script>
   
-<style>
-@import "../../assets/styles/rfCss.css";
-</style>

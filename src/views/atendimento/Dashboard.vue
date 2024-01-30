@@ -10,7 +10,7 @@
               <router-link class="nav-link rf_texto active" to="/atendimento/dashboard">Dashboard /</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link rf_texto disabled">Novo Atendimento</a>
+              <a class="nav-link rf_texto_a disabled">Novo Atendimento</a>
             </li>
           </ul>
         </div>
@@ -57,12 +57,12 @@
                     <td>{{ item.username }}</td>
                     <td>{{ item.status_vendedor }}</td>
                     <td>
-                      <button type="button" class="btn btn-secondary" style="margin-right: 0.6rem"
+                      <button type="button" class="btn btn-atendimento" style="margin-right: 0.6rem"
                         @click="desabilitar_vend(item)">
                         <i class="bi bi-person-fill-slash"></i>
                       </button>
 
-                      <button type="button" class="btn btn-secondary" @click="update_dispo(item)">
+                      <button type="button" class="btn btn-atendimento" @click="update_dispo(item)">
                         <i class="bi bi-person-fill-check"></i>
                       </button>
                     </td>
@@ -104,7 +104,7 @@
                     <td>{{ item.tipo_vendedor }}</td>
                     <td>{{ item.status_vendedor }}</td>
                     <td>
-                      <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                      <button type="button" class="btn btn-atendimento" data-bs-toggle="modal"
                         data-bs-target="#exampleModal" @click="update_dispo(item)">
                         <i class="bi bi-person-fill-check"></i>
                       </button>
@@ -147,10 +147,7 @@
       <Message :msg="msg" v-show="msg" />
     </div>
 
-    <footer class="py-3 my-4">
-      <ul class="nav justify-content-center border-bottom pb-3 mb-3"></ul>
-      <p class="text-center rf_texto">© 2023 Rfmobi Solution</p>
-    </footer>
+    <RodapeVue />
   </div>
 </template>
 <script>
@@ -158,6 +155,7 @@ import SidebarVue from "../../components/menu/Sidebar.vue";
 import userService from "../../services/user.service";
 import Pagination from "../../components/Pagination.vue";
 import Message from "../../components/modal/Message.vue";
+import RodapeVue from "../../components/menu/Rodape.vue";
 
 import TokenService from "../../services/token.service";
 import jwt_decode from 'jwt-decode';
@@ -166,7 +164,8 @@ export default {
   components: {
     SidebarVue,
     Pagination,
-    Message
+    Message,
+    RodapeVue
   },
   data() {
     return {
@@ -535,6 +534,3 @@ export default {
   },
 };
 </script>
-<style>
-@import "../../assets/styles/rfCss.css";
-</style>

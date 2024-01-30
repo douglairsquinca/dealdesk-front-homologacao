@@ -2522,10 +2522,7 @@
     </div>
 
   </div>
-  <footer class="py-3 my-4">
-    <ul class="nav justify-content-center border-bottom pb-3 mb-3"></ul>
-    <p class="text-center rf_texto">© 2023 Rfmobi Solution</p>
-  </footer>
+  <RodapeVue/>
 </template>
 <script>
 //import SidebarVue from "../../components/menu/Sidebar.vue";
@@ -2539,6 +2536,7 @@ import html2pdf from 'html2pdf.js';
 import router from "../../router";
 import TokenService from "../../services/token.service";
 import jwt_decode from 'jwt-decode';
+import RodapeVue from "../../components/menu/Rodape.vue";
 
 
 
@@ -2549,6 +2547,7 @@ export default {
     //SidebarVue,
     Pagination,
     Message,
+    RodapeVue
 
   },
   directives: {
@@ -7062,6 +7061,3 @@ export default {
 };
 </script>
     
-<style>
-@import "../../assets/styles/rfCss.css";
-</style>
