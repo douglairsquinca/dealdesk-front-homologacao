@@ -55,19 +55,7 @@
         </div>
       </div>
     </div>
-    <footer id="footer-main" class="py-5">
-      <div class="container">
-        <div class="row justify-content-xl-between align-items-center">
-          <div class="col-xl-12">
-            <div class="copyright text-center text-xl-center text-muted">
-              © 2024 <a href="https://www.dealdesksystems.com.br" target="_blank" class="font-weight-bold ml-1">DealDesk
-                Systems</a>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </footer>
+   <RodapeVue/>
   </div>
 </template>
 
@@ -76,6 +64,7 @@ import { Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
 //import axios from "axios";
 import AuthService from '../services/auth.service';
+import RodapeVue from './menu/Rodape.vue';
 
 export default {
   name: "Login",
@@ -83,6 +72,7 @@ export default {
     Form,
     Field,
     ErrorMessage,
+    RodapeVue
   },
   data() {
     const schema = yup.object().shape({

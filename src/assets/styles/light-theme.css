@@ -408,11 +408,11 @@ nav.navbar.navbar-expand-lg.rf_bg_form.rf_texto.rf_container .nav-link.rf_texto.
 
 /*# Classes Particulares */
 
-.dd_login_light {
-    margin-top: 15%;
+.dd_login {
+    margin-top: 10%;
 }
 
-.btn_login_light {
+.btn_login {
     background-color: #FE2434;
     color: #fff;
 }
