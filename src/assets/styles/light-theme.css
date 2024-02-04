@@ -1,7 +1,11 @@
 /*@import url('http://127.0.0.1/beni/light.css');*/
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
 * {
 	font-family: 'Ubuntu', sans-serif;
+} */
+
+.rf_texto_pdf{
+    font-size: 12px;
 }
 
 :root {
@@ -502,4 +506,22 @@ nav.navbar.navbar-expand-lg.rf_bg_form.rf_texto.rf_container .nav-link.rf_texto.
 }
 .custom-highlight-row {
     background-color: pink;
+  }
+  .status-red {
+    color:red;
+  }
+  .status-green {
+    color: green;
+  }
+  .font-pdf-menu{
+    font-size: small !important;
+    
+  }
+  .rf_card_pdf{
+    margin: 10px;
+   
+  }
+  .rf_card_header{
+    background-color: #ced4da !important;
+    
   }

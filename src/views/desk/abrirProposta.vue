@@ -3,7 +3,7 @@
     <div class="modal-content ">
       <div class="modal-body ">
         <!--Bloco do Cliente-->
-         <nav class="navbar navbar-expand-lg rf_bg_form rf_texto rf_container">
+        <nav class="navbar navbar-expand-lg rf_bg_form rf_texto rf_container">
           <div class="container-fluid">
             <div>
               <i class="bi bi-sliders fs-5"> Informações do Cliente </i>
@@ -932,8 +932,8 @@
                           </td>
                           <td>
                             <div class="form-floating">
-                              <input type="text" class="form-control rf_bg_form rf_texto rf_texto" :disabled="bloquear_entrada"
-                                v-model="entrada_2_perc" @input="calcular_perc_2()" />
+                              <input type="text" class="form-control rf_bg_form rf_texto rf_texto"
+                                :disabled="bloquear_entrada" v-model="entrada_2_perc" @input="calcular_perc_2()" />
                               <label class="rf_texto">Entrada %</label>
                             </div>
                           </td>
@@ -981,8 +981,8 @@
                           </td>
                           <td>
                             <div class="form-floating">
-                              <input type="text" class="form-control rf_bg_form rf_texto rf_texto" :disabled="bloquear_entrada"
-                                v-model="entrada_3_perc" @input="calcular_perc_3()" />
+                              <input type="text" class="form-control rf_bg_form rf_texto rf_texto"
+                                :disabled="bloquear_entrada" v-model="entrada_3_perc" @input="calcular_perc_3()" />
                               <label class="rf_texto">Entrada %</label>
                             </div>
                           </td>
@@ -2152,21 +2152,23 @@
     <!--Modal Gerar Menu-->
     <div class="modal fade" id="ModalGerarMenu" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
       tabindex="-1">
-      <div class="modal-dialog modal-fullscreen rf_modal">
+      <div class="modal-dialog modal-fullscreen rf_modal font-pdf-menu">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
-              Menu Gerado
-            </h1>
+
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <div class="card mt-3 rf_texto_pdf" ref="contentToPrint">
+            <div class=" mt-3 rf_texto_pdf" ref="contentToPrint">
               <div class="col">
+                <a class="navbar-brand logo">
+                        <img src="../../assets/logo.png" alt="Bootstrap" width="100" height="30" />
+                      </a>
                 <div class="row g-2 p-2">
 
                   <div class="col-4">
                     <div class="card ">
+                      
                       <div class="card-header rf_card_header">Informações do Cliente</div>
                       <div class="rf_card_pdf">
                         <div>
@@ -2543,7 +2545,7 @@
 
 
   </div>
-  <RodapeVue/>
+  <RodapeVue />
 </template>
 <script>
 //import SidebarVue from "../../components/menu/Sidebar.vue";

@@ -214,13 +214,17 @@
         </div>
         <div class="col-1">
           <div class="form-floating">
-            <input v-model="searchCombustivelSelecionado" class="form-control rf_bg_form rf_texto"
-              list="datalistCombustivel" id="combustivel" autocomplete="off" required />
+            <!-- <input v-model="searchCombustivelSelecionado" class="form-control rf_bg_form rf_texto"
+              list="datalistCombustivel" id="combustivel" autocomplete="off" required /> -->
 
             <label class="rf_texto">Combustível</label>
-            <datalist id="datalistCombustivel">
+            <!-- <datalist id="datalistCombustivel">
               <option v-for="comb in combustiveis" :data-id="comb.id" :value="comb.descricao" :key="comb.id"></option>
+            </datalist> -->
+            <datalist id="datalistCombustivel">
+                <option v-for="comb in combustiveisFiltrados" :data-id="comb.id" :value="comb.descricao" :key="comb.id"></option>
             </datalist>
+
           </div>
         </div>
 
@@ -761,10 +765,10 @@ export default {
         );
         userService.getCombustiveis(params).then((response) => {
           const { combustivel, totalPages, totalItems } = response.data;
-          this.combustiveis = combustivel;
+          this.combustiveis = combustivel.filter(comb => comb.status === 1);
           this.totalPages = totalPages;
           this.totalItems = totalItems;
-          console.log(response.data);
+      
         });
       } catch (error) {
         if (error.response.status == 400) {
@@ -773,6 +777,7 @@ export default {
         }
       }
     },
+
 
     async editar_modelo(item) {
       console.log("Dados para edição");

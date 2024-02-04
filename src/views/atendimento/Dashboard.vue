@@ -138,6 +138,12 @@
             <td>{{ item.vendedores.username }}</td>
             <td>{{ item.status_proposta }}</td>
           </tr>
+          <!-- <tr v-for="item in proposta" :key="item.id">
+  <td>{{ item.id }}</td>
+  <td>{{ item.clientes ? item.clientes.nome : 'N/A' }}</td>
+  <td>{{ item.vendedores ? item.vendedores.username : 'N/A' }}</td>
+  <td>{{ item.status_proposta }}</td>
+</tr> -->
         </tbody>
       </table>
       <pagination v-if="proposta.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
@@ -515,7 +521,9 @@ export default {
           const { propostas, totalPages } = response.data;
           this.proposta = propostas;
           this.totalPages = totalPages;
-          console.log(response.data);
+          console.log("Dados da Proposta")
+          console.log(this.proposta);
+          console.log(response.data)
         }).catch((error) => {
           if (error.response.status == 400) {
             this.abrir_modal = true;

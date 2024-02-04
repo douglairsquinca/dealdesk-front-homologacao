@@ -124,42 +124,42 @@
 
         </div>
       </div>
-     
+
     </div>
-     <!--Tabelas-->
-     <div class="card rf_bg_form g-2 p-2 rf_margin">
-        <table class="table border-dark rf_texto">
-          <thead>
-            <tr>
-              <th scope="col" class="rf_header_table">Nome</th>
-              <th scope="col" class="rf_header_table">Código</th>
-              <th scope="col" class="rf_header_table">Rebate</th>
-              <th scope="col" class="rf_header_table">Status</th>
-              <th scope="col" class="rf_header_table">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in bancos" :key="item.id">
-              <td class="rf_header_table">{{ item.nome }}</td>
-              <td class="rf_header_table">{{ item.codigo }}</td>
-              <td class="rf_header_table">{{ item.tacOnRebate_desc }}</td>
-              <td class="rf_header_table">{{ item.status_desc }}</td>
-              <td>
-                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                  @click="editar_banco(item)">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil"
-                    viewBox="0 0 16 16">
-                    <path
-                      d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-                  </svg>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <pagination v-if="bancos.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
-          @change-page="handlePageChange" />
-      </div>
+    <!--Tabelas-->
+    <div class="card rf_bg_form g-2 p-2 rf_margin">
+      <table class="table border-dark rf_texto">
+        <thead>
+          <tr>
+            <th scope="col" class="rf_header_table">Nome</th>
+            <th scope="col" class="rf_header_table">Código</th>
+            <th scope="col" class="rf_header_table">Rebate</th>
+            <th scope="col" class="rf_header_table">Status</th>
+            <th scope="col" class="rf_header_table">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in bancos" :key="item.id">
+            <td class="rf_header_table">{{ item.nome }}</td>
+            <td class="rf_header_table">{{ item.codigo }}</td>
+            <td class="rf_header_table">{{ item.tacOnRebate_desc }}</td>
+            <td class="rf_header_table">{{ item.status_desc }}</td>
+            <td>
+              <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                @click="editar_banco(item)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil"
+                  viewBox="0 0 16 16">
+                  <path
+                    d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                </svg>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <pagination v-if="bancos.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
+        @change-page="handlePageChange" />
+    </div>
     <!-- Modal para edição -->
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -240,7 +240,7 @@ import userService from "../../services/user.service";
 import Message from "../../components/modal/Message.vue";
 import RodapeVue from "../../components/menu/Rodape.vue";
 import axios from "axios";
-//import axios from "axios";
+
 export default {
   name: "Bancos",
   components: {
@@ -285,6 +285,7 @@ export default {
     this.retrieveBancos();
   },
   methods: {
+
     async onSubmit() {
 
       await fetch(`${process.env.VUE_APP_API_URL}bancos`, {
@@ -412,43 +413,48 @@ export default {
       console.log(item);
     },
     async update() {
-      const token = this.$store.state.auth.user.accessToken;
+      console.log("Estou aqui!")
 
-      const headers = {
-        "x-access-token": token,
-      };
-      const dados = {
-        id: this.edit_id,
-        status: this.edit_status,
-        tacOnRebate: this.edit_rebate,
-        codigo: this.edit_codigo
-      };
+      try {
+        const token = this.$store.state.auth.user.accessToken;
 
-      await axios
-        .put(`${process.env.VUE_APP_API_URL}/bancos/${this.edit_id}`, dados, {
-          headers,
-        })
-        .then((resposta) => {
-          const resp = JSON.stringify(resposta.status);
+        const headers = {
+          "x-access-token": token,
+        };
+        const dados = {
+          id: this.edit_id,
+          nome: this.edit_nome,
+          status: this.edit_status,
+          tacOnRebate: this.edit_rebate,
+          codigo: this.edit_codigo
+        };
+       
 
-          if (resp == 200) {
-            this.abrir_modal = true;
-            this.msg = resposta.data.message;
-            setTimeout(() => (this.abrir_modal = false), 4000);
-            this.retrieveBancos();
-          }
-          if (resp == 204) {
-            this.abrir_modal = true;
-            this.msg = resposta.data.message;
-            setTimeout(() => (this.abrir_modal = false), 4000);
-          }
-        })
-        .catch((error) => {
-          if (error.response.status == 400) {
-            this.abrir_modal = true;
-            this.msg = error.response.data.message;
-          }
-        });
+        const response = await axios
+          .put(`${process.env.VUE_APP_API_URL}bancos/${this.edit_id}`,
+            dados,
+            { headers }
+          );
+
+        if (response.data.StatusOk == 200) {
+          this.abrir_modal = true;
+          this.msg = response.data.message;
+          setTimeout(() => (this.abrir_modal = false), 4000);
+
+          this.retrieveBancos();
+        }
+
+      } catch (error) {
+        if (error.response.status === 404) {
+          console.error("Recurso não encontrado. Verifique o endpoint da API.");
+        } else {
+          console.error(error);
+        }
+      }
+
+
+
+
     },
   }
 };

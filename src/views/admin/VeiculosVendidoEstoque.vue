@@ -16,7 +16,7 @@
       <table class="table border-dark rf_texto">
         <thead>
           <tr>
-            <th scope="col" class="rf_header_table">Nº Proposta</th>
+            <th scope="col" class="rf_header_table">Nº Atendimento</th>
             <th scope="col" class="rf_header_table">Loja</th>
 
             <th scope="col" class="rf_header_table">Modelo</th>
