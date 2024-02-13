@@ -5,7 +5,7 @@
 } */
 
 .rf_texto_pdf{
-    font-size: 12px;
+    font-size: 11px;
 }
 
 :root {
@@ -514,7 +514,7 @@ nav.navbar.navbar-expand-lg.rf_bg_form.rf_texto.rf_container .nav-link.rf_texto.
     color: green;
   }
   .font-pdf-menu{
-    font-size: small !important;
+    font-size: x-small !important;
     
   }
   .rf_card_pdf{
@@ -524,4 +524,21 @@ nav.navbar.navbar-expand-lg.rf_bg_form.rf_texto.rf_container .nav-link.rf_texto.
   .rf_card_header{
     background-color: #ced4da !important;
     
+  }
+  .row-highlight-red {
+    background: linear-gradient(90deg, rgb(248, 125, 125) 0%, rgb(247, 157, 157) 100%);
+    color: #fff !important;
+  }
+  .row-highlight-yellow {
+    background: linear-gradient(90deg, #ffeeba 0%, rgb(255, 243, 206) 100%);
+  }
+  .rf_assinatura {
+    border-top: solid;
+    text-align: center;
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .card-menu{
+    height: 180px !important;
   }

@@ -122,26 +122,28 @@
                 <div class="col">
                     <div class="card shadow-sm text-center rf_texto rf_border" style="margin-right:0.5rem">
                         <div class=" card-header bg-dark ">Novos</div>
+                        <!--Passagens-->
+                        <div class="card-body bg-primary ">
+                            <p>Passagens - {{ total_passagem_zero }}</p>
+                            <p>Novas - {{ total_passagem_zero_novas }} | Retorno - {{ total_passagem_zero_retorno }}</p>
+                        </div>
+                        <!--Em Atendimento-->
+                        <div class="card-body bg-secondary">
+                            <p>Em Atendimento</p>
+                            <p> {{ total_em_atendimento_zero }} ({{ total_em_atendimento_zero_porcentagem }} %) </p>
+                        </div>
+                        <!--Venda Efetuada-->
                         <div class="card-body bg-success ">
-                            <p> Vendidos - {{ total_vendas_finalizadas_zero }}
+                            <p> Venda Efetuada - {{ total_vendas_finalizadas_zero }}
                                 ({{ total_vendas_finalizadas_zero_porcentagem }}%)</p>
                             <p>Novos - {{ total_vendas_finalizadas_zero_novos }} ({{
                                 total_vendas_finalizadas_zero_novos_porcentagem
                             }}%) | Retorno - {{ total_vendas_finalizadas_zero_retorno }} ({{
     total_vendas_finalizadas_zero_retorno_porcentagem }}%)</p>
-                        </div>
-                        <div class="card-body bg-primary ">
-                            <p>Passagens - {{ total_passagem_zero }}</p>
-                            <p>Novas - {{ total_passagem_zero_novas }} | Retorno - {{ total_passagem_zero_retorno }}</p>
-
-                        </div>
-                        <div class="card-body bg-secondary">
-                            <p>Em Atendimento</p>
-                            <p> {{ total_em_atendimento_zero }} ({{ total_em_atendimento_zero_porcentagem }} %) </p>
-
-                        </div>
+                        </div>                      
+                        <!--Venda Perdida-->    
                         <div class="card-body bg-danger ">
-                            <p>Perdidas</p>
+                            <p>Venda Perdida</p>
                             <p>{{ total_vendas_perdidas_zero }} ({{ total_vendas_perdidas_zero_porcentagem }} %)</p>
 
                         </div>
@@ -151,26 +153,30 @@
                 <div class="col">
                     <div class="card shadow-sm text-center rf_texto rf_border">
                         <div class=" card-header bg-dark ">Usados</div>
+                        <!--Passagem-->
+                        <div class="card-body bg-primary ">
+                            <p>Passagens - {{ total_passagem_usado }}</p>
+                            <p>Novas - {{ total_passagem_usado_novas }} | Retorno - {{ total_passagem_usado_retorno }}</p>
+
+                        </div>
+                        <!-- Em Atendimento-->
+                        <div class="card-body bg-secondary">
+                            <p>Em Atendimento</p>
+                            <p> {{ total_em_atendimento_usados }} ({{ total_em_atendimento_usados_porcentagem }} %) </p>
+
+                        </div>
+                        <!-- Venda Efetuada -->
                         <div class="card-body bg-success ">
-                            <p> Vendidos - {{ total_vendas_finalizadas_usado }}
+                            <p> Venda Efetuada - {{ total_vendas_finalizadas_usado }}
                                 ({{ total_vendas_finalizadas_usado_porcentagem }}%)</p>
                             <p>Novos - {{ total_vendas_finalizadas_usado_novos }} ({{
                                 total_vendas_finalizadas_usado_novos_porcentagem
                             }}%) | Retorno - {{ total_vendas_finalizadas_usado_retorno }} ({{
     total_vendas_finalizadas_usado_retorno_porcentagem }}%)</p>
                         </div>
-                        <div class="card-body bg-primary ">
-                            <p>Passagens - {{ total_passagem_usado }}</p>
-                            <p>Novas - {{ total_passagem_usado_novas }} | Retorno - {{ total_passagem_usado_retorno }}</p>
-
-                        </div>
-                        <div class="card-body bg-secondary">
-                            <p>Em Atendimento</p>
-                            <p> {{ total_em_atendimento_usados }} ({{ total_em_atendimento_usados_porcentagem }} %) </p>
-
-                        </div>
+                        <!-- Venda Perdida-->
                         <div class="card-body bg-danger ">
-                            <p>Perdidas</p>
+                            <p>Venda Perdida</p>
                             <p>{{ total_vendas_perdidas_usados }} ({{ total_vendas_perdidas_usados_porcentagem }}%) </p>
 
                         </div>
@@ -181,7 +187,7 @@
             <!--Quadro por Empresa-->
             <div class="row p-2 mt-5">
                 <div class="col-4" v-for="(item, index) in resumosPorEmpresa" :key="index">
-                    <div class=" card-header bg-dark rf_texto text-center mt-2" >{{ item.nome }}</div>
+                    <div class=" card-header bg-dark rf_texto text-center mt-2">{{ item.nome }}</div>
                     <div class="row mt-2">
                         <!--Veículos Novos-->
                         <div class="col">
@@ -204,13 +210,15 @@
                                 </div>
                                 <div class="card-body bg-secondary">
                                     <p>Em Atendimento</p>
-                                    <p> {{ item.total_em_atendimento_zero }} ({{ item.total_em_atendimento_zero_porcentagem }} %)
+                                    <p> {{ item.total_em_atendimento_zero }} ({{ item.total_em_atendimento_zero_porcentagem
+                                    }} %)
                                     </p>
 
                                 </div>
                                 <div class="card-body bg-danger ">
                                     <p>Perdidas</p>
-                                    <p>{{ item.total_vendas_perdidas_zero }} ({{ item.total_vendas_perdidas_zero_porcentagem }} %)
+                                    <p>{{ item.total_vendas_perdidas_zero }} ({{ item.total_vendas_perdidas_zero_porcentagem
+                                    }} %)
                                     </p>
 
                                 </div>
@@ -237,14 +245,16 @@
                                 </div>
                                 <div class="card-body bg-secondary">
                                     <p>Em Atendimento</p>
-                                    <p> {{ item.total_em_atendimento_usados }} ({{ item.total_em_atendimento_usados_porcentagem }}
+                                    <p> {{ item.total_em_atendimento_usados }} ({{
+                                        item.total_em_atendimento_usados_porcentagem }}
                                         %)
                                     </p>
 
                                 </div>
                                 <div class="card-body bg-danger ">
                                     <p>Perdidas</p>
-                                    <p>{{ item.total_vendas_perdidas_usados }} ({{ item.total_vendas_perdidas_usados_porcentagem
+                                    <p>{{ item.total_vendas_perdidas_usados }} ({{
+                                        item.total_vendas_perdidas_usados_porcentagem
                                     }}%)
                                     </p>
 
@@ -259,7 +269,7 @@
 
         </div>
 
-        <RodapeVue/>
+        <RodapeVue />
     </div>
 </template>
 <script>
@@ -351,8 +361,8 @@ export default {
         this.getToken();
         this.getEmpresas();
         this.propostas_mes();
-   
-       
+
+
 
     },
     watch: {
@@ -510,7 +520,7 @@ export default {
                     }
                 })
 
-          
+
         },
         async propostas_mes_empresa() {
             const params = {
@@ -645,114 +655,114 @@ export default {
 
         },
         async resumo_gerencial() {
-      console.log("Aqui Resumo");
-      await fetch(`${process.env.VUE_APP_API_URL}taxas/resumo_gerencial`, {
-        method: "POST",
+            console.log("Aqui Resumo");
+            await fetch(`${process.env.VUE_APP_API_URL}taxas/resumo_gerencial`, {
+                method: "POST",
 
-        headers: {
-          "Content-Type": "application/json",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    empresas: this.selectedEmpresas,
+                }),
+            })
+                .then((data) => {
+                    if (!data.ok) {
+                        throw Error(data.status);
+                    }
+                    return data.json();
+                })
+                .then((resposta) => {
+
+                    if (resposta["tipo_veiculo"] == "NOVO") {
+                        this.Lucro_Bruto = resposta["Lucro_Bruto_Zero"];
+                        this.Lucro_Operacional = resposta["Lucro_Operacional_Zero"];
+                        this.Lucro_liquido = resposta["Lucro_liquido_Zero"];
+
+                    }
+                    if (resposta["tipo_veiculo"] == "USADO") {
+                        this.Lucro_Bruto = resposta["Lucro_Bruto"];
+                        this.Lucro_Operacional = resposta["Lucro_Operacional"];
+                        this.Lucro_liquido = resposta["Lucro_liquido"];
+                    }
+                    (this.Valor_Sugerido = resposta["Valor_Sugerido"]),
+                        (this.Valor_Custo_variaveis = resposta["Valor_Custo_variaveis"]),
+                        (this.Valor_Itens_Acessorios = resposta["Valor_Itens_Acessorios"]);
+                    this.Valor_Total_Venda = resposta["Valor_Total_Venda"];
+                    this.Valor_Avaliado = resposta["Valor_Avaliado"];
+                    this.Valor_Itens_Avaliacao_db = resposta["Valor_Itens_Avaliacao_db"];
+                    this.Valor_Itens_Avaliacao_cr = resposta["Valor_Itens_Avaliacao_cr"];
+                    this.Valor_Avaliacao_Final = resposta["Valor_Avaliacao_Final"];
+
+                    this.Valor_Resultado_Financiamento =
+                        resposta["Valor_Resultado_Financiamento"];
+
+                    this.Valor_Entrada = resposta["Valor_Entrada"];
+                    this.Valor_Financiado = resposta["Valor_Financiado"];
+                    this.Quantidade_Meses = resposta["Quantidade_Meses"];
+
+                    this.Valor_Entrada_1 = resposta["Valor_Entrada_1"];
+                    this.Valor_Financiado_1 = resposta["Valor_Financiado_1"];
+                    this.Quantidade_Meses_1 = resposta["Quantidade_Meses_1"];
+
+                    this.Valor_Entrada_2 = resposta["Valor_Entrada_2"];
+                    this.Valor_Financiado_2 = resposta["Valor_Financiado_2"];
+                    this.Quantidade_Meses_2 = resposta["Quantidade_Meses_2"];
+
+                    this.Valor_Entrada_3 = resposta["Valor_Entrada_3"];
+                    this.Valor_Financiado_3 = resposta["Valor_Financiado_3"];
+                    this.Quantidade_Meses_3 = resposta["Quantidade_Meses_3"];
+
+                    this.Pmt = resposta["Pmt"];
+                    this.parcela_1_1 = resposta["Pmt_1"];
+                    this.parcela_2_1 = resposta["Pmt_2"];
+                    this.parcela_3_1 = resposta["Pmt_3"];
+                    this.parcela_1_2 = resposta["Pmt_4"];
+                    this.parcela_2_2 = resposta["Pmt_5"];
+                    this.parcela_3_2 = resposta["Pmt_6"];
+                    this.parcela_1_3 = resposta["Pmt_7"];
+                    this.parcela_2_3 = resposta["Pmt_8"];
+                    this.parcela_3_3 = resposta["Pmt_9"];
+                    if (resposta["Parcela1"]) {
+                        console.log("Existe uma parcela")
+                        this.parcela_1 = resposta["Parcela1"];
+                        this.bloquear_entrada = true;
+                    }
+
+                    this.parcela_2 = resposta["Parcela2"];
+
+                    this.parcela_3 = resposta["Parcela3"];
+
+                    let v_entrada_1 = resposta["Entrada1"];
+                    let v_entrada_2 = resposta["Entrada2"];
+                    let v_entrada_3 = resposta["Entrada3"];
+                    this.entrada_1 = this.currency(v_entrada_1);
+                    this.entrada_2 = this.currency(v_entrada_2);
+                    this.entrada_3 = this.currency(v_entrada_3);
+                    this.adicional = resposta["Valor_Adicional"];
+                    this.desconto = resposta["Valor_Desconto"]
+
+
+                    if (resposta["incluir_acessorios"] == "1") {
+                        console.log(
+                            "Somar Acessorios ---------------------------------------------------------------------------"
+                        );
+                        this.incluir_acessorios = true;
+                    } else {
+                        this.incluir_acessorios = false;
+                        console.log(
+                            "Não Somar Acessorios ---------------------------------------------------------------------------"
+                        );
+                    }
+                    if (resposta["Valor_Resultado_Financiamento"] != "") {
+                        this.btn_gerar_menu = false;
+                        this.btn_1 = false;
+                        this.btn_finalizar_venda = false;
+                    }
+
+                    console.log(resposta);
+                });
         },
-        body: JSON.stringify({
-          empresas: this.selectedEmpresas,
-        }),
-      })
-        .then((data) => {
-          if (!data.ok) {
-            throw Error(data.status);
-          }
-          return data.json();
-        })
-        .then((resposta) => {
-        
-          if (resposta["tipo_veiculo"] == "NOVO") {
-            this.Lucro_Bruto = resposta["Lucro_Bruto_Zero"];
-            this.Lucro_Operacional = resposta["Lucro_Operacional_Zero"];
-            this.Lucro_liquido = resposta["Lucro_liquido_Zero"];
-
-          }
-          if (resposta["tipo_veiculo"] == "USADO") {
-            this.Lucro_Bruto = resposta["Lucro_Bruto"];
-            this.Lucro_Operacional = resposta["Lucro_Operacional"];
-            this.Lucro_liquido = resposta["Lucro_liquido"];
-          }
-          (this.Valor_Sugerido = resposta["Valor_Sugerido"]),
-            (this.Valor_Custo_variaveis = resposta["Valor_Custo_variaveis"]),
-            (this.Valor_Itens_Acessorios = resposta["Valor_Itens_Acessorios"]);
-          this.Valor_Total_Venda = resposta["Valor_Total_Venda"];
-          this.Valor_Avaliado = resposta["Valor_Avaliado"];
-          this.Valor_Itens_Avaliacao_db = resposta["Valor_Itens_Avaliacao_db"];
-          this.Valor_Itens_Avaliacao_cr = resposta["Valor_Itens_Avaliacao_cr"];
-          this.Valor_Avaliacao_Final = resposta["Valor_Avaliacao_Final"];
-
-          this.Valor_Resultado_Financiamento =
-            resposta["Valor_Resultado_Financiamento"];
-
-          this.Valor_Entrada = resposta["Valor_Entrada"];
-          this.Valor_Financiado = resposta["Valor_Financiado"];
-          this.Quantidade_Meses = resposta["Quantidade_Meses"];
-
-          this.Valor_Entrada_1 = resposta["Valor_Entrada_1"];
-          this.Valor_Financiado_1 = resposta["Valor_Financiado_1"];
-          this.Quantidade_Meses_1 = resposta["Quantidade_Meses_1"];
-
-          this.Valor_Entrada_2 = resposta["Valor_Entrada_2"];
-          this.Valor_Financiado_2 = resposta["Valor_Financiado_2"];
-          this.Quantidade_Meses_2 = resposta["Quantidade_Meses_2"];
-
-          this.Valor_Entrada_3 = resposta["Valor_Entrada_3"];
-          this.Valor_Financiado_3 = resposta["Valor_Financiado_3"];
-          this.Quantidade_Meses_3 = resposta["Quantidade_Meses_3"];
-
-          this.Pmt = resposta["Pmt"];
-          this.parcela_1_1 = resposta["Pmt_1"];
-          this.parcela_2_1 = resposta["Pmt_2"];
-          this.parcela_3_1 = resposta["Pmt_3"];
-          this.parcela_1_2 = resposta["Pmt_4"];
-          this.parcela_2_2 = resposta["Pmt_5"];
-          this.parcela_3_2 = resposta["Pmt_6"];
-          this.parcela_1_3 = resposta["Pmt_7"];
-          this.parcela_2_3 = resposta["Pmt_8"];
-          this.parcela_3_3 = resposta["Pmt_9"];
-          if(resposta["Parcela1"]){
-            console.log("Existe uma parcela")
-            this.parcela_1 = resposta["Parcela1"];
-            this.bloquear_entrada = true;
-          }
-         
-            this.parcela_2 = resposta["Parcela2"];      
-          
-            this.parcela_3 = resposta["Parcela3"];
-
-          let v_entrada_1 = resposta["Entrada1"];
-          let v_entrada_2 = resposta["Entrada2"];
-          let v_entrada_3 = resposta["Entrada3"];
-          this.entrada_1 = this.currency(v_entrada_1);
-          this.entrada_2 = this.currency(v_entrada_2);
-          this.entrada_3 = this.currency(v_entrada_3);
-          this.adicional = resposta["Valor_Adicional"];
-          this.desconto = resposta["Valor_Desconto"]
-
-
-          if (resposta["incluir_acessorios"] == "1") {
-            console.log(
-              "Somar Acessorios ---------------------------------------------------------------------------"
-            );
-            this.incluir_acessorios = true;
-          } else {
-            this.incluir_acessorios = false;
-            console.log(
-              "Não Somar Acessorios ---------------------------------------------------------------------------"
-            );
-          }
-          if (resposta["Valor_Resultado_Financiamento"] != "") {
-            this.btn_gerar_menu = false;
-            this.btn_1 = false;
-            this.btn_finalizar_venda = false;
-          }
-
-          console.log(resposta);
-        });
-    },
 
 
         currency(number) {

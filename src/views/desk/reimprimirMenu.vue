@@ -2135,19 +2135,19 @@
       tabindex="-1">
       <div class="modal-dialog modal-fullscreen rf_modal">
         <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
-              Menu Gerado
-            </h1>
+          <div class="modal-header">            
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <div class="card mt-3 rf_texto_pdf" ref="contentToPrint">
               <div class="col">
+                <a class="navbar-brand logo">
+                        <img src="../../assets/logo_menu.png" alt="Bootstrap" width="100" height="30" />
+                      </a>
                 <div class="row g-2 p-2">
 
                   <div class="col-4">
-                    <div class="card ">
+                    <div class="card card-menu ">
                       <div class="card-header rf_card_header">Informações do Cliente</div>
                       <div class="rf_card_pdf">
                         <div>
@@ -2175,7 +2175,7 @@
                   </div>
 
                   <div class="col-4">
-                    <div class="card">
+                    <div class="card card-menu">
                       <div class="card-header rf_card_header">Informações da Proposta</div>
                       <div class="rf_card_pdf">
                         <div>
@@ -2199,7 +2199,7 @@
                   </div>
 
                   <div class="col-4">
-                    <div class="card">
+                    <div class="card card-menu">
                       <div class="card-header rf_card_header">Acessórios</div>
                       <div class="rf_container_menu">
                         <ul class="list-group" v-for="item in itens_acessorios" :key="item.id">
@@ -2232,7 +2232,7 @@
                 <div class="row g-2 p-2">
 
                   <div class="col-4">
-                    <div class="card">
+                    <div class="card card-menu">
                       <div class="card-header rf_card_header">Veículo</div>
                       <div class="rf_card_pdf">
 
@@ -2279,7 +2279,7 @@
                   </div>
 
                   <div class="col-4">
-                    <div class="card">
+                    <div class="card card-menu">
                       <div class="card-header rf_card_header">Resumo da Compra</div>
                       <div class="rf_card_pdf">
                         <div class="row">
@@ -2318,7 +2318,7 @@
                   </div>
 
                   <div class="col-4">
-                    <div class="card">
+                    <div class="card card-menu">
                       <div class="card-header rf_card_header">Veículo de Troca</div>
                       <div class="rf_card_pdf">
                         <div>

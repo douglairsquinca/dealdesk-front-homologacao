@@ -791,7 +791,7 @@ export default {
       try {
         const verificar_veiculo = await axios.get(`${process.env.VUE_APP_API_URL}veiculo_vendido_estoque`);
         let array_verificar_veiculo_2 = [];
-        console.log(verificar_veiculo.data.veiculoEstoque)
+
         for await (const dados of verificar_veiculo.data.veiculoEstoque) {
           const createdAtDate = new Date(dados["horario_termino_atendimento"]);
           const formattedCreatedAt = `${createdAtDate.getDate()}/${createdAtDate.getMonth() + 1}/${createdAtDate.getFullYear()}`;
@@ -826,7 +826,7 @@ export default {
         }
 
         this.veiculos = array_verificar_veiculo_2
-        console.log(this.veiculos)
+        console.log("Dados dos veículos" ,this.veiculos)
 
       } catch (error) {
         console.log(error)

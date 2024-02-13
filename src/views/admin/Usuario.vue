@@ -144,10 +144,16 @@
         </div>
       </div>
       <div class="row g-2 p-2">
-        <div class="col-4">
+        <div class="col-3">
           <div class="form-floating">
             <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchTitle" />
             <label class="rf_texto">Descrição</label>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchEmail" />
+            <label class="rf_texto">Email</label>
           </div>
         </div>
 
@@ -423,6 +429,7 @@ export default {
       show1: false,
       //Params
       searchTitle: "",
+      searchEmail:"",
       searchStatus: "",
       page: 1,
       totalPages: 0,
@@ -514,10 +521,13 @@ export default {
       }
     },
     //Buscar dados no banco de dados
-    getRequestParams(searchTitle, page, pageSize, searchStatus) {
+    getRequestParams(searchTitle, searchEmail, page, pageSize, searchStatus) {
       let params = {};
       if (searchTitle) {
         params["nome"] = searchTitle;
+      }
+      if (searchEmail) {
+        params["email"] = searchEmail;
       }
       if (page) {
         params["page"] = page - 1;
@@ -543,6 +553,7 @@ export default {
       try {
         const params = this.getRequestParams(
           this.searchTitle,
+          this.searchEmail,
           this.page,
           this.pageSize,
           this.searchStatus

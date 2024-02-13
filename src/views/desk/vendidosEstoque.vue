@@ -1,22 +1,50 @@
 <template>
     <div>
         <SidebarVue ref="sidebar" />
-
-
         <nav class="navbar navbar-expand-lg rf_bg_form rf_texto mt-4">
             <div class="container-fluid">
                 <div><i class="bi  bi-file-earmark-text fs-5"> Veículos Vendidos Aguardando Faturamento </i></div>
             </div>
         </nav>
 
+        <!--Bloco do Filtro-->
+        <div class="card rf_bg_form rf_margin">
+            <div class="row g-2 p-2">
+                <div class="card-title rf_texto gy-4">
+                    <i class="bi bi-person-fill-add fs-5"> Filtros </i>
+                </div>
+            </div>
+            <div class="row g-2 p-2">
+                <div class="col-3">
+                    <div class="form-floating">
+                        <input type="text" class="form-control rf_bg_form rf_texto" v-model="filtroPlaca"
+                            @input="filtrarVeiculos" />
+                        <label class="rf_texto">Placa</label>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-floating">
+                        <input type="text" class="form-control rf_bg_form rf_texto" v-model="filtroNumero"
+                            @input="filtrarVeiculos" />
+                        <label class="rf_texto">Número</label>
+                    </div>
+                </div>
+
+                <div class="col-1">
+                    <div class="input-group-append">
+                        <button class="btn btn-lg btn-secondary mt-2" type="button" @click="page = 1; retrievePropostas();">
+                            Atualizar Lista
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--Tabelas-->
         <div class="card rf_bg_form g-2 p-2 rf_margin">
-   
-
             <table class="table border-dark rf_texto">
                 <thead>
                     <tr>
-                        <th scope="col" class="rf_header_table">Nº Proposta</th>
+                        <th scope="col" class="rf_header_table">Nº Atendimento</th>
                         <th scope="col" class="rf_header_table">Loja</th>
 
                         <th scope="col" class="rf_header_table">Modelo</th>
@@ -25,36 +53,76 @@
                         <th scope="col" class="rf_header_table">Número</th>
                         <th scope="col" class="rf_header_table">Data Atendimento</th>
                         <th scope="col" class="rf_header_table">Status</th>
-                       
+
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="item in veiculos" :key="item.id" >
-                        <td class="rf_header_table">{{ item.id }}</td>
-                        <td class="rf_header_table">{{ item.loja }}</td>
-                        <td class="rf_header_table">{{ item.modelo }}</td>
-                        <td class="rf_header_table">{{ item.chassis }}</td>
-                        <td class="rf_header_table">{{ item.placa }}</td>
-                        <td class="rf_header_table">{{ item.numero }}</td>                      
-                        <td class="rf_header_table">{{ item.data_atendimento }}</td>
-                        <td class="rf_header_table">{{ item.status }}</td>
-                    
+                    <template v-if="veiculosFiltrados.length === 0">
+                        <tr v-for="item in veiculos" :key="item.id" :class="{
+                            'row-highlight-red': calcularDiasDesdeAtendimento(item.data_atendimento) > 30,
+                            'row-highlight-yellow': calcularDiasDesdeAtendimento(item.data_atendimento) > 10 && calcularDiasDesdeAtendimento(item.data_atendimento) <= 30
+                        }">
+                            <td class="rf_header_table">{{ item.id }}</td>
+                            <td class="rf_header_table">{{ item.loja }}</td>
+                            <td class="rf_header_table">{{ item.modelo }}</td>
+                            <td class="rf_header_table">{{ item.chassis }}</td>
+                            <td class="rf_header_table">{{ item.placa }}</td>
+                            <td class="rf_header_table">{{ item.numero }}</td>
+                            <td class="rf_header_table">{{ item.id_empresa }}</td>
+                            <td class="rf_header_table">{{ item.data_atendimento }}</td>
+                            <td class="rf_header_table">{{ calcularDiasDesdeAtendimento(item.data_atendimento) }}</td>
+                            <td class="rf_header_table">{{ item.status }}</td>
 
-                        <!-- <td>
-                            <button type="button" class="btn btn-secondary btn-sm rf_btn" @click="update_proposta(item.id)">
+                            <td>
+                                <button type="button" class="btn btn-secondary btn-sm rf_btn" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal" @click="edit_proposta(item)">
 
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-file-lock" viewBox="0 0 16 16">
-                                    <path
-                                        d="M8 5a1 1 0 0 1 1 1v1H7V6a1 1 0 0 1 1-1zm2 2.076V6a2 2 0 1 0-4 0v1.076c-.54.166-1 .597-1 1.224v2.4c0 .816.781 1.3 1.5 1.3h3c.719 0 1.5-.484 1.5-1.3V8.3c0-.627-.46-1.058-1-1.224zM6.105 8.125A.637.637 0 0 1 6.5 8h3a.64.64 0 0 1 .395.125c.085.068.105.133.105.175v2.4c0 .042-.02.107-.105.175A.637.637 0 0 1 9.5 11h-3a.637.637 0 0 1-.395-.125C6.02 10.807 6 10.742 6 10.7V8.3c0-.042.02-.107.105-.175z" />
-                                    <path
-                                        d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" />
-                                </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-file-lock" viewBox="0 0 16 16">
+                                        <path
+                                            d="M8 5a1 1 0 0 1 1 1v1H7V6a1 1 0 0 1 1-1zm2 2.076V6a2 2 0 1 0-4 0v1.076c-.54.166-1 .597-1 1.224v2.4c0 .816.781 1.3 1.5 1.3h3c.719 0 1.5-.484 1.5-1.3V8.3c0-.627-.46-1.058-1-1.224zM6.105 8.125A.637.637 0 0 1 6.5 8h3a.64.64 0 0 1 .395.125c.085.068.105.133.105.175v2.4c0 .042-.02.107-.105.175A.637.637 0 0 1 9.5 11h-3a.637.637 0 0 1-.395-.125C6.02 10.807 6 10.742 6 10.7V8.3c0-.042.02-.107.105-.175z" />
+                                        <path
+                                            d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" />
+                                    </svg>
 
-                            </button>
+                                </button>
 
-                        </td> -->
-                    </tr>
+                            </td>
+                        </tr>
+                    </template>
+
+                    <template v-else>
+                        <tr v-for="item in veiculosFiltrados" :key="item.id">
+                            <td class="rf_header_table">{{ item.id }}</td>
+                            <td class="rf_header_table">{{ item.loja }}</td>
+                            <td class="rf_header_table">{{ item.modelo }}</td>
+                            <td class="rf_header_table">{{ item.chassis }}</td>
+                            <td class="rf_header_table">{{ item.placa }}</td>
+                            <td class="rf_header_table">{{ item.numero }}</td>
+                            <td class="rf_header_table">{{ item.id_empresa }}</td>
+                            <td class="rf_header_table">{{ item.data_atendimento }}</td>
+                            <td class="rf_header_table">{{ item.status }}</td>
+
+                            <td>
+                                <button type="button" class="btn btn-secondary btn-sm rf_btn" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal" @click="edit_proposta(item)">
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-file-lock" viewBox="0 0 16 16">
+                                        <path
+                                            d="M8 5a1 1 0 0 1 1 1v1H7V6a1 1 0 0 1 1-1zm2 2.076V6a2 2 0 1 0-4 0v1.076c-.54.166-1 .597-1 1.224v2.4c0 .816.781 1.3 1.5 1.3h3c.719 0 1.5-.484 1.5-1.3V8.3c0-.627-.46-1.058-1-1.224zM6.105 8.125A.637.637 0 0 1 6.5 8h3a.64.64 0 0 1 .395.125c.085.068.105.133.105.175v2.4c0 .042-.02.107-.105.175A.637.637 0 0 1 9.5 11h-3a.637.637 0 0 1-.395-.125C6.02 10.807 6 10.742 6 10.7V8.3c0-.042.02-.107.105-.175z" />
+                                        <path
+                                            d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" />
+                                    </svg>
+
+                                </button>
+
+                            </td>
+                        </tr>
+                    </template>
+
+
+
                 </tbody>
             </table>
             <!-- <pagination v-if="propostas_at.length" :offset="totalPages_4" :total="totalItems_4" :limit="pageSize_4"
@@ -65,7 +133,7 @@
             <Message :msg="msg" v-show="msg" />
         </div>
 
-        <RodapeVue/>
+        <RodapeVue />
     </div>
 </template>
 <script>
@@ -534,7 +602,12 @@ export default {
             liberar_impressao: true,
             tipoPagamento: "",
             g_menu_fone2: "",
-            g_menu_placa: ""
+            g_menu_placa: "",
+
+            filtroPlaca: '', // Filtro para a placa
+            filtroNumero: '', // Filtro para o número
+            filtroCategoria: '',// Filtro para a categoria
+            veiculosFiltrados: []
         };
     },
 
@@ -602,7 +675,7 @@ export default {
             }
         },
 
-        
+
         formatarValor(valor) {
             this.entrada_1_original = this.entrada_1;
             this.entrada_2_original = this.entrada_2;
@@ -773,21 +846,21 @@ export default {
             this.tempoFormatado = `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
         },
         async retrievePropostas() {
-            
+
             try {
-                const verificar_veiculo = await axios.get(`${process.env.VUE_APP_API_URL}veiculo_vendido_estoque_loja`,{
-                params:{ id: this.empresaID}
-            });
+                const verificar_veiculo = await axios.get(`${process.env.VUE_APP_API_URL}veiculo_vendido_estoque_loja`, {
+                    params: { id: this.empresaID }
+                });
                 let array_verificar_veiculo_2 = [];
 
-                for await (const dados of verificar_veiculo.data.veiculoEstoque ){
+                for await (const dados of verificar_veiculo.data.veiculoEstoque) {
                     const createdAtDate = new Date(dados["horario_termino_atendimento"]);
                     const formattedCreatedAt = `${createdAtDate.getDate()}/${createdAtDate.getMonth() + 1}/${createdAtDate.getFullYear()}`;
 
                     console.log(dados)
 
                     const array_verificar_veiculo_1 = {
-                        id : dados["id"],
+                        id: dados["id"],
                         loja: dados["empresa_proposta"]["nome"],
                         modelo: dados["proposta_veiculo"]["modelo_veiculo"],
                         chassi: dados["proposta_veiculo"]["chassi"],
@@ -800,12 +873,55 @@ export default {
                 }
 
                 this.veiculos = array_verificar_veiculo_2
+                this.veiculosFiltrados = [];
                 console.log(this.veiculos)
 
             } catch (error) {
                 console.log(error)
             }
         },
+        filtrarVeiculos() {
+      // Aplicar os filtros
+      let veiculosFiltrados = this.veiculos.filter(veiculo => {
+        let passouFiltroPlaca = true;
+        let passouFiltroNumero = true;
+        let passouFiltroCategoria = true;
+
+        // Aplicar filtro da placa, se fornecido
+        if (this.filtroPlaca) {
+          passouFiltroPlaca = veiculo.placa.toLowerCase().includes(this.filtroPlaca.toLowerCase());
+        }
+
+        // Aplicar filtro do número, se fornecido
+        if (this.filtroNumero) {
+          passouFiltroNumero = veiculo.numero.toString().includes(this.filtroNumero);
+        }
+
+        // Aplicar filtro da categoria, se fornecido
+        if (this.filtroCategoria) {
+          passouFiltroCategoria = veiculo.categoria.toLowerCase().includes(this.filtroCategoria.toLowerCase());
+        }
+
+        // Retornar verdadeiro se o veículo passar por todos os filtros
+        return passouFiltroPlaca && passouFiltroNumero && passouFiltroCategoria;
+      });
+
+      // Atualizar os dados da tabela com os veículos filtrados
+      this.veiculos = veiculosFiltrados;
+    },
+
+    calcularDiasDesdeAtendimento(dataAtendimento) {
+      const dataAtual = new Date();
+      // Formatar a data para o formato 'YYYY-MM-DD'
+      const [dia, mes, ano] = dataAtendimento.split('/');
+      const dataAtendimentoFormatada = new Date(`${ano}-${mes}-${dia}`);
+      console.log("Data de Atendimento", dataAtendimentoFormatada);
+      // Calcular a diferença em dias
+      const diffEmDias = Math.ceil((dataAtual - dataAtendimentoFormatada) / (1000 * 60 * 60 * 24));
+      console.log("Diferença em dias", diffEmDias);
+      return diffEmDias;
+    },
+
 
         currency(number) {
             return new Intl.NumberFormat("pt-BR", {

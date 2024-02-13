@@ -9,10 +9,39 @@
       </div>
     </nav>
 
+    <!--Bloco do Filtro-->
+    <div class="card rf_bg_form rf_margin">
+      <div class="row g-2 p-2">
+        <div class="card-title rf_texto gy-4">
+          <i class="bi bi-person-fill-add fs-5"> Filtros </i>
+        </div>
+      </div>
+      <div class="row g-2 p-2">
+        <div class="col-3">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="filtroPlaca" @input="filtrarVeiculos" />
+            <label class="rf_texto">Placa</label>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="filtroNumero" @input="filtrarVeiculos" />
+            <label class="rf_texto">Número</label>
+          </div>
+        </div>
+
+        <div class="col-1">
+          <div class="input-group-append">
+            <button class="btn btn-lg btn-secondary mt-2" type="button" @click="page = 1; retrievePropostas();">
+              Atualizar Lista
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!--Tabelas-->
     <div class="card rf_bg_form g-2 p-2 rf_margin">
-
-
       <table class="table border-dark rf_texto">
         <thead>
           <tr>
@@ -25,38 +54,79 @@
             <th scope="col" class="rf_header_table">Número</th>
             <th scope="col" class="rf_header_table">Cod. Empresa</th>
             <th scope="col" class="rf_header_table">Data Atendimento</th>
+            <th scope="col" class="rf_header_table">Dias desde Atendimento</th>
             <th scope="col" class="rf_header_table">Status</th>
 
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in veiculos" :key="item.id">
-            <td class="rf_header_table">{{ item.id }}</td>
-            <td class="rf_header_table">{{ item.loja }}</td>
-            <td class="rf_header_table">{{ item.modelo }}</td>
-            <td class="rf_header_table">{{ item.chassis }}</td>
-            <td class="rf_header_table">{{ item.placa }}</td>
-            <td class="rf_header_table">{{ item.numero }}</td>
-            <td class="rf_header_table">{{ item.id_empresa }}</td>
-            <td class="rf_header_table">{{ item.data_atendimento }}</td>
-            <td class="rf_header_table">{{ item.status }}</td>
+          <template v-if="veiculosFiltrados.length === 0">
+            <tr v-for="item in veiculos" :key="item.id"
+            :class="{
+                  'row-highlight-red': calcularDiasDesdeAtendimento(item.data_atendimento) > 30,
+                  'row-highlight-yellow': calcularDiasDesdeAtendimento(item.data_atendimento) > 10 && calcularDiasDesdeAtendimento(item.data_atendimento) <= 30
+              }">
+              <td class="rf_header_table">{{ item.id }}</td>
+              <td class="rf_header_table">{{ item.loja }}</td>
+              <td class="rf_header_table">{{ item.modelo }}</td>
+              <td class="rf_header_table">{{ item.chassis }}</td>
+              <td class="rf_header_table">{{ item.placa }}</td>
+              <td class="rf_header_table">{{ item.numero }}</td>
+              <td class="rf_header_table">{{ item.id_empresa }}</td>
+              <td class="rf_header_table">{{ item.data_atendimento }}</td>
+              <td class="rf_header_table">{{ calcularDiasDesdeAtendimento(item.data_atendimento) }}</td>
+              <td class="rf_header_table">{{ item.status }}</td>
 
-            <td>
-              <button type="button" class="btn btn-secondary btn-sm rf_btn" data-bs-toggle="modal" data-bs-target="#exampleModal"
-               @click="edit_proposta(item)">
+              <td>
+                <button type="button" class="btn btn-secondary btn-sm rf_btn" data-bs-toggle="modal"
+                  data-bs-target="#exampleModal" @click="edit_proposta(item)">
 
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-lock"
-                  viewBox="0 0 16 16">
-                  <path
-                    d="M8 5a1 1 0 0 1 1 1v1H7V6a1 1 0 0 1 1-1zm2 2.076V6a2 2 0 1 0-4 0v1.076c-.54.166-1 .597-1 1.224v2.4c0 .816.781 1.3 1.5 1.3h3c.719 0 1.5-.484 1.5-1.3V8.3c0-.627-.46-1.058-1-1.224zM6.105 8.125A.637.637 0 0 1 6.5 8h3a.64.64 0 0 1 .395.125c.085.068.105.133.105.175v2.4c0 .042-.02.107-.105.175A.637.637 0 0 1 9.5 11h-3a.637.637 0 0 1-.395-.125C6.02 10.807 6 10.742 6 10.7V8.3c0-.042.02-.107.105-.175z" />
-                  <path
-                    d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" />
-                </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-file-lock" viewBox="0 0 16 16">
+                    <path
+                      d="M8 5a1 1 0 0 1 1 1v1H7V6a1 1 0 0 1 1-1zm2 2.076V6a2 2 0 1 0-4 0v1.076c-.54.166-1 .597-1 1.224v2.4c0 .816.781 1.3 1.5 1.3h3c.719 0 1.5-.484 1.5-1.3V8.3c0-.627-.46-1.058-1-1.224zM6.105 8.125A.637.637 0 0 1 6.5 8h3a.64.64 0 0 1 .395.125c.085.068.105.133.105.175v2.4c0 .042-.02.107-.105.175A.637.637 0 0 1 9.5 11h-3a.637.637 0 0 1-.395-.125C6.02 10.807 6 10.742 6 10.7V8.3c0-.042.02-.107.105-.175z" />
+                    <path
+                      d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" />
+                  </svg>
 
-              </button>
+                </button>
 
-            </td>
-          </tr>
+              </td>
+            </tr>
+          </template>
+
+          <template v-else>
+            <tr v-for="item in veiculosFiltrados" :key="item.id">
+              <td class="rf_header_table">{{ item.id }}</td>
+              <td class="rf_header_table">{{ item.loja }}</td>
+              <td class="rf_header_table">{{ item.modelo }}</td>
+              <td class="rf_header_table">{{ item.chassis }}</td>
+              <td class="rf_header_table">{{ item.placa }}</td>
+              <td class="rf_header_table">{{ item.numero }}</td>
+              <td class="rf_header_table">{{ item.id_empresa }}</td>
+              <td class="rf_header_table">{{ item.data_atendimento }}</td>
+              <td class="rf_header_table">{{ item.status }}</td>
+
+              <td>
+                <button type="button" class="btn btn-secondary btn-sm rf_btn" data-bs-toggle="modal"
+                  data-bs-target="#exampleModal" @click="edit_proposta(item)">
+
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-file-lock" viewBox="0 0 16 16">
+                    <path
+                      d="M8 5a1 1 0 0 1 1 1v1H7V6a1 1 0 0 1 1-1zm2 2.076V6a2 2 0 1 0-4 0v1.076c-.54.166-1 .597-1 1.224v2.4c0 .816.781 1.3 1.5 1.3h3c.719 0 1.5-.484 1.5-1.3V8.3c0-.627-.46-1.058-1-1.224zM6.105 8.125A.637.637 0 0 1 6.5 8h3a.64.64 0 0 1 .395.125c.085.068.105.133.105.175v2.4c0 .042-.02.107-.105.175A.637.637 0 0 1 9.5 11h-3a.637.637 0 0 1-.395-.125C6.02 10.807 6 10.742 6 10.7V8.3c0-.042.02-.107.105-.175z" />
+                    <path
+                      d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" />
+                  </svg>
+
+                </button>
+
+              </td>
+            </tr>
+          </template>
+
+
+
         </tbody>
       </table>
       <!-- <pagination v-if="propostas_at.length" :offset="totalPages_4" :total="totalItems_4" :limit="pageSize_4"
@@ -80,7 +150,7 @@
                 <div class="mt-2">
                   <span class="rf_texto">Escolha o tipo de Alteração</span>
                   <div class="input-group mt-2">
-                    <select class="form-select" v-model="selected_alteracao" @change="selecionar_alteracao()">                     
+                    <select class="form-select" v-model="selected_alteracao" @change="selecionar_alteracao()">
                       <option value="venda_perdida">Venda Perdida</option>
                       <option value="alterar_veiculo">Alterar Veículo</option>
                     </select>
@@ -110,7 +180,7 @@
                   <label class="rf_texto">Nº Proposta</label>
                 </div>
               </div>
-              
+
               <div class="col-2">
                 <div class="form-floating">
                   <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_numero_veiculo" required
@@ -124,10 +194,10 @@
                     autocomplete="off" />
                   <label class="rf_texto">Número Empresa</label>
                 </div>
-              </div>   
+              </div>
               <div class="col-2 mt-3">
                 <div class="form-floating">
-                  <button type="button" @click="buscar_veiculo()"  class="btn btn-secondary">
+                  <button type="button" @click="buscar_veiculo()" class="btn btn-secondary">
                     Buscar Veículo
                   </button>
                 </div>
@@ -137,7 +207,7 @@
             <div class="row g-2 p-2" v-if="selected_alteracao === 'alterar_veiculo'">
               <div class="col-3">
                 <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_chassis" disabled/>
+                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_chassis" disabled />
                   <label class="rf_texto">Chassis</label>
                 </div>
               </div>
@@ -159,7 +229,7 @@
                     @input="edit_pps_valor = formatarValor(edit_pps_valor)" />
                   <label class="rf_texto">Preço de Compra</label>
                 </div>
-              </div>              
+              </div>
               <div class="col-2">
                 <div class="form-floating">
                   <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_valor_veiculo" disabled
@@ -208,7 +278,7 @@
                     autocomplete="off" />
                   <label class="rf_texto">Placa</label>
                 </div>
-              </div>              
+              </div>
               <div class="col-2">
                 <div class="form-floating">
                   <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_combustivel" disabled
@@ -216,14 +286,14 @@
                   <label class="rf_texto">Combustível</label>
                 </div>
               </div>
-              
+
               <div class="col-2">
                 <div class="form-floating">
                   <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_custo_contabil" disabled
                     autocomplete="off" />
                   <label class="rf_texto">Custo Contábil</label>
                 </div>
-              </div>              
+              </div>
             </div>
             <div class="row g-2 p-2" v-if="selected_alteracao === 'alterar_veiculo'">
               <div class="col">
@@ -238,7 +308,8 @@
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
               Fechar
             </button>
-            <button type="button" @click="update_veiculo()" :disabled="edit_observacao.length <= 20" data-bs-dismiss="modal"  class="btn btn-secondary">
+            <button type="button" @click="update_veiculo()" :disabled="edit_observacao.length <= 20"
+              data-bs-dismiss="modal" class="btn btn-secondary">
               Salvar
             </button>
           </div>
@@ -281,34 +352,38 @@ export default {
   },
   data() {
     return {
-    verificar_veiculo:[],
-    abrir_modal: false ,
-    veiculos:"",
-    selected_alteracao: 'venda_perdida',
-    msg:"",  
+      verificar_veiculo: [],
+      abrir_modal: false,
+      veiculos: "",
+      selected_alteracao: 'venda_perdida',
+      msg: "",
 
-    edit_id:"",
-    edit_venda_futura :"",
-    edit_id_empresa :"",
-    edit_chassis :"",
-    edit_modelo_veiculo :"",
-    edit_pps_valor :"",
-    edit_valor_veiculo :"",
-    edit_dias_em_etoque :"",
-    edit_marca :"",
-    edit_ano_modelo :"",
-    edit_ano_fabricacao :"",
-    edit_kilometragem :"",
-    edit_placa :"",
-    edit_combustivel :"",
-    edit_numero_veiculo :"",
-    edit_custo_contabil :"",
-    edit_observacao: "",
-    
-    obs_check: true
+      edit_id: "",
+      edit_venda_futura: "",
+      edit_id_empresa: "",
+      edit_chassis: "",
+      edit_modelo_veiculo: "",
+      edit_pps_valor: "",
+      edit_valor_veiculo: "",
+      edit_dias_em_etoque: "",
+      edit_marca: "",
+      edit_ano_modelo: "",
+      edit_ano_fabricacao: "",
+      edit_kilometragem: "",
+      edit_placa: "",
+      edit_combustivel: "",
+      edit_numero_veiculo: "",
+      edit_custo_contabil: "",
+      edit_observacao: "",
 
-      
-      
+      obs_check: true,
+      filtroPlaca: '', // Filtro para a placa
+      filtroNumero: '', // Filtro para o número
+      filtroCategoria: '',// Filtro para a categoria
+      veiculosFiltrados: []
+
+
+
     };
   },
 
@@ -319,9 +394,9 @@ export default {
   },
 
 
-  mounted() {
+  async mounted() {
     this.getToken();
-    this.retrievePropostas();
+    await this.retrievePropostas();
   },
   methods: {
 
@@ -340,17 +415,17 @@ export default {
       this.user_id = decodedToken.id;
 
     },
-    selecionar_alteracao(){
-      if(this.selected_alteracao === "venda_perdida"){
+    selecionar_alteracao() {
+      if (this.selected_alteracao === "venda_perdida") {
         this.tipo_alteracao = this.selected_alteracao;
         this.form_1 = true;
         this.form_2 = false;
-      } else if(this.selected_alteracao === "alterar_veiculo"){
+      } else if (this.selected_alteracao === "alterar_veiculo") {
         this.tipo_alteracao = this.selected_alteracao;
         this.form_1 = false;
         this.form_2 = true;
       }
-    },  
+    },
 
     async edit_proposta(item) {
       console.log(item)
@@ -372,161 +447,129 @@ export default {
       this.edit_numero_veiculo = item.numero;
       this.edit_custo_contabil = this.currency(item.custo_contabil);
       this.edit_cor = item.cor;
-      
 
 
-      // try {
-      //     const id = this.searchProposta;
-      //     const response = await fetch(
-      //         `${process.env.VUE_APP_API_URL}update_proposta/${id}`,
-      //         {
-      //             method: "PUT",
-      //             headers: {
-      //                 "Content-Type": "application/json",
-      //             },
-      //             body: JSON.stringify({
-      //                 id: id
-      //             }),
-      //         }
-      //     );
-      //     if (response.status == 200) {
-      //         this.abrir_modal = true;
-      //         this.msg = "Proposta reaberta com sucesso!";
-      //         setTimeout(() => (this.abrir_modal = false), 4000);
-      //         window.location.reload();
-      //     } else {
-      //         this.abrir_modal = true;
-      //         this.msg = "Proposta não encontrada";
-      //         setTimeout(() => (this.abrir_modal = false), 4000);
-      //     }
 
-      // } catch (error) {
-      //     console.log(error)
-      //     this.abrir_modal = true;
-      //     this.msg = error;
-      //     setTimeout(() => (this.abrir_modal = false), 4000);
-
-      // }
     },
 
-    async buscar_veiculo(){
+    async buscar_veiculo() {
       console.log("Buscar dadoa do veículo")
-      const params = {        
-        numero : this.edit_numero_veiculo,
-        empresa : this.edit_id_empresa      
+      const params = {
+        numero: this.edit_numero_veiculo,
+        empresa: this.edit_id_empresa
       }
-      const dados_veiculo = await axios.get(`${process.env.VUE_APP_API_URL}buscar_veiculo`,{
+      const dados_veiculo = await axios.get(`${process.env.VUE_APP_API_URL}buscar_veiculo`, {
         params
       });
       console.log(dados_veiculo.data);
       if (dados_veiculo.data.length > 0) {
         this.edit_chassis = dados_veiculo.data[0].chassi,
-        this.edit_modelo_veiculo = dados_veiculo.data[0].modelo,
-        this.edit_pps_valor = this.currency(dados_veiculo.data[0].valortotalentrada),
-        this.edit_valor_veiculo = this.currency(dados_veiculo.data[0].valortotalvenda),
-        this.edit_dias_em_etoque = dados_veiculo.data[0].diasestoque,
-        this.edit_marca = dados_veiculo.data[0].marca,
-        this.edit_ano_modelo = dados_veiculo.data[0].anomodelo,
-        this.edit_ano_fabricacao = dados_veiculo.data[0].anofabricacao,
-        this.edit_kilometragem = dados_veiculo.data[0].quilometragem
+          this.edit_modelo_veiculo = dados_veiculo.data[0].modelo,
+          this.edit_pps_valor = this.currency(dados_veiculo.data[0].valortotalentrada),
+          this.edit_valor_veiculo = this.currency(dados_veiculo.data[0].valortotalvenda),
+          this.edit_dias_em_etoque = dados_veiculo.data[0].diasestoque,
+          this.edit_marca = dados_veiculo.data[0].marca,
+          this.edit_ano_modelo = dados_veiculo.data[0].anomodelo,
+          this.edit_ano_fabricacao = dados_veiculo.data[0].anofabricacao,
+          this.edit_kilometragem = dados_veiculo.data[0].quilometragem
         this.edit_placa = dados_veiculo.data[0].placa,
-        this.edit_combustivel = dados_veiculo.data[0].combustivel,
-        this.edit_custo_contabil = this.currency(dados_veiculo.data[0].valorcustocontabil)
-        this.edit_categoria = dados_veiculo.data[0].estadoveiculo  
+          this.edit_combustivel = dados_veiculo.data[0].combustivel,
+          this.edit_custo_contabil = this.currency(dados_veiculo.data[0].valorcustocontabil)
+        this.edit_categoria = dados_veiculo.data[0].estadoveiculo
 
-      }else{
+      } else {
         this.abrir_modal = true;
-            this.msg = "Veículo não encontrado!"
-            setTimeout(() => (this.abrir_modal = false), 4000);
+        this.msg = "Veículo não encontrado!"
+        setTimeout(() => (this.abrir_modal = false), 4000);
       }
 
 
 
-      
+
     },
 
-    async update_veiculo(){
+    async update_veiculo() {
       console.log("Alterando dados dos veículos")
       const id_veiculo_proposta = this.edit_id_veiculo_proposta;
       const id_proposta = this.edit_id;
 
-      if(this.selected_alteracao === 'venda_perdida'){
+      if (this.selected_alteracao === 'venda_perdida') {
         console.log("Alterar status para venda perdida")
         await fetch(`${process.env.VUE_APP_API_URL}trocar_status_proposta/${id_proposta}`, {
-        method: "PUT",
+          method: "PUT",
 
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: id_proposta,        
-          observacao: this.edit_observacao,     
-          
-        }),
-      })
-        .then((data) => {
-          if (!data.ok) {
-            throw Error(data.status);
-          }
-          return data.json();
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: id_proposta,
+            observacao: this.edit_observacao,
+
+          }),
         })
-        .then((resposta) => {
-          if (resposta.StatusOk == 200) {
-            this.abrir_modal = true;
-            this.msg = resposta.message;
-            setTimeout(() => (this.abrir_modal = false), 4000);
-            window.location.reload();
-          }
-        });
-        
-      } else{
+          .then((data) => {
+            if (!data.ok) {
+              throw Error(data.status);
+            }
+            return data.json();
+          })
+          .then((resposta) => {
+            if (resposta.StatusOk == 200) {
+              this.abrir_modal = true;
+              this.msg = resposta.message;
+              setTimeout(() => (this.abrir_modal = false), 4000);
+              window.location.reload();
+            }
+          });
+
+      } else {
 
         await fetch(`${process.env.VUE_APP_API_URL}alterar_veiculo/${id_veiculo_proposta}`, {
-        method: "PUT",
+          method: "PUT",
 
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: id_veiculo_proposta,
-          numero_veiculo : this.edit_numero_veiculo,
-          empresa : this.edit_id_empresa,
-          categoria: this.edit_categoria,
-          chassis: this.edit_chassis,
-          modelo_veiculo: this.edit_modelo_veiculo,
-          pps_valor: this.edit_pps_valor,
-          valor_veiculo: this.edit_valor_veiculo,
-          dias_em_estoque: this.edit_dias_em_etoque,
-          marca: this.edit_marca,
-          ano_modelo: this.edit_ano_modelo,
-          ano_fabricacao: this.edit_ano_fabricacao,
-          kilometragem: this.edit_kilometragem,
-          placa: this.edit_placa,
-          combustivel: this.edit_combustivel,
-          cor: this.edit_cor,
-          valorCustoContabil: this.edit_custo_contabil,
-          observacao: this.edit_observacao,
-          venda_futura: this.edit_venda_futura
-          
-        }),
-      })
-        .then((data) => {
-          if (!data.ok) {
-            throw Error(data.status);
-          }
-          return data.json();
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: id_veiculo_proposta,
+            numero_veiculo: this.edit_numero_veiculo,
+            empresa: this.edit_id_empresa,
+            categoria: this.edit_categoria,
+            chassis: this.edit_chassis,
+            modelo_veiculo: this.edit_modelo_veiculo,
+            pps_valor: this.edit_pps_valor,
+            valor_veiculo: this.edit_valor_veiculo,
+            dias_em_estoque: this.edit_dias_em_etoque,
+            marca: this.edit_marca,
+            ano_modelo: this.edit_ano_modelo,
+            ano_fabricacao: this.edit_ano_fabricacao,
+            kilometragem: this.edit_kilometragem,
+            placa: this.edit_placa,
+            combustivel: this.edit_combustivel,
+            cor: this.edit_cor,
+            valorCustoContabil: this.edit_custo_contabil,
+            observacao: this.edit_observacao,
+            venda_futura: this.edit_venda_futura
+
+          }),
         })
-        .then((resposta) => {
-          if (resposta.StatusOk == 200) {
-            this.abrir_modal = true;
-            this.msg = resposta.message;
-            setTimeout(() => (this.abrir_modal = false), 4000);
-            window.location.reload();
-          }
-        });
-      }     
+          .then((data) => {
+            if (!data.ok) {
+              throw Error(data.status);
+            }
+            return data.json();
+          })
+          .then((resposta) => {
+            if (resposta.StatusOk == 200) {
+              this.abrir_modal = true;
+              this.msg = resposta.message;
+              setTimeout(() => (this.abrir_modal = false), 4000);
+              window.location.reload();
+            }
+          });
+      }
 
-    
+
     },
 
     formatarValor(valor) {
@@ -701,7 +744,13 @@ export default {
     async retrievePropostas() {
 
       try {
-        const verificar_veiculo = await axios.get(`${process.env.VUE_APP_API_URL}veiculo_vendido_estoque`);
+        //const verificar_veiculo = await axios.get(`${process.env.VUE_APP_API_URL}veiculo_vendido_estoque`);
+
+        const verificar_veiculo = await axios.get(`${process.env.VUE_APP_API_URL}veiculo_vendido_estoque`, {
+          params: { id: this.empresaID }
+        });
+
+
         let array_verificar_veiculo_2 = [];
         console.log(verificar_veiculo.data.veiculoEstoque)
         for await (const dados of verificar_veiculo.data.veiculoEstoque) {
@@ -738,12 +787,57 @@ export default {
         }
 
         this.veiculos = array_verificar_veiculo_2
+        this.veiculosFiltrados = [];
         console.log(this.veiculos)
 
       } catch (error) {
         console.log(error)
       }
     },
+    filtrarVeiculos() {
+      // Aplicar os filtros
+      let veiculosFiltrados = this.veiculos.filter(veiculo => {
+        let passouFiltroPlaca = true;
+        let passouFiltroNumero = true;
+        let passouFiltroCategoria = true;
+
+        // Aplicar filtro da placa, se fornecido
+        if (this.filtroPlaca) {
+          passouFiltroPlaca = veiculo.placa.toLowerCase().includes(this.filtroPlaca.toLowerCase());
+        }
+
+        // Aplicar filtro do número, se fornecido
+        if (this.filtroNumero) {
+          passouFiltroNumero = veiculo.numero.toString().includes(this.filtroNumero);
+        }
+
+        // Aplicar filtro da categoria, se fornecido
+        if (this.filtroCategoria) {
+          passouFiltroCategoria = veiculo.categoria.toLowerCase().includes(this.filtroCategoria.toLowerCase());
+        }
+
+        // Retornar verdadeiro se o veículo passar por todos os filtros
+        return passouFiltroPlaca && passouFiltroNumero && passouFiltroCategoria;
+      });
+
+      // Atualizar os dados da tabela com os veículos filtrados
+      this.veiculos = veiculosFiltrados;
+    },
+ 
+    calcularDiasDesdeAtendimento(dataAtendimento) {
+      const dataAtual = new Date();
+      // Formatar a data para o formato 'YYYY-MM-DD'
+      const [dia, mes, ano] = dataAtendimento.split('/');
+      const dataAtendimentoFormatada = new Date(`${ano}-${mes}-${dia}`);
+      console.log("Data de Atendimento", dataAtendimentoFormatada);
+      // Calcular a diferença em dias
+      const diffEmDias = Math.ceil((dataAtual - dataAtendimentoFormatada) / (1000 * 60 * 60 * 24));
+      console.log("Diferença em dias", diffEmDias);
+      return diffEmDias;
+    },
+ 
+
+
 
     currency(number) {
       return new Intl.NumberFormat("pt-BR", {

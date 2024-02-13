@@ -132,18 +132,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in proposta" :key="item.id">
+          <!-- <tr v-for="item in proposta" :key="item.id">
             <td>{{ item.id }}</td>
             <td>{{ item.clientes.nome }}</td>
             <td>{{ item.vendedores.username }}</td>
             <td>{{ item.status_proposta }}</td>
-          </tr>
-          <!-- <tr v-for="item in proposta" :key="item.id">
+          </tr> -->
+          <tr v-for="item in proposta" :key="item.id">
   <td>{{ item.id }}</td>
   <td>{{ item.clientes ? item.clientes.nome : 'N/A' }}</td>
   <td>{{ item.vendedores ? item.vendedores.username : 'N/A' }}</td>
   <td>{{ item.status_proposta }}</td>
-</tr> -->
+</tr>
         </tbody>
       </table>
       <pagination v-if="proposta.length" :offset="totalPages" :total="totalItems" :limit="pageSize"

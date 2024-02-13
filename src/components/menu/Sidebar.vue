@@ -49,7 +49,7 @@
               data-bs-toggle="dropdown" aria-expanded="false"> Gerenciamento </button>
             <ul class="dropdown-menu dropdown-menu-dark">
               <li class="nav-item"><a href="/desk/index" class="nav-link p-2"> Desk </a></li>
-              <li class="nav-item"><a href="/desk/reabrirProposta" class="nav-link p-2"> Reabrir Proposta </a></li>
+              <li class="nav-item"><a href="/desk/reabrirProposta" class="nav-link p-2"> Reabrir Atendimentos </a></li>
               <li class="nav-item"><a href="/desk/relatorio" class="nav-link p-2"> Relatórios </a></li>
               <li class="nav-item"><a href="/desk/situacaoGeral" class="nav-link p-2"> Situação Geral </a></li>
               <li class="nav-item"><a href="/desk/vendidosEstoque" class="nav-link p-2"> Aguardando Faturamento </a></li>

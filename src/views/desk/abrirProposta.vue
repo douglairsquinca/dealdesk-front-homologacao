@@ -2162,12 +2162,12 @@
             <div class=" mt-3 rf_texto_pdf" ref="contentToPrint">
               <div class="col">
                 <a class="navbar-brand logo">
-                        <img src="../../assets/logo.png" alt="Bootstrap" width="100" height="30" />
+                        <img src="../../assets/logo_menu.png" alt="Bootstrap" width="100" height="30" />
                       </a>
                 <div class="row g-2 p-2">
 
                   <div class="col-4">
-                    <div class="card ">
+                    <div class="card card-menu ">
                       
                       <div class="card-header rf_card_header">Informações do Cliente</div>
                       <div class="rf_card_pdf">
@@ -2196,7 +2196,7 @@
                   </div>
 
                   <div class="col-4">
-                    <div class="card">
+                    <div class="card card-menu">
                       <div class="card-header rf_card_header">Informações da Proposta</div>
                       <div class="rf_card_pdf">
                         <div>
@@ -2220,7 +2220,7 @@
                   </div>
 
                   <div class="col-4">
-                    <div class="card">
+                    <div class="card card-menu">
                       <div class="card-header rf_card_header">Acessórios</div>
                       <div class="rf_container_menu">
                         <ul class="list-group" v-for="item in itens_acessorios" :key="item.id">
@@ -2251,9 +2251,8 @@
               </div>
               <div class="col">
                 <div class="row g-2 p-2">
-
                   <div class="col-4">
-                    <div class="card">
+                    <div class="card card-menu">
                       <div class="card-header rf_card_header">Veículo</div>
                       <div class="rf_card_pdf">
 
@@ -2300,7 +2299,7 @@
                   </div>
 
                   <div class="col-4">
-                    <div class="card">
+                    <div class="card card-menu">
                       <div class="card-header rf_card_header">Resumo da Compra</div>
                       <div class="rf_card_pdf">
                         <div class="row">
@@ -2339,7 +2338,7 @@
                   </div>
 
                   <div class="col-4">
-                    <div class="card">
+                    <div class="card card-menu">
                       <div class="card-header rf_card_header">Veículo de Troca</div>
                       <div class="rf_card_pdf">
                         <div>

@@ -55,7 +55,7 @@
       <table class="table border-dark rf_texto">
         <thead>
           <tr>
-            <th scope="col" class="rf_header_table">Nº Ordem</th>
+            <th scope="col" class="rf_header_table">Nº Atendimento</th>
             <th scope="col" class="rf_header_table">Vendedor</th>
             <th scope="col" class="rf_header_table">Cliente</th>
             <th scope="col" class="rf_header_table">Modelo</th>
@@ -177,7 +177,7 @@
       <table class="table border-dark rf_texto">
         <thead>
           <tr>
-            <th scope="col" class="rf_header_table">Nº Ordem</th>
+            <th scope="col" class="rf_header_table">Nº Atendimento</th>
             <th scope="col" class="rf_header_table">Vendedor</th>        
             <th scope="col" class="rf_header_table">Cliente</th>  
             <th scope="col" class="rf_header_table">Modelo</th>
