@@ -24,7 +24,8 @@ import ModeloVeiculo from "./views/admin/ModeloVeiculo.vue";
 import Usuario from "./views/admin/Usuario.vue";
 import Estoque from "./views/admin/estoque_veiculos.vue";
 //Rotas Atendimento
-import Atendimento from "./views/atendimento/Dashboard.vue";
+//import Atendimento from "./views/atendimento/Dashboard.vue";
+import DashboardProposta from "./views/atendimento/Dashboard.vue";
 import AtendimentoProposta from "./views/atendimento/Proposta.vue";
 //Rotas gerencia
 import Desk from "./views/desk/Index.vue";
@@ -38,6 +39,16 @@ import VendidosEstoque from "./views/desk/vendidosEstoque.vue";
 import VeiculosVendidoEstoque from "./views/admin/VeiculosVendidoEstoque.vue";
 import SituacaoVeiculo from "./views/admin/SituacaoVeiculo.vue";
 
+//Rotas F&I
+import Dashboard from "./views/f&i/index.vue";
+import EstoqueAcessorio from "./views/f&i/estoque_acessorio.vue";
+import CadastroAcessorio from "./views/f&i/cadastro_acessorio.vue";
+import CadastroPacotes from "./views/f&i/cadastro_pacotes.vue";
+import CadastroRevisao from "./views/f&i/cadastro_revisao.vue";
+import CadastroSeguros from "./views/f&i/cadastro_seguro.vue";
+import CadastroKits from "./views/f&i/cadastro_kits.vue";
+import KitsModelo from "./views/f&i/kits_modelo.vue";
+import VendasF$I from "./views/f&i/vendas_f&i.vue";
 
 // lazy-loaded
 const Profile = () => import("./components/Profile.vue")
@@ -49,7 +60,7 @@ const BoardUser = () => import("./components/BoardUser.vue")
 function adminAuth(to, from, next){
   const user = JSON.parse(localStorage.getItem('user'));
   const funcoes = user.funcoes;
-  let admin, gerente, gerenteGeral, atendente; 
+  let admin, gerente, gerenteGeral, atendente, vendedorF; 
   console.log(funcoes)
   for (var i = 0; i < funcoes.length; i++) {
     if (funcoes[i] === "Função: ADMINISTRADOR") {
@@ -64,9 +75,12 @@ function adminAuth(to, from, next){
     if (funcoes[i] === "Função: RECEPÇÃO") {
       atendente = 'atendente';
     }
+    if (funcoes[i] === "Função: F&I") {
+      vendedorF = 'vendedorF&I';
+    }
   }
   
-  if (admin === 'administrador' && gerente === 'gerente' && atendente === 'atendente' && gerenteGeral === 'gerente_geral') {
+  if (admin === 'administrador' && gerente === 'gerente' && atendente === 'atendente' && gerenteGeral === 'gerente_geral' && vendedorF === 'vendedorF&I') {
     return next()
   } else if(admin === 'administrador'){
     return next()
@@ -126,6 +140,26 @@ function recepcaoAuth(to, from, next){
   }
 
   if (atendente === 'atendente') {
+    return next()
+  } else {
+    next('/unauthorized');
+  }
+}
+
+function vendedorFEI(to, from, next){
+  const user = JSON.parse(localStorage.getItem('user'));
+  const funcoes = user.funcoes;
+  let  vendedorFI;
+
+  for (var i = 0; i < funcoes.length; i++) { 
+    if (funcoes[i] === "Função: F&I") {
+      vendedorFI = 'vendedorF&I';
+    }
+   
+  }
+  console.log("Função de F&I tendo acessar a rota!");
+  console.log(vendedorFI);
+  if (vendedorFI === 'vendedorF&I') {
     return next()
   } else {
     next('/unauthorized');
@@ -298,16 +332,22 @@ const routes = [
     component: SituacaoVeiculo,
     beforeEach: [adminAuth],
   },
-  {
-    path:"/atendimento/dashboard",
-    name:"dashboard",
-    component: Atendimento,
-    beforeEnter: [recepcaoAuth],
-  },
+  // {
+  //   path:"/atendimento/dashboard",
+  //   name:"dashboard",
+  //   component: Atendimento,
+  //   beforeEnter: [recepcaoAuth],
+  // },
   {
     path:"/atendimento/proposta",
     name:"nova_proposta",
     component: AtendimentoProposta,
+    beforeEnter: [recepcaoAuth],
+  },
+  {
+    path:"/atendimento/dashboard",
+    name:"dashboard_proposta",
+    component: DashboardProposta,
     beforeEnter: [recepcaoAuth],
   },
   {
@@ -361,7 +401,63 @@ const routes = [
     name:"reimprimirMenu",
     component: ReimprimirProposta,
     beforeEnter: [gerenteAuth],
-  }
+  },
+
+  {
+    path:"/f&i/index",
+    name:"dashboard",
+    component: Dashboard,
+    beforeEnter: [vendedorFEI],
+  },
+  {
+    path:"/f&i/estoque_acessorio",
+    name:"estoque_acessorio",
+    component: EstoqueAcessorio,
+    beforeEnter: [vendedorFEI],
+  },
+  {
+    path:"/f&i/cadastro_acessorio",
+    name:"cadastro_acessorio",
+    component: CadastroAcessorio,
+    beforeEnter: [vendedorFEI],
+  },
+  {
+    path:"/f&i/cadastro_pacotes",
+    name:"cadastro_pacotes",
+    component: CadastroPacotes,
+    beforeEnter: [vendedorFEI],
+  },
+  {
+    path:"/f&i/cadastro_revisao",
+    name:"cadastro_revisao",
+    component: CadastroRevisao,
+    beforeEnter: [vendedorFEI],
+  },
+  {
+    path:"/f&i/cadastro_seguro",
+    name:"cadastro_seguro",
+    component: CadastroSeguros,
+    beforeEnter: [vendedorFEI],
+  },
+  {
+    path:"/f&i/cadastro_kits",
+    name:"cadastro_kits",
+    component: CadastroKits,
+    beforeEnter: [vendedorFEI],
+  },
+  {
+    path:"/f&i/kits_modelo",
+    name:"kits_modelo",
+    component: KitsModelo,
+    beforeEnter: [vendedorFEI],
+  },
+  {
+    path:"/f&i/vendas_f&i",
+    name:"vendas_f&i",
+    component: VendasF$I,
+    beforeEnter: [vendedorFEI],
+  },
+
 ];
 
 const router = createRouter({

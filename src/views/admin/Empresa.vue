@@ -1,29 +1,16 @@
 <template>
   <div>
-    <SidebarVue />
-    <nav class="navbar navbar-expand-lg rf_bg_form rf_texto rf_container">
-      <div class="container-fluid">
-        <div><i class="bi bi-sliders fs-5"> Administração - Empresas </i></div>
-        <div>
-          <ul class="nav justify-content-end">
-            <li class="nav-item">
-              <router-link class="nav-link rf_texto active" to="/admin">Dashboard /</router-link>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link rf_texto_a disabled">Empresas</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <SidebarVue ref="sidebar" />
+    <Navgator ref="navgator" :barraTitulo="' Administração - Empresas'" :titulo="'empresas'" />
+
     <!--Formulário de Cadastro -->
 
-    <div class="card rf_bg_form rf_margin">
+    <div class="card card-filtro">
       <form @submit.prevent="onSubmit">
         <div class="row g-2 p-2">
-          <div class="card-title rf_texto gy-4">
-            <i class="bi bi-person-fill-add fs-5"> Cadastrar Empresa </i>
-          </div>
+          <div class="card-title gy-4">
+          <i class="bi bi-journal-text fs-5 icone_filtro"><span class="texto_filtro">Cadastrar Empresa</span></i>
+        </div>
         </div>
         <div class="row g-2 p-2">
           <!--Nome-->
@@ -69,8 +56,8 @@
           <!--Cidade-->
           <div class="col-md-2">
             <div class="form-floating">
-              <input v-model="cidadeSelecionada" class="form-control rf_bg_form rf_texto" list="datalistCidades" id="estado"
-                autocomplete="off">
+              <input v-model="cidadeSelecionada" class="form-control rf_bg_form rf_texto" list="datalistCidades"
+                id="estado" autocomplete="off">
 
               <label class="rf_texto">Cidade</label>
               <datalist id="datalistCidades">
@@ -81,8 +68,8 @@
           <!--Bairro-->
           <div class="col-md-2">
             <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="bairro"  autocomplete="off" />
-              <label for="valid_bairro" class="rf_texto">Bairro</label>           
+              <input type="text" class="form-control rf_bg_form rf_texto" v-model="bairro" autocomplete="off" />
+              <label for="valid_bairro" class="rf_texto">Bairro</label>
             </div>
           </div>
           <!--UF-->
@@ -100,9 +87,9 @@
           <!--CEP-->
           <div class="col-md-1">
             <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="cep" id="valid_cep"/>
+              <input type="text" class="form-control rf_bg_form rf_texto" v-model="cep" id="valid_cep" />
               <label for="valid_cep" class="rf_texto">CEP</label>
-         
+
             </div>
           </div>
           <!--Telefone-->
@@ -126,7 +113,7 @@
             <div class="form-floating">
               <input type="email" class="form-control rf_bg_form rf_texto" v-model="email"
                 v-on:blur="validateEmail(email)" />
-              <label for="valid_email" class="rf_texto">Email</label>             
+              <label for="valid_email" class="rf_texto">Email</label>
             </div>
           </div>
         </div>
@@ -134,7 +121,8 @@
           <!--Qtd-Usuários-->
           <div class="col-md-2">
             <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="qtd_usuarios" id="valid_qtdUsuarios"/>
+              <input type="text" class="form-control rf_bg_form rf_texto" v-model="qtd_usuarios"
+                id="valid_qtdUsuarios" />
               <label for="valid_qtdUsuarios" class="rf_texto">Qtd. Usuários</label>
             </div>
           </div>
@@ -158,19 +146,19 @@
               </div>
             </div>
           </div> -->
-          
+
           <!--Observação-->
           <div class="col-md">
             <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="obs" id="valid_obs"/>
-              <label for="valid_obs" class="rf_texto">Observação</label>            
+              <input type="text" class="form-control rf_bg_form rf_texto" v-model="obs" id="valid_obs" />
+              <label for="valid_obs" class="rf_texto">Observação</label>
             </div>
           </div>
         </div>
-        <div class="col-md p-2">
+        <div class="col-1 g-2 p-2 d-flex">
           <div class="form-floating">
-            <button type="submit" :disabled="btn_cadastrar" class="btn btn-secondary">
-              Cadastrar
+            <button type="submit" :disabled="btn_cadastrar" class="btn btn-lg btn-filtro">
+              <span class="rf_texto_btn">Cadastrar</span>
             </button>
           </div>
         </div>
@@ -180,11 +168,11 @@
       </div>
     </div>
     <!--Bloco do Filtro-->
-    <div class="card rf_bg_form rf_margin">
+    <div class="card card-filtro">
       <div class="row g-2 p-2">
-        <div class="card-title rf_texto gy-4">
-          <i class="bi bi-person-fill-add fs-5"> Filtros </i>
-        </div>
+        <div class="card-title gy-4">
+        <i class="bi bi-funnel fs-5 icone_filtro"><span class="texto_filtro">Filtro</span></i>
+      </div>
       </div>
       <div class="row g-2 p-2">
         <div class="col-4">
@@ -192,8 +180,8 @@
             <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchTitle" />
             <label class="rf_texto">Nome</label>
           </div>
-        </div>       
- 
+        </div>
+
         <div class="col-1">
           <div class="form-floating">
             <select class="form-select rf_bg_form rf_texto" v-model="searchStatus">
@@ -204,7 +192,7 @@
             <label class="rf_texto">Status</label>
           </div>
         </div>
-       
+
         <div class="col-2">
           <div class="form-floating">
             <select class="form-select rf_bg_form rf_texto" v-model="searchTipoEmpresas">
@@ -228,8 +216,8 @@
         </div>
         <div class="col-1">
           <div class="input-group-append">
-            <button class="btn btn-lg btn-secondary mt-2" type="button" @click="page = 1; retrieveEmpresa();">
-              Pesquisar
+            <button class="btn btn-lg btn-filtro" type="button" @click="page = 1; retrieveEmpresa();">
+              <span class="rf_texto_btn">Pesquisar</span>
             </button>
           </div>
         </div>
@@ -238,7 +226,7 @@
       </div>
     </div>
     <!--Tabelas-->
-    <div class="card rf_bg_form g-2 p-2 rf_margin">
+    <div class="card card-tabela g-2 p-2 rf_margin">
       <table class="table rf_texto">
         <thead>
           <tr>
@@ -252,7 +240,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in empresas" :key="item.nome">
+          <tr v-for="item in empresas" :key="item.nome" class="table-linha">
             <td>{{ item.nome }}</td>
             <td>{{ item.cnpj }}</td>
             <td>{{ item.endereco }}</td>
@@ -261,13 +249,9 @@
             <td>{{ getTipoEmpresa(item.tipo_empresa) }}</td>
 
             <td>
-              <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+              <button type="button" class="dropdown-toggle-icon"  data-bs-toggle="modal" data-bs-target="#exampleModal"
                 @click="editar_empresa(item)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil"
-                  viewBox="0 0 16 16">
-                  <path
-                    d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-                </svg>
+                <i class="bi bi-pencil-square"></i>
               </button>
             </td>
           </tr>
@@ -280,10 +264,13 @@
     <!-- Modal para edição -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl">
-        <div class="modal-content rf_bg_form rf_texto">
+        <div class="modal-content card-container rf_texto">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Empresa</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="card-title gy-4">
+              <i class="bi bi-pencil-square fs-5 icone_kit"><span class="texto_kit">Editar Empresa</span></i>         
+            </div>
+            <button class="btn btn-modal btn-lg p-1 mt-1" type="button" data-bs-target="#ModalProposta"
+              data-bs-toggle="modal" aria-label="Close"> Sair </button>
           </div>
           <div class="modal-body">
             <div class="row g-2 p-2">
@@ -436,11 +423,8 @@
               </div>
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-              Fechar
-            </button>
-            <button type="button" @click="update()" data-bs-dismiss="modal" class="btn btn-secondary">
+          <div class="modal-footer">         
+            <button type="button" @click="update()" data-bs-dismiss="modal" class="btn btn-modal btn-lg p-1 mt-1">
               Salvar
             </button>
           </div>
@@ -460,11 +444,13 @@ import userService from "../../services/user.service";
 import Pagination from "../../components/Pagination.vue";
 import Message from "../../components/modal/Message.vue";
 import RodapeVue from "../../components/menu/Rodape.vue";
+import Navgator from "../../components/menu/Navgator.vue";
 
 export default {
   name: "Usuários",
   components: {
     SidebarVue,
+    Navgator,
     Pagination,
     Message,
     RodapeVue
@@ -517,7 +503,7 @@ export default {
       endereco: "",
       complemento: "",
       cidadeSelecionada: "",
-      cidadeId:"",
+      cidadeId: "",
       bairro: "",
       uf: "",
       cep: "",
@@ -527,7 +513,7 @@ export default {
       qtd_usuarios: "",
       data_contrato: "",
       expira_contrato: "",
-      tipo_empresa:"",
+      tipo_empresa: "",
       obs: "",
 
       btn_cadastrar: false,
@@ -554,20 +540,20 @@ export default {
       //Params
       searchTitle: "",
       searchStatus: "",
-      searchTipoEmpresas:"",
+      searchTipoEmpresas: "",
       page: 1,
       totalPages: 0,
       totalItems: 0,
-      pageSizes: [5, 10, 15, 35,50,100],
+      pageSizes: [5, 10, 15, 35, 50, 100],
       pageSize: 100,
 
       OpenClose: this.visible,
     };
   },
-  watch:{
+  watch: {
     cidadeSelecionada: function (novaCidade) {
       const cidade = this.cidades.find(m => m.nome === novaCidade);
-      this.cidadeId = cidade ? cidade.id : null;   
+      this.cidadeId = cidade ? cidade.id : null;
     },
   },
   mounted() {
@@ -609,31 +595,31 @@ export default {
           qtd_usuarios: this.qtd_usuarios,
           data_contrato: this.data_contrato,
           expira_contrato: this.expira_contrato,
-          tipo_empresa: this.tipo_empresa,	
+          tipo_empresa: this.tipo_empresa,
           obs: this.obs,
 
         }),
       })
-      .then((data)=>{
-        if (!data.ok) {
-              throw Error(data.status);
-            }
-            return data.json();
-      })
-      .then((resposta) =>{
-        if (resposta.StatusOk == 200) {
-              this.abrir_modal = true;
-              this.msg = resposta.message;
-              setTimeout(() => (this.abrir_modal = false), 4000);
-              location.reload();
-              
-            }
-            if (resposta.StatusOk == 204) {
-              this.abrir_modal = true;
-              this.msg = resposta.message;
-              setTimeout(() => (this.abrir_modal = false), 4000);
-            }
-      })
+        .then((data) => {
+          if (!data.ok) {
+            throw Error(data.status);
+          }
+          return data.json();
+        })
+        .then((resposta) => {
+          if (resposta.StatusOk == 200) {
+            this.abrir_modal = true;
+            this.msg = resposta.message;
+            setTimeout(() => (this.abrir_modal = false), 4000);
+            location.reload();
+
+          }
+          if (resposta.StatusOk == 204) {
+            this.abrir_modal = true;
+            this.msg = resposta.message;
+            setTimeout(() => (this.abrir_modal = false), 4000);
+          }
+        })
 
 
       // Resetting Values
@@ -704,8 +690,8 @@ export default {
         if (error.response.status == 400) {
           this.abrir_modal = true;
           this.msg = error.response.data.message;
+        }
       }
-    }
     },
     async retrieveCidade() {
       try {
@@ -723,7 +709,7 @@ export default {
         if (error.response.status == 400) {
           this.abrir_modal = true;
           this.msg = error.response.data.message;
-      }
+        }
       }
     },
 
@@ -740,12 +726,12 @@ export default {
         (this.edit_cep = item.cep),
         (this.edit_telefone = item.tel),
         (this.edit_celular = item.cel);
-        (this.edit_email = item.email),
+      (this.edit_email = item.email),
         (this.edit_qtdUsuarios = item.qtd_usuarios),
         //(this.edit_dataCadastro = new Date().toISOString()),
         (this.edit_obs = item.obs)
-        this.edit_status = item.status
-        this.edit_tipo_empresa = item.tipo_empresa
+      this.edit_status = item.status
+      this.edit_tipo_empresa = item.tipo_empresa
       console.log("Valores da Empresas")
       console.log(item);
 
@@ -782,7 +768,7 @@ export default {
         dados,
         { headers }
       );
-     
+
       if (response.data.StatusOk == 200) {
         this.abrir_modal = true;
         this.msg = "Atualizado com sucesso!";
@@ -1105,4 +1091,3 @@ export default {
   },
 };
 </script>
-  

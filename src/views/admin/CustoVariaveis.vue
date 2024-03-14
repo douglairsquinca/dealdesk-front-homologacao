@@ -1,301 +1,280 @@
 <template>
-  <div>
-    <SidebarVue />
-    <nav class="navbar navbar-expand-lg rf_bg_form rf_texto rf_container">
-      <div class="container-fluid">
-        <div>
-          <i class="bi bi-sliders fs-5"> Administração - Custos Variáveis </i>
-        </div>
-        <div>
-          <ul class="nav justify-content-end">
-            <li class="nav-item">
-              <router-link class="nav-link rf_texto active" to="/admin">Dashboard /</router-link>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link rf_texto_a disabled">Custo Variável</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <!--Formulário de Cadastro -->
+  <SidebarVue ref="sidebar" />
+  <Navgator ref="navgator" :barraTitulo="' Administração - Custos Variáveis'" :titulo="'custo variável'" />
 
-    <div class="card rf_bg_form rf_margin">
-      <form @submit.prevent="onSubmit">
-        <div class="row g-2 p-2">
-          <div class="card-title rf_texto gy-4">
-            <i class="bi bi-person-fill-add fs-5"> Cadastrar Custo Variável </i>
-          </div>
-        </div>
-        <div class="row g-2 p-2">
-          <!--Descrição-->
-          <div class="col-md-2">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="descricao" required />
-              <label class="rf_texto">Descrição</label>
-            </div>
-          </div>
-          <!--Veiculos-->
-          <div class="col-md">
-            <div class="form-check form-check-inline rf_bg_form rf_texto">
-              <input class="form-check-input" type="checkbox" v-model="aplicaVeiculoNovo" />
-              <label class="form-check-label" for="inlineCheckbox1">Veículo Novo</label>
-            </div>
-            <div class="form-check form-check-inline rf_bg_form rf_texto">
-              <input class="form-check-input" type="checkbox" v-model="aplicaVeiculoUsado" />
-              <label class="form-check-label" for="inlineCheckbox2">Veículo Usado</label>
-            </div>
-          </div>
-          <!--Aplica após qtd dias-->
-          <div class="col-md-1">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="aplicaAposQtdDias" required />
-              <label for="valid_cnpj" class="rf_texto">Aplicar após</label>
-              <div class="invalid-feedback">O campo CNPJ é obrigatório!</div>
-            </div>
-          </div>
-          <!--Tipo de Valor-->
-          <div class="col-md">
-            <div class="form-floating">
-              <select class="form-select rf_bg_form rf_texto" v-model="tipoValor" @change="resetValor" required>
-                <option value="0">Monetário</option>
-                <option value="1">Percentual</option>
-              </select>
-              <label for="valid_tipoValor" class="rf_texto">Tipo de Valor</label>
+  <!--Formulário de Cadastro -->
 
-            </div>
-          </div>
-          <!--Valor Base-->
-          <div class="col-md">
-            <div class="form-floating">
-              <select class="form-select rf_bg_form rf_texto" v-model="valorBase" id="valid_valorBase" required>
-                <option value="0">Valor de Compra</option>
-                <option value="1">Valor de Venda</option>
-                <option value="2">Ganho</option>
-              </select>
-              <label for="valid_valorBase" class="rf_texto">Valor Base</label>
-            </div>
-          </div>
-          <!--Valor-->
-          <div class="col-md">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="valor"
-                @input="aplicarFormatacaoMonetaria" required />
-              <label for="valid_valor" class="rf_texto">Valor</label>
-            </div>
-          </div>
-          <!--Status-->
-          <div class="col-md">
-            <div class="form-floating">
-              <select class="form-select rf_bg_form rf_texto" v-model="status" required>
-                <option value="0">Desabilitado</option>
-                <option value="1">Habilitado</option>
-              </select>
-              <label for="valid_status" class="rf_texto">Status</label>
-            </div>
-          </div>
-          <div class="col-md-2 p-2">
-            <div class="form-floating">
-              <button type="submit" class="btn btn-lg btn-secondary">
-                Cadastrar
-              </button>
-            </div>
-          </div>
-        </div>
-      </form>
-      <div v-if="abrir_modal">
-        <Message :msg="msg" v-show="msg" />
-      </div>
-    </div>
-    <!--Bloco do Filtro-->
-    <div class="card rf_bg_form rf_margin">
+  <div class="card card-filtro">
+    <form @submit.prevent="onSubmit">
       <div class="row g-2 p-2">
-        <div class="card-title rf_texto gy-4">
-          <i class="bi bi-person-fill-add fs-5"> Filtros </i>
+        <div class="card-title gy-4">
+          <i class="bi bi-journal-text fs-5 icone_filtro"><span class="texto_filtro">Cadastrar Custo Variável</span></i>
         </div>
       </div>
       <div class="row g-2 p-2">
-        <div class="col-4">
+        <!--Descrição-->
+        <div class="col">
           <div class="form-floating">
-            <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchTitle" />
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="descricao" required />
             <label class="rf_texto">Descrição</label>
           </div>
         </div>
-
+        <!--Veiculos-->
+        <div class="col-1">
+          <div class="form-check form-check-inline  rf_texto">
+            <input class="form-check-input" type="checkbox" v-model="aplicaVeiculoNovo" />
+            <label class="form-check-label" for="inlineCheckbox1">Veículo Novo</label>
+          </div>
+          <div class="form-check form-check-inline  rf_texto">
+            <input class="form-check-input" type="checkbox" v-model="aplicaVeiculoUsado" />
+            <label class="form-check-label" for="inlineCheckbox2">Veículo Usado</label>
+          </div>
+        </div>
+        <!--Aplica após qtd dias-->
         <div class="col-1">
           <div class="form-floating">
-            <select class="form-select rf_bg_form rf_texto" v-model="searchStatus">
-              <option value="">------</option>
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="aplicaAposQtdDias" required />
+            <label for="valid_cnpj" class="rf_texto">Aplicar após</label>
+            <div class="invalid-feedback">O campo CNPJ é obrigatório!</div>
+          </div>
+        </div>
+        <!--Tipo de Valor-->
+        <div class="col-2">
+          <div class="form-floating">
+            <select class="form-select rf_bg_form rf_texto" v-model="tipoValor" @change="resetValor" required>
+              <option value="0">Monetário</option>
+              <option value="1">Percentual</option>
+            </select>
+            <label for="valid_tipoValor" class="rf_texto">Tipo de Valor</label>
+
+          </div>
+        </div>
+        <!--Valor Base-->
+        <div class="col-2">
+          <div class="form-floating">
+            <select class="form-select rf_bg_form rf_texto" v-model="valorBase" id="valid_valorBase" required>
+              <option value="0">Valor de Compra</option>
+              <option value="1">Valor de Venda</option>
+              <option value="2">Ganho</option>
+            </select>
+            <label for="valid_valorBase" class="rf_texto">Valor Base</label>
+          </div>
+        </div>
+        <!--Valor-->
+        <div class="col-1">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="valor"
+              @input="aplicarFormatacaoMonetaria" required />
+            <label for="valid_valor" class="rf_texto">Valor</label>
+          </div>
+        </div>
+        <!--Status-->
+        <div class="col-1">
+          <div class="form-floating">
+            <select class="form-select rf_bg_form rf_texto" v-model="status" required>
               <option value="0">Desabilitado</option>
               <option value="1">Habilitado</option>
             </select>
-            <label class="rf_texto">Status</label>
+            <label for="valid_status" class="rf_texto">Status</label>
           </div>
         </div>
-        <div class="col-1">
+        <div class="col">
           <div class="form-floating">
-            <select class="form-select rf_bg_form rf_texto" v-model="pageSize" @change="handlePageSizeChange(pageSize)">
-              <option v-for="size in pageSizes" :key="size" :value="size">
-                {{ size }}
-              </option>
-            </select>
-            <label class="rf_texto">Itens Pág.</label>
-          </div>
-        </div>
-        <div class="col-1">
-          <div class="input-group-append">
-            <button class="btn btn-lg btn-secondary mt-2" type="button" @click="page = 1; retrieveCusto();">
-              Pesquisar
-            </button>
-          </div>
-        </div>
-
-
-      </div>
-    </div>
-    <!--Tabelas-->
-    <div class="card rf_bg_form g-2 p-2 rf_margin">
-      <table class="table rf_texto">
-        <thead>
-          <tr>
-            <th scope="col">Descrição</th>
-            <th scope="col">Valor</th>
-            <th scope="col">Tipo Valor</th>
-            <th scope="col">Valor Base</th>
-            <th scope="col">Veículo Novo</th>
-            <th scope="col">Veículo Usado</th>
-            <th scope="col">Aplica juros</th>
-            <th scope="col">Status</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in JSON.parse(JSON.stringify(custo_variaveis))" :key="item.index">
-            <td>{{ item.descricao }}</td>
-            <td>{{ item.valor }}</td>
-            <td>{{ item.tipoValor }}</td>
-            <td>{{ item.valorBase }}</td>
-            <td>{{ item.aplica_novo }}</td>
-            <td>{{ item.aplica_usado }}</td>
-            <td>{{ item.pro_rata }}</td>
-            <td>{{ item.status }}</td>
-            <td>
-              <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                @click="editar_custo(item)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil"
-                  viewBox="0 0 16 16">
-                  <path
-                    d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-                </svg>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <pagination v-if="custo_variaveis.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
-        @change-page="handlePageChange" />
-    </div>
-
-    <!-- Modal para edição -->
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content rf_bg_form rf_texto">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Custo</h1>
-
-          </div>
-          <div class="modal-body">
-            <div class="row g-2 p-2">
-              <!--Descrição-->
-              <div class="col">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_descricao" required />
-                  <label for="valid_descricao" class="rf_texto">Descrição</label>
-
-                </div>
-              </div>
-              <!--Veiculos-->
-              <div class="col-2">
-                <div class="form-check form-check-inline rf_bg_form rf_texto">
-                  <input class="form-check-input" type="checkbox" v-model="edit_aplicaVeiculoNovo" />
-                  <label class="form-check-label" for="inlineCheckbox1">Veículo Novo</label>
-                </div>
-                <div class="form-check form-check-inline rf_bg_form rf_texto">
-                  <input class="form-check-input" type="checkbox" v-model="edit_aplicaVeiculoUsado" />
-                  <label class="form-check-label" for="inlineCheckbox2">Veículo Usado</label>
-                </div>
-              </div>
-            </div>
-            <div class="row g-2 p-2">
-              <!--Aplica após qtd dias-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_aplicaAposQtdDias" required />
-                  <label for="valid_cnpj" class="rf_texto">Aplicar após</label>
-                </div>
-              </div>
-              <!--Tipo de Valor-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <select class="form-select rf_bg_form rf_texto" v-model="edit_tipoValor" @change="resetEditValor"
-                    required>
-                    <option value="0">Monetário</option>
-                    <option value="1">Percentual</option>
-                  </select>
-                  <label for="valid_tipoValor" class="rf_texto">Tipo de Valor</label>
-
-                </div>
-              </div>
-              <!--Valor Base-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <select class="form-select rf_bg_form rf_texto" v-model="edit_valorBase" required>
-                    <option value="0">Valor de Compra</option>
-                    <option value="1">Valor de Venda</option>
-                    <option value="2">Ganho</option>
-                  </select>
-                  <label for="valid_valorBase" class="rf_texto">Valor Base</label>
-                </div>
-              </div>
-              <!--Valor-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_valor"
-                    @input="edit_aplicarFormatacaoMonetaria" required />
-                  <label for="valid_valor" class="rf_texto">Valor</label>
-
-                </div>
-              </div>
-              <!--Status-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <select class="form-select rf_bg_form rf_texto" v-model="edit_status" required>
-                    <option value="false">Desabilitado</option>
-                    <option value="true">Habilitado</option>
-                  </select>
-                  <label for="valid_status" class="rf_texto">Status</label>
-
-                </div>
-              </div>
-
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-              Fechar
-            </button>
-            <button type="button" @click="update()" data-bs-dismiss="modal" class="btn btn-secondary">
-              Salvar
+            <button type="submit" class="btn btn-lg btn-filtro">
+              <span class="rf_texto_btn">Cadastrar</span>
             </button>
           </div>
         </div>
       </div>
+    </form>
+    <div v-if="abrir_modal">
+      <Message :msg="msg" v-show="msg" />
     </div>
-    <!-- Button trigger modal -->
-
-    <RodapeVue />
   </div>
+  <!--Bloco do Filtro-->
+  <div class="card card-filtro">
+    <div class="row g-2 p-2">
+      <div class="card-title rf_texto gy-4">
+        <i class="bi bi-funnel fs-5 icone_filtro"><span class="texto_filtro">Filtro</span></i>
+      </div>
+    </div>
+    <div class="row g-2 p-2">
+      <div class="col-4">
+        <div class="form-floating">
+          <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchTitle" />
+          <label class="rf_texto">Descrição</label>
+        </div>
+      </div>
+
+      <div class="col-1">
+        <div class="form-floating">
+          <select class="form-select rf_bg_form rf_texto" v-model="searchStatus">
+            <option value="">------</option>
+            <option value="0">Desabilitado</option>
+            <option value="1">Habilitado</option>
+          </select>
+          <label class="rf_texto">Status</label>
+        </div>
+      </div>
+      <div class="col-1">
+        <div class="form-floating">
+          <select class="form-select rf_bg_form rf_texto" v-model="pageSize" @change="handlePageSizeChange(pageSize)">
+            <option v-for="size in pageSizes" :key="size" :value="size">
+              {{ size }}
+            </option>
+          </select>
+          <label class="rf_texto">Itens Pág.</label>
+        </div>
+      </div>
+      <div class="col-1">
+        <div class="input-group-append">
+          <button class="btn btn-lg btn-filtro" type="button" @click="page = 1; retrieveCusto();">
+            <span class="rf_texto_btn">Pesquisar</span>
+          </button>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  <!--Tabelas-->
+  <div class="card card-tabela g-2 p-2 rf_margin">
+    <table class="table rf_texto">
+      <thead>
+        <tr>
+          <th scope="col">Descrição</th>
+          <th scope="col">Valor</th>
+          <th scope="col">Tipo Valor</th>
+          <th scope="col">Valor Base</th>
+          <th scope="col">Veículo Novo</th>
+          <th scope="col">Veículo Usado</th>
+          <th scope="col">Aplica juros</th>
+          <th scope="col">Status</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in JSON.parse(JSON.stringify(custo_variaveis))" :key="item.index" class="table-linha">
+          <td>{{ item.descricao }}</td>
+          <td>{{ item.valor }}</td>
+          <td>{{ item.tipoValor }}</td>
+          <td>{{ item.valorBase }}</td>
+          <td>{{ item.aplica_novo }}</td>
+          <td>{{ item.aplica_usado }}</td>
+          <td>{{ item.pro_rata }}</td>
+          <td>{{ item.status }}</td>
+          <td>
+            <button type="button" class="dropdown-toggle-icon" data-bs-toggle="modal" data-bs-target="#exampleModal"
+              @click="editar_custo(item)">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <pagination v-if="custo_variaveis.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
+      @change-page="handlePageChange" />
+  </div>
+
+  <!-- Modal para edição -->
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content card-container rf_texto">
+        <div class="modal-header">
+          <div class="card-title gy-4">
+            <i class="bi bi-pencil-square fs-5 icone_kit"><span class="texto_kit">Editar Custo</span></i>
+          </div>
+          <button class="btn btn-modal btn-lg p-1 mt-1" type="button" data-bs-target="#ModalProposta"
+            data-bs-toggle="modal" aria-label="Close"> Sair </button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-2 p-2">
+            <!--Descrição-->
+            <div class="col">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_descricao" required />
+                <label for="valid_descricao" class="rf_texto">Descrição</label>
+
+              </div>
+            </div>
+            <!--Veiculos-->
+            <div class="col-2">
+              <div class="form-check form-check-inline  rf_texto">
+                <input class="form-check-input" type="checkbox" v-model="edit_aplicaVeiculoNovo" />
+                <label class="form-check-label" for="inlineCheckbox1">Veículo Novo</label>
+              </div>
+              <div class="form-check form-check-inline  rf_texto">
+                <input class="form-check-input" type="checkbox" v-model="edit_aplicaVeiculoUsado" />
+                <label class="form-check-label" for="inlineCheckbox2">Veículo Usado</label>
+              </div>
+            </div>
+          </div>
+          <div class="row g-2 p-2">
+            <!--Aplica após qtd dias-->
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_aplicaAposQtdDias" required />
+                <label for="valid_cnpj" class="rf_texto">Aplicar após</label>
+              </div>
+            </div>
+            <!--Tipo de Valor-->
+            <div class="col-2">
+              <div class="form-floating">
+                <select class="form-select rf_bg_form rf_texto" v-model="edit_tipoValor" @change="resetEditValor"
+                  required>
+                  <option value="0">Monetário</option>
+                  <option value="1">Percentual</option>
+                </select>
+                <label for="valid_tipoValor" class="rf_texto">Tipo de Valor</label>
+
+              </div>
+            </div>
+            <!--Valor Base-->
+            <div class="col-2">
+              <div class="form-floating">
+                <select class="form-select rf_bg_form rf_texto" v-model="edit_valorBase" required>
+                  <option value="0">Valor de Compra</option>
+                  <option value="1">Valor de Venda</option>
+                  <option value="2">Ganho</option>
+                </select>
+                <label for="valid_valorBase" class="rf_texto">Valor Base</label>
+              </div>
+            </div>
+            <!--Valor-->
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_valor"
+                  @input="edit_aplicarFormatacaoMonetaria" required />
+                <label for="valid_valor" class="rf_texto">Valor</label>
+
+              </div>
+            </div>
+            <!--Status-->
+            <div class="col-2">
+              <div class="form-floating">
+                <select class="form-select rf_bg_form rf_texto" v-model="edit_status" required>
+                  <option value="false">Desabilitado</option>
+                  <option value="true">Habilitado</option>
+                </select>
+                <label for="valid_status" class="rf_texto">Status</label>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">    
+          <button type="button" @click="update()" data-bs-dismiss="modal" class="btn btn-modal btn-lg p-1 mt-1">
+            Salvar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Button trigger modal -->
+
+  <RodapeVue />
 </template>
 <script>
 import SidebarVue from "../../components/menu/Sidebar.vue";
@@ -305,12 +284,14 @@ import userService from "../../services/user.service";
 import Pagination from "../../components/Pagination.vue";
 import Message from "../../components/modal/Message.vue";
 import RodapeVue from "../../components/menu/Rodape.vue";
+import Navgator from "../../components/menu/Navgator.vue";
 
 
 export default {
   name: "Usuários",
   components: {
     SidebarVue,
+    Navgator,
     Pagination,
     Message,
     RodapeVue
@@ -627,4 +608,3 @@ export default {
   },
 };
 </script>
-  

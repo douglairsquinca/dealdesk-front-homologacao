@@ -165,7 +165,7 @@
 
 <script>
 import UserService from "../services/user.service";
-import EventBus from "../common/EventBus";
+//import EventBus from "../common/EventBus";
 import SidebarVue from "./menu/Sidebar.vue";
 import Rodape from "./menu/Rodape.vue";
 
@@ -197,8 +197,10 @@ export default {
             error.response.data.message) ||
           error.message ||
           error.toString();
+          console.log("Erro de login", error)
         if (error.response && error.response.status === 403) {
-          EventBus.dispatch("logout");
+          console.log("Entrei no IF")
+          this.$store.dispatch("auth/logout");
         }
       }
     );

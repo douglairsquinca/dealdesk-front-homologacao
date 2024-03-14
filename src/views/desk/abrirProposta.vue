@@ -1,2553 +1,2397 @@
 <template>
-  <div>
-    <div class="modal-content ">
-      <div class="modal-body ">
-        <!--Bloco do Cliente-->
-        <nav class="navbar navbar-expand-lg rf_bg_form rf_texto rf_container">
-          <div class="container-fluid">
-            <div>
-              <i class="bi bi-sliders fs-5"> Informações do Cliente </i>
+  <SidebarVue ref="sidebar" />
+  <NavgatorDk ref="navgator" :barraTitulo="' Informações do Cliente'" :titulo="'propostas'" />
 
-            </div>
-            <router-link class="nav-link rf_texto active" to="/desk/index">Fechar</router-link>
-          </div>
-        </nav>
-        <form @submit.prevent="onSubmit">
-          <div class="card rf_bg_form mt-4">
-            <!--Id da Proposta-->
-            <div class="row g-2 p-2">
-              <div class="col-1">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form  rf_texto" v-model="id_proposta" :disabled="true" />
-                  <label for="valid_descricao" class="rf_texto">Nº Proposta</label>
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="recepcionista" :disabled="true" />
-                  <label for="valid_descricao" class="rf_texto">Atendente</label>
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="vendedor_info" :disabled="true" />
-                  <label for="valid_descricao" class="rf_texto">Vendedor</label>
-                </div>
-              </div>
-              <div class="col">
-                <div class="form-floating">
-                  <button type="button" class="btn btn-secondary mt-3 " data-bs-toggle="modal"
-                    data-bs-target="#ModalTrocarVendedor" @click="retrieveVendedorDispo">
-                    Trocar Vendedor
-                  </button>
-                </div>
-              </div>
-              <div class="col">
-                <div class="form-floating">
-                  <button type="button" class="btn btn-secondary mt-3 float-end" @click="habilitar_cadastro">
-                    Habilitar Cadastro
-                  </button>
-                </div>
-              </div>
-            </div>
-
-
-            <!-- Dados do Cliente-->
-            <div class="row g-2 p-2">
-              <!--Nome do Cliente-->
-              <div class="col-4">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" :style="{ 'border-color': nomeBorderColor }"
-                    v-model="cliente" :disabled="input_cliente" required />
-                  <label for="valid_descricao" class="rf_texto">Nome do Cliente</label>
-                </div>
-              </div>
-              <!--CPF/CNPJ-->
-              <div class="col-md-2">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="cpfCnpj"
-                    :style="{ 'border-color': cnpjBorderColor }" :disabled="input_cliente" required v-on:blur="vData" />
-                  <label for="valid_descricao" class="rf_texto">CPF/CNPJ</label>
-                </div>
-              </div>
-              <!--Data Nascimento-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <input type="date" class="form-control rf_bg_form rf_texto" v-model="dataNascimento"
-                    :style="{ 'border-color': dataNascimentoBorderColor }" :disabled="input_cliente" autocomplete="off" />
-                  <label class="rf_texto">Data Nascimento</label>
-                </div>
-              </div>
-              <!--Email-->
-              <div class="col">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="email"
-                    v-on:blur="validateEmail(email)" :style="{ 'border-color': emailBorderColor }"
-                    :disabled="input_cliente" />
-                  <label for="valid_descricao" class="rf_texto">Email</label>
-                </div>
-              </div>
-            </div>
-            <div class="row g-2 p-2">
-              <!--Endereço-->
-              <div class="col-4">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="endereco"
-                    :style="{ 'border-color': enderecoBorderColor }" :disabled="input_cliente" required
-                    autocomplete="off" />
-                  <label class="rf_texto">Endereço</label>
-                </div>
-              </div>
-              <!--Complemento-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="complemento"
-                    :style="{ 'border-color': complementoBorderColor }" :disabled="input_cliente" autocomplete="off" />
-                  <label class="rf_texto">Complemento</label>
-                </div>
-              </div>
-              <!--UF-->
-              <div class="col-1">
-                <div class="form-floating">
-                  <input v-model="uf" :style="{ 'border-color': ufBorderColor }" :disabled="input_cliente"
-                    class="form-control rf_bg_form rf_texto" list="datalistOptions" id="estado" required
-                    autocomplete="off" />
-
-                  <label class="rf_texto">UF</label>
-                  <datalist id="datalistOptions">
-                    <option v-for="opt in estados" :data-value="opt.id" :value="opt.sigla" :key="opt.id"></option>
-                  </datalist>
-                </div>
-              </div>
-              <!--Cidade-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <input v-model="cidade" :style="{ 'border-color': cidadeBorderColor }" :disabled="input_cliente"
-                    class="form-control rf_bg_form rf_texto" list="datalistCidades" id="cidade" required
-                    autocomplete="off" />
-
-                  <label class="rf_texto">Cidade</label>
-                  <datalist id="datalistCidades">
-                    <option v-for="opt in cidades" :data-value="opt.id" :value="opt.nome" :key="opt.id"></option>
-                  </datalist>
-                </div>
-              </div>
-              <!--Bairro-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="bairro"
-                    :style="{ 'border-color': bairroBorderColor }" :disabled="input_cliente" autocomplete="off"
-                    required />
-                  <label class="rf_texto">Bairro</label>
-                </div>
-              </div>
-              <!--CEP-->
-              <div class="col-1">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="cep"
-                    :style="{ 'border-color': cepBorderColor }" :disabled="input_cliente" autocomplete="off" required />
-                  <label class="rf_texto">CEP</label>
-                </div>
-              </div>
-            </div>
-            <div class="row g-2 p-2">
-              <!--Telefone-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="tel"
-                    :style="{ 'border-color': telBorderColor }" :disabled="input_cliente" required v-on:blur="vTel" />
-                  <label for="valid_descricao" class="rf_texto">Telefone</label>
-                </div>
-              </div>
-              <!--Telefone-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="cel"
-                    :style="{ 'border-color': celBorderColor }" :disabled="input_cliente" v-on:blur="vTel2" />
-                  <label for="valid_descricao" class="rf_texto">Telefone 2</label>
-                </div>
-              </div>
-            </div>
-
-            <div class="row g-2 p-2">
-
-              <div class="col-1">
-                <div class="form-floating">
-                  <button type="button" class="btn btn-secondary" :disabled="input_cliente" @click="atualizar_cliente()">
-                    Atualizar
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div class="row g-2 p-2">
-              <div class="col-2" v-if="venda_Futura">
-                <div class="form-floating">
-                  <select class="form-select rf_bg_form rf_texto" v-model="selected_familia_veiculo_escolhido"
-                    @change="vendaFutura">
-                    <option v-for="item in familia_veiculo_escolhido" :value="item.id" :key="item.id">
-                      {{ item.descricao }}
-                    </option>
-                  </select>
-                  <label class="rf_texto">Família</label>
-                </div>
-              </div>
-              <div class="col-2" v-if="venda_Futura">
-                <div class="form-floating">
-                  <select class="form-select rf_bg_form rf_texto" v-model="selected_modelo_veiculo_escolhido"
-                    @change="completar_modelo(selected_modelo_veiculo_escolhido)">
-                    <option v-for="item in modelo_veiculo_escolhido" :value="item.id" :key="item.id">
-                      {{ item.descricao }}
-                    </option>
-                  </select>
-                  <label class="rf_texto">Modelo</label>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="form-floating">
-                  <div class="form-check form-switch rf_texto mt-3">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked1"
-                      v-model="venda_Futura" @click="select_familia" />
-                    <label class="form-check-label" for="flexSwitchCheckChecked1">Venda Futura</label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="form-floating">
-                  <div class="form-check form-switch rf_texto mt-3">
-                    <input class="form-check-input" type="checkbox" role="switch" v-model="pagamento" />
-                    <label class="form-check-label">Venda à Vista</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
-        <!--Bloco Veiculos-->
-        <div class="row mt-2">
-          <!--Veículos para troca-->
-          <div class="col-6">
-            <div class="card rf_bg_form mt-3">
-              <nav class="navbar navbar-expand-lg rf_bg_form rf_texto">
-                <div class="container-fluid">
-                  <div>
-                    <i class="bi bi-car-front-fill fs-5">
-                      Veículos de Entrada
-                    </i>
-                  </div>
-                </div>
-              </nav>
-              <form @submit.prevent="onSubmitVeiculoAvaliacao">
-                <div class="row g-2 p-2">
-                  <!--Placa-->
-                  <div class="col">
-                    <div class="form-floating">
-                      <input type="text" class="form-control rf_bg_form rf_texto" v-model="placa_avaliacao"
-                        v-on:blur="verificar_avaliacao()" />
-                      <label class="rf_texto">Placa</label>
-                    </div>
-                  </div>
-                  <!--Marca-->
-                  <div class="col">
-                    <div class="form-floating">
-                      <input v-model="marca_avaliacao" class="form-control rf_bg_form rf_texto" list="datalistOptions"
-                        id="marca" autocomplete="off" v-on:blur="filtrar_familia()" />
-
-
-                      <label>Marca</label>
-                      <datalist id="datalistOptions">
-                        <option v-for="opt in marca" :data-value="opt.id" :value="opt.descricao" :key="opt.id">
-                        </option>
-                      </datalist>
-                    </div>
-                  </div>
-                  <!--Familia-->
-                  <div class="col">
-                    <div class="form-floating">
-                      <input v-model="familia_avaliacao" class="form-control rf_bg_form rf_texto" list="datalistFamilia"
-                        id="familia" autocomplete="off" v-on:blur="filtrar_modelo()" disabled />
-
-
-                      <label>Familia</label>
-                      <datalist id="datalistFamilia">
-                        <option v-for="opt in familia" :data-value="opt.id" :value="opt.descricao" :key="opt.id">
-                        </option>
-                      </datalist>
-                    </div>
-                  </div>
-                  <!-- <div class="col">
-                        <div class="form-floating">
-                          <select
-                            class="form-select rf_bg_form rf_texto"
-                            v-model="familia_avaliacao"
-                          >
-                            <option
-                              v-for="item in familia"
-                              :value="item.id"
-                              :key="item.id"
-                            >
-                              {{ item.descricao }}
-                            </option>
-                          </select>
-                          <label for="valid_empresa" class="rf_texto"
-                            >Familia</label
-                          >
-                        </div>
-                      </div> -->
-                  <!--Modelo-->
-                  <div class="col">
-                    <div class="form-floating">
-                      <select class="form-select rf_bg_form rf_texto" v-model="modelo_avaliacao" disabled>
-                        <option v-for="item in modelo" :value="item.id" :key="item.id">
-                          {{ item.descricao }}
-                        </option>
-                      </select>
-                      <label for="valid_empresa" class="rf_texto">Modelo</label>
-                    </div>
-                  </div>
-
-                </div>
-                <div class="row g-2 p-2">
-                  <!--Ano Modelo-->
-                  <div class="col">
-                    <div class="form-floating">
-                      <input type="text" class="form-control rf_bg_form rf_texto" v-model="anoModelo_avaliacao"
-                        disabled />
-                      <label class="rf_texto">Ano Modelo</label>
-                    </div>
-                  </div>
-                  <!--Ano Fabricação-->
-                  <div class="col">
-                    <div class="form-floating">
-                      <input type="text" class="form-control rf_bg_form rf_texto" v-model="anoFabricacao_avaliacao"
-                        disabled />
-                      <label class="rf_texto">Ano Fabricação</label>
-                    </div>
-                  </div>
-                  <!--Valor Avaliado-->
-                  <div class="col">
-                    <div class="form-floating">
-                      <input type="text" class="form-control rf_bg_form rf_texto" v-model="valor_avaliacao" disabled />
-                      <label class="rf_texto">R$ Avaliado</label>
-                    </div>
-                  </div>
-                  <!--kilometragem-->
-                  <div class="col">
-                    <div class="form-floating">
-                      <input type="text" class="form-control rf_bg_form rf_texto" v-model="kilometragem" disabled />
-                      <label class="rf_texto">Kilometragem</label>
-                    </div>
-                  </div>
-                </div>
-                <div class="row g-2 p-2">
-                  <div class="col-6">
-                    <div class="form-floating">
-                      <button type="button" class="btn btn-secondary" data-bs-target="#ModalCadastrarVeiculoAvalicao"
-                        data-bs-toggle="modal" :disabled="inserir_acessorios" @click="habilitar_itens_acessorios">
-                        Cadastrar Veículo Avaliado
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div class="row g-2 p-2">
-                  <div class="form-floating">
-                    <div class="alert bg-dark rf_texto" role="alert">
-                      <div class="row p-2">
-                        <div class="col mt-1">
-                          {{ info_avaliacao }}
-                        </div>
-                        <div class="col-1">
-                          <button class="btn btn-secondary" data-bs-target="#ModalAvaliacaoVeiculo" data-bs-toggle="modal"
-                            :disabled="hab_avaliacao" @click="dialog_avaliacao = true">
-                            info
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <button type="submit" class="btn btn-secondary" disabled>
-                      Cadastrar
-                    </button>
-                  </div>
-                </div>
-              </form>
-              <!--Itens Avaliação-->
-              <nav class="navbar navbar-expand-lg rf_bg_form rf_texto">
-                <div class="container-fluid">
-                  <div>
-                    <i class="bi bi-clipboard-check fs-5">
-                      Itens Avaliação
-                    </i>
-                  </div>
-                </div>
-              </nav>
-              <div class="card bg-dark m-2 p-2">
-                <table class="table rf_texto card_avaliacao" disabled>
-                  <thead>
-                    <tr>
-                      <th scope="col">Item</th>
-                      <th scope="col">R$ Valor</th>
-                      <th scope="col">Tipo</th>
-                      <th scope="col">Ação</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="item in itens_veiculo" :key="item.descricao">
-                      <td>{{ item.item }}</td>
-                      <td>{{ item.valor }}</td>
-                      <td>{{ item.tipo }}</td>
-                      <td>
-                        <button type="button" class="btn btn-secondary" @click="excluir_item_av(item)">
-                          <i class="bi bi-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="row g-2 p-2">
-                <div class="form-floating">
-                  <button type="button" class="btn btn-secondary" data-bs-target="#ModalItensAvaliacao"
-                    data-bs-toggle="modal" :disabled="inserir_item_avaliacao" @click="habilitar_itens_avaliacao">
-                    Inserir
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!--Veículos para compra-->
-          <div class="col-6">
-            <div class="card rf_bg_form mt-3">
-              <nav class="navbar navbar-expand-lg rf_bg_form rf_texto">
-                <div class="container-fluid">
-                  <div>
-                    <i class="bi bi-car-front-fill fs-5">
-                      Veículo de Compra
-                    </i>
-                  </div>
-                </div>
-              </nav>
-              <form @submit.prevent="onSubmitVeiculo">
-                <div class="row g-2 p-2">
-                  <!--Chassi-->
-                  <div class="col">
-                    <div class="form-floating">
-                      <input type="text" class="form-control rf_bg_form rf_texto" v-model="chassi_proposta"
-                        :disabled="true" />
-                      <label class="rf_texto">Chassi</label>
-                    </div>
-                  </div>
-                  <!--Marca-->
-                  <div class="col">
-                    <div class="form-floating">
-                      <input type="text" class="form-control rf_bg_form rf_texto" v-model="marca_proposta"
-                        :disabled="true" />
-                      <label class="rf_texto">Marca</label>
-                    </div>
-                  </div>
-                  <!--Modelo-->
-                  <div class="col">
-                    <div class="form-floating">
-                      <input type="text" class="form-control rf_bg_form rf_texto" v-model="modelo_proposta"
-                        :disabled="true" />
-                      <label class="rf_texto">Modelo</label>
-                    </div>
-                  </div>
-                </div>
-                <div class="row g-2 p-2">
-                  <!--Cor-->
-                  <div class="col">
-                    <div class="form-floating">
-                      <input type="text" class="form-control rf_bg_form rf_texto" v-model="cor_proposta"
-                        :disabled="true" />
-                      <label class="rf_texto">Cor</label>
-                    </div>
-                  </div>
-                  <!--Ano Fabricação-->
-                  <div class="col">
-                    <div class="form-floating">
-                      <input type="text" class="form-control rf_bg_form rf_texto" v-model="anoFabricacao_proposta"
-                        :disabled="true" />
-                      <label class="rf_texto">Ano Fabricação</label>
-                    </div>
-                  </div>
-                  <!--Ano Modelo-->
-                  <div class="col">
-                    <div class="form-floating">
-                      <input type="text" class="form-control rf_bg_form rf_texto" v-model="anoModelo_proposta"
-                        :disabled="true" />
-                      <label class="rf_texto">Ano Modelo</label>
-                    </div>
-                  </div>
-                  <!--Combustivel-->
-                  <div class="col">
-                    <div class="form-floating">
-                      <input type="text" class="form-control rf_bg_form rf_texto" v-model="combustivel_proposta"
-                        :disabled="true" />
-                      <label class="rf_texto">Combustível</label>
-                    </div>
-                  </div>
-                </div>
-                <div class="row g-2 p-2">
-                  <div class="col">
-                    <div class="form-floating">
-                      <button type="submit" class="btn btn-secondary" data-bs-toggle="modal"
-                        data-bs-target="#ModalVeiculoEstoque" :disabled="inserir_veiculo" @click="habilitar_veiculo">
-                        Inserir
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </form>
-              <!--Acessórios e Cortesia-->
-              <nav class="navbar navbar-expand-lg rf_bg_form rf_texto">
-                <div class="container-fluid">
-                  <div>
-                    <i class="bi bi-shop fs-5"> Acessórios e Cortesia </i>
-                  </div>
-                </div>
-              </nav>
-              <div class="card bg-dark m-2 p-2">
-                <table class="table rf_texto card_compra">
-                  <thead>
-                    <tr>
-                      <th scope="col">Descrição</th>
-                      <th scope="col">R$ Valor</th>
-                      <th scope="col">R$ Custo</th>
-                      <th scope="col">Cortesia?</th>
-                      <th scope="col">Ação</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="item in itens_acessorios" :key="item.descricao">
-                      <td>{{ item.descricao }}</td>
-                      <td>{{ item.valor }}</td>
-                      <td>{{ item.custo }}</td>
-                      <td>{{ cortesia }}</td>
-                      <td>
-                        <button type="button" class="btn btn-secondary" @click="excluir_item_ac(item)">
-                          <i class="bi bi-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="row g-2 p-2">
-                <div class="col-2">
-                  <div class="form-floating">
-                    <button type="button" class="btn btn-secondary" data-bs-target="#ModalItensAcessorios"
-                      data-bs-toggle="modal" :disabled="inserir_acessorios" @click="habilitar_itens_acessorios">
-                      Inserir
-                    </button>
-                  </div>
-                </div>
-
-                <div class="col mt-3">
-                  <div class="form-floating">
-                    <div class="form-check form-switch rf_texto">
-                      <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
-                        v-model="incluir_acessorios" @click="habilitar_incluir_itens_financiamento" checked />
-                      <label class="form-check-label" for="flexSwitchCheckChecked">Incluir no Financiamento</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--Bloco Resumo da Proposta-->
-        <div class="row mt-2">
-          <div class="col-6">
-            <div class="card rf_bg_form  mt-3">
-              <nav class="navbar navbar-expand-lg rf_bg_form rf_texto">
-                <div class="container-fluid">
-                  <div>
-                    <i class="bi bi-car-front-fill fs-5">
-                      Resumo da Proposta
-                    </i>
-                  </div>
-                </div>
-              </nav>
-
-              <div class="row g-2 p-2">
-                <!--Valores do Veículo-->
-                <div class="col">
-                  <div class="form-floating">
-                    <nav class="navbar navbar-expand-lg box-atendimento">
-                      <div class="container-fluid">
-                        <div>
-                          <h5>Valores do Veículo</h5>
-                        </div>
-                      </div>
-                    </nav>
-                    <table class="table rf_texto bg-dark">
-                      <tbody>
-                        <tr>
-                          <th scope="row">Valor Sugerido de Venda</th>
-                          <th></th>
-                          <th></th>
-                          <td class="rf_titulo_fonte">
-                            {{ (Valor_Sugerido) }}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row" style="white-space: nowrap; overflow: hidden;">Valor Custos Variáveis (+)</th>
-                          <th></th>
-                          <th></th>
-                          <td class="rf_titulo_fonte">
-                            {{ Valor_Custo_variaveis }}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Valor dos Acessórios</th>
-                          <th></th>
-                          <th></th>
-                          <td class="rf_titulo_fonte">
-                            {{ Valor_Itens_Acessorios }}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Desconto</th>
-                          <td>
-                            <input type="text" class="form-control rf_bg_form rf_texto" v-model="desconto"
-                              v-on:blur="inserir_desconto" @input="desconto = formatarValor(desconto)" />
-
-                          </td>
-                          <th scop="row">Acréscimo</th>
-                          <td>
-                            <input type="text" class="form-control rf_bg_form rf_texto" v-model="adicional"
-                              v-on:blur="inserir_acrescimo" @input="adicional = formatarValor(adicional)" />
-
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row" class="rf_back rf_back_text">
-                            Valor Total Veículo Venda
-                          </th>
-                          <th class="rf_back "></th>
-                          <th class="rf_back "></th>
-                          <td class="rf_titulo_fonte rf_back">
-                            {{ Valor_Total_Venda }}
-                          </td>
-                        </tr>
-                      </tbody>
-                      <div v-if="abrir_modal_desconto">
-                        <div class="alert bg-dark text-center" role="alert">{{ msg }}</div>
-                      </div>
-                      <div v-if="abrir_modal_acrescimo">
-                        <div class="alert bg-dark text-center" role="alert">{{ msg }}</div>
-                      </div>
-                    </table>
-                  </div>
-                </div>
-
-
-              </div>
-              <div class="row g-2 p-2">
-                <!--Resultado Operacional-->
-                <div class="col">
-                  <div class="form-floating">
-                    <nav class="navbar navbar-expand-lg box-atendimento rf_texto">
-                      <div class="container-fluid">
-                        <div>
-                          <h5>Resultado Operacional / Gerencial</h5>
-                        </div>
-                      </div>
-                    </nav>
-
-                    <table class="table rf_texto bg-dark">
-                      <tbody>
-                        <tr>
-                          <th scope="row">Valor Resultado Bruto</th>
-                          <td class="rf_titulo_fonte">{{ Lucro_Bruto }}</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Valor Resultado Gerencial</th>
-                          <td class="rf_titulo_fonte">
-                            {{ Lucro_Operacional }}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Valor Resultado Financiamento</th>
-                          <td class="rf_titulo_fonte">
-                            {{ Valor_Resultado_Financiamento }}
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <th scope="row" class="rf_back rf_back_text">
-                            Valor Resultado Liquído
-                          </th>
-                          <td class="rf_titulo_fonte rf_back">
-                            {{ Lucro_liquido }}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="card rf_bg_form mt-3">
-              <nav class="navbar navbar-expand-lg rf_bg_form rf_texto">
-                <div class="container-fluid">
-                  <div>
-                    <i class="bi bi-car-front-fill fs-5">
-                      Resumo da Proposta
-                    </i>
-                  </div>
-                </div>
-              </nav>
-
-              <div class="row g-2 p-2">
-                <!--Avaliação do Veículo-->
-                <div class="col">
-                  <div class="form-floating">
-                    <nav class="navbar navbar-expand-lg box-atendimento rf_texto">
-                      <div class="container-fluid">
-                        <div>
-                          <h5>Avaliação do Veículo</h5>
-                        </div>
-                      </div>
-                    </nav>
-
-                    <table class="table rf_texto bg-dark">
-                      <tbody>
-                        <tr>
-                          <th scope="row">Valor Avaliação</th>
-                          <td class="rf_titulo_fonte">
-                            {{ Valor_Avaliado }}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Valor Itens Avaliados DB(-)</th>
-                          <td class="rf_titulo_fonte">
-                            {{ Valor_Itens_Avaliacao_db }}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Valor Itens Avaliados CR(+)</th>
-                          <td class="rf_titulo_fonte">
-                            {{ Valor_Itens_Avaliacao_cr }}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <input type="text" class="input-proposta" :disabled="true" />
-                          </td>
-                          <td>
-                            <input type="text" class="input-proposta" :disabled="true" />
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row" class="rf_back rf_back_text">
-                            Valor Avaliação Final
-                          </th>
-                          <td class="rf_titulo_fonte rf_back">
-                            {{ Valor_Avaliacao_Final }}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <div class="row g-2 p-2">
-                <!--Informação Sobre o financiamento-->
-                <div class="col">
-                  <div class="form-floating">
-                    <nav class="navbar navbar-expand-lg box-atendimento rf_texto">
-                      <div class="container-fluid">
-                        <div>
-                          <h5>Informações sobre o Financiamento</h5>
-                        </div>
-                      </div>
-                    </nav>
-
-                    <table class="table rf_texto bg-dark">
-                      <tbody>
-                        <tr>
-                          <th scope="row">Valor Entrada</th>
-                          <td class="rf_titulo_fonte">{{ Valor_Entrada }}</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Valor Financiado</th>
-                          <td class="rf_titulo_fonte">
-                            {{ Valor_Financiado }}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Quantidade de Meses</th>
-                          <td class="rf_titulo_fonte">
-                            {{ Quantidade_Meses }}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row" class="rf_back rf_back_text">
-                            Valor da Parcela
-                          </th>
-                          <td class="rf_titulo_fonte rf_back">{{ Pmt }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--Bloco Financiamento-->
-        <div class="row mt-2">
-          <div class="col">
-            <div class="card rf_bg_form mt-3">
-              <nav class="navbar navbar-expand-lg rf_bg_form rf_texto">
-                <div class="container-fluid">
-                  <div>
-                    <i class="bi bi-car-front-fill fs-5"> Financiamento </i>
-                  </div>
-                </div>
-              </nav>
-              <div class="row g-2 p-2">
-                <div class="col">
-                  <div class="form-floating">
-                    <nav class="navbar navbar-expand-lg box-atendimento rf_texto">
-                      <div class="container-fluid">
-                        <div>
-                          <h5>Valores do Veículo</h5>
-                        </div>
-                      </div>
-                    </nav>
-
-                    <table class="table rf_texto bg-dark">
-                      <thead>
-                        <tr>
-                          <th class="col-2"></th>
-                          <th class="col-1"></th>
-                          <th class="col-1"></th>
-                          <!--Parcela 1-->
-                          <th>
-                            <div class="form-floating">
-                              <select class="form-select bg-dark rf_texto" v-model="parcela_1">
-                                <option v-for="item in itens_financiamento" :value="item.value" :key="item.value">
-                                  {{ item.value }}
-                                </option>
-                              </select>
-                              <label for="valid_empresa" class="rf_texto">Parcela</label>
-                            </div>
-                          </th>
-                          <!--Parcela 2-->
-                          <th>
-                            <div class="form-floating">
-                              <select class="form-select bg-dark rf_texto" v-model="parcela_2" v-on:blur="hab_ranquear">
-                                <option v-for="item in itens_financiamento" :value="item.value" :key="item.value">
-                                  {{ item.value }}
-                                </option>
-                              </select>
-                              <label for="valid_empresa" class="rf_texto">Parcela</label>
-                            </div>
-                          </th>
-                          <!--Parcela 3-->
-                          <th>
-                            <div class="form-floating">
-                              <select class="form-select bg-dark rf_texto" v-model="parcela_3" v-on:blur="hab_ranquear">
-                                <option v-for="item in itens_financiamento" :value="item.value" :key="item.value">
-                                  {{ item.value }}
-                                </option>
-                              </select>
-                              <label for="valid_empresa" class="rf_texto">Parcela</label>
-                            </div>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <!--Primeira Linha-->
-                        <tr>
-                          <th scope="row">
-                            <div class="d-grid gap-2">
-                              <button class="btn btn-lg btn-secondary mt-1 disabled">
-                                Simulação 1
-                              </button>
-                            </div>
-                          </th>
-                          <td>
-                            <div class="form-floating">
-                              <input type="text" class="form-control rf_bg_form rf_texto" v-model="entrada_1"
-                                v-on:blur="calcular_real_1" :disabled="bloquear_entrada"
-                                @input="entrada_1 = formatarValor(entrada_1)" />
-                              <label class="rf_texto">Entrada R$</label>
-                            </div>
-
-                          </td>
-                          <td>
-                            <div class="form-floating">
-                              <input type="text" class="form-control rf_bg_form rf_texto" :disabled="bloquear_entrada"
-                                v-model="entrada_1_perc" @input="calcular_perc_1()" />
-                              <label class="rf_texto">Entrada %</label>
-                            </div>
-                          </td>
-                          <td>
-                            <div class="d-grid gap-2">
-                              <button type="button" class="btn btn-secondary btn-lg mt-1"
-                                :class="{ 'active': pmtSelected === 11 }" @click="select_pmt(parcela_1_1, 11)">
-                                {{ parcela_1_1 }}
-                              </button>
-                            </div>
-                          </td>
-                          <td>
-                            <div class="d-grid gap-2">
-                              <button type="button" class="btn btn-secondary btn-lg mt-1"
-                                :class="{ 'active': pmtSelected === 12 }" @click="select_pmt(parcela_1_2, 12)">
-                                {{ parcela_1_2 }}
-                              </button>
-                            </div>
-                          </td>
-                          <td>
-                            <div class="d-grid gap-2">
-                              <button type="button" class="btn btn-secondary btn-lg mt-1"
-                                :class="{ 'active': pmtSelected === 13 }" @click="select_pmt(parcela_1_3, 13)">
-                                {{ parcela_1_3 }}
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                        <!-- Segunda Linha-->
-                        <tr>
-                          <th scope="row">
-                            <div class="d-grid gap-2">
-                              <button class="btn btn-lg btn-secondary mt-1 disabled">
-                                Simulação 2
-                              </button>
-                            </div>
-                          </th>
-                          <td>
-                            <div class="form-floating">
-                              <input type="text" class="form-control rf_bg_form rf_texto rf_texto" v-model="entrada_2"
-                                :disabled="bloquear_entrada" v-on:blur="calcular_real_2"
-                                @input="entrada_2 = formatarValor(entrada_2)" />
-                              <label class="rf_texto">Entrada R$</label>
-                            </div>
-                          </td>
-                          <td>
-                            <div class="form-floating">
-                              <input type="text" class="form-control rf_bg_form rf_texto rf_texto"
-                                :disabled="bloquear_entrada" v-model="entrada_2_perc" @input="calcular_perc_2()" />
-                              <label class="rf_texto">Entrada %</label>
-                            </div>
-                          </td>
-                          <td>
-                            <div class="d-grid gap-2">
-                              <button type="button" class="btn btn-secondary btn-lg mt-1"
-                                :class="{ 'active': pmtSelected === 21 }" @click="select_pmt(parcela_2_1, 21)">
-                                {{ parcela_2_1 }}
-                              </button>
-                            </div>
-                          </td>
-                          <td>
-                            <div class="d-grid gap-2">
-                              <button type="button" class="btn btn-secondary btn-lg mt-1"
-                                :class="{ 'active': pmtSelected === 22 }" @click="select_pmt(parcela_2_2, 22)">
-                                {{ parcela_2_2 }}
-                              </button>
-                            </div>
-                          </td>
-                          <td>
-                            <div class="d-grid gap-2">
-                              <button type="button" class="btn btn-secondary btn-lg mt-1"
-                                :class="{ 'active': pmtSelected === 23 }" @click="select_pmt(parcela_2_3, 23)">
-                                {{ parcela_2_3 }}
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                        <!--Terceira Linha-->
-                        <tr>
-                          <th scope="row">
-                            <div class="d-grid gap-2">
-                              <button class="btn btn-lg btn-secondary mt-1 disabled">
-                                Simulação 3
-                              </button>
-                            </div>
-                          </th>
-                          <td>
-                            <div class="form-floating">
-                              <input type="text" class="form-control rf_bg_form rf_texto rf_texto" v-model="entrada_3"
-                                :disabled="bloquear_entrada" v-on:blur="calcular_real_3"
-                                @input="entrada_3 = formatarValor(entrada_3)" />
-                              <label class="rf_texto">Entrada R$</label>
-                            </div>
-                          </td>
-                          <td>
-                            <div class="form-floating">
-                              <input type="text" class="form-control rf_bg_form rf_texto rf_texto"
-                                :disabled="bloquear_entrada" v-model="entrada_3_perc" @input="calcular_perc_3()" />
-                              <label class="rf_texto">Entrada %</label>
-                            </div>
-                          </td>
-                          <td>
-                            <div class="d-grid gap-2">
-                              <button type="button" class="btn btn-secondary btn-lg mt-1"
-                                :class="{ 'active': pmtSelected === 31 }" @click="select_pmt(parcela_3_1, 31)">
-                                {{ parcela_3_1 }}
-                              </button>
-                            </div>
-                          </td>
-                          <td>
-                            <div class="d-grid gap-2">
-                              <button type="button" class="btn btn-secondary btn-lg mt-1"
-                                :class="{ 'active': pmtSelected === 32 }" @click="select_pmt(parcela_3_2, 32)">
-                                {{ parcela_3_2 }}
-                              </button>
-                            </div>
-                          </td>
-                          <td>
-                            <div class="d-grid gap-2">
-                              <button type="button" class="btn btn-secondary btn-lg mt-1"
-                                :class="{ 'active': pmtSelected === 33 }" @click="select_pmt(parcela_3_3, 33)">
-                                {{ parcela_3_3 }}
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                        <!--Quarta Linha-->
-                        <tr>
-                          <td>
-                            <div class="d-grid gap-2">
-                              <button class="btn btn-secondary mt-1" @click="limpar_financiamento">
-                                Limpar Entradas
-                              </button>
-                            </div>
-                          </td>
-                          <th></th>
-                          <th></th>
-                          <th scope="row">
-                            <div class="d-grid gap-2">
-                              <button class="btn btn-lg btn-secondary mt-1" id="btn_1" :disabled="entrada_1 === ''"
-                                data-bs-target="#ModalRanqueamento" data-bs-toggle="modal" @click="ranqueamento_1()">
-                                Ranquear
-                              </button>
-                            </div>
-                          </th>
-                          <th scope="row">
-                            <div class="d-grid gap-2">
-                              <button class="btn btn-lg btn-secondary mt-1" id="btn_2" :disabled="entrada_1 === ''"
-                                data-bs-target="#ModalRanqueamento" data-bs-toggle="modal" @click="ranqueamento_2()">
-                                Ranquear
-                              </button>
-                            </div>
-                          </th>
-                          <th scope="row">
-                            <div class="d-grid gap-2">
-                              <button class="btn btn-lg btn-secondary mt-1" id="btn_3" :disabled="entrada_1 === ''"
-                                data-bs-target="#ModalRanqueamento" data-bs-toggle="modal" @click="ranqueamento_3()">
-                                Ranquear
-                              </button>
-                            </div>
-                          </th>
-                        </tr>
-
-
-                      </tbody>
-                    </table>
-                    <div class="row g-2 ">
-                      <div class="col">
-                        <div class="form-floating">
-                          <textarea v-model="info_adicionais" class="form-control rf_bg_form rf_texto"></textarea>
-                          <label class="rf_texto">Informações Adicionais</label>
-                        </div>
-                      </div>
-                      <div class="col-2  mt-3">
-                        <button class="btn btn-secondary" :disabled="info_adicionais === ''"
-                          @click="grava_info_adicional">GRAVAR INFORMAÇÕES</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+  <!--Bloco dados do cliente-->
+  <div class="card card-filtro">
+    <form @submit.prevent="onSubmit">
+      <div class="row g-2 p-2">
+        <div class="card-title gy-4">
+          <i class="bi bi-journal-text fs-5 icone_filtro"><span class="texto_filtro">Dados do Cliente</span></i>
         </div>
       </div>
-      <div v-if="abrir_modal">
-        <Message :msg="msg" v-show="msg" />
-      </div>
-      <div v-if="abrir_modal_atualizar">
-        <MessageAtualizar :msg="msg_atualizar" v-show="msg_atualizar" />
-      </div>
-      <div class="modal-footer">
-        <!-- <button class="btn btn-secondary" :disabled="btn_gerar_menu" @click="gerar_menu_desk">
-              <router-link class=" nav-link" :to="{ name: 'menu', query: { dados: id_proposta } }">GERAR
-                MENU</router-link>
-               
-            </button> -->
 
-        <button type="submit" class="btn btn-secondary m-1" data-bs-toggle="modal" data-bs-target="#ModalGerarMenu"
-          :disabled="btn_gerar_menu" @click="carregarDadosMenu()">
-          GERAR MENU
-        </button>
-
-        <!-- <button
-              class="btn btn-secondary"
-              data-bs-target="#ModalGerarMenu"
-              data-bs-toggle="modal"
-              @click="gerar_menu_desk"
-            >
-              GERAR MENU
-            </button> -->
-        <button class="btn btn-secondary m-1" :disabled="btn_finalizar_venda" @click="finalizar_venda">
-          FINALIZAR VENDA
-        </button>
-        <button class="btn btn-secondary m-1" @click="venda_perdida">VENDA PERDIDA</button>
-      </div>
-    </div>
-
-
-    <!--Modal Estoque-->
-    <div class="modal fade" id="ModalVeiculoEstoque" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
-      tabindex="-1">
-      <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content bg-dark rf_texto">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
-              Veiculos em Estoque
-            </h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <!--Id da Proposta-->
+      <div class="row g-2 p-2">
+        <div class="col-1">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form  rf_texto" v-model="id_proposta" :disabled="true" />
+            <label for="valid_descricao" class="rf_texto">Nº Proposta</label>
           </div>
-          <div class="modal-body">
-            <!--Modal Estoque-->
-            <nav class="navbar navbar-expand-lg rf_bg_form rf_texto">
-              <div class="container-fluid">
-                <div>
-                  <i class="bi bi-sliders fs-5"> Filtros </i>
-                </div>
-              </div>
-            </nav>
-
-            <div class="card rf_bg_form mt-3">
-              <div class="row g-2 p-2">
-                <div class="col-2">
-                  <div class="form-floating">
-                    <select class="form-select rf_bg_form rf_texto" v-model="tipoVeiculo">
-                      <option value="NOVO">Novo</option>
-                      <option value="USADO">Usado</option>
-                    </select>
-                    <label class="rf_texto">Tipo Veículo</label>
-
-                  </div>
-                </div>
-                <!--Marca-->
-                <div class="col-2">
-                  <div class="form-floating">
-                    <input v-model="searchMarca" class="form-control rf_bg_form rf_texto" list="dataListMarcaEstoque"
-                      autocomplete="off" />
-
-                    <label>Marca</label>
-                    <datalist id="dataListMarcaEstoque">
-                      <option v-for="opt in marcas_estoque" :data-value="opt.marca" :value="opt.marca" :key="opt.marca">
-                      </option>
-                    </datalist>
-                  </div>
-                </div>
-                <!--Modelo-->
-                <div class="col-2">
-                  <div class="form-floating">
-                    <input v-model="searchTitle" class="form-control rf_bg_form rf_texto" list="dataListModeloEstoque"
-                      autocomplete="off" />
-
-                    <label>Modelo</label>
-                    <datalist id="dataListModeloEstoque">
-                      <option v-for="opt in modelos_estoque" :data-value="opt.modelo" :value="opt.modelo"
-                        :key="opt.modelo"></option>
-                    </datalist>
-                  </div>
-                </div>
-                <!--Ano modelo-->
-                <div class="col-1">
-                  <div class="form-floating">
-                    <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchAnoMod" />
-                    <label class="rf_texto">Ano Mod.</label>
-                  </div>
-                </div>
-                <!--Ano Fabricação-->
-                <div class="col-1">
-                  <div class="form-floating">
-                    <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchAnoFab" />
-                    <label class="rf_texto">Ano Fab.</label>
-                  </div>
-                </div>
-                <!--Cor-->
-                <div class="col-2">
-                  <div class="form-floating">
-                    <input v-model="searchCor" class="form-control rf_bg_form rf_texto" list="dataListCorEstoque"
-                      autocomplete="off" />
-
-                    <label>Cor</label>
-                    <datalist id="dataListCorEstoque">
-                      <option v-for="opt in cores_estoque" :data-value="opt.cor" :value="opt.cor" :key="opt.cor"></option>
-                    </datalist>
-                  </div>
-                </div>
-                <!--Chassi-->
-                <div class="col-2">
-                  <div class="form-floating">
-                    <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchChassi" />
-                    <label class="rf_texto">Chassi</label>
-                  </div>
-                </div>
-                <!--Placa-->
-                <div class="col-2">
-                  <div class="form-floating">
-                    <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchPlaca" />
-                    <label class="rf_texto">Placa</label>
-                  </div>
-                </div>
-
-              </div>
-              <div class="row g-2 p-2">
-
-
-                <!--Valor inicial-->
-                <!-- <div class="col">
-                      <div class="form-floating">
-                        <input
-                          type="text"
-                          class="form-control rf_bg_form rf_texto"
-                          v-model="searchValFin"
-                        />
-                        <label class="rf_texto">Valor Inicial</label>
-                      </div>
-                    </div> -->
-                <!--Valor Final-->
-                <!-- <div class="col">
-                      <div class="form-floating">
-                        <input
-                          type="text"
-                          class="form-control rf_bg_form rf_texto"
-                          v-model="searchValFin"
-                        />
-                        <label class="rf_texto">Valor Final</label>
-                      </div>
-                    </div> -->
-              </div>
-              <div class="row g-2 p-2">
-                <div class="form-floating">
-                  <button class="btn btn-secondary" @click="page = 1;
-                  retrieveEstoque();
-                  ">
-                    Pequisar
-                  </button>
-                </div>
-              </div>
-              <!--Tabelas-->
-              <div class="card bg-dark g-2 p-2 m-2">
-                <table class="table rf_texto">
-                  <thead>
-                    <tr>
-                      <th scope="col">Estoque</th>
-                      <th scope="col">Loja</th>
-                      <th scope="col">Cat.</th>
-                      <th scope="col">Chassis</th>
-                      <th scope="col">Modelo</th>
-                      <th scope="col">R$ PPS</th>
-                      <th scope="col">Dias Est.</th>
-                      <th scope="col">Cor</th>
-                      <th scope="col">Marca</th>
-                      <th scope="col">Ano Mod.</th>
-                      <th scope="col">Ano Fab.</th>
-                      <th scope="col">KM</th>
-                      <th scope="col">Placa</th>
-                      <th scope="col">Comb.</th>
-                      <th scope="col">Ação</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="  item   in   estoque_veiculo   " :key="item.id">
-                      <td>{{ item.situacaoestoque }}</td>
-                      <td>{{ item.descricaoreduzida }}</td>
-                      <td>{{ item.estadoveiculo }}</td>
-                      <td>{{ item.chassi }}</td>
-                      <td>{{ item.modelo }}</td>
-                      <td>
-                        {{ currency(item.valortotalvenda) }}
-
-                      </td>
-
-                      <td>{{ item.diasestoque }}</td>
-                      <td>{{ item.cor }}</td>
-                      <td>{{ item.marca }}</td>
-                      <td>{{ item.anomodelo }}</td>
-                      <td>{{ item.anofabricacao }}</td>
-                      <td>{{ item.quilometragem }}</td>
-                      <td>{{ item.placa }}</td>
-                      <td>{{ item.combustivel }}</td>
-
-                      <td>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                          @click=" carregarVeiculo(item)">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-pencil" viewBox="0 0 16 16">
-                            <path
-                              d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-                          </svg>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <pagination v-if="estoque_veiculo.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
-                  @change-page="handlePageChange" />
-              </div>
-            </div>
+        </div>
+        <div class="col">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="recepcionista" :disabled="true" />
+            <label for="valid_descricao" class="rf_texto">Atendente</label>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-              Fechar
+        </div>
+        <div class="col">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="vendedor_info" :disabled="true" />
+            <label for="valid_descricao" class="rf_texto">Vendedor</label>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="form-floating">
+            <button type="button" class="btn btn-lg btn-filtro" data-bs-toggle="modal"
+              data-bs-target="#ModalTrocarVendedor" @click="retrieveVendedorDispo">
+              <span class="rf_texto_btn">Troca Vendedor</span>
+            </button>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="form-floating">
+            <button type="button" class="btn btn-lg btn-filtro" @click="habilitar_cadastro">
+              <span class="rf_texto_btn">Habilitar Cadastro</span>
             </button>
           </div>
         </div>
       </div>
-    </div>
-    <!--Modal Trocar Vendedor-->
-    <div class="modal fade" id="ModalTrocarVendedor" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
-      tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content bg-dark rf_texto">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
-              Troca Vendedor
-            </h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form @submit.prevent="onSubmitTrocaVendedor">
-              <div class="row g-2 p-2">
-                <div v-if="abrir_modal">
-                  <div class="alert bg-dark text-center" role="alert">{{ msg }}</div>
-                </div>
-              </div>
-              <!--Item-->
-              <div class="row g-2 p-2">
-                <div class="col">
-                  <div class="form-floating">
-                    <input type="text" class="form-control rf_bg_form rf_texto" v-model="justificativa_vendedor"
-                      v-on:blur="validar_vendedor" />
-                    <label class="rf_texto">Justificativa</label>
-                  </div>
-                </div>
 
+
+      <!-- Dados do Cliente-->
+      <div class="row g-2 p-2">
+        <!--Nome do Cliente-->
+        <div class="col-4">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" :style="{ 'border-color': nomeBorderColor }"
+              v-model="cliente" :disabled="input_cliente" required />
+            <label for="valid_descricao" class="rf_texto">Nome do Cliente</label>
+          </div>
+        </div>
+        <!--CPF/CNPJ-->
+        <div class="col-md-2">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="cpfCnpj"
+              :style="{ 'border-color': cnpjBorderColor }" :disabled="input_cliente" required v-on:blur="vData" />
+            <label for="valid_descricao" class="rf_texto">CPF/CNPJ</label>
+          </div>
+        </div>
+        <!--Data Nascimento-->
+        <div class="col-2">
+          <div class="form-floating">
+            <input type="date" class="form-control rf_bg_form rf_texto" v-model="dataNascimento"
+              :style="{ 'border-color': dataNascimentoBorderColor }" :disabled="input_cliente" autocomplete="off" />
+            <label class="rf_texto">Data Nascimento</label>
+          </div>
+        </div>
+        <!--Email-->
+        <div class="col">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="email" v-on:blur="validateEmail(email)"
+              :style="{ 'border-color': emailBorderColor }" :disabled="input_cliente" />
+            <label for="valid_descricao" class="rf_texto">Email</label>
+          </div>
+        </div>
+      </div>
+      <div class="row g-2 p-2">
+        <!--Endereço-->
+        <div class="col-4">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="endereco"
+              :style="{ 'border-color': enderecoBorderColor }" :disabled="input_cliente" required autocomplete="off" />
+            <label class="rf_texto">Endereço</label>
+          </div>
+        </div>
+        <!--Complemento-->
+        <div class="col-2">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="complemento"
+              :style="{ 'border-color': complementoBorderColor }" :disabled="input_cliente" autocomplete="off" />
+            <label class="rf_texto">Complemento</label>
+          </div>
+        </div>
+        <!--UF-->
+        <div class="col-1">
+          <div class="form-floating">
+            <input v-model="uf" :style="{ 'border-color': ufBorderColor }" :disabled="input_cliente"
+              class="form-control rf_bg_form rf_texto" list="datalistOptions" id="estado" required autocomplete="off" />
+
+            <label class="rf_texto">UF</label>
+            <datalist id="datalistOptions">
+              <option v-for="opt in estados" :data-value="opt.id" :value="opt.sigla" :key="opt.id"></option>
+            </datalist>
+          </div>
+        </div>
+        <!--Cidade-->
+        <div class="col-2">
+          <div class="form-floating">
+            <input v-model="cidade" :style="{ 'border-color': cidadeBorderColor }" :disabled="input_cliente"
+              class="form-control rf_bg_form rf_texto" list="datalistCidades" id="cidade" required autocomplete="off" />
+
+            <label class="rf_texto">Cidade</label>
+            <datalist id="datalistCidades">
+              <option v-for="opt in cidades" :data-value="opt.id" :value="opt.nome" :key="opt.id"></option>
+            </datalist>
+          </div>
+        </div>
+        <!--Bairro-->
+        <div class="col-2">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="bairro"
+              :style="{ 'border-color': bairroBorderColor }" :disabled="input_cliente" autocomplete="off" required />
+            <label class="rf_texto">Bairro</label>
+          </div>
+        </div>
+        <!--CEP-->
+        <div class="col-1">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="cep"
+              :style="{ 'border-color': cepBorderColor }" :disabled="input_cliente" autocomplete="off" required />
+            <label class="rf_texto">CEP</label>
+          </div>
+        </div>
+      </div>
+      <div class="row g-2 p-2">
+        <!--Telefone-->
+        <div class="col-2">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="tel"
+              :style="{ 'border-color': telBorderColor }" :disabled="input_cliente" required v-on:blur="vTel" />
+            <label for="valid_descricao" class="rf_texto">Telefone</label>
+          </div>
+        </div>
+        <!--Telefone-->
+        <div class="col-2">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="cel"
+              :style="{ 'border-color': celBorderColor }" :disabled="input_cliente" v-on:blur="vTel2" />
+            <label for="valid_descricao" class="rf_texto">Telefone 2</label>
+          </div>
+        </div>
+        <!--Histórico Cliente-->
+        <div class="col-2">
+          <div class="form-floating">
+            <button class="btn btn-lg btn-filtro" data-bs-target="#ModalHistoricoCliente" data-bs-toggle="modal"
+              @click="habilitar_historico_cliente">
+              <span class="rf_texto_btn">Histórico Cliente</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!--Atualizar Cliente-->
+      <div class="row g-2 p-2">
+        <div class="col-1">
+          <div class="form-floating">
+            <button type="button" class="btn btn-lg btn-filtro" :disabled="input_cliente" @click="atualizar_cliente()">
+              <span class="rf_texto_btn">Atualizar</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!--Venda Futura-->
+      <div class="row g-2 p-2">
+        <div class="col-2" v-if="venda_Futura">
+          <div class="form-floating">
+            <select class="form-select rf_bg_form rf_texto" v-model="selected_familia_veiculo_escolhido"
+              @change="vendaFutura">
+              <option v-for="item in familia_veiculo_escolhido" :value="item.id" :key="item.id">
+                {{ item.descricao }}
+              </option>
+            </select>
+            <label class="rf_texto">Família</label>
+          </div>
+        </div>
+        <div class="col-2" v-if="venda_Futura">
+          <div class="form-floating">
+            <select class="form-select rf_bg_form rf_texto" v-model="selected_modelo_veiculo_escolhido"
+              @change="completar_modelo(selected_modelo_veiculo_escolhido)">
+              <option v-for="item in modelo_veiculo_escolhido" :value="item.id" :key="item.id">
+                {{ item.descricao }}
+              </option>
+            </select>
+            <label class="rf_texto">Modelo</label>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="form-floating">
+            <div class="form-check form-switch rf_texto mt-3">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked1"
+                v-model="venda_Futura" @click="select_familia" />
+              <label class="form-check-label" for="flexSwitchCheckChecked1">Venda Futura</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="form-floating">
+            <div class="form-check form-switch rf_texto mt-3">
+              <input class="form-check-input" type="checkbox" role="switch" v-model="pagamento" />
+              <label class="form-check-label">Venda à Vista</label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+  <!--Bloco Veiculos-->
+  <div class="card card-filtro">
+    <div class="row ">
+      <!--Veículos para troca-->
+      <!-- <div class="col-6">
+      <div class="card rf_bg_form mt-3">
+        <nav class="navbar navbar-expand-lg rf_bg_form rf_texto">
+          <div class="container-fluid">
+            <div>
+              <i class="bi bi-car-front-fill fs-5">
+                Veículos de Entrada
+              </i>
+            </div>
+          </div>
+        </nav>
+        <form @submit.prevent="onSubmitVeiculoAvaliacao">
+          <div class="row g-2 p-2">
+            
+            <div class="col">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="placa_avaliacao"
+                  v-on:blur="verificar_avaliacao()" />
+                <label class="rf_texto">Placa</label>
               </div>
-              <div class="row g-2 p-2">
-                <div class="col-6">
-                  <div class="form-floating">
-                    <select class="form-select rf_bg_form rf_texto" v-model="vendedor_troca" :disabled="check_vend">
-                      <option v-for="item in troca_vendedor" :value="item.id" :key="item.id">
-                        {{ item.username }}
-                      </option>
-                    </select>
-                    <label class="rf_texto">Vendedor</label>
+            </div>
+            
+            <div class="col">
+              <div class="form-floating">
+                <input v-model="marca_avaliacao" class="form-control rf_bg_form rf_texto" list="datalistOptions"
+                  id="marca" autocomplete="off" v-on:blur="filtrar_familia()" />
+
+
+                <label>Marca</label>
+                <datalist id="datalistOptions">
+                  <option v-for="opt in marca" :data-value="opt.id" :value="opt.descricao" :key="opt.id">
+                  </option>
+                </datalist>
+              </div>
+            </div>
+            
+            <div class="col">
+              <div class="form-floating">
+                <input v-model="familia_avaliacao" class="form-control rf_bg_form rf_texto" list="datalistFamilia"
+                  id="familia" autocomplete="off" v-on:blur="filtrar_modelo()" disabled />
+
+
+                <label>Familia</label>
+                <datalist id="datalistFamilia">
+                  <option v-for="opt in familia" :data-value="opt.id" :value="opt.descricao" :key="opt.id">
+                  </option>
+                </datalist>
+              </div>
+            </div>
+
+            
+            <div class="col">
+              <div class="form-floating">
+                <select class="form-select rf_bg_form rf_texto" v-model="modelo_avaliacao" disabled>
+                  <option v-for="item in modelo" :value="item.id" :key="item.id">
+                    {{ item.descricao }}
+                  </option>
+                </select>
+                <label for="valid_empresa" class="rf_texto">Modelo</label>
+              </div>
+            </div>
+
+          </div>
+          <div class="row g-2 p-2">
+            
+            <div class="col">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="anoModelo_avaliacao"
+                  disabled />
+                <label class="rf_texto">Ano Modelo</label>
+              </div>
+            </div>
+            
+            <div class="col">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="anoFabricacao_avaliacao"
+                  disabled />
+                <label class="rf_texto">Ano Fabricação</label>
+              </div>
+            </div>
+            
+            <div class="col">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="valor_avaliacao" disabled />
+                <label class="rf_texto">R$ Avaliado</label>
+              </div>
+            </div>
+            
+            <div class="col">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="kilometragem" disabled />
+                <label class="rf_texto">Kilometragem</label>
+              </div>
+            </div>
+          </div>
+          <div class="row g-2 p-2">
+            <div class="col-6">
+              <div class="form-floating">
+                <button type="button" class="btn btn-secondary" data-bs-target="#ModalCadastrarVeiculoAvalicao"
+                  data-bs-toggle="modal" :disabled="inserir_acessorios" @click="habilitar_itens_acessorios">
+                  Cadastrar Veículo Avaliado
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row g-2 p-2">
+            <div class="form-floating">
+              <div class="alert bg-dark rf_texto" role="alert">
+                <div class="row p-2">
+                  <div class="col mt-1">
+                    {{ info_avaliacao }}
                   </div>
-                </div>
-                <div class="col-3">
-                  <div class="form-floating">
-                    <button class="btn btn-secondary btn-lg mt-1" data-bs-dismiss="modal" :disabled="check_vend"
-                      type="submit">
-                      Alterar
+                  <div class="col-1">
+                    <button class="btn btn-secondary" data-bs-target="#ModalAvaliacaoVeiculo" data-bs-toggle="modal"
+                      :disabled="hab_avaliacao" @click="dialog_avaliacao = true">
+                      info
                     </button>
                   </div>
                 </div>
               </div>
-            </form>
+              <button type="submit" class="btn btn-secondary" disabled>
+                Cadastrar
+              </button>
+            </div>
+          </div>
+        </form>
+        
+        <nav class="navbar navbar-expand-lg rf_bg_form rf_texto">
+          <div class="container-fluid">
+            <div>
+              <i class="bi bi-clipboard-check fs-5">
+                Itens Avaliação
+              </i>
+            </div>
+          </div>
+        </nav>
+        <div class="card bg-dark m-2 p-2">
+          <table class="table rf_texto card_avaliacao" disabled>
+            <thead>
+              <tr>
+                <th scope="col">Item</th>
+                <th scope="col">R$ Valor</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in itens_veiculo" :key="item.descricao">
+                <td>{{ item.item }}</td>
+                <td>{{ item.valor }}</td>
+                <td>{{ item.tipo }}</td>
+                <td>
+                  <button type="button" class="btn btn-secondary" @click="excluir_item_av(item)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="row g-2 p-2">
+          <div class="form-floating">
+            <button type="button" class="btn btn-secondary" data-bs-target="#ModalItensAvaliacao"
+              data-bs-toggle="modal" :disabled="inserir_item_avaliacao" @click="habilitar_itens_avaliacao">
+              Inserir
+            </button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+      <!--Veículos para compra-->
+      <div class="col">
+        <form @submit.prevent="onSubmitVeiculo">
+          <div class="row g-2 p-2">
+            <div class="card-title gy-4">
+              <i class="bi bi-car-front-fill fs-5 icone_filtro"><span class="texto_filtro">Veículo de Compra</span></i>
+            </div>
+            <!--Chassi-->
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="chassi_proposta"
+                  :disabled="true" />
+                <label class="rf_texto">Chassi</label>
+              </div>
+            </div>
+            <!--Marca-->
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="marca_proposta" :disabled="true" />
+                <label class="rf_texto">Marca</label>
+              </div>
+            </div>
+            <!--Modelo-->
+            <div class="col-6">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="modelo_proposta"
+                  :disabled="true" />
+                <label class="rf_texto">Modelo</label>
+              </div>
+            </div>
+            <!--Cor-->
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="cor_proposta" :disabled="true" />
+                <label class="rf_texto">Cor</label>
+              </div>
+            </div>
+          </div>
+          <div class="row g-2 p-2">
+            <!--Ano Fabricação-->
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="anoFabricacao_proposta"
+                  :disabled="true" />
+                <label class="rf_texto">Ano Fabricação</label>
+              </div>
+            </div>
+            <!--Ano Modelo-->
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="anoModelo_proposta"
+                  :disabled="true" />
+                <label class="rf_texto">Ano Modelo</label>
+              </div>
+            </div>
+            <!--Combustivel-->
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="combustivel_proposta"
+                  :disabled="true" />
+                <label class="rf_texto">Combustível</label>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-floating">
+                <button type="submit" class="btn btn-lg btn-filtro" data-bs-toggle="modal"
+                  data-bs-target="#ModalVeiculoEstoque" :disabled="inserir_veiculo" @click="habilitar_veiculo">
+                  <span class="rf_texto_btn">Inserir</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row g-2 p-2">
+
+          </div>
+        </form>
+        <!--Acessórios e Cortesia-->
+        <div class="row g-2 p-2">
+          <div class="card-title gy-4">
+            <i class="bi bi-shop fs-5 icone_filtro"><span class="texto_filtro">Acessórios e Cortesia</span></i>
+          </div>
+        </div>
+
+        <div class="card card-tabela-desk  rf_margin">
+          <table class="table rf_texto ">
+            <thead>
+              <tr>
+                <th scope="col">Descrição</th>
+                <th scope="col">R$ Valor</th>
+                <th scope="col">R$ Custo</th>
+                <th scope="col">Cortesia?</th>
+                <th scope="col">Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in itens_acessorios" :key="item.descricao" class="table-linha">
+                <td>{{ item.descricao }}</td>
+                <td>{{ item.valor }}</td>
+                <td>{{ item.custo }}</td>
+                <td>{{ cortesia }}</td>
+                <td>
+                  <button type="button" class="dropdown-toggle-icon" @click="excluir_item_ac(item)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="row g-2 p-2">
+          <div class="col-1">
+            <div class="form-floating">
+              <button type="button" class="btn btn-lg btn-filtro" data-bs-target="#ModalItensAcessorios"
+                data-bs-toggle="modal" :disabled="inserir_acessorios" @click="habilitar_itens_acessorios">
+                <span class="rf_texto_btn">Inserir</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="col mt-4">
+            <div class="form-floating">
+              <div class="form-check form-switch rf_texto">
+                <input class="form-check-input " type="checkbox" role="switch" id="flexSwitchCheckChecked"
+                  v-model="incluir_acessorios" @click="habilitar_incluir_itens_financiamento" checked />
+                <label class="form-check-label" for="flexSwitchCheckChecked">Incluir no Financiamento</label>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+  <!--Bloco Resumo da Proposta-->
+  <div class="card card-filtro">
+    <div class="row g-2 p-2">
+      <div class="card-title rf_texto gy-4">
+        <i class="bi bi-car-front-fill fs-5 icone_filtro"><span class="texto_filtro">Resumo da Proposta</span></i>
+      </div>
+    </div>
 
-    <!--Modal Itens Avaliação-->
-    <div class="modal fade" id="ModalItensAvaliacao" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
-      tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content bg-dark rf_texto">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
-              Itens Avaliação
-            </h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="card-desk-menu">
+      <span>Valores do Veículo</span>
+    </div>
+    <!--Valores do Veículo-->
+    <div class="row g-2 p-2">
+      <!--Descrição-->
+      <div class="col">
+        <span class="rf_texto">Valor Sugerido de Venda</span><br>
+        <span class="rf_texto"> {{ (Valor_Sugerido) }}</span>
+      </div>
+      <div class="col">
+        <span class="rf_texto">Valor Custos Variáveis (+)</span><br>
+        <span class="rf_texto">{{ Valor_Custo_variaveis }}</span>
+      </div>
+      <div class="col">
+        <span class="rf_texto">Valor dos Acessórios</span><br>
+        <span class="rf_texto">{{ Valor_Itens_Acessorios }}</span>
+      </div>
+      <div class="col">
+        <span class="rf_texto">Desconto</span><br>
+        <input type="text" class="form-control rf_bg_form rf_texto" v-model="desconto" v-on:blur="inserir_desconto"
+          @input="desconto = formatarValor(desconto)" />
+      </div>
+      <div class="col">
+        <span class="rf_texto">Acréscimo</span><br>
+        <input type="text" class="form-control rf_bg_form rf_texto" v-model="adicional" v-on:blur="inserir_acrescimo"
+          @input="adicional = formatarValor(adicional)" />
+      </div>
+      <div class="col">
+        <span class="rf_texto">Valor Total Veículo Venda</span><br>
+        <span class="rf_texto"> {{ Valor_Total_Venda }}</span><br>
+      </div>
+
+
+
+    </div>
+    <!--Layoute atual utilizando tabela-->
+    <!-- <div class="card card-tabela-desk">
+        <table class="table rf_texto ">
+            <tbody>
+              <tr>
+                <th scope="row">Valor Sugerido de Venda</th>
+                <th></th>
+                <th></th>
+                <td class="rf_titulo_fonte">
+                  {{ (Valor_Sugerido) }}
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" style="white-space: nowrap; overflow: hidden;">Valor Custos Variáveis (+)</th>
+                <th></th>
+                <th></th>
+                <td class="rf_titulo_fonte">
+                  {{ Valor_Custo_variaveis }}
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Valor dos Acessórios</th>
+                <th></th>
+                <th></th>
+                <td class="rf_titulo_fonte">
+                  {{ Valor_Itens_Acessorios }}
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Desconto</th>
+                <td>
+                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="desconto"
+                    v-on:blur="inserir_desconto" @input="desconto = formatarValor(desconto)" />
+
+                </td>
+                <th scop="row">Acréscimo</th>
+                <td>
+                  
+
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" class="rf_back rf_back_text">
+                  Valor Total Veículo Venda
+                </th>
+                <th class="rf_back "></th>
+                <th class="rf_back "></th>
+                <td class="rf_titulo_fonte rf_back">
+                  {{ Valor_Total_Venda }}
+                </td>
+              </tr>
+            </tbody>
+            <div v-if="abrir_modal_desconto">
+              <div class="alert bg-dark text-center" role="alert">{{ msg }}</div>
+            </div>
+            <div v-if="abrir_modal_acrescimo">
+              <div class="alert bg-dark text-center" role="alert">{{ msg }}</div>
+            </div>
+        </table>
+      </div> -->
+
+    <div class="card-desk-menu">
+      <span>Resultado Operacional / Gerencial</span>
+    </div>
+    <div class="row g-2 p-2">
+      <!--Descrição-->
+      <div class="col-2">
+        <span class="rf_texto">Valor Resultado Bruto</span><br>
+        <span class="rf_texto"> {{ Lucro_Bruto }}</span>
+      </div>
+      <div class="col-2">
+        <span class="rf_texto">Valor Resultado Gerencial</span><br>
+        <span class="rf_texto">{{ Lucro_Operacional }}</span>
+      </div>
+      <div class="col-2">
+        <span class="rf_texto">Valor Resultado Financiamento</span><br>
+        <span class="rf_texto">{{ Valor_Resultado_Financiamento }}</span>
+      </div>
+
+      <div class="col-2">
+        <span class="rf_texto">Valor Resultado Liquído</span><br>
+        <span class="rf_texto"> {{ Lucro_liquido }}</span><br>
+      </div>
+
+    </div>
+
+    <div class="card-desk-menu">
+      <span>Avaliação do Veículo</span>
+    </div>
+    <div class="row g-2 p-2">
+      <div class="col-2">
+        <span class="rf_texto">Valor Avaliação</span><br>
+        <span class="rf_texto"> {{ Valor_Avaliado }}</span>
+      </div>
+      <div class="col-2">
+        <span class="rf_texto">Valor itens Avaliados DB(-)</span><br>
+        <span class="rf_texto">{{ Valor_Itens_Avaliacao_db }}</span>
+      </div>
+      <div class="col-2">
+        <span class="rf_texto">Valor itens Avaliados CR(2)</span><br>
+        <span class="rf_texto">{{ Valor_Itens_Avaliacao_cr }}</span>
+      </div>
+
+      <div class="col-2">
+        <span class="rf_texto">Valor Avaliação Final</span><br>
+        <span class="rf_texto"> {{ Valor_Avaliacao_Final }}</span><br>
+      </div>
+
+    </div>
+
+    <div class="card-desk-menu">
+      <span>Informações sobre o Financiamento</span>
+    </div>
+    <div class="row g-2 p-2">
+      <div class="col-2">
+        <span class="rf_texto">Valor Entrada</span><br>
+        <span class="rf_texto"> {{ Valor_Entrada }}</span>
+      </div>
+      <div class="col-2">
+        <span class="rf_texto">Valor Financiado</span><br>
+        <span class="rf_texto">{{ Valor_Financiado }}</span>
+      </div>
+      <div class="col-2">
+        <span class="rf_texto">Quantidade de Meses</span><br>
+        <span class="rf_texto">{{ Quantidade_Meses }}</span>
+      </div>
+
+      <div class="col-2">
+        <span class="rf_texto">Valor da Parcela</span><br>
+        <span class="rf_texto"> {{ Pmt }}</span><br>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="modal-content ">
+    <div class="card card-filtro ">
+      <div class="row g-2 p-2">
+        <div class="card-title rf_texto gy-4">
+          <i class="bi bi-car-front-fill fs-5 icone_filtro"><span class="texto_filtro">Financiamento</span></i>
+        </div>
+      </div>
+      <div class="row g-2 p-2">
+        <div class="col">
+          <div class="card-desk-menu">
+            <span>Avaliação do Veículo</span>
           </div>
-          <div class="modal-body">
-            <form @submit.prevent="onSubmitItensAvaliacao">
-              <!--Item-->
-              <div class="row g-2 p-2">
-                <div class="col">
+
+          <table class="table rf_texto ">
+            <thead>
+              <tr>
+                <th class="col-2"></th>
+                <th class="col-1"></th>
+                <th class="col-1"></th>
+                <!--Parcela 1-->
+                <th>
                   <div class="form-floating">
-                    <input type="text" class="form-control rf_bg_form rf_texto" v-model="item_p_avaliacao" />
-                    <label class="rf_texto">Item Avaliado</label>
-                  </div>
-                </div>
-                <div class="col-3">
-                  <div class="form-floating">
-                    <input type="text" class="form-control rf_bg_form rf_texto" v-model="valor_p_avaliacao" />
-                    <label class="rf_texto">R$ Valor</label>
-                  </div>
-                </div>
-              </div>
-              <div class="row g-2 p-2">
-                <div class="col-3">
-                  <div class="form-floating">
-                    <select class="form-select rf_bg_form rf_texto" v-model="tipo">
-                      <option v-for="      item       in       items_avaliacao      " :value="item.value" :key="item.id">
+                    <select class="form-select rf_bg_form rf_texto" v-model="parcela_1">
+                      <option v-for="item in itens_financiamento" :value="item.value" :key="item.value">
                         {{ item.value }}
                       </option>
                     </select>
-                    <label for="valid_empresa" class="rf_texto">Tipo</label>
+                    <label for="valid_empresa" class="rf_texto">Parcela</label>
                   </div>
-                </div>
-                <div class="col-3">
+                </th>
+                <!--Parcela 2-->
+                <th>
                   <div class="form-floating">
-                    <button class="btn btn-secondary btn-lg mt-1" data-bs-dismiss="modal" type="submit">
-                      Cadastrar
+                    <select class="form-select rf_bg_form rf_texto" v-model="parcela_2" v-on:blur="hab_ranquear">
+                      <option v-for="item in itens_financiamento" :value="item.value" :key="item.value">
+                        {{ item.value }}
+                      </option>
+                    </select>
+                    <label for="valid_empresa" class="rf_texto">Parcela</label>
+                  </div>
+                </th>
+                <!--Parcela 3-->
+                <th>
+                  <div class="form-floating">
+                    <select class="form-select rf_bg_form rf_texto" v-model="parcela_3" v-on:blur="hab_ranquear">
+                      <option v-for="item in itens_financiamento" :value="item.value" :key="item.value">
+                        {{ item.value }}
+                      </option>
+                    </select>
+                    <label for="valid_empresa" class="rf_texto">Parcela</label>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <!--Primeira Linha-->
+              <tr>
+                <th scope="row">
+                  <div class="d-grid gap-2 disabled">
+                    <button class="btn btn-lg btn-desk-filtro-disabled ">
+                      <span class="rf_texto_btn">Simulação 1</span>
                     </button>
                   </div>
-                </div>
+                </th>
+                <td>
+                  <div class="form-floating">
+                    <input type="text" class="form-control rf_bg_form rf_texto_desk" v-model="entrada_1"
+                      v-on:blur="calcular_real_1" :disabled="bloquear_entrada"
+                      @input="entrada_1 = formatarValor(entrada_1)" />
+                    <label class="rf_texto">Entrada R$</label>
+                  </div>
+
+                </td>
+                <td>
+                  <div class="form-floating">
+                    <input type="text" class="form-control rf_bg_form rf_texto_desk" :disabled="bloquear_entrada"
+                      v-model="entrada_1_perc" @input="calcular_perc_1()" />
+                    <label class="rf_texto">Entrada %</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-lg btn-desk-filtro"
+                      :class="{ 'active': pmtSelected === 11 }" @click="select_pmt(parcela_1_1, 11)">
+                      {{ parcela_1_1 }}
+                    </button>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-lg btn-desk-filtro"
+                      :class="{ 'active': pmtSelected === 12 }" @click="select_pmt(parcela_1_2, 12)">
+                      {{ parcela_1_2 }}
+                    </button>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-lg btn-desk-filtro"
+                      :class="{ 'active': pmtSelected === 13 }" @click="select_pmt(parcela_1_3, 13)">
+                      {{ parcela_1_3 }}
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <!-- Segunda Linha-->
+              <tr>
+                <th scope="row">
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-lg btn-desk-filtro-disabled">
+                      <span class="rf_texto_btn">Simulação 2</span>
+                    </button>
+                  </div>
+                </th>
+                <td>
+                  <div class="form-floating">
+                    <input type="text" class="form-control rf_bg_form rf_texto rf_texto_desk" v-model="entrada_2"
+                      :disabled="bloquear_entrada" v-on:blur="calcular_real_2"
+                      @input="entrada_2 = formatarValor(entrada_2)" />
+                    <label class="rf_texto">Entrada R$</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="form-floating">
+                    <input type="text" class="form-control rf_bg_form rf_texto rf_texto_desk" :disabled="bloquear_entrada"
+                      v-model="entrada_2_perc" @input="calcular_perc_2()" />
+                    <label class="rf_texto">Entrada %</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-lg btn-desk-filtro"
+                      :class="{ 'active': pmtSelected === 21 }" @click="select_pmt(parcela_2_1, 21)">
+                      {{ parcela_2_1 }}
+                    </button>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-lg btn-desk-filtro"
+                      :class="{ 'active': pmtSelected === 22 }" @click="select_pmt(parcela_2_2, 22)">
+                      {{ parcela_2_2 }}
+                    </button>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-lg btn-desk-filtro"
+                      :class="{ 'active': pmtSelected === 23 }" @click="select_pmt(parcela_2_3, 23)">
+                      {{ parcela_2_3 }}
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <!--Terceira Linha-->
+              <tr>
+                <th scope="row">
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-lg btn-desk-filtro-disabled">
+                      <span class="rf_texto_btn">Simulação 3</span>
+                    </button>
+                  </div>
+                </th>
+                <td>
+                  <div class="form-floating">
+                    <input type="text" class="form-control rf_bg_form rf_texto rf_texto_desk" v-model="entrada_3"
+                      :disabled="bloquear_entrada" v-on:blur="calcular_real_3"
+                      @input="entrada_3 = formatarValor(entrada_3)" />
+                    <label class="rf_texto">Entrada R$</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="form-floating">
+                    <input type="text" class="form-control rf_bg_form rf_texto rf_texto_desk" :disabled="bloquear_entrada"
+                      v-model="entrada_3_perc" @input="calcular_perc_3()" />
+                    <label class="rf_texto">Entrada %</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-lg btn-desk-filtro"
+                      :class="{ 'active': pmtSelected === 31 }" @click="select_pmt(parcela_3_1, 31)">
+                      {{ parcela_3_1 }}
+                    </button>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-lg btn-desk-filtro"
+                      :class="{ 'active': pmtSelected === 32 }" @click="select_pmt(parcela_3_2, 32)">
+                      {{ parcela_3_2 }}
+                    </button>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-lg btn-desk-filtro"
+                      :class="{ 'active': pmtSelected === 33 }" @click="select_pmt(parcela_3_3, 33)">
+                      {{ parcela_3_3 }}
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <!--Quarta Linha-->
+              <tr>
+                <td>
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-lg btn-desk-filtro" @click="limpar_financiamento">
+                      <span class="rf_texto_btn">Limpar Entradas</span>
+                    </button>
+                  </div>
+                </td>
+                <th></th>
+                <th></th>
+                <th scope="row">
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-lg btn-desk-filtro" id="btn_1" :disabled="entrada_1 === ''"
+                      data-bs-target="#ModalRanqueamento" data-bs-toggle="modal" @click="ranqueamento_1()">
+                      <span class="rf_texto_btn">Ranquear</span>
+                    </button>
+                  </div>
+                </th>
+                <th scope="row">
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-lg btn-desk-filtro" id="btn_2" :disabled="entrada_1 === ''"
+                      data-bs-target="#ModalRanqueamento" data-bs-toggle="modal" @click="ranqueamento_2()">
+                      <span class="rf_texto_btn">Ranquear</span>
+                    </button>
+                  </div>
+                </th>
+                <th scope="row">
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-lg btn-desk-filtro" id="btn_3" :disabled="entrada_1 === ''"
+                      data-bs-target="#ModalRanqueamento" data-bs-toggle="modal" @click="ranqueamento_3()">
+                      <span class="rf_texto_btn">Ranquear</span>
+                    </button>
+                  </div>
+                </th>
+              </tr>
+
+
+            </tbody>
+          </table>
+          <div class="row g-2 ">
+            <div class="col">
+              <div class="form-floating">
+                <textarea v-model="info_adicionais" class="form-control rf_bg_form rf_texto"></textarea>
+                <label class="rf_texto">Informações Adicionais</label>
               </div>
-            </form>
+            </div>
+            <div class="col-2 ">
+              <button class="btn btn-lg btn-desk-filtro" :disabled="info_adicionais === ''" @click="grava_info_adicional"><span class="rf_texto_btn">Gravar Informações</span></button>
+            </div>
           </div>
+
         </div>
       </div>
+
     </div>
-    <!--Modal Itens Acessorios-->
-    <div class="modal fade" id="ModalItensAcessorios" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
-      tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content bg-dark rf_texto">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
-              Acessórios
-            </h1>
-            <button class="btn btn-secondary btn-lg p-1 mt-1" type="button" data-bs-target="#ModalProposta"
-              data-bs-toggle="modal" aria-label="Close"> Voltar</button>
+    <div v-if="abrir_modal">
+      <Message :msg="msg" v-show="msg" />
+    </div>
+    <div v-if="abrir_modal_atualizar">
+      <MessageAtualizar :msg="msg_atualizar" v-show="msg_atualizar" />
+    </div>
+    <div class="desk-footer">
+      <div class="col-1 p-1">
+        <button type="submit" class="btn btn-lg btn-desk-filtro" data-bs-toggle="modal" data-bs-target="#ModalGerarMenu"
+        :disabled="btn_gerar_menu" @click="carregarDadosMenu()">
+        <span class="rf_texto_btn_desk"> GERAR MENU</span>        
+      </button>
+      </div>
+      <div class="col-2 p-1">
+        <button class="btn btn-lg btn-desk-filtro" :disabled="btn_finalizar_venda" @click="finalizar_venda">
+        <span class="rf_texto_btn_desk">FINALIZAR VENDA</span>
+      </button>
+      </div>
+      <div class="col-1 p-1">
+        <button class="btn btn-lg btn-desk-filtro" @click="venda_perdida">
+        <span class="rf_texto_btn_desk">VENDA PERDIDA</span>
+      </button>
+      </div>
+    
+    </div>
+  </div>
+
+
+  <!--Modal Estoque-->
+  <div class="modal fade" id="ModalVeiculoEstoque" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+      <div class="modal-content card-container-desk rf_texto">
+        <div class="modal-header">
+          <div class="card-title gy-4">
+            <i class="bi bi-pencil-square fs-5 icone_kit"><span class="texto_kit">Estoque de Veículos</span></i>
+          </div>          
+        </div>
+        <div class="modal-body">
+          <!--Modal Estoque-->
+          <div class="row g-2 p-2">
+            <div class="card-title rf_texto gy-4">
+              <i class="bi bi-funnel fs-5 icone_filtro"><span class="texto_filtro">Filtro</span></i>
+            </div>
           </div>
-          <div class="modal-body">
+
+        
             <div class="row g-2 p-2">
-              <div class="col-2">
+              <div class="col-1">
                 <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchCodigo" />
-                  <label class="rf_texto">Código</label>
+                  <select class="form-select rf_bg_form rf_texto_desk" v-model="tipoVeiculo">
+                    <option value="NOVO">Novo</option>
+                    <option value="USADO">Usado</option>
+                  </select>
+                  <label class="rf_texto">Tipo Veículo</label>
+
                 </div>
               </div>
-              <div class="col">
+              <!--Marca-->
+              <div class="col-1">
                 <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchDescricao" />
-                  <label class="rf_texto">Descrição</label>
+                  <input v-model="searchMarca" class="form-control rf_bg_form rf_texto_desk" list="dataListMarcaEstoque"
+                    autocomplete="off" />
+
+                  <label class="rf_texto">Marca</label>
+                  <datalist id="dataListMarcaEstoque">
+                    <option v-for="opt in marcas_estoque" :data-value="opt.marca" :value="opt.marca" :key="opt.marca">
+                    </option>
+                  </datalist>
                 </div>
               </div>
-              <!-- <div class="col-2">
-                    <div class="form-floating">
-                      <select
-                        class="form-select rf_bg_form rf_texto"
-                        v-model="pageSize"
-                      >
-                        <option
-                          v-for="item in pageSizes"
-                          :value="item.value"
-                          :key="item.id"
-                          @change="handlePageSizeChangeItemAcessorio"
-                        >
-                          {{ item.value }}
-                        </option>
-                      </select>
-                      <label for="valid_empresa" class="rf_texto"
-                        >Itens por página</label
-                      >
-                    </div>
-                  </div> -->
+              <!--Modelo-->
               <div class="col-2">
                 <div class="form-floating">
-                  <button class="btn btn-secondary btn-lg mt-1" type="button" @click="
-                    page = 1;
-                  retrieveAcessorios();
-                  ">
-                    Pesquisar
-                  </button>
+                  <input v-model="searchTitle" class="form-control rf_bg_form rf_texto_desk" list="dataListModeloEstoque"
+                    autocomplete="off" />
+
+                  <label class="rf_texto">Modelo</label>
+                  <datalist id="dataListModeloEstoque">
+                    <option v-for="opt in modelos_estoque" :data-value="opt.modelo" :value="opt.modelo"
+                      :key="opt.modelo"></option>
+                  </datalist>
+                </div>
+              </div>
+              <!--Ano modelo-->
+              <div class="col-1">
+                <div class="form-floating">
+                  <input type="text" class="form-control rf_bg_form rf_texto_desk" v-model="searchAnoMod" />
+                  <label class="rf_texto">Ano Mod.</label>
+                </div>
+              </div>
+              <!--Ano Fabricação-->
+              <div class="col-1">
+                <div class="form-floating">
+                  <input type="text" class="form-control rf_bg_form rf_texto_desk" v-model="searchAnoFab" />
+                  <label class="rf_texto">Ano Fab.</label>
+                </div>
+              </div>
+              <!--Cor-->
+              <div class="col-2">
+                <div class="form-floating">
+                  <input v-model="searchCor" class="form-control rf_bg_form rf_texto_desk" list="dataListCorEstoque"
+                    autocomplete="off" />
+
+                  <label class="rf_texto">Cor</label>
+                  <datalist id="dataListCorEstoque">
+                    <option v-for="opt in cores_estoque" :data-value="opt.cor" :value="opt.cor" :key="opt.cor">
+                    </option>
+                  </datalist>
+                </div>
+              </div>
+              <!--Chassi-->
+              <div class="col-2">
+                <div class="form-floating">
+                  <input type="text" class="form-control rf_bg_form rf_texto_desk" v-model="searchChassi" />
+                  <label class="rf_texto">Chassi</label>
+                </div>
+              </div>
+              <!--Placa-->
+              <div class="col-2">
+                <div class="form-floating">
+                  <input type="text" class="form-control rf_bg_form rf_texto_desk" v-model="searchPlaca" />
+                  <label class="rf_texto">Placa</label>
                 </div>
               </div>
 
             </div>
+        
+            <div class="row g-2 p-2">
+              <div class="col-1">
+                <div class="form-floating">
+                <button class="btn btn-lg btn-desk-filtro" @click="page = 1;  retrieveEstoque();">
+                  <span class="rf_texto_btn">Pesquisar</span>
+                </button>
+              </div>
+              </div>
+            </div>
             <!--Tabelas-->
-            <div class="card rf_bg_form g-2 p-2 mt-2">
-              <table class="table rf_texto">
+            <div class="card card-tabela g-2 p-2 m-2">
+              <table class="table rf_texto_desk">
                 <thead>
                   <tr>
-                    <th scope="col">Código</th>
-                    <th scope="col">Descrição</th>
-                    <th scope="col">R$ Valor</th>
-                    <!-- <th scope="col">R$ custo</th> -->
+                    <th scope="col">Estoque</th>
+                    <th scope="col">Loja</th>
+                    <th scope="col">Cat.</th>
+                    <th scope="col">Chassis</th>
+                    <th scope="col">Modelo</th>
+                    <th scope="col">R$ PPS</th>
+                    <th scope="col">Dias Est.</th>
+                    <th scope="col">Cor</th>
+                    <th scope="col">Marca</th>
+                    <th scope="col">Ano Mod.</th>
+                    <th scope="col">Ano Fab.</th>
+                    <th scope="col">KM</th>
+                    <th scope="col">Placa</th>
+                    <th scope="col">Comb.</th>
                     <th scope="col">Ação</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="      item       in       acessorios      " :key="item.id">
-                    <td>{{ item.codigo }}</td>
-                    <td>{{ item.descricao }}</td>
-                    <td>{{ currency(item.preco_final_instalado) }}</td>
-                    <!-- <td>{{ item.preco_base_peca }}</td> -->
-                    <!-- <td>{{ item.status }}</td> -->
+                  <tr v-for="  item   in   estoque_veiculo   " :key="item.id" class="table-linha">
+                    <td>{{ item.situacaoestoque }}</td>
+                    <td>{{ item.descricaoreduzida }}</td>
+                    <td>{{ item.estadoveiculo }}</td>
+                    <td>{{ item.chassi }}</td>
+                    <td>{{ item.modelo }}</td>
                     <td>
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                        @click=" inserirAcessorios(item)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                          class="bi bi-pencil" viewBox="0 0 16 16">
-                          <path
-                            d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-                        </svg>
+                      {{ currency(item.valortotalvenda) }}
+
+                    </td>
+
+                    <td>{{ item.diasestoque }}</td>
+                    <td>{{ item.cor }}</td>
+                    <td>{{ item.marca }}</td>
+                    <td>{{ item.anomodelo }}</td>
+                    <td>{{ item.anofabricacao }}</td>
+                    <td>{{ item.quilometragem }}</td>
+                    <td>{{ item.placa }}</td>
+                    <td>{{ item.combustivel }}</td>
+
+                    <td>
+                      <button type="button" class="dropdown-toggle-icon" data-bs-dismiss="modal"
+                        @click=" carregarVeiculo(item)">
+                     
+                        <i class="bi bi-pencil-square"></i>
                       </button>
                     </td>
                   </tr>
                 </tbody>
               </table>
-              <pagination v-if="acessorios.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
+              <pagination v-if="estoque_veiculo.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
                 @change-page="handlePageChange" />
             </div>
+        
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-modal btn-lg p-1 mt-1" data-bs-dismiss="modal">
+            Fechar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Modal Trocar Vendedor-->
+  <div class="modal fade" id="ModalTrocarVendedor" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content card-container-desk rf_texto">
+        <div class="modal-header">
+          <div class="card-title gy-4">
+            <i class="bi bi-pencil-square fs-5 icone_kit"><span class="texto_kit">Troca Vendedor</span></i>
+          </div>
+          <button class="btn btn-modal btn-lg p-1 mt-1" type="button" data-bs-target="#ModalProposta"
+            data-bs-toggle="modal" aria-label="Close"> Sair </button>
+        </div>
+        <div class="modal-body">
+          <form @submit.prevent="onSubmitTrocaVendedor">
+            <div class="row g-2 p-2">
+              <div v-if="abrir_modal">
+                <div class="alert bg-dark text-center" role="alert">{{ msg }}</div>
+              </div>
+            </div>
+            <!--Item-->
+            <div class="row g-2 p-2">
+              <div class="col">
+                <div class="form-floating">
+                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="justificativa_vendedor"
+                    v-on:blur="validar_vendedor" />
+                  <label class="rf_texto">Justificativa</label>
+                </div>
+              </div>
+
+            </div>
+            <div class="row g-2 p-2">
+              <div class="col-6">
+                <div class="form-floating">
+                  <select class="form-select rf_bg_form rf_texto" v-model="vendedor_troca" :disabled="check_vend">
+                    <option v-for="item in troca_vendedor" :value="item.id" :key="item.id">
+                      {{ item.username }}
+                    </option>
+                  </select>
+                  <label class="rf_texto">Vendedor</label>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-floating">
+                  <button class="btn btn-lg btn-desk-filtro" data-bs-dismiss="modal" :disabled="check_vend"
+                    type="submit">
+                    <span class="rf_texto_btn">Alterar</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Modal Histórico Cliente-->
+  <div class="modal fade" id="ModalHistoricoCliente" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content card-container-desk rf_texto">
+        <div class="modal-header">
+          <div class="card-title gy-4">
+            <i class="bi bi-pencil-square fs-5 icone_kit"><span class="texto_kit">Histórioco do Cliente</span></i>
+          </div>
+          <button class="btn btn-modal btn-lg p-1 mt-1" type="button" data-bs-target="#ModalProposta"
+            data-bs-toggle="modal" aria-label="Close"> Sair </button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-2 p-2">
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" disabled v-model="id_historico_cliente" />
+                <label class="rf_texto">Id</label>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" disabled v-model="nome_historico_cliente" />
+                <label class="rf_texto">Cliente</label>
+              </div>
+            </div>
+
+            <div class="col-2">
+              <div class="form-floating">
+                <button class="btn btn-lg btn-desk-filtro" type="button" @click="
+    page = 1;
+  historico_cliente(id_historico_cliente);
+  ">
+                 <span class="rf_texto_btn">Pesquisar</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+          <!--Tabelas-->
+          <div class="card card-tabela-desk g-2 p-2 mt-2">
+            <table class="table rf_texto_desk">
+              <thead>
+                <tr>
+                  <th scope="col">Nº Atendimento</th>
+                  <th scope="col">Loja</th>
+                  <th scope="col">Data</th>
+                  <!-- <th scope="col">R$ custo</th> -->
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="      item       in  hist_cliente      " :key="item.id">
+                  <td>{{ item.id }}</td>
+                  <td>{{ item.empresa_proposta.nome }}</td>
+                  <td>{{ new Date(item.createdAt).toLocaleDateString('pt-BR') }}</td>
+                  <td>{{ item.status_proposta }}</td>
+                  <!-- <td>{{ item.status }}</td> -->
+
+                </tr>
+              </tbody>
+            </table>
+            <pagination v-if="hist_cliente.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
+              @change-page="handlePageChange" />
           </div>
         </div>
       </div>
     </div>
-    <!--Modal Ranqueamento-->
-    <div class="modal fade" id="ModalRanqueamento" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
-      tabindex="-1">
-      <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content bg-dark rf_texto">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
-              Ranqueamento
-            </h1>
-            <!-- <button type="button" class="btn-close btn-secondary" data-bs-dismiss="modal" aria-label="Close"></button> -->
-          </div>
-          <div class="modal-body">
+  </div>
+
+  <!--Modal Itens Avaliação-->
+  <div class="modal fade" id="ModalItensAvaliacao" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-dark rf_texto">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
+            Itens Avaliação
+          </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form @submit.prevent="onSubmitItensAvaliacao">
+            <!--Item-->
             <div class="row g-2 p-2">
-              <!--Tabela Padrão-->
-              <div class="col-2">
+              <div class="col">
                 <div class="form-floating">
-                  <select class="form-select rf_bg_form rf_texto" v-model="filtro_tipo_tabela">
-                    <option v-for="      item       in       tabela_financiamento      " :value="item.value"
-                      :key="item.id">
+                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="item_p_avaliacao" />
+                  <label class="rf_texto">Item Avaliado</label>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-floating">
+                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="valor_p_avaliacao" />
+                  <label class="rf_texto">R$ Valor</label>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 p-2">
+              <div class="col-3">
+                <div class="form-floating">
+                  <select class="form-select rf_bg_form rf_texto" v-model="tipo">
+                    <option v-for="      item       in       items_avaliacao      " :value="item.value" :key="item.id">
                       {{ item.value }}
                     </option>
                   </select>
-                  <label for="valid_empresa" class="rf_texto">Tabela Padrão</label>
+                  <label for="valid_empresa" class="rf_texto">Tipo</label>
                 </div>
               </div>
-              <!--Utiliza SPF-->
-              <div class="col-2">
+              <div class="col-3">
                 <div class="form-floating">
-                  <select class="form-select rf_bg_form rf_texto" v-model="filtro_spf">
-                    <option v-for="      item       in       spf_financiamento      " :value="item.value" :key="item.id">
-                      {{ item.value }}
-                    </option>
-                  </select>
-                  <label for="valid_empresa" class="rf_texto">Utiliza SPF</label>
-                </div>
-              </div>
-              <!--Razão Social-->
-              <div class="col">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="razao_financiamento" />
-                  <label class="rf_texto">Razão Social</label>
-                </div>
-              </div>
-              <!--Plano-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="plano"
-                    v-on:blur="handleOrderChangeEntrada1" />
-                  <label class="rf_texto">Plano</label>
+                  <button class="btn btn-secondary btn-lg mt-1" data-bs-dismiss="modal" type="submit">
+                    Cadastrar
+                  </button>
                 </div>
               </div>
             </div>
-            <div class="row g-2 p-2">
-              <div class="col">
-                <div class="form-floating text-center">
-                  <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-dark" @click="
-                      sortDesc = 0;
-                    sortBy = 'financeira';
-                    sortDesc_2 = 0;
-                    sortBy_2 = 'financeira';
-                    sortDesc_3 = 0;
-                    sortBy_3 = 'financeira';
-                    btn_filtro_1 = 1;
-                    btn_filtro_2 = 0;
-                    btn_filtro_3 = 0;
-                    btn_filtro_4 = 0;
-                    btn_filtro_5 = 0;
-                    btn_filtro_6 = 0;
-                    btn_filtro_7 = 0;
-                    btn_filtro_8 = 0;
-                    btn_filtro_9 = 0;
-                    btn_filtro_10 = 0;
-                    btn_filtro_11 = 0;
-                    btn_filtro_11 = 0;
-                    handleOrderChangeEntradaFiltro();
-                    ">
-                      <span>FINANCEIRA</span>
-                      <i :class="icon_1"> </i>
-                    </button>
-                    <button type="button" class="btn btn-dark" @click="
-                      sortDesc = 0;
-                    sortBy = 'plano';
-                    sortDesc_2 = 0;
-                    sortBy_2 = 'plano';
-                    sortDesc_3 = 0;
-                    sortBy_3 = 'plano';
-                    btn_filtro_1 = 0;
-                    btn_filtro_2 = 1;
-                    btn_filtro_3 = 0;
-                    btn_filtro_4 = 0;
-                    btn_filtro_5 = 0;
-                    btn_filtro_6 = 0;
-                    btn_filtro_7 = 0;
-                    btn_filtro_8 = 0;
-                    btn_filtro_9 = 0;
-                    btn_filtro_10 = 0;
-                    btn_filtro_11 = 0;
-
-                    handleOrderChangeEntradaFiltro();
-                    ">
-                      <span>PLANO</span>
-                      <i :class="icon_2"> </i>
-                    </button>
-                    <button type="button" class="btn btn-dark" @click="
-                      sortDesc = 0;
-                    sortBy = 'ret';
-                    sortDesc_2 = 0;
-                    sortBy_2 = 'ret';
-                    sortDesc_3 = 0;
-                    sortBy_3 = 'ret';
-                    btn_filtro_1 = 0;
-                    btn_filtro_2 = 0;
-                    btn_filtro_3 = 1;
-                    btn_filtro_4 = 0;
-                    btn_filtro_5 = 0;
-                    btn_filtro_6 = 0;
-                    btn_filtro_7 = 0;
-                    btn_filtro_8 = 0;
-                    btn_filtro_9 = 0;
-                    btn_filtro_10 = 0;
-                    btn_filtro_11 = 0;
-
-                    handleOrderChangeEntradaFiltro();
-                    ">
-                      <span>RET</span> <i :class="icon_3"> </i>
-                    </button>
-                    <button type="button" class="btn btn-dark" @click="
-                      sortDesc = 0;
-                    sortBy = 'entrada_min_porcentagem';
-                    sortDesc_2 = 0;
-                    sortBy_2 = 'entrada_min_porcentagem';
-                    sortDesc_3 = 0;
-                    sortBy_3 = 'entrada_min_porcentagem';
-                    btn_filtro_1 = 0;
-                    btn_filtro_2 = 0;
-                    btn_filtro_3 = 0;
-                    btn_filtro_4 = 1;
-                    btn_filtro_5 = 0;
-                    btn_filtro_6 = 0;
-                    btn_filtro_7 = 0;
-                    btn_filtro_8 = 0;
-                    btn_filtro_9 = 0;
-                    btn_filtro_10 = 0;
-                    btn_filtro_11 = 0;
-
-                    handleOrderChangeEntradaFiltro();
-                    ">
-                      <span>% ENT. MIN</span> <i :class="icon_4"> </i>
-                    </button>
-                    <button type="button" class="btn btn-dark" @click="
-                      sortDesc = 0;
-                    sortBy = 'entrada_min_valor';
-                    sortDesc_2 = 0;
-                    sortBy_2 = 'entrada_min_valor';
-                    sortDesc_3 = 0;
-                    sortBy_3 = 'entrada_min_valor';
-
-                    btn_filtro_1 = 0;
-                    btn_filtro_2 = 0;
-                    btn_filtro_3 = 0;
-                    btn_filtro_4 = 0;
-                    btn_filtro_5 = 1;
-                    btn_filtro_6 = 0;
-                    btn_filtro_7 = 0;
-                    btn_filtro_8 = 0;
-                    btn_filtro_9 = 0;
-                    btn_filtro_10 = 0;
-                    btn_filtro_11 = 0;
-
-                    handleOrderChangeEntradaFiltro();
-                    ">
-                      <span>R$ ENT. MIN</span> <i :class="icon_5"> </i>
-                    </button>
-                    <button type="button" class="btn btn-dark" @click="
-                      sortDesc = 0;
-                    sortBy = 'rentabilidade_1';
-                    sortDesc_2 = 0;
-                    sortBy_2 = 'rentabilidade_2';
-                    sortDesc_3 = 0;
-                    sortBy_3 = 'rentabilidade_3';
-                    btn_filtro_1 = 0;
-                    btn_filtro_2 = 0;
-                    btn_filtro_3 = 0;
-                    btn_filtro_4 = 0;
-                    btn_filtro_5 = 0;
-                    btn_filtro_6 = 1;
-                    btn_filtro_7 = 0;
-                    btn_filtro_8 = 0;
-                    btn_filtro_9 = 0;
-                    btn_filtro_10 = 0;
-                    btn_filtro_11 = 0;
-                    handleOrderChangeEntradaFiltro();
-                    ">
-                      <span>RENTABILIDADE</span> <i :class="icon_6"> </i>
-                    </button>
-                    <button type="button" class="btn btn-dark" @click="
-                      sortDesc = 0;
-                    sortBy = 'pmt_1';
-                    sortDesc_2 = 0;
-                    sortBy_2 = 'pmt_2';
-                    sortDesc_3 = 0;
-                    sortBy_3 = 'pmt_3';
-                    btn_filtro_1 = 0;
-                    btn_filtro_2 = 0;
-                    btn_filtro_3 = 0;
-                    btn_filtro_4 = 0;
-                    btn_filtro_5 = 0;
-                    btn_filtro_6 = 0;
-                    btn_filtro_7 = 1;
-                    btn_filtro_8 = 0;
-                    btn_filtro_9 = 0;
-                    btn_filtro_10 = 0;
-                    btn_filtro_11 = 0;
-                    handleOrderChangeEntradaFiltro();
-                    ">
-                      <span>PMT</span> <i :class="icon_7"> </i>
-                    </button>
-                    <button type="button" class="btn btn-dark" @click="
-                      sortDesc = 0;
-                    sortBy = 'retorno';
-                    sortDesc_2 = 0;
-                    sortBy_2 = 'retorno';
-                    sortDesc_2 = 0;
-                    sortBy_2 = 'retorno';
-                    btn_filtro_1 = 0;
-                    btn_filtro_2 = 0;
-                    btn_filtro_3 = 0;
-                    btn_filtro_4 = 0;
-                    btn_filtro_5 = 0;
-                    btn_filtro_6 = 0;
-                    btn_filtro_7 = 0;
-                    btn_filtro_8 = 1;
-                    btn_filtro_9 = 0;
-                    btn_filtro_10 = 0;
-                    btn_filtro_11 = 0;
-
-                    handleOrderChangeEntradaFiltro();
-                    ">
-                      <span>RETORNO</span> <i :class="icon_8"> </i>
-                    </button>
-                    <button type="button" class="btn btn-dark" @click="
-                      sortDesc = 0;
-                    sortBy = 'tc_cob';
-                    sortDesc_2 = 0;
-                    sortBy_2 = 'tc_cob';
-                    sortDesc_3 = 0;
-                    sortBy_3 = 'tc_cob';
-                    btn_filtro_1 = 0;
-                    btn_filtro_2 = 0;
-                    btn_filtro_3 = 0;
-                    btn_filtro_4 = 0;
-                    btn_filtro_5 = 0;
-                    btn_filtro_6 = 0;
-                    btn_filtro_7 = 0;
-                    btn_filtro_8 = 0;
-                    btn_filtro_9 = 1;
-                    btn_filtro_10 = 0;
-                    btn_filtro_11 = 0;
-
-                    handleOrderChangeEntradaFiltro();
-                    ">
-                      <span>TAC. COB</span> <i :class="icon_9"> </i>
-                    </button>
-                    <button type="button" class="btn btn-dark" @click="
-                      sortDesc = 0;
-                    sortBy = 'tc_dev';
-                    sortDesc_2 = 0;
-                    sortBy_2 = 'tc_dev';
-                    sortDesc_3 = 0;
-                    sortBy_3 = 'tc_dev';
-
-                    btn_filtro_1 = 0;
-                    btn_filtro_2 = 0;
-                    btn_filtro_3 = 0;
-                    btn_filtro_4 = 0;
-                    btn_filtro_5 = 0;
-                    btn_filtro_6 = 0;
-                    btn_filtro_7 = 0;
-                    btn_filtro_8 = 0;
-                    btn_filtro_9 = 0;
-                    btn_filtro_10 = 1;
-                    btn_filtro_11 = 0;
-
-                    handleOrderChangeEntradaFiltro();
-                    ">
-                      <span>TAC. DEV</span> <i :class="icon_10"> </i>
-                    </button>
-                    <button type="button" class="btn btn-dark" @click="
-                      sortDesc = 0;
-                    sortBy = 'coeficiente';
-                    sortDesc_2 = 0;
-                    sortBy_2 = 'coeficiente';
-                    sortDesc_3 = 0;
-                    sortBy_3 = 'coeficiente';
-                    btn_filtro_1 = 0;
-                    btn_filtro_2 = 0;
-                    btn_filtro_3 = 0;
-                    btn_filtro_4 = 0;
-                    btn_filtro_5 = 0;
-                    btn_filtro_6 = 0;
-                    btn_filtro_7 = 0;
-                    btn_filtro_8 = 0;
-                    btn_filtro_9 = 0;
-                    btn_filtro_10 = 0;
-                    btn_filtro_11 = 1;
-                    handleOrderChangeEntradaFiltro();
-                    ">
-                      <span>COEF</span> <i :class="icon_11"> </i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!--Tabelas 1 -->
-            <div class="card rf_bg_form g-2 p-2 mt-2">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col">
-                    <h5 class="card-title mt-3">
-                      Valor de Entrada: {{ Valor_Entrada }} - Valor Financiado:
-                      {{ Valor_Financiado }}
-                    </h5>
-                  </div>
-                  <!-- <div class="col-2">
-                        <div class="form-floating">
-                          <select
-                            class="form-select rf_bg_form rf_texto"
-                            v-model="pageSize_1"
-                          >
-                            <option
-                              v-for="item in pageSizes_1"
-                              :value="item.value"
-                              :key="item.id"
-                              @change-page="handlePageChangeEntrada1"
-                            >
-                              {{ item.value }}
-                            </option>
-                          </select>
-                          <label for="valid_empresa" class="rf_texto"
-                            >Itens por página</label
-                          >
-                        </div>
-                      </div> -->
-                </div>
-              </div>
-              <table class="table bg-dark rf_texto">
-                <thead>
-                  <tr>
-
-                    <th scope="col">Financeira</th>
-                    <th scope="col">Plano</th>
-                    <th scope="col">Ret</th>
-                    <th scope="col">R$ Ent. Min</th>
-                    <th scope="col">% Ent. Min</th>
-                    <th scope="col">Rentabilidade</th>
-                    <th scope="col">Rebate</th>
-                    <th scope="col">Pmt</th>
-                    <th scope="col">Spf</th>
-                    <th scope="col">Retorno</th>
-                    <th scope="col">Tc Cob</th>
-                    <th scope="col">Tc Dev</th>
-                    <th scope="col">Coef</th>
-                    <th scope="col">Qtd. Parc</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr :class="item.id === linhaSelecionada ? 'custom-highlight-row' : ''
-                    " @click=" rowSelect(key, item.id, 1)"
-                    v-for="(      item, key      ) in       parcelamento_1      " :key="item.id">
-
-                    <td>{{ item.financeira }}</td>
-                    <td>{{ item.plano }}</td>
-                    <td>{{ item.ret }}</td>
-                    <td>{{ currency(item.entrada_min_valor) }}</td>
-                    <td>{{ item.entrada_min_porcentagem }}</td>
-                    <td>{{ currency(item.rentabilidade_1) }}</td>
-
-                    <td>{{ currency((parseFloat(Valor_Financiado.replace(/[^\d,]+/g, '').replace(",", ".")) + item.tc_cob)
-                      * item.descontoCoeficiente) }}</td>
-                    <td>{{ currency(item.pmt_1) }}</td>
-                    <td>{{ item.spf }}</td>
-                    <td>{{ item.retorno }}</td>
-                    <td>{{ currency(item.tc_cob) }}</td>
-                    <td>{{ item.tc_dev }}</td>
-                    <td>{{ item.coeficiente }}</td>
-                    <td>{{ item.qtd_parcelas }}</td>
-                  </tr>
-                </tbody>
-              </table>
-              <pagination v-if="parcelamento_1.length" :offset="totalPages_1" :total="totalItems_1" :limit="pageSize_1"
-                @change-page="handlePageChangeEntrada1" />
-            </div>
-            <!--Tabelas 2-->
-            <div class="card rf_bg_form g-2 p-2 mt-2">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col">
-                    <h5 class="card-title mt-3">
-                      Valor de Entrada: {{ Valor_Entrada_2 }} - Valor
-                      Financiado:
-                      {{ Valor_Financiado_2 }}
-                    </h5>
-                  </div>
-                  <!-- <div class="col-2">
-                        <div class="form-floating">
-                          <select
-                            class="form-select rf_bg_form rf_texto"
-                            v-model="pageSize_2"
-                          >
-                            <option
-                              v-for="item in items"
-                              :value="item.value"
-                              :key="item.id"
-                              @change-page="handlePageSizeChangeEntrada2"
-                            >
-                              {{ item.value }}
-                            </option>
-                          </select>
-                          <label for="valid_empresa" class="rf_texto"
-                            >Itens por página</label
-                          >
-                        </div>
-                      </div> -->
-                </div>
-              </div>
-              <table class="table bg-dark rf_texto">
-                <thead>
-                  <tr>
-                    <th scope="col">Financeira</th>
-                    <th scope="col">Plano</th>
-                    <th scope="col">Ret</th>
-                    <th scope="col">R$ Ent. Min</th>
-                    <th scope="col">% Ent. Min</th>
-                    <th scope="col">Rentabilidade</th>
-                    <th scope="col">Rebate</th>
-                    <th scope="col">Pmt</th>
-                    <th scope="col">Spf</th>
-                    <th scope="col">Retorno</th>
-                    <th scope="col">Tc Cob</th>
-                    <th scope="col">Tc Dev</th>
-                    <th scope="col">Coef</th>
-                    <th scope="col">Qtd. Parc</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr :class="item.id === linhaSelecionada2
-                    ? 'custom-highlight-row'
-                    : ''
-                    " @click=" rowSelect2(key, item.id, 2)"
-                    v-for="(      item, key      ) in       parcelamento_2      " :key="item.id">
-                    <td>{{ item.financeira }}</td>
-                    <td>{{ item.plano }}</td>
-                    <td>{{ item.ret }}</td>
-                    <td>{{ currency(item.entrada_min_valor) }}</td>
-                    <td>{{ item.entrada_min_porcentagem }}</td>
-                    <td>{{ currency(item.rentabilidade_2) }}</td>
-                    <td>{{ currency((parseFloat(Valor_Financiado_2.replace(/[^\d,]+/g, '').replace(",", ".")) +
-                      item.tc_cob) * item.descontoCoeficiente) }}</td>
-                    <td>{{ currency(item.pmt_2) }}</td>
-                    <td>{{ item.spf }}</td>
-                    <td>{{ item.retorno }}</td>
-                    <td>{{ currency(item.tc_cob) }}</td>
-                    <td>{{ item.tc_dev }}</td>
-                    <td>{{ item.coeficiente }}</td>
-                    <td>{{ item.qtd_parcelas }}</td>
-                  </tr>
-                </tbody>
-              </table>
-              <pagination v-if="parcelamento_2.length" :offset="totalPages_2" :total="totalItems_2" :limit="pageSize_2"
-                @change-page="handlePageChangeEntrada2" />
-            </div>
-            <!--Tabelas 3-->
-            <div class="card rf_bg_form g-2 p-2 mt-2">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col">
-                    <h5 class="card-title mt-3">
-                      Valor de Entrada: {{ Valor_Entrada_3 }} - Valor
-                      Financiado:
-                      {{ Valor_Financiado_3 }}
-                    </h5>
-                  </div>
-                  <!-- <div class="col-2">
-                        <div class="form-floating">
-                          <select
-                            class="form-select rf_bg_form rf_texto"
-                            v-model="pageSize_3"
-                          >
-                            <option
-                              v-for="item in pageSizes_3"
-                              :value="item.value"
-                              :key="item.id"
-                              @change-page="handlePageChangeEntrada3"
-                            >
-                              {{ item.value }}
-                            </option>
-                          </select>
-                          <label for="valid_empresa" class="rf_texto"
-                            >Itens por página</label
-                          >
-                        </div>
-                      </div> -->
-                </div>
-              </div>
-              <table class="table bg-dark rf_texto">
-                <thead>
-                  <tr>
-                    <th scope="col">Financeira</th>
-                    <th scope="col">Plano</th>
-                    <th scope="col">Ret</th>
-                    <th scope="col">R$ Ent. Min</th>
-                    <th scope="col">% Ent. Min</th>
-                    <th scope="col">Rentabilidade</th>
-                    <th scope="col">Rebate</th>
-                    <th scope="col">Pmt</th>
-                    <th scope="col">Spf</th>
-                    <th scope="col">Retorno</th>
-                    <th scope="col">Tc Cob</th>
-                    <th scope="col">Tc Dev</th>
-                    <th scope="col">Coef</th>
-                    <th scope="col">Qtd. Parc</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr :class="item.id === linhaSelecionada3
-                    ? 'custom-highlight-row'
-                    : ''
-                    " @click=" rowSelect3(key, item.id, 3)"
-                    v-for="(      item, key      ) in       parcelamento_3      " :key="item.id">
-                    <td>{{ item.financeira }}</td>
-                    <td>{{ item.plano }}</td>
-                    <td>{{ item.ret }}</td>
-                    <td>{{ currency(item.entrada_min_valor) }}</td>
-                    <td>{{ item.entrada_min_porcentagem }}</td>
-                    <td>{{ currency(item.rentabilidade_3) }}</td>
-                    <td>{{ currency((parseFloat(Valor_Financiado_3.replace(/[^\d,]+/g, '').replace(",", ".")) +
-                      item.tc_cob) * item.descontoCoeficiente) }}</td>
-                    <td>{{ currency(item.pmt_3) }}</td>
-                    <td>{{ item.spf }}</td>
-                    <td>{{ item.retorno }}</td>
-                    <td>{{ currency(item.tc_cob) }}</td>
-                    <td>{{ item.tc_dev }}</td>
-                    <td>{{ item.coeficiente }}</td>
-                    <td>{{ item.qtd_parcelas }}</td>
-                  </tr>
-                </tbody>
-              </table>
-              <pagination v-if="parcelamento_3.length" :offset="totalPages_3" :total="totalItems_3" :limit="pageSize_3"
-                @change-page="handlePageChangeEntrada3" />
-            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Modal Itens Acessorios-->
+  <div class="modal fade" id="ModalItensAcessorios" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content card-container-desk rf_texto">
+        <div class="modal-header">
+          <div class="card-title gy-4">
+            <i class="bi bi-pencil-square fs-5 icone_kit"><span class="texto_kit">Acessórios</span></i>
           </div>
-          <div class="modal-footer">
-            <button class="btn btn-secondary" data-bs-dismiss="modal" @click="fechar_rank">
-              RANKING
-            </button>
+          <button class="btn btn-modal btn-lg p-1 mt-1" type="button" data-bs-target="#ModalProposta"
+            data-bs-toggle="modal" aria-label="Close"> Sair </button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-2 p-2">
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchCodigo" />
+                <label class="rf_texto">Código</label>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchDescricao" />
+                <label class="rf_texto">Descrição</label>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-floating">
+                <button class="btn btn-lg btn-desk-filtro" type="button" @click="
+    page = 1;
+  retrieveAcessorios();
+  ">
+                  <span class="rf_texto_btn">Pesquisar</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+          <!--Tabelas-->
+          <div class="card card-tabela-desk g-2 p-2 mt-2">
+            <table class="table rf_texto_desk">
+              <thead>
+                <tr>
+                  <th scope="col">Código</th>
+                  <th scope="col">Descrição</th>
+                  <th scope="col">R$ Valor</th>
+                  <!-- <th scope="col">R$ custo</th> -->
+                  <th scope="col">Ação</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="      item       in       acessorios      " :key="item.id" class="table-linha">
+                  <td>{{ item.codigo }}</td>
+                  <td>{{ item.descricao }}</td>
+                  <td>{{ currency(item.preco_final_instalado) }}</td>
+                  <!-- <td>{{ item.preco_base_peca }}</td> -->
+                  <!-- <td>{{ item.status }}</td> -->
+                  <td>
+                    <button type="button" class="dropdown-toggle-icon" data-bs-dismiss="modal"
+                      @click=" inserirAcessorios(item)">
+                      <i class="bi bi-pencil-square"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <pagination v-if="acessorios.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
+              @change-page="handlePageChange" />
           </div>
         </div>
       </div>
     </div>
-    <!--Modal Avaliações do veículo-->
-    <div class="modal fade" id="ModalAvaliacaoVeiculo" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
-      tabindex="-1">
-      <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content rf_bg_form rf_texto">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
-              Avaliações do veículo
-            </h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="card rf_bg_form g-2 p-2 rf_margin">
-              <table class="table rf_texto">
-                <thead>
-                  <tr>
-                    <th scope="col">Valor</th>
-                    <th scope="col">KM</th>
-                    <th scope="col">Loja</th>
-                    <th scope="col">Avaliador</th>
-                    <th scope="col">Data</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="      item       in       avaliacoes.avaliacoes      " :key="item.id">
-                    <td>{{ currency(item.precoAvaliacao) }}</td>
-                    <td>{{ item.kilometragem }}</td>
-                    <td>Matriz</td>
-                    <td>Gerente 1</td>
-                    <td>{{ item.data }}</td>
-                    <td>
-                      <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" @click=" editar_midia(item)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                          class="bi bi-pencil" viewBox="0 0 16 16">
-                          <path
-                            d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-                        </svg>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+  </div>
+  <!--Modal Ranqueamento-->
+  <div class="modal fade" id="ModalRanqueamento" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content card-container-desk rf_texto">
+        <div class="modal-header">
+          <div class="card-title gy-4">
+            <i class="bi bi-pencil-square fs-5 icone_kit"><span class="texto_kit">Ranqueamento</span></i>
+          </div>          
+        </div>
+        <div class="modal-body">
+          <div class="row g-2 p-2">
+            <!--Tabela Padrão-->
+            <div class="col-2">
+              <div class="form-floating">
+                <select class="form-select rf_bg_form rf_texto" v-model="filtro_tipo_tabela">
+                  <option v-for="      item       in       tabela_financiamento      " :value="item.value"
+                    :key="item.id">
+                    {{ item.value }}
+                  </option>
+                </select>
+                <label for="valid_empresa" class="rf_texto">Tabela Padrão</label>
+              </div>
+            </div>
+            <!--Utiliza SPF-->
+            <div class="col-2">
+              <div class="form-floating">
+                <select class="form-select rf_bg_form rf_texto" v-model="filtro_spf">
+                  <option v-for="      item       in       spf_financiamento      " :value="item.value" :key="item.id">
+                    {{ item.value }}
+                  </option>
+                </select>
+                <label for="valid_empresa" class="rf_texto">Utiliza SPF</label>
+              </div>
+            </div>
+            <!--Razão Social-->
+            <div class="col">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="razao_financiamento" />
+                <label class="rf_texto">Razão Social</label>
+              </div>
+            </div>
+            <!--Plano-->
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="plano"
+                  v-on:blur="handleOrderChangeEntrada1" />
+                <label class="rf_texto">Plano</label>
+              </div>
             </div>
           </div>
-          <div class="modal-footer">
-            <button class="btn btn-secondary" data-bs-dismiss="modal">
-              Retornar
-            </button>
+          <div class="row g-2 p-2">
+            <div class="col">
+              <div class="form-floating text-center">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                  <button type="button" class="btn btn-desk-filtro p-1" @click="
+    sortDesc = 0;
+  sortBy = 'financeira';
+  sortDesc_2 = 0;
+  sortBy_2 = 'financeira';
+  sortDesc_3 = 0;
+  sortBy_3 = 'financeira';
+  btn_filtro_1 = 1;
+  btn_filtro_2 = 0;
+  btn_filtro_3 = 0;
+  btn_filtro_4 = 0;
+  btn_filtro_5 = 0;
+  btn_filtro_6 = 0;
+  btn_filtro_7 = 0;
+  btn_filtro_8 = 0;
+  btn_filtro_9 = 0;
+  btn_filtro_10 = 0;
+  btn_filtro_11 = 0;
+  btn_filtro_11 = 0;
+  handleOrderChangeEntradaFiltro();
+  ">
+                   
+                    <i :class="icon_1">  <span>FINANCEIRA</span> </i>
+                  </button>
+                  <button type="button" class="btn btn-desk-filtro p-1" @click="
+    sortDesc = 0;
+  sortBy = 'plano';
+  sortDesc_2 = 0;
+  sortBy_2 = 'plano';
+  sortDesc_3 = 0;
+  sortBy_3 = 'plano';
+  btn_filtro_1 = 0;
+  btn_filtro_2 = 1;
+  btn_filtro_3 = 0;
+  btn_filtro_4 = 0;
+  btn_filtro_5 = 0;
+  btn_filtro_6 = 0;
+  btn_filtro_7 = 0;
+  btn_filtro_8 = 0;
+  btn_filtro_9 = 0;
+  btn_filtro_10 = 0;
+  btn_filtro_11 = 0;
+
+  handleOrderChangeEntradaFiltro();
+  ">
+                    
+                    <i :class="icon_2"><span> PLANO</span> </i>
+                  </button>
+                  <button type="button" class="btn btn-desk-filtro p-1" @click="
+    sortDesc = 0;
+  sortBy = 'ret';
+  sortDesc_2 = 0;
+  sortBy_2 = 'ret';
+  sortDesc_3 = 0;
+  sortBy_3 = 'ret';
+  btn_filtro_1 = 0;
+  btn_filtro_2 = 0;
+  btn_filtro_3 = 1;
+  btn_filtro_4 = 0;
+  btn_filtro_5 = 0;
+  btn_filtro_6 = 0;
+  btn_filtro_7 = 0;
+  btn_filtro_8 = 0;
+  btn_filtro_9 = 0;
+  btn_filtro_10 = 0;
+  btn_filtro_11 = 0;
+
+  handleOrderChangeEntradaFiltro();
+  ">
+                    <i :class="icon_3"><span> RET</span> </i>
+                  </button>
+                  <button type="button" class="btn btn-desk-filtro p-1" @click="
+    sortDesc = 0;
+  sortBy = 'entrada_min_porcentagem';
+  sortDesc_2 = 0;
+  sortBy_2 = 'entrada_min_porcentagem';
+  sortDesc_3 = 0;
+  sortBy_3 = 'entrada_min_porcentagem';
+  btn_filtro_1 = 0;
+  btn_filtro_2 = 0;
+  btn_filtro_3 = 0;
+  btn_filtro_4 = 1;
+  btn_filtro_5 = 0;
+  btn_filtro_6 = 0;
+  btn_filtro_7 = 0;
+  btn_filtro_8 = 0;
+  btn_filtro_9 = 0;
+  btn_filtro_10 = 0;
+  btn_filtro_11 = 0;
+
+  handleOrderChangeEntradaFiltro();
+  ">
+                     <i :class="icon_4"><span> % ENT. MIN</span> </i>
+                  </button>
+                  <button type="button" class="btn btn-desk-filtro p-1" @click="
+    sortDesc = 0;
+  sortBy = 'entrada_min_valor';
+  sortDesc_2 = 0;
+  sortBy_2 = 'entrada_min_valor';
+  sortDesc_3 = 0;
+  sortBy_3 = 'entrada_min_valor';
+
+  btn_filtro_1 = 0;
+  btn_filtro_2 = 0;
+  btn_filtro_3 = 0;
+  btn_filtro_4 = 0;
+  btn_filtro_5 = 1;
+  btn_filtro_6 = 0;
+  btn_filtro_7 = 0;
+  btn_filtro_8 = 0;
+  btn_filtro_9 = 0;
+  btn_filtro_10 = 0;
+  btn_filtro_11 = 0;
+
+  handleOrderChangeEntradaFiltro();
+  ">
+                     <i :class="icon_5"><span> R$ ENT. MIN</span> </i>
+                  </button>
+                  <button type="button" class="btn btn-desk-filtro p-1" @click="
+                      sortDesc = 0;
+                      sortBy = 'rentabilidade_1';
+                      sortDesc_2 = 0;
+                      sortBy_2 = 'rentabilidade_2';
+                      sortDesc_3 = 0;
+                      sortBy_3 = 'rentabilidade_3';
+                      btn_filtro_1 = 0;
+                      btn_filtro_2 = 0;
+                      btn_filtro_3 = 0;
+                      btn_filtro_4 = 0;
+                      btn_filtro_5 = 0;
+                      btn_filtro_6 = 1;
+                      btn_filtro_7 = 0;
+                      btn_filtro_8 = 0;
+                      btn_filtro_9 = 0;
+                      btn_filtro_10 = 0;
+                      btn_filtro_11 = 0;
+                      handleOrderChangeEntradaFiltro();
+                    ">
+                    <span>RENTABILIDADE</span> <i :class="icon_6"> </i>
+                  </button>
+                  <button type="button" class="btn btn-desk-filtro p-1" @click="
+    sortDesc = 0;
+  sortBy = 'pmt_1';
+  sortDesc_2 = 0;
+  sortBy_2 = 'pmt_2';
+  sortDesc_3 = 0;
+  sortBy_3 = 'pmt_3';
+  btn_filtro_1 = 0;
+  btn_filtro_2 = 0;
+  btn_filtro_3 = 0;
+  btn_filtro_4 = 0;
+  btn_filtro_5 = 0;
+  btn_filtro_6 = 0;
+  btn_filtro_7 = 1;
+  btn_filtro_8 = 0;
+  btn_filtro_9 = 0;
+  btn_filtro_10 = 0;
+  btn_filtro_11 = 0;
+  handleOrderChangeEntradaFiltro();
+  ">
+                     <i :class="icon_7"><span> PMT</span> </i>
+                  </button>
+                  <button type="button" class="btn btn-desk-filtro p-1" @click="
+    sortDesc = 0;
+  sortBy = 'retorno';
+  sortDesc_2 = 0;
+  sortBy_2 = 'retorno';
+  sortDesc_2 = 0;
+  sortBy_2 = 'retorno';
+  btn_filtro_1 = 0;
+  btn_filtro_2 = 0;
+  btn_filtro_3 = 0;
+  btn_filtro_4 = 0;
+  btn_filtro_5 = 0;
+  btn_filtro_6 = 0;
+  btn_filtro_7 = 0;
+  btn_filtro_8 = 1;
+  btn_filtro_9 = 0;
+  btn_filtro_10 = 0;
+  btn_filtro_11 = 0;
+
+  handleOrderChangeEntradaFiltro();
+  ">
+                     <i :class="icon_8"><span> RETORNO</span></i>
+                  </button>
+                  <button type="button" class="btn btn-desk-filtro p-1" @click="
+    sortDesc = 0;
+  sortBy = 'tc_cob';
+  sortDesc_2 = 0;
+  sortBy_2 = 'tc_cob';
+  sortDesc_3 = 0;
+  sortBy_3 = 'tc_cob';
+  btn_filtro_1 = 0;
+  btn_filtro_2 = 0;
+  btn_filtro_3 = 0;
+  btn_filtro_4 = 0;
+  btn_filtro_5 = 0;
+  btn_filtro_6 = 0;
+  btn_filtro_7 = 0;
+  btn_filtro_8 = 0;
+  btn_filtro_9 = 1;
+  btn_filtro_10 = 0;
+  btn_filtro_11 = 0;
+
+  handleOrderChangeEntradaFiltro();
+  ">
+                     <i :class="icon_9"> <span>TAC. COB</span> </i>
+                  </button>
+                  <button type="button" class="btn btn-desk-filtro p-1" @click="
+    sortDesc = 0;
+  sortBy = 'tc_dev';
+  sortDesc_2 = 0;
+  sortBy_2 = 'tc_dev';
+  sortDesc_3 = 0;
+  sortBy_3 = 'tc_dev';
+
+  btn_filtro_1 = 0;
+  btn_filtro_2 = 0;
+  btn_filtro_3 = 0;
+  btn_filtro_4 = 0;
+  btn_filtro_5 = 0;
+  btn_filtro_6 = 0;
+  btn_filtro_7 = 0;
+  btn_filtro_8 = 0;
+  btn_filtro_9 = 0;
+  btn_filtro_10 = 1;
+  btn_filtro_11 = 0;
+
+  handleOrderChangeEntradaFiltro();
+  ">
+                     <i :class="icon_10"> <span>TAC. DEV</span> </i>
+                  </button>
+                  <button type="button" class="btn btn-desk-filtro p-1" @click="
+    sortDesc = 0;
+  sortBy = 'coeficiente';
+  sortDesc_2 = 0;
+  sortBy_2 = 'coeficiente';
+  sortDesc_3 = 0;
+  sortBy_3 = 'coeficiente';
+  btn_filtro_1 = 0;
+  btn_filtro_2 = 0;
+  btn_filtro_3 = 0;
+  btn_filtro_4 = 0;
+  btn_filtro_5 = 0;
+  btn_filtro_6 = 0;
+  btn_filtro_7 = 0;
+  btn_filtro_8 = 0;
+  btn_filtro_9 = 0;
+  btn_filtro_10 = 0;
+  btn_filtro_11 = 1;
+  handleOrderChangeEntradaFiltro();
+  ">
+                     <i :class="icon_11"><span> COEF</span> </i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--Tabelas 1 -->
+          <div class="card card-tabela-desk g-2 p-2 mt-2">
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <div class="card-title gy-4">
+                      <i class="bi bi-cash-coin fs-5 icone_filtro"><span class="texto_filtro">Valor de Entrada: <strong>{{ Valor_Entrada }}</strong> </span></i>  <i class="bi bi-cash-coin p-3 icone_filtro"><span class="texto_filtro">Valor Financiado: <strong>{{ Valor_Financiado }}</strong> </span></i>
+                    </div>               
+                  </div>
+              </div>
+            </div>
+            <table class="table  rf_texto_desk">
+              <thead>
+                <tr>
+
+                  <th scope="col">Financeira</th>
+                  <th scope="col">Plano</th>
+                  <th scope="col">Ret</th>
+                  <th scope="col">R$ Ent. Min</th>
+                  <th scope="col">% Ent. Min</th>
+                  <th scope="col">Rentabilidade</th>
+                  <th scope="col">Rebate</th>
+                  <th scope="col">Pmt</th>
+                  <th scope="col">Spf</th>
+                  <th scope="col">Retorno</th>
+                  <th scope="col">Tc Cob</th>
+                  <th scope="col">Tc Dev</th>
+                  <th scope="col">Coef</th>
+                  <th scope="col">Qtd. Parc</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr :class="item.id === linhaSelecionada ? 'custom-highlight-row' : ''
+    " @click=" rowSelect(key, item.id, 1)" v-for="(      item, key      ) in       parcelamento_1      "
+                  :key="item.id">
+
+                  <td>{{ item.financeira }}</td>
+                  <td>{{ item.plano }}</td>
+                  <td>{{ item.ret }}</td>
+                  <td>{{ currency(item.entrada_min_valor) }}</td>
+                  <td>{{ item.entrada_min_porcentagem }}</td>
+                  <td>{{ currency(item.rentabilidade_1) }}</td>
+
+                  <td>{{ currency((parseFloat(Valor_Financiado.replace(/[^\d,]+/g, '').replace(",", ".")) +
+    item.tc_cob)
+    * item.descontoCoeficiente) }}</td>
+                  <td>{{ currency(item.pmt_1) }}</td>
+                  <td>{{ item.spf }}</td>
+                  <td>{{ item.retorno }}</td>
+                  <td>{{ currency(item.tc_cob) }}</td>
+                  <td>{{ item.tc_dev }}</td>
+                  <td>{{ item.coeficiente }}</td>
+                  <td>{{ item.qtd_parcelas }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <pagination v-if="parcelamento_1.length" :offset="totalPages_1" :total="totalItems_1" :limit="pageSize_1"
+              @change-page="handlePageChangeEntrada1" />
+          </div>
+          <!--Tabelas 2-->
+          <div class="card card-tabela-desk g-2 p-2 mt-2">
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <div class="card-title gy-4">
+                      <i class="bi bi-cash-coin fs-5 icone_filtro"><span class="texto_filtro">Valor de Entrada: <strong>{{ Valor_Entrada_2 }}</strong> </span></i>  <i class="bi bi-cash-coin p-3 icone_filtro"><span class="texto_filtro">Valor Financiado: <strong>{{ Valor_Financiado_2 }}</strong> </span></i>
+                    </div>               
+                  </div>
+              </div>           
+            </div>
+            <table class="table rf_texto_desk">
+              <thead>
+                <tr>
+                  <th scope="col">Financeira</th>
+                  <th scope="col">Plano</th>
+                  <th scope="col">Ret</th>
+                  <th scope="col">R$ Ent. Min</th>
+                  <th scope="col">% Ent. Min</th>
+                  <th scope="col">Rentabilidade</th>
+                  <th scope="col">Rebate</th>
+                  <th scope="col">Pmt</th>
+                  <th scope="col">Spf</th>
+                  <th scope="col">Retorno</th>
+                  <th scope="col">Tc Cob</th>
+                  <th scope="col">Tc Dev</th>
+                  <th scope="col">Coef</th>
+                  <th scope="col">Qtd. Parc</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr :class="item.id === linhaSelecionada2
+    ? 'custom-highlight-row'
+    : ''
+    " @click=" rowSelect2(key, item.id, 2)" v-for="(      item, key      ) in       parcelamento_2      "
+                  :key="item.id">
+                  <td>{{ item.financeira }}</td>
+                  <td>{{ item.plano }}</td>
+                  <td>{{ item.ret }}</td>
+                  <td>{{ currency(item.entrada_min_valor) }}</td>
+                  <td>{{ item.entrada_min_porcentagem }}</td>
+                  <td>{{ currency(item.rentabilidade_2) }}</td>
+                  <td>{{ currency((parseFloat(Valor_Financiado_2.replace(/[^\d,]+/g, '').replace(",", ".")) +
+    item.tc_cob) * item.descontoCoeficiente) }}</td>
+                  <td>{{ currency(item.pmt_2) }}</td>
+                  <td>{{ item.spf }}</td>
+                  <td>{{ item.retorno }}</td>
+                  <td>{{ currency(item.tc_cob) }}</td>
+                  <td>{{ item.tc_dev }}</td>
+                  <td>{{ item.coeficiente }}</td>
+                  <td>{{ item.qtd_parcelas }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <pagination v-if="parcelamento_2.length" :offset="totalPages_2" :total="totalItems_2" :limit="pageSize_2"
+              @change-page="handlePageChangeEntrada2" />
+          </div>
+          <!--Tabelas 3-->
+          <div class="card card-tabela-desk g-2 p-2 mt-2">
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <div class="card-title gy-4">
+                      <i class="bi bi-cash-coin fs-5 icone_filtro"><span class="texto_filtro">Valor de Entrada: <strong>{{ Valor_Entrada_3 }}</strong> </span></i>  <i class="bi bi-cash-coin p-3 icone_filtro"><span class="texto_filtro">Valor Financiado: <strong>{{ Valor_Financiado_3 }}</strong> </span></i>
+                    </div>               
+                  </div>
+              </div>
+            </div>
+            <table class="table bg-dark rf_texto_desk">
+              <thead>
+                <tr>
+                  <th scope="col">Financeira</th>
+                  <th scope="col">Plano</th>
+                  <th scope="col">Ret</th>
+                  <th scope="col">R$ Ent. Min</th>
+                  <th scope="col">% Ent. Min</th>
+                  <th scope="col">Rentabilidade</th>
+                  <th scope="col">Rebate</th>
+                  <th scope="col">Pmt</th>
+                  <th scope="col">Spf</th>
+                  <th scope="col">Retorno</th>
+                  <th scope="col">Tc Cob</th>
+                  <th scope="col">Tc Dev</th>
+                  <th scope="col">Coef</th>
+                  <th scope="col">Qtd. Parc</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr :class="item.id === linhaSelecionada3
+    ? 'custom-highlight-row'
+    : ''
+    " @click=" rowSelect3(key, item.id, 3)" v-for="(      item, key      ) in       parcelamento_3      "
+                  :key="item.id">
+                  <td>{{ item.financeira }}</td>
+                  <td>{{ item.plano }}</td>
+                  <td>{{ item.ret }}</td>
+                  <td>{{ currency(item.entrada_min_valor) }}</td>
+                  <td>{{ item.entrada_min_porcentagem }}</td>
+                  <td>{{ currency(item.rentabilidade_3) }}</td>
+                  <td>{{ currency((parseFloat(Valor_Financiado_3.replace(/[^\d,]+/g, '').replace(",", ".")) +
+    item.tc_cob) * item.descontoCoeficiente) }}</td>
+                  <td>{{ currency(item.pmt_3) }}</td>
+                  <td>{{ item.spf }}</td>
+                  <td>{{ item.retorno }}</td>
+                  <td>{{ currency(item.tc_cob) }}</td>
+                  <td>{{ item.tc_dev }}</td>
+                  <td>{{ item.coeficiente }}</td>
+                  <td>{{ item.qtd_parcelas }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <pagination v-if="parcelamento_3.length" :offset="totalPages_3" :total="totalItems_3" :limit="pageSize_3"
+              @change-page="handlePageChangeEntrada3" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="col-1">
+            <button class="btn btn-lg btn-desk-filtro" data-bs-dismiss="modal" @click="fechar_rank">
+            <span class="rf_texto_btn_desk">RANKING</span>
+          </button>
           </div>
         </div>
       </div>
     </div>
-    <!--Modal Mensagem Incluir Acessórios-->
-    <div class="modal fade" id="ModalMsgIncluirAcessorios" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
-      tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
-              Modal 8
-            </h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+  <!--Modal Avaliações do veículo-->
+  <div class="modal fade" id="ModalAvaliacaoVeiculo" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content rf_bg_form rf_texto">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
+            Avaliações do veículo
+          </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="card rf_bg_form g-2 p-2 rf_margin">
+            <table class="table rf_texto">
+              <thead>
+                <tr>
+                  <th scope="col">Valor</th>
+                  <th scope="col">KM</th>
+                  <th scope="col">Loja</th>
+                  <th scope="col">Avaliador</th>
+                  <th scope="col">Data</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="      item       in       avaliacoes.avaliacoes      " :key="item.id">
+                  <td>{{ currency(item.precoAvaliacao) }}</td>
+                  <td>{{ item.kilometragem }}</td>
+                  <td>Matriz</td>
+                  <td>Gerente 1</td>
+                  <td>{{ item.data }}</td>
+                  <td>
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                      data-bs-target="#exampleModal" @click=" editar_midia(item)">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-pencil" viewBox="0 0 16 16">
+                        <path
+                          d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div class="modal-body">
-            <!--Modal Estoque-->
-            Mensagem Incluir Acessórios
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-primary" data-bs-dismiss="modal">
-              Fechar
-            </button>
-          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">
+            Retornar
+          </button>
         </div>
       </div>
     </div>
-    <!--Modal Gerar Menu-->
-    <div class="modal fade" id="ModalGerarMenu" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
-      tabindex="-1">
-      <div class="modal-dialog modal-fullscreen rf_modal font-pdf-menu">
-        <div class="modal-content">
-          <div class="modal-header">
+  </div>
+  <!--Modal Mensagem Incluir Acessórios-->
+  <div class="modal fade" id="ModalMsgIncluirAcessorios" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
+            Modal 8
+          </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!--Modal Estoque-->
+          Mensagem Incluir Acessórios
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" data-bs-dismiss="modal">
+            Fechar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Modal Gerar Menu-->
+  <div class="modal fade" id="ModalGerarMenu" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-fullscreen rf_modal font-pdf-menu">
+      <div class="modal-content">
+        <div class="modal-header">
 
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class=" mt-3 rf_texto_pdf" ref="contentToPrint">
-              <div class="col">
-                <a class="navbar-brand logo">
-                        <img src="../../assets/logo_menu.png" alt="Bootstrap" width="100" height="30" />
-                      </a>
-                <div class="row g-2 p-2">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class=" mt-3 rf_texto_pdf" ref="contentToPrint">
+            <div class="col">
+              <a class="navbar-brand logo">
+                <img src="../../assets/logo_menu.png" alt="Bootstrap" width="100" height="30" />
+              </a>
+              <div class="row g-2 p-2">
 
-                  <div class="col-4">
-                    <div class="card card-menu ">
-                      
-                      <div class="card-header rf_card_header">Informações do Cliente</div>
-                      <div class="rf_card_pdf">
-                        <div>
-                          <div class="col "><strong>Cliente</strong></div>
-                          <div class="col"><span class="">{{ g_menu_cliente }}</span></div>
-                        </div>
-                        <div>
-                          <div class="col"><strong>CPF/CNPJ</strong></div>
-                          <div class="col"><span class="">{{ g_menu_cpfCnpj }}</span></div>
-                        </div>
-                        <div>
-                          <div class="col"><strong>Telefone</strong></div>
-                          <div class="col"><span class="">{{ g_menu_fone }}</span></div>
-                        </div>
-                        <div>
-                          <div class="col"><strong>Telefone 2</strong></div>
-                          <div class="col"><span class="">{{ g_menu_fone2 }}</span></div>
-                        </div>
-                        <div>
-                          <div class="col"><strong>Email</strong></div>
-                          <div class="col"><span class="">{{ g_menu_email }}</span></div>
-                        </div>
+                <div class="col-4">
+                  <div class="card card-menu ">
+
+                    <div class="card-header rf_card_header">Informações do Cliente</div>
+                    <div class="rf_card_pdf">
+                      <div>
+                        <div class="col "><strong>Cliente</strong></div>
+                        <div class="col"><span class="">{{ g_menu_cliente }}</span></div>
+                      </div>
+                      <div>
+                        <div class="col"><strong>CPF/CNPJ</strong></div>
+                        <div class="col"><span class="">{{ g_menu_cpfCnpj }}</span></div>
+                      </div>
+                      <div>
+                        <div class="col"><strong>Telefone</strong></div>
+                        <div class="col"><span class="">{{ g_menu_fone }}</span></div>
+                      </div>
+                      <div>
+                        <div class="col"><strong>Telefone 2</strong></div>
+                        <div class="col"><span class="">{{ g_menu_fone2 }}</span></div>
+                      </div>
+                      <div>
+                        <div class="col"><strong>Email</strong></div>
+                        <div class="col"><span class="">{{ g_menu_email }}</span></div>
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  <div class="col-4">
-                    <div class="card card-menu">
-                      <div class="card-header rf_card_header">Informações da Proposta</div>
-                      <div class="rf_card_pdf">
-                        <div>
-                          <div class="col "><strong>Gerente</strong></div>
-                          <div class="col"><span class="">{{ g_menu_gerente }}</span></div>
-                        </div>
-                        <div>
-                          <div class="col"><strong>Vendedor</strong></div>
-                          <div class="col"><span class="">{{ g_menu_vendedor }}</span></div>
-                        </div>
-                        <div>
-                          <div class="col"><strong>Negociação</strong></div>
-                          <div class="col"><span class="">{{ g_menu_negociacao }}</span></div>
-                        </div>
-                        <div>
-                          <div class="col"><strong>Data</strong></div>
-                          <div class="col"><span class="">{{ g_menu_data_negociacao }}</span></div>
-                        </div>
+                <div class="col-4">
+                  <div class="card card-menu">
+                    <div class="card-header rf_card_header">Informações da Proposta</div>
+                    <div class="rf_card_pdf">
+                      <div>
+                        <div class="col "><strong>Gerente</strong></div>
+                        <div class="col"><span class="">{{ g_menu_gerente }}</span></div>
+                      </div>
+                      <div>
+                        <div class="col"><strong>Vendedor</strong></div>
+                        <div class="col"><span class="">{{ g_menu_vendedor }}</span></div>
+                      </div>
+                      <div>
+                        <div class="col"><strong>Negociação</strong></div>
+                        <div class="col"><span class="">{{ g_menu_negociacao }}</span></div>
+                      </div>
+                      <div>
+                        <div class="col"><strong>Data</strong></div>
+                        <div class="col"><span class="">{{ g_menu_data_negociacao }}</span></div>
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  <div class="col-4">
-                    <div class="card card-menu">
-                      <div class="card-header rf_card_header">Acessórios</div>
-                      <div class="rf_container_menu">
-                        <ul class="list-group" v-for="item in itens_acessorios" :key="item.id">
-                          <li class="
+                <div class="col-4">
+                  <div class="card card-menu">
+                    <div class="card-header rf_card_header">Acessórios</div>
+                    <div class="rf_container_menu">
+                      <ul class="list-group" v-for="item in itens_acessorios" :key="item.id">
+                        <li class="
                           list-group-item
                           d-flex
                           justify-content-between
                           align-items-center
                         ">
-                            {{ item.descricao }}
-                            <span class="">{{ item.valor }}</span>
-                          </li>
-                        </ul>
-                      </div>
-                      <ul class="list-group">
-                        <li class="
+                          {{ item.descricao }}
+                          <span class="">{{ item.valor }}</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <ul class="list-group">
+                      <li class="
                         list-group-item
                         d-flex
                         justify-content-between
                         align-items-center
                       ">
-                          <span class="badge text-bg-danger">{{ msg }}</span>
-                        </li>
-                      </ul>
+                        <span class="badge text-bg-danger">{{ msg }}</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row g-2 p-2">
+                <div class="col-4">
+                  <div class="card card-menu">
+                    <div class="card-header rf_card_header">Veículo</div>
+                    <div class="rf_card_pdf">
+
+                      <div class="row">
+                        <div class="col">
+                          <div class="col-4"><strong>Marca</strong></div>
+                          <div class="col-4"><span class="">{{ g_menu_marca }}</span></div>
+                        </div>
+                        <div class="col">
+                          <div class="col"><strong>Modelo</strong></div>
+                          <div class="col"><span class="">{{ g_menu_modelo }}</span></div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <div class="col-4"><strong>Cor</strong></div>
+                          <div class="col"><span class="">{{ g_menu_cor }}</span></div>
+                        </div>
+                        <div class="col">
+                          <div class="col"><strong>Placa</strong></div>
+                          <div class="col"><span class="">{{ g_menu_placa }}</span></div>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="col"><strong>Chassi</strong></div>
+                        <div class="col"><span class="">{{ g_menu_chassi }}</span></div>
+                      </div>
+                      <div>
+                        <div class="row">
+                          <div class="col">
+                            <div class="col-6"><strong>Ano Modelo</strong></div>
+                            <div class="col-6"><span class="">{{ g_menu_ano_modelo }}</span></div>
+                          </div>
+                          <div class="col">
+                            <div class="col-6"><strong>Ano Modelo</strong></div>
+                            <div class="col-6"><span class="">{{ g_menu_ano_fab }}</span></div>
+                          </div>
+                        </div>
+
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-4">
+                  <div class="card card-menu">
+                    <div class="card-header rf_card_header">Resumo da Compra</div>
+                    <div class="rf_card_pdf">
+                      <div class="row">
+                        <div class="col">
+                          <div class="col-7"><strong>Valor Sugerido</strong></div>
+                          <div class="col-6"><span class="">{{ g_menu_val_sugerido }}</span></div>
+                        </div>
+                        <div class="col">
+                          <div class="col"><strong>Valor Desconto</strong></div>
+                          <div class="col-6"><span class="">{{ g_menu_val_desconto }}</span></div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <div class="col"><strong>Valor Total Acessórios</strong></div>
+                          <div class="col"><span class="">{{ g_menu_total_acessorios }}</span></div>
+                        </div>
+                        <div class="col">
+                          <div class="col"><strong>Tipo de Pagamento</strong></div>
+                          <div class="col-6"><span class="">{{ tipoPagamento }}</span></div>
+                        </div>
+                      </div>
+                      <div>
+
+                      </div>
+                      <div>
+                        <div class="col"><strong>Valor Total Veículo</strong></div>
+                        <div class="col"><span class="">{{ g_menu_val_veiculo }}</span></div>
+                      </div>
+                      <div>
+                        <div class="col"><strong>Total Financiado</strong></div>
+                        <div class="col"><span class="">{{ Valor_Financiado }}</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-4">
+                  <div class="card card-menu">
+                    <div class="card-header rf_card_header">Veículo de Troca</div>
+                    <div class="rf_card_pdf">
+                      <div>
+                        <div class="row">
+                          <div class="col-6">
+                            <div class="col"><strong>Marca</strong></div>
+                            <div class="col"><span class="">{{ g_menu_marca_avaliacao }}</span></div>
+                          </div>
+                          <div class="col-6">
+                            <div class="col"><strong>Placa</strong></div>
+                            <div class="col"><span class="">{{ g_menu_placa_avaliacao }}</span></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="row">
+                          <div class="col-6">
+                            <div class="col"><strong>Modelo</strong></div>
+                            <div class="col"><span class="">{{ g_menu_modelo_avalicao }}</span></div>
+                          </div>
+                          <div class="col-6">
+                            <div class="col"><strong>Ano</strong></div>
+                            <div class="col"><span class="">{{ g_menu_ano_modelo_avaliacao }}</span></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="row">
+                          <div class="col-6">
+                            <div class="col"><strong>Valor itens Av. (-)</strong></div>
+                            <div class="col"><span class="">{{ g_menu_itens_avaliacao_db }}</span></div>
+                          </div>
+                          <div class="col-6">
+                            <div class="col"><strong>Valor itens Av. (+)</strong></div>
+                            <div class="col"><span class="">{{ g_menu_itens_avaliacao_cr }}</span></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="row">
+                          <div class="col-6">
+                            <div class="col"><strong>Valor Avaliado</strong></div>
+                            <div class="col"><span class="">{{ g_menu_valor_avaliado }}</span></div>
+                          </div>
+                          <div class="col-6">
+                            <div class="col"><strong>Valor Final Av.</strong></div>
+                            <div class="col"><span class="">{{ g_menu_valor_avaliacao_final }}</span></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-2 p-2">
+              <div class="col">
+                <div class="card ">
+                  <div class="card-header rf_card_header">Entrada</div>
+                  <div class="rf_card_pdf">
+                    <div>
+                      <div class="col "><strong> {{ Valor_Entrada_1 }}</strong></div>
+                    </div>
+                    <div>
+                      <div class="col"><strong> {{ Valor_Entrada_2 }}</strong></div>
+                    </div>
+                    <div>
+                      <div class="col"><strong> {{ Valor_Entrada_3 }}</strong></div>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="col">
-                <div class="row g-2 p-2">
-                  <div class="col-4">
-                    <div class="card card-menu">
-                      <div class="card-header rf_card_header">Veículo</div>
-                      <div class="rf_card_pdf">
-
-                        <div class="row">
-                          <div class="col">
-                            <div class="col-4"><strong>Marca</strong></div>
-                            <div class="col-4"><span class="">{{ g_menu_marca }}</span></div>
-                          </div>
-                          <div class="col">
-                            <div class="col"><strong>Modelo</strong></div>
-                            <div class="col"><span class="">{{ g_menu_modelo }}</span></div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col">
-                            <div class="col-4"><strong>Cor</strong></div>
-                            <div class="col"><span class="">{{ g_menu_cor }}</span></div>
-                          </div>
-                          <div class="col">
-                            <div class="col"><strong>Placa</strong></div>
-                            <div class="col"><span class="">{{ g_menu_placa }}</span></div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="col"><strong>Chassi</strong></div>
-                          <div class="col"><span class="">{{ g_menu_chassi }}</span></div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col">
-                              <div class="col-6"><strong>Ano Modelo</strong></div>
-                              <div class="col-6"><span class="">{{ g_menu_ano_modelo }}</span></div>
-                            </div>
-                            <div class="col">
-                              <div class="col-6"><strong>Ano Modelo</strong></div>
-                              <div class="col-6"><span class="">{{ g_menu_ano_fab }}</span></div>
-                            </div>
-                          </div>
-
-                        </div>
-
-                      </div>
+                <div class="card ">
+                  <div class="card-header rf_card_header">Total Financiado</div>
+                  <div class="rf_card_pdf">
+                    <div>
+                      <div class="col "><strong> {{ Valor_Financiado_1 }}</strong></div>
                     </div>
-                  </div>
-
-                  <div class="col-4">
-                    <div class="card card-menu">
-                      <div class="card-header rf_card_header">Resumo da Compra</div>
-                      <div class="rf_card_pdf">
-                        <div class="row">
-                          <div class="col">
-                            <div class="col-7"><strong>Valor Sugerido</strong></div>
-                            <div class="col-6"><span class="">{{ g_menu_val_sugerido }}</span></div>
-                          </div>
-                          <div class="col">
-                            <div class="col"><strong>Valor Desconto</strong></div>
-                            <div class="col-6"><span class="">{{ g_menu_val_desconto }}</span></div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col">
-                            <div class="col"><strong>Valor Total Acessórios</strong></div>
-                            <div class="col"><span class="">{{ g_menu_total_acessorios }}</span></div>
-                          </div>
-                          <div class="col">
-                            <div class="col"><strong>Tipo de Pagamento</strong></div>
-                            <div class="col-6"><span class="">{{ tipoPagamento }}</span></div>
-                          </div>
-                        </div>
-                        <div>
-
-                        </div>
-                        <div>
-                          <div class="col"><strong>Valor Total Veículo</strong></div>
-                          <div class="col"><span class="">{{ g_menu_val_veiculo }}</span></div>
-                        </div>
-                        <div>
-                          <div class="col"><strong>Total Financiado</strong></div>
-                          <div class="col"><span class="">{{ Valor_Financiado }}</span></div>
-                        </div>
-                      </div>
+                    <div>
+                      <div class="col"><strong> {{ Valor_Financiado_2 }}</strong></div>
                     </div>
-                  </div>
-
-                  <div class="col-4">
-                    <div class="card card-menu">
-                      <div class="card-header rf_card_header">Veículo de Troca</div>
-                      <div class="rf_card_pdf">
-                        <div>
-                          <div class="row">
-                            <div class="col-6">
-                              <div class="col"><strong>Marca</strong></div>
-                              <div class="col"><span class="">{{ g_menu_marca_avaliacao }}</span></div>
-                            </div>
-                            <div class="col-6">
-                              <div class="col"><strong>Placa</strong></div>
-                              <div class="col"><span class="">{{ g_menu_placa_avaliacao }}</span></div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-6">
-                              <div class="col"><strong>Modelo</strong></div>
-                              <div class="col"><span class="">{{ g_menu_modelo_avalicao }}</span></div>
-                            </div>
-                            <div class="col-6">
-                              <div class="col"><strong>Ano</strong></div>
-                              <div class="col"><span class="">{{ g_menu_ano_modelo_avaliacao }}</span></div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-6">
-                              <div class="col"><strong>Valor itens Av. (-)</strong></div>
-                              <div class="col"><span class="">{{ g_menu_itens_avaliacao_db }}</span></div>
-                            </div>
-                            <div class="col-6">
-                              <div class="col"><strong>Valor itens Av. (+)</strong></div>
-                              <div class="col"><span class="">{{ g_menu_itens_avaliacao_cr }}</span></div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-6">
-                              <div class="col"><strong>Valor Avaliado</strong></div>
-                              <div class="col"><span class="">{{ g_menu_valor_avaliado }}</span></div>
-                            </div>
-                            <div class="col-6">
-                              <div class="col"><strong>Valor Final Av.</strong></div>
-                              <div class="col"><span class="">{{ g_menu_valor_avaliacao_final }}</span></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                    <div>
+                      <div class="col"><strong> {{ Valor_Financiado_3 }}</strong></div>
                     </div>
                   </div>
                 </div>
               </div>
+              <div class="col">
+                <div class="card ">
+                  <div class="card-header rf_card_header">{{ parcela_1 }} Meses</div>
+                  <div class="rf_card_pdf">
+                    <div>
+                      <div class="col "><strong> {{ parcela_1_1 }}</strong></div>
+                    </div>
+                    <div>
+                      <div class="col"><strong> {{ parcela_2_1 }}</strong></div>
+                    </div>
+                    <div>
+                      <div class="col"><strong> {{ parcela_3_1 }}</strong></div>
+                    </div>
 
-              <div class="row g-2 p-2">
-                <div class="col">
-                  <div class="card ">
-                    <div class="card-header rf_card_header">Entrada</div>
-                    <div class="rf_card_pdf">
-                      <div>
-                        <div class="col "><strong> {{ Valor_Entrada_1 }}</strong></div>
-                      </div>
-                      <div>
-                        <div class="col"><strong> {{ Valor_Entrada_2 }}</strong></div>
-                      </div>
-                      <div>
-                        <div class="col"><strong> {{ Valor_Entrada_3 }}</strong></div>
-                      </div>
-                    </div>
                   </div>
-                </div>
-                <div class="col">
-                  <div class="card ">
-                    <div class="card-header rf_card_header">Total Financiado</div>
-                    <div class="rf_card_pdf">
-                      <div>
-                        <div class="col "><strong> {{ Valor_Financiado_1 }}</strong></div>
-                      </div>
-                      <div>
-                        <div class="col"><strong> {{ Valor_Financiado_2 }}</strong></div>
-                      </div>
-                      <div>
-                        <div class="col"><strong> {{ Valor_Financiado_3 }}</strong></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="card ">
-                    <div class="card-header rf_card_header">{{ parcela_1 }} Meses</div>
-                    <div class="rf_card_pdf">
-                      <div>
-                        <div class="col "><strong> {{ parcela_1_1 }}</strong></div>
-                      </div>
-                      <div>
-                        <div class="col"><strong> {{ parcela_2_1 }}</strong></div>
-                      </div>
-                      <div>
-                        <div class="col"><strong> {{ parcela_3_1 }}</strong></div>
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="card ">
-                    <div class="card-header rf_card_header">{{ parcela_2 }} Meses</div>
-                    <div class="rf_card_pdf">
-                      <div>
-                        <div class="col "><strong> {{ parcela_1_2 }}</strong></div>
-                      </div>
-                      <div>
-                        <div class="col"><strong> {{ parcela_2_2 }}</strong></div>
-                      </div>
-                      <div>
-                        <div class="col"><strong> {{ parcela_3_2 }}</strong></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="card ">
-                    <div class="card-header rf_card_header">{{ parcela_3 }} Meses</div>
-                    <div class="rf_card_pdf">
-                      <div>
-                        <div class="col "><strong> {{ parcela_1_3 }}</strong></div>
-                      </div>
-                      <div>
-                        <div class="col"><strong> {{ parcela_2_3 }}</strong></div>
-                      </div>
-                      <div>
-                        <div class="col"><strong> {{ parcela_3_3 }}</strong></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-              <div class="row g-2 p-2">
-                <div class="col">
-                  <span>
-                    * O preço sugerido é válido enquanto durarem os veículos em
-                    estoque.</span>
-                  <br />
-                  <span>** Despesa Operacional para preparação do veículo</span>
-                  <br />
-                  <!-- <span>A contratação de seguros é opcional, sendo possível a desistência do
-                    contrato em até 7 (sete) dias corridos com a devolução integral do
-                    valor pago.</span> -->
-                  <br />
-                  <span>É proibido condicionar desconto de bem à aquisição de seguro.</span>
-                  <br />
                 </div>
               </div>
-              <div class="row g-2 p-2 mt-4">
-                <div class="col rf_assinatura">
-                  <span>Gerente: {{ g_menu_gerente }}</span>
-                </div>
-                <div class="col rf_assinatura">
-                  <span>Cliente: {{ g_menu_cliente }}</span>
+              <div class="col">
+                <div class="card ">
+                  <div class="card-header rf_card_header">{{ parcela_2 }} Meses</div>
+                  <div class="rf_card_pdf">
+                    <div>
+                      <div class="col "><strong> {{ parcela_1_2 }}</strong></div>
+                    </div>
+                    <div>
+                      <div class="col"><strong> {{ parcela_2_2 }}</strong></div>
+                    </div>
+                    <div>
+                      <div class="col"><strong> {{ parcela_3_2 }}</strong></div>
+                    </div>
+                  </div>
                 </div>
               </div>
-
+              <div class="col">
+                <div class="card ">
+                  <div class="card-header rf_card_header">{{ parcela_3 }} Meses</div>
+                  <div class="rf_card_pdf">
+                    <div>
+                      <div class="col "><strong> {{ parcela_1_3 }}</strong></div>
+                    </div>
+                    <div>
+                      <div class="col"><strong> {{ parcela_2_3 }}</strong></div>
+                    </div>
+                    <div>
+                      <div class="col"><strong> {{ parcela_3_3 }}</strong></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
             </div>
+            <div class="row g-2 p-2">
+              <div class="col">
+                <span>
+                  * O preço sugerido é válido enquanto durarem os veículos em
+                  estoque.</span>
+                <br />
+                <span>** Despesa Operacional para preparação do veículo</span>
+                <br />
+                <!-- <span>A contratação de seguros é opcional, sendo possível a desistência do
+                    contrato em até 7 (sete) dias corridos com a devolução integral do
+                    valor pago.</span> -->
+                <br />
+                <span>É proibido condicionar desconto de bem à aquisição de seguro.</span>
+                <br />
+              </div>
+            </div>
+            <div class="row g-2 p-2 mt-4">
+              <div class="col rf_assinatura">
+                <span>Gerente: {{ g_menu_gerente }}</span>
+              </div>
+              <div class="col rf_assinatura">
+                <span>Cliente: {{ g_menu_cliente }}</span>
+              </div>
+            </div>
+
+
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-target="#ModaProposta" data-bs-toggle="modal">
-              Fechar
-            </button>
-            <button class="btn btn-secondary" :disabled="btn_gerar_menu" @click="generatePdf">IMPRIMIR</button>
-          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-target="#ModaProposta" data-bs-toggle="modal">
+            Fechar
+          </button>
+          <button class="btn btn-secondary" :disabled="btn_gerar_menu" @click="generatePdf">IMPRIMIR</button>
         </div>
       </div>
     </div>
-
-    <!--Modal Cadastrar Veículo para avaliação-->
-    <div class="modal fade" id="ModalCadastrarVeiculoAvalicao" aria-hidden="true"
-      aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
-              Modal 8
-            </h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <!--Modal Estoque-->
-            Mensagem Incluir Acessórios
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-primary" data-bs-dismiss="modal">
-              Fechar
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-
   </div>
+
+  <!--Modal Cadastrar Veículo para avaliação-->
+  <div class="modal fade" id="ModalCadastrarVeiculoAvalicao" aria-hidden="true"
+    aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
+            Modal 8
+          </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!--Modal Estoque-->
+          Mensagem Incluir Acessórios
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" data-bs-dismiss="modal">
+            Fechar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <RodapeVue />
 </template>
+
 <script>
-//import SidebarVue from "../../components/menu/Sidebar.vue";
+import SidebarVue from "../../components/menu/Sidebar.vue";
 import axios from "axios";
 //import DataService from "../../services/DataService";
 import userService from "../../services/user.service";
@@ -2560,13 +2404,15 @@ import router from "../../router";
 import TokenService from "../../services/token.service";
 import jwt_decode from 'jwt-decode';
 import RodapeVue from "../../components/menu/Rodape.vue";
+import NavgatorDk from "../../components/menu/NavgatorDk.vue";
 
 
 export default {
   name: "Usuários",
 
   components: {
-    //SidebarVue,
+    SidebarVue,
+    NavgatorDk,
     Pagination,
     Message,
     MessageAtualizar,
@@ -2814,11 +2660,12 @@ export default {
       modal_gerar_menu_desk: false,
       modal_proposta: false,
 
+
       //Campos para calcular as parcelas
       parcela: "",
-      parcela_1: 12,
-      parcela_2: 24,
-      parcela_3: 36,
+      parcela_1: 24,
+      parcela_2: 36,
+      parcela_3: 48,
       entrada_1: "",
       entrada_2: "",
       entrada_3: "",
@@ -3084,7 +2931,14 @@ export default {
       check_vend: true,
       vendedor_troca: "",
       bloquear_entrada: false,
-      timer: null
+      timer: null,
+
+      //Historico do Cliente
+      id_historico_cliente: "",
+      nome_historico_cliente: "",
+      hist_cliente: [],
+      modal_historico_cliente: false,
+
 
 
     };
@@ -3111,7 +2965,7 @@ export default {
     /**Ao abrir a tela de proposta chamar o método habilitar_proposta ele é responsável por startar o atendimento */
     this.getToken();
     this.habilitar_proposta();
-    this.startTimer();
+    // this.startTimer();
 
 
 
@@ -3127,34 +2981,34 @@ export default {
 
 
     // },
-    startTimer() {
-      let idleTime = 0;
+    // startTimer() {
+    //   let idleTime = 0;
 
-      const resetTimer = () => {
-        idleTime = 0;
-      };
+    //   const resetTimer = () => {
+    //     idleTime = 0;
+    //   };
 
-      const incrementIdleTime = () => {
-        idleTime += 1;
-        if (idleTime >= 30) { // 30 segundos de inatividade
-          // Ação para voltar à tela de propostas
-          // this.$router.push('/desk/index');
-          window.location.reload();
-        }
-      };
+    //   const incrementIdleTime = () => {
+    //     idleTime += 1;
+    //     if (idleTime >= 30) { // 30 segundos de inatividade
+    //       // Ação para voltar à tela de propostas
+    //       // this.$router.push('/desk/index');
+    //       window.location.reload();
+    //     }
+    //   };
 
-      // Adiciona os eventos para detectar interações de mouse e teclado
-      document.addEventListener('mousemove', resetTimer);
-      document.addEventListener('keydown', resetTimer);
+    //   // Adiciona os eventos para detectar interações de mouse e teclado
+    //   document.addEventListener('mousemove', resetTimer);
+    //   document.addEventListener('keydown', resetTimer);
 
-      // Define um intervalo para verificar a inatividade a cada segundo
-      setInterval(incrementIdleTime, 1000);
-    },
-    resetTimer() {
-      //Reinicar o temporizador toda vez que houver uma interação
-      clearTimeout(this.timer);
-      this.startTimer();
-    },
+    //   // Define um intervalo para verificar a inatividade a cada segundo
+    //   setInterval(incrementIdleTime, 1000);
+    // },
+    // resetTimer() {
+    //   //Reinicar o temporizador toda vez que houver uma interação
+    //   clearTimeout(this.timer);
+    //   // this.startTimer();
+    // },
     /**Função 0001 */
     getToken() {
       const accessToken = TokenService.getLocalAccessToken();
@@ -3205,6 +3059,10 @@ export default {
             cel: this.dados_proposta.clientes['cel'],
           }
           this.id_cliente = dados_cliente.id_cliente;
+          //Alterações Histórico do cliente
+          this.id_historico_cliente = dados_cliente.id_cliente;
+          this.nome_historico_cliente = dados_cliente.nome;
+          //*** */
           this.cliente = dados_cliente.nome;
           this.cpfCnpj = dados_cliente.cpfCnpj;
           this.dataNascimento = this.formatarData(dados_cliente.dataNascimento);
@@ -3818,9 +3676,18 @@ export default {
             this.bloquear_entrada = true;
           }
 
-          this.parcela_2 = resposta["Parcela2"];
+          if (resposta["Parcela2"] === undefined) {
+            this.parcela_2 = 36
+          } else {
+            this.parcela_2 = resposta["Parcela2"];
 
-          this.parcela_3 = resposta["Parcela3"];
+          }
+          if (resposta["Parcela3"] === undefined) {
+            this.parcela_3 = 48
+          } else {
+            this.parcela_3 = resposta["Parcela3"];
+
+          }
 
           let v_entrada_1 = resposta["Entrada1"];
           let v_entrada_2 = resposta["Entrada2"];
@@ -4128,7 +3995,7 @@ export default {
     generatePdf() {
       // console.log("Imprimir ----------------------------------------------------------------------------------------------------------------- 0001")
       const options = {
-        margin: [0, 0],
+        margin: [5, 5],
         filename: 'meu-pdf.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 1 },
@@ -4137,6 +4004,10 @@ export default {
         enableLinks: true,
 
       };
+      // Modificar o tamanho da fonte para impressão
+      document.querySelectorAll('.rf_texto_pdf').forEach(element => {
+        element.style.fontSize = '9px'; // Tamanho de fonte para impressão
+      });
       setTimeout(() => {
         html2pdf().from(this.$refs.contentToPrint).set(options).save();
       }, 500);
@@ -4800,6 +4671,19 @@ export default {
     },
     habilitar_itens_avaliacao() {
       this.modal_itens_avaliacao = true;
+    },
+    habilitar_historico_cliente() {
+      this.modal_historico_cliente = true;
+    },
+    async historico_cliente(id) {
+      console.log("Buscar histórioco do Cliente", id)
+      const historico = await axios.get(`${process.env.VUE_APP_API_URL}historico_cliente/${id}`,
+        {
+          params: { id: id }
+        });
+      this.hist_cliente = historico.data.propostas
+      console.log(this.hist_cliente)
+
     },
     async retrieveItensVeiculo() {
       try {
@@ -7206,4 +7090,3 @@ export default {
   },
 };
 </script>
-    

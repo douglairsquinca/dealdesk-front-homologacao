@@ -1,160 +1,152 @@
 <template>
-  <div>
-    <SidebarVue />
-    <nav class="navbar navbar-expand-lg rf_bg_form rf_texto rf_container">
-      <div class="container-fluid">
-        <div><i class="bi bi-sliders fs-5"> Atendimento</i></div>
-        <div>
-          <ul class="nav justify-content-end">
-            <li class="nav-item">
-              <router-link class="nav-link rf_texto active" to="/atendimento/dashboard">Dashboard /</router-link>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link rf_texto_a disabled">Novo Atendimento</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <br />
-    <nav class="navbar navbar-expand-lg rf_bg_form rf_texto ">
-      <div class="container-fluid">
-        <div class="py-2">
-          <i class="bi bi-folder-plus fs-5"></i>
-          <button class="btn " style="margin-left: 1rem">
-            <router-link to="/atendimento/proposta" class="nav-link">NOVA PROPOSTA</router-link>
-          </button>
-        </div>
-      </div>
-    </nav>
+  <SidebarVue ref="sidebar" />
+  <NavgatorAt ref="navgator" :barraTitulo="' Atendimento'" :titulo="'novo atendimento'" />
 
-    <!-- Lista de Vendedores-->
-    <div class="row">
-      <div class="col-6">
-        <div class="card rf_bg_form rf_margin">
-          <div class="card-title rf_texto p-2">
-            <div class="row">
-              <div class="col m-2">
-                <i class="bi bi-person-fill-add fs-5"> Vendedores </i>
-              </div>
-              <div class="col m-2">
-                <i class="bi bi-person-fill-check fs-5"> Fila </i>
-              </div>
-            </div>
-            <!--Tabelas-->
-            <div class="card p-2 bg-dark">
-              <table class="table rf_texto">
-                <thead>
-                  <tr>
-                    <th scope="col">Vendedor</th>
-                    <th scope="col">Status Vendedor</th>
-                    <th scope="col">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="item in usuarios_dispo" :key="item.id"
-                    :class="{ 'table-success': item.status_vendedor === 'Disponível para atendimento!', 'table-warning': item.status_vendedor === 'Indisponível para atendimento!' }">
-                    <td>{{ item.username }}</td>
-                    <td>{{ item.status_vendedor }}</td>
-                    <td>
-                      <button type="button" class="btn btn-atendimento" style="margin-right: 0.6rem"
-                        @click="desabilitar_vend(item)">
-                        <i class="bi bi-person-fill-slash"></i>
-                      </button>
 
-                      <button type="button" class="btn btn-atendimento" @click="update_dispo(item)">
-                        <i class="bi bi-person-fill-check"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <pagination v-if="usuarios_dispo.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
-                @change-page="handlePageChange_disp" />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="card rf_bg_form rf_margin">
-          <div class="card-title rf_texto p-2">
-            <div class="row">
-              <div class="col m-2">
-                <i class="bi bi-person-fill-add fs-5"> Vendedores </i>
-              </div>
-              <div class="col m-2">
-                <i class="bi bi-person-fill-dash fs-5"> Em Atendimento </i>
-              </div>
-            </div>
-            <!--Tabelas-->
-            <div class="card p-2 bg-dark">
-              <table class="table rf_texto">
-                <thead>
-                  <tr>
-                    <th scope="col">Vendedor</th>
-                    <th scope="col">Tipo Vendedor</th>
-                    <th scope="col">Status Vendedor</th>
-                    <th scope="col">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="item in usuarios_ind" :key="item.id"
-                    :class="{ 'table-working': item.status_vendedor === 'Vendedor em Atendimento' }">
-                    <td>{{ item.username }}</td>
-                    <td>{{ item.tipo_vendedor }}</td>
-                    <td>{{ item.status_vendedor }}</td>
-                    <td>
-                      <button type="button" class="btn btn-atendimento" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" @click="update_dispo(item)">
-                        <i class="bi bi-person-fill-check"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <pagination v-if="usuarios_ind.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
-                @change-page="handlePageChange_ind" />
-            </div>
+  <div class="card card-atendimento">
+    <div class="col-4">
+      <div class="card-kit">
+        <div class="card-icon">
+          <i class="bi bi-folder-plus icone_filtro"></i>
+          <div class="input-group-append">
+            <button class="btn btn-lg btn-filtro" type="button">
+              <router-link to="/atendimento/proposta" class="nav-link">
+                <span class="rf_texto_btn">NOVA</span><br>
+                <span class="rf_texto_btn">PROPOSTA</span>
+              </router-link>
+            </button>
           </div>
         </div>
       </div>
     </div>
-    <!--Tabelas-->
-    <div class="card rf_bg_form g-2 p-2 rf_margin">
-      <table class="table rf_texto">
-        <thead>
-          <tr>
-            <th scope="col">Cod. Proposta</th>
-            <th scope="col">Cliente</th>
-            <th scope="col">Vendedor</th>
-            <th scope="col">Status Proposta</th>
+  </div>
+  <!-- Lista de Vendedores-->
+  <div class="card card-atendimento">
+    <div class="row">
+      <div class="col-6 px-4">
+        <div class="row card-tabela-atendimento">
+          <div class="col-6  ">
+            <i class="bi bi-person-fill-add fs-5 icone_filtro"><span class="texto_filtro">Vendedores</span></i>
+          </div>
+          <div class="col-6  ">
+            <i class="bi bi-person-fill-add fs-5 icone_filtro"><span class="texto_filtro">Fila</span></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 px-4">
+        <div class="row card-tabela-atendimento">
+          <div class="col-6  ">
+            <i class="bi bi-person-fill-add fs-5 icone_filtro"><span class="texto_filtro">Vendedores</span></i>
+          </div>
+          <div class="col-6  ">
+            <i class="bi bi-person-fill-dash fs-5 icone_filtro"><span class="texto_filtro">Em Atendimento</span></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-          </tr>
-        </thead>
-        <tbody>
-          <!-- <tr v-for="item in proposta" :key="item.id">
+  <!--Tabelas-->
+  <div class="card card-atendimento ">
+    <div class="row">
+      <div class="col-6">        
+          <table class="table table-atendimento rf_texto">
+            <thead>
+              <tr>
+                <th scope="col">Vendedor</th>
+                <th scope="col">Status Vendedor</th>
+                <th scope="col">Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in usuarios_dispo" :key="item.id" class="table-linha"
+                :class="{ 'table-success': item.status_vendedor === 'Disponível para atendimento!', 'table-warning': item.status_vendedor === 'Indisponível para atendimento!' }">
+                <td>{{ item.username }}</td>
+                <td>{{ item.status_vendedor }}</td>
+                <td>
+                  <button type="button" class="dropdown-toggle-icon-atendimento" style="margin-right: 0.6rem"
+                    @click="desabilitar_vend(item)">
+                    <i class="bi bi-person-fill-slash"></i>
+                  </button>
+
+                  <button type="button" class="dropdown-toggle-icon-atendimento" @click="update_dispo(item)">
+                    <i class="bi bi-person-fill-check"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+       
+        <pagination v-if="usuarios_dispo.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
+          @change-page="handlePageChange_disp" />
+      </div>
+      <div class="col-6">
+        <table class="table table-atendimento rf_texto">
+            <thead>
+              <tr>
+                <th scope="col">Vendedor</th>                
+                <th scope="col">Status Vendedor</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in usuarios_ind" :key="item.id" class="table-linha"
+                :class="{ 'table-working': item.status_vendedor === 'Vendedor em Atendimento' }">
+                <td>{{ item.username }}</td>
+               
+                <td>{{ item.status_vendedor }}</td>
+                <td>
+                  <button type="button" class="dropdown-toggle-icon-atendimento" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal" @click="update_dispo(item)">
+                    <i class="bi bi-person-fill-check"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <pagination v-if="usuarios_ind.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
+            @change-page="handlePageChange_ind" />
+      </div>
+    </div>
+
+  </div>
+
+  <!--Tabelas-->
+  <div class="card card-tabela g-2 p-2 rf_margin">
+    <table class="table rf_texto">
+      <thead>
+        <tr>
+          <th scope="col">Cod. Proposta</th>
+          <th scope="col">Cliente</th>
+          <th scope="col">Vendedor</th>
+          <th scope="col">Status Proposta</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <!-- <tr v-for="item in proposta" :key="item.id">
             <td>{{ item.id }}</td>
             <td>{{ item.clientes.nome }}</td>
             <td>{{ item.vendedores.username }}</td>
             <td>{{ item.status_proposta }}</td>
           </tr> -->
-          <tr v-for="item in proposta" :key="item.id">
-  <td>{{ item.id }}</td>
-  <td>{{ item.clientes ? item.clientes.nome : 'N/A' }}</td>
-  <td>{{ item.vendedores ? item.vendedores.username : 'N/A' }}</td>
-  <td>{{ item.status_proposta }}</td>
-</tr>
-        </tbody>
-      </table>
-      <pagination v-if="proposta.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
-        @change-page="handlePageChangeProposta" />
-    </div>
-    <div v-if="abrir_modal">
-      <Message :msg="msg" v-show="msg" />
-    </div>
-
-    <RodapeVue />
+        <tr v-for="item in proposta" :key="item.id"   class="table-linha">
+          <td>{{ item.id }}</td>
+          <td>{{ item.clientes ? item.clientes.nome : 'N/A' }}</td>
+          <td>{{ item.vendedores ? item.vendedores.username : 'N/A' }}</td>
+          <td>{{ item.status_proposta }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <pagination v-if="proposta.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
+      @change-page="handlePageChangeProposta" />
   </div>
+  <div v-if="abrir_modal">
+    <Message :msg="msg" v-show="msg" />
+  </div>
+
+  <RodapeVue />
+
 </template>
 <script>
 import SidebarVue from "../../components/menu/Sidebar.vue";
@@ -162,6 +154,7 @@ import userService from "../../services/user.service";
 import Pagination from "../../components/Pagination.vue";
 import Message from "../../components/modal/Message.vue";
 import RodapeVue from "../../components/menu/Rodape.vue";
+import NavgatorAt from "../../components/menu/NavgatorAt.vue";
 
 import TokenService from "../../services/token.service";
 import jwt_decode from 'jwt-decode';
@@ -169,6 +162,7 @@ export default {
   name: "Atendimento",
   components: {
     SidebarVue,
+    NavgatorAt,
     Pagination,
     Message,
     RodapeVue

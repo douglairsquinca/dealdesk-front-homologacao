@@ -8,7 +8,7 @@
       <div>
         <ul class="nav justify-content-end">
           <li class="nav-item">
-            <router-link class="nav-link dd-fonte-navgator-dashboard active" to="/admin">
+            <router-link class="nav-link dd-fonte-navgator-dashboard active" to="/atendimento/dashboard">
               Dashboard /
             </router-link>
           </li>

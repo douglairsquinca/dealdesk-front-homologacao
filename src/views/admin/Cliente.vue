@@ -1,511 +1,325 @@
 <template>
- 
-    <SidebarVue />
-    <nav class="navbar navbar-expand-lg rf_bg_form rf_texto rf_container">
-      <div class="container-fluid">
-        <div><i class="bi bi-sliders fs-5"> Administração - Clientes </i></div>
-        <div>
-          <ul class="nav justify-content-end">
-            <li class="nav-item">
-              <router-link class="nav-link rf_texto active" to="/admin"
-                >Dashboard /</router-link
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link rf_texto_a disabled">Clientes</a>
-            </li>
-          </ul>
+  <SidebarVue ref="sidebar" />
+  <Navgator ref="navgator" :barraTitulo="' Administração - Clientes'" :titulo="'clientes'" />
+
+  <!--Formulário de Cadastro -->
+
+  <div class="card card-filtro">
+    <form @submit.prevent="onSubmit" id="form">
+      <div class="row g-2 p-2">
+        <div class="card-title gy-4">
+          <i class="bi bi-journal-text fs-5 icone_filtro"><span class="texto_filtro">Cadastrar Cliente</span></i>
         </div>
       </div>
-    </nav>
-    <!--Formulário de Cadastro -->
-
-    <div class="card rf_bg_form rf_margin">
-      <form @submit.prevent="onSubmit" id="form">
-        <div class="row g-2 p-2">
-          <div class="card-title rf_texto gy-4">
-            <i class="bi bi-person-fill-add fs-5"> Cadastrar Cliente </i>
-          </div>
-        </div>
-        <div class="row g-2 p-2">
-          <!--Nome-->
-          <div class="col">
-            <div class="form-floating">
-              <input
-                type="text"
-                class="form-control rf_bg_form rf_texto"
-                v-model="nome"
-                required
-                autocomplete="off"
-              />
-              <label class="rf_texto">Nome</label>
-            </div>
-          </div>
-          <!--CPF/CNPJ-->
-          <div class="col-2">
-            <div class="form-floating">
-              <input
-                type="text"
-                class="form-control rf_bg_form rf_texto"
-                v-model="cpfCnpj"
-                v-on:blur="vData"
-                autocomplete="off"
-              />
-              <label class="rf_texto">CPF/CNPJ</label>
-            </div>
-          </div>
-          <!--Data Nascimento-->
-          <div class="col-2">
-            <div class="form-floating">
-              <input
-                type="date"
-                class="form-control rf_bg_form rf_texto"
-                v-model="dataNascimento"
-                autocomplete="off"
-              />
-              <label class="rf_texto">Data Nascimento</label>
-            </div>
-          </div>
-          <!--Email-->
-          <div class="col-2">
-            <div class="form-floating">
-              <input
-                type="email"
-                class="form-control rf_bg_form rf_texto"
-                v-model="email"
-                autocomplete="off"
-                ref="f_email"
-                v-on:blur="validateEmail(email)"
-              />
-              <label class="rf_texto">Email</label>
-            </div>
-          </div>
-        </div>
-        <div class="row g-2 p-2">
-          <!--Endereço-->
-          <div class="col">
-            <div class="form-floating">
-              <input
-                type="text"
-                class="form-control rf_bg_form rf_texto"
-                v-model="endereco"
-                autocomplete="off"
-              />
-              <label class="rf_texto">Endereço</label>
-            </div>
-          </div>
-          <!--Complemento-->
-          <div class="col-2">
-            <div class="form-floating">
-              <input
-                type="text"
-                class="form-control rf_bg_form rf_texto"
-                v-model="complemento"
-                autocomplete="off"
-              />
-              <label class="rf_texto">Complemento</label>
-            </div>
-          </div>
-          <!--UF-->
-          <div class="col-1">
-            <div class="form-floating">
-              <input
-                v-model="uf"
-                class="form-control rf_bg_form rf_texto"
-                list="datalistOptions"
-                id="estado"
-                autocomplete="off"
-              />
-
-              <label class="rf_texto">UF</label>
-              <datalist id="datalistOptions">
-                <option
-                  v-for="opt in estados"
-                  :data-value="opt.id"
-                  :value="opt.sigla"
-                  :key="opt.id"
-                ></option>
-              </datalist>
-            </div>
-          </div>
-          <!--Cidade-->
-          <div class="col-2">
-            <div class="form-floating">
-              <input
-                v-model="cidade"
-                class="form-control rf_bg_form rf_texto"
-                list="datalistCidades"
-                id="estado"
-                autocomplete="off"
-              />
-
-              <label class="rf_texto">Cidade</label>
-              <datalist id="datalistCidades">
-                <option
-                  v-for="opt in cidades"
-                  :data-value="opt.id"
-                  :value="opt.nome"
-                  :key="opt.id"
-                ></option>
-              </datalist>
-            </div>
-          </div>
-          <!--Bairro-->
-          <div class="col-2">
-            <div class="form-floating">
-              <input
-                type="text"
-                class="form-control rf_bg_form rf_texto"
-                v-model="bairro"
-                autocomplete="off"
-              />
-              <label class="rf_texto">Bairro</label>
-            </div>
-          </div>
-          <!--CEP-->
-          <div class="col-1">
-            <div class="form-floating">
-              <input
-                type="text"
-                class="form-control rf_bg_form rf_texto"
-                v-model="cep"
-                autocomplete="off"
-              />
-              <label class="rf_texto">CEP</label>
-            </div>
-          </div>
-        </div>
-        <div class="row g-2 p-2">
-          <!--Celular-->
-          <div class="col-2">
-            <div class="form-floating">
-              <input
-                type="text"
-                class="form-control rf_bg_form rf_texto"
-                v-model="celular"
-                v-on:blur="vCel"
-                autocomplete="off"
-              />
-              <label for="valid_celular" class="rf_texto">Celular</label>
-              <div class="invalid-feedback">O campo celular é obrigatório!</div>
-            </div>
-          </div>
-          <!--Telefone-->
-          <div class="col-2">
-            <div class="form-floating">
-              <input
-                type="text"
-                class="form-control rf_bg_form rf_texto"
-                autocomplete="off"
-                v-model="telefone"
-                v-on:blur="vTel"
-              />
-              <label class="rf_texto">Telefone</label>
-            </div>
-          </div>
-        </div>
-        <div class="col-md p-2">
+      <div class="row g-2 p-2">
+        <!--Nome-->
+        <div class="col">
           <div class="form-floating">
-            <button type="submit" class="btn btn-secondary">Cadastrar</button>
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="nome" required autocomplete="off" />
+            <label class="rf_texto">Nome</label>
           </div>
         </div>
-      </form>
-      <div v-if="abrir_modal">        
-        <Message :msg="msg" v-show="msg" />
-      </div>
-    </div>
-         <!--Bloco do Filtro-->
-         <div class="card rf_bg_form rf_margin">
-        <div class="row g-2 p-2">
-          <div class="card-title rf_texto gy-4">
-            <i class="bi bi-person-fill-add fs-5"> Filtros </i>
+        <!--CPF/CNPJ-->
+        <div class="col-2">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="cpfCnpj" v-on:blur="vData"
+              autocomplete="off" />
+            <label class="rf_texto">CPF/CNPJ</label>
           </div>
         </div>
-        <div class="row g-2 p-2">
-          <div class="col-4">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="search_nome" />
-              <label class="rf_texto">Nome</label>
-            </div>
+        <!--Data Nascimento-->
+        <div class="col-2">
+          <div class="form-floating">
+            <input type="date" class="form-control rf_bg_form rf_texto" v-model="dataNascimento" autocomplete="off" />
+            <label class="rf_texto">Data Nascimento</label>
           </div>
-          <div class="col-3">
-            <div class="form-floating">             
-              <input
-                type="text"
-                class="form-control rf_bg_form rf_texto"
-                v-model="search_cpf"
-                v-on:blur="vData"
-                autocomplete="off"
-              />
-              <label class="rf_texto">CPF/CNPJ</label>
-            </div>
+        </div>
+        <!--Email-->
+        <div class="col-2">
+          <div class="form-floating">
+            <input type="email" class="form-control rf_bg_form rf_texto" v-model="email" autocomplete="off"
+              ref="f_email" v-on:blur="validateEmail(email)" />
+            <label class="rf_texto">Email</label>
           </div>
-          <div class="col-2">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="search_tel" />
-              <label class="rf_texto">Telefone</label>
-            </div>
-          </div>
-
-          <div class="col-1">
-            <div class="form-floating">
-              <select class="form-select rf_bg_form rf_texto" v-model="pageSize" @change="handlePageSizeChange(pageSize)">
-                <option v-for="size in pageSizes" :key="size" :value="size">
-                  {{ size }}
-                </option>
-              </select>
-              <label class="rf_texto">Itens pág.</label>
-            </div>
-          </div>
-          <div class="col-2">
-            <div class="input-group-append">
-              <button class="btn btn-lg btn-secondary mt-2" type="button" @click="page = 1; retrieveCliente();">
-                Pesquisar
-              </button>
-            </div>
-          </div>
-
-
         </div>
       </div>
-    <!--Tabelas-->
-    <div class="card rf_bg_form g-2 p-2 rf_margin">
-      <table class="table rf_texto">
-        <thead>
-          <tr>
-            <th scope="col">Nome</th>
-            <th scope="col">CPF/CNPJ</th>
-            <th scope="col">Telefone</th>
-            <th scope="col">Celular</th>
-            <th scope="col">Email</th>
-            <th scope="col">Ação</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in clientes" :key="item.nome">
-            <td>{{ item.nome }}</td>
-            <td>{{ item.cpfCnpj }}</td>
-            <td>{{ item.tel }}</td>
-            <td>{{ item.cel }}</td>
-            <td>{{ item.email }}</td>
-            <td>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-                @click="editar_cliente(item)"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-pencil"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"
-                  />
-                </svg>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <pagination
-        v-if="clientes.length"
-        :offset="totalPages"
-        :total="totalItems"
-        :limit="pageSize"
-        @change-page="handlePageChange"
-      />
-    </div>
+      <div class="row g-2 p-2">
+        <!--Endereço-->
+        <div class="col">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="endereco" autocomplete="off" />
+            <label class="rf_texto">Endereço</label>
+          </div>
+        </div>
+        <!--Complemento-->
+        <div class="col-2">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="complemento" autocomplete="off" />
+            <label class="rf_texto">Complemento</label>
+          </div>
+        </div>
+        <!--UF-->
+        <div class="col-1">
+          <div class="form-floating">
+            <input v-model="uf" class="form-control rf_bg_form rf_texto" list="datalistOptions" id="estado"
+              autocomplete="off" />
 
-    <!-- Modal para edição -->
-    <!-- Modal -->
-    <div
-      class="modal fade"
-      id="exampleModal"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-xl">
-        <div class="modal-content rf_bg_form rf_texto">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">
-              Editar Cliente
-            </h1>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+            <label class="rf_texto">UF</label>
+            <datalist id="datalistOptions">
+              <option v-for="opt in estados" :data-value="opt.id" :value="opt.sigla" :key="opt.id"></option>
+            </datalist>
           </div>
-          <div class="modal-body">
-            <div class="row g-2 p-2">
-              <div class="col">
-                <div class="form-floating">
-                  <select
-                    v-model="edit_pessoa"
-                    class="form-control rf_bg_form rf_texto"
-                  >
-                    <option value="Fisica">Física</option>
-                    <option value="Juridica">Jurídica</option>
-                  </select>
-                  <label class="rf_texto">Pessoa</label>
-                </div>
-              </div>
-              <!--Nome-->
-              <div class="col">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="edit_nome"
-                    id="valid_editNome"
-                    required
-                  />
-                  <label for="valid_editNome" class="rf_texto">Nome</label>
-                  <div class="invalid-feedback">
-                    O campo nome é obrigatório!
-                  </div>
-                </div>
-              </div>
-              <!--CPF/CNPJ-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="edit_cpfCnpj"
-                    v-on:blur="vData"
-                  />
-                  <label for="valid_editCpfCnpj" class="rf_texto"
-                    >CPF/CNPJ</label
-                  >
-                </div>
-              </div>
-              <!--Data Nascimento-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <input
-                    type="date"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="edit_dataNascimento"
-                  />
-                  <label for="valid_editDataNascimento" class="rf_texto"
-                    >Data Nascimento</label
-                  >
-                  <div class="invalid-feedback">
-                    O campo data nascimento é obrigatório!
-                  </div>
-                </div>
-              </div>
-              <!--Email-->
-              <div class="col-3">
-                <div class="form-floating">
-                  <input
-                    type="email"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="edit_email"
-                    v-on:blur="email"
-                  />
-                  <label class="rf_texto">Email</label>
-                </div>
-              </div>
-            </div>
-            <div class="row g-2 p-2">
-              <!--Endereço-->
-              <div class="col">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="edit_endereco"
-                    id="valid_editEndereco"
-                    required
-                  />
-                  <label for="valid_editEndereco" class="rf_texto"
-                    >Endereço</label
-                  >
-                  <div class="invalid-feedback">
-                    O campo endereço é obrigatório!
-                  </div>
-                </div>
-              </div>
-              <!--Complemento-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="edit_complemento"
-                    id="valid_editComplemento"
-                    required
-                  />
-                  <label for="valid_editComplemento" class="rf_texto"
-                    >Complemento</label
-                  >
-                  <div class="invalid-feedback">
-                    O campo complemento é obrigatório!
-                  </div>
-                </div>
-              </div>
-              <!--Telefone-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="edit_telefone"
-                    v-on:blur="vTel"
-                  />
-                  <label class="rf_texto">Telefone</label>
-                </div>
-              </div>
-              <!--Celular-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="edit_celular"
-                    v-on:blur="vCel"
-                  />
-                  <label class="rf_texto">Celular</label>
-                </div>
-              </div>
-            </div>
+        </div>
+        <!--Cidade-->
+        <div class="col-2">
+          <div class="form-floating">
+            <input v-model="cidade" class="form-control rf_bg_form rf_texto" list="datalistCidades" id="estado"
+              autocomplete="off" />
+
+            <label class="rf_texto">Cidade</label>
+            <datalist id="datalistCidades">
+              <option v-for="opt in cidades" :data-value="opt.id" :value="opt.nome" :key="opt.id"></option>
+            </datalist>
           </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Sair
+        </div>
+        <!--Bairro-->
+        <div class="col-2">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="bairro" autocomplete="off" />
+            <label class="rf_texto">Bairro</label>
+          </div>
+        </div>
+        <!--CEP-->
+        <div class="col-1">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="cep" autocomplete="off" />
+            <label class="rf_texto">CEP</label>
+          </div>
+        </div>
+      </div>
+      <div class="row g-2 p-2">
+        <!--Celular-->
+        <div class="col-2">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="celular" v-on:blur="vCel"
+              autocomplete="off" />
+            <label for="valid_celular" class="rf_texto">Celular</label>
+            <div class="invalid-feedback">O campo celular é obrigatório!</div>
+          </div>
+        </div>
+        <!--Telefone-->
+        <div class="col-2">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" autocomplete="off" v-model="telefone"
+              v-on:blur="vTel" />
+            <label class="rf_texto">Telefone</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-1 g-2 p-2 d-flex ">
+        <div class="form-floating">
+          <button type="submit" class="btn btn-lg btn-filtro"><span class="rf_texto_btn">Cadastrar</span></button>
+        </div>
+      </div>
+    </form>
+    <div v-if="abrir_modal">
+      <Message :msg="msg" v-show="msg" />
+    </div>
+  </div>
+  <!--Bloco do Filtro-->
+  <div class="card card-filtro">
+    <div class="row g-2 p-2">
+      <div class="card-title gy-4">
+        <i class="bi bi-funnel fs-5 icone_filtro"><span class="texto_filtro">Filtro</span></i>
+      </div>
+    </div>
+    <div class="row g-2 p-2">
+      <div class="col-4">
+        <div class="form-floating">
+          <input type="text" class="form-control rf_bg_form rf_texto" v-model="search_nome" />
+          <label class="rf_texto">Nome</label>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="form-floating">
+          <input type="text" class="form-control rf_bg_form rf_texto" v-model="search_cpf" v-on:blur="vData"
+            autocomplete="off" />
+          <label class="rf_texto">CPF/CNPJ</label>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="form-floating">
+          <input type="text" class="form-control rf_bg_form rf_texto" v-model="search_tel" />
+          <label class="rf_texto">Telefone</label>
+        </div>
+      </div>
+
+      <div class="col-1">
+        <div class="form-floating">
+          <select class="form-select rf_bg_form rf_texto" v-model="pageSize" @change="handlePageSizeChange(pageSize)">
+            <option v-for="size in pageSizes" :key="size" :value="size">
+              {{ size }}
+            </option>
+          </select>
+          <label class="rf_texto">Itens pág.</label>
+        </div>
+      </div>
+      <div class="col-1">
+        <div class="input-group-append">
+          <button class="btn btn-lg btn-filtro " type="button" @click="page = 1; retrieveCliente();">
+            <span class="rf_texto_btn">Pesquisar</span>
+          </button>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  <!--Tabelas-->
+  <div class="card card-tabela g-2 p-2 rf_margin">
+    <table class="table rf_texto">
+      <thead>
+        <tr>
+          <th scope="col">Nome</th>
+          <th scope="col">CPF/CNPJ</th>
+          <th scope="col">Telefone</th>
+          <th scope="col">Celular</th>
+          <th scope="col">Email</th>
+          <th scope="col">Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in clientes" :key="item.nome" class="table-linha">
+          <td>{{ item.nome }}</td>
+          <td>{{ item.cpfCnpj }}</td>
+          <td>{{ item.tel }}</td>
+          <td>{{ item.cel }}</td>
+          <td>{{ item.email }}</td>
+          <td>
+            <button type="button" class="dropdown-toggle-icon" data-bs-toggle="modal" data-bs-target="#exampleModal"
+              @click="editar_cliente(item)">
+              <i class="bi bi-pencil-square"></i>
             </button>
-            <button
-              type="button"
-              @click="update()"
-              data-bs-dismiss="modal"
-              class="btn btn-secondary"
-            >
-              Salvar
-            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <pagination v-if="clientes.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
+      @change-page="handlePageChange" />
+  </div>
+
+  <!-- Modal para edição -->
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content card-container rf_texto">
+        <div class="modal-header">
+            <div class="card-title gy-4">
+              <i class="bi bi-pencil-square fs-5 icone_kit"><span class="texto_kit">Editar Cliente</span></i>         
+            </div>
+            <button class="btn btn-modal btn-lg p-1 mt-1" type="button" data-bs-target="#ModalProposta"
+              data-bs-toggle="modal" aria-label="Close"> Sair </button>
           </div>
+        <div class="modal-body">
+          <div class="row g-2 p-2">
+            <div class="col">
+              <div class="form-floating">
+                <select v-model="edit_pessoa" class="form-control rf_bg_form rf_texto">
+                  <option value="Fisica">Física</option>
+                  <option value="Juridica">Jurídica</option>
+                </select>
+                <label class="rf_texto">Pessoa</label>
+              </div>
+            </div>
+            <!--Nome-->
+            <div class="col">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_nome" id="valid_editNome"
+                  required />
+                <label for="valid_editNome" class="rf_texto">Nome</label>
+                <div class="invalid-feedback">
+                  O campo nome é obrigatório!
+                </div>
+              </div>
+            </div>
+            <!--CPF/CNPJ-->
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_cpfCnpj" v-on:blur="vData" />
+                <label for="valid_editCpfCnpj" class="rf_texto">CPF/CNPJ</label>
+              </div>
+            </div>
+            <!--Data Nascimento-->
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="date" class="form-control rf_bg_form rf_texto" v-model="edit_dataNascimento" />
+                <label for="valid_editDataNascimento" class="rf_texto">Data Nascimento</label>
+                <div class="invalid-feedback">
+                  O campo data nascimento é obrigatório!
+                </div>
+              </div>
+            </div>
+            <!--Email-->
+            <div class="col-3">
+              <div class="form-floating">
+                <input type="email" class="form-control rf_bg_form rf_texto" v-model="edit_email" v-on:blur="email" />
+                <label class="rf_texto">Email</label>
+              </div>
+            </div>
+          </div>
+          <div class="row g-2 p-2">
+            <!--Endereço-->
+            <div class="col">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_endereco"
+                  id="valid_editEndereco" required />
+                <label for="valid_editEndereco" class="rf_texto">Endereço</label>
+                <div class="invalid-feedback">
+                  O campo endereço é obrigatório!
+                </div>
+              </div>
+            </div>
+            <!--Complemento-->
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_complemento"
+                  id="valid_editComplemento" required />
+                <label for="valid_editComplemento" class="rf_texto">Complemento</label>
+                <div class="invalid-feedback">
+                  O campo complemento é obrigatório!
+                </div>
+              </div>
+            </div>
+            <!--Telefone-->
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_telefone" v-on:blur="vTel" />
+                <label class="rf_texto">Telefone</label>
+              </div>
+            </div>
+            <!--Celular-->
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_celular" v-on:blur="vCel" />
+                <label class="rf_texto">Celular</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">     
+          <button type="button" @click="update()" data-bs-dismiss="modal" class="btn btn-modal btn-lg p-1 mt-1">
+            Salvar
+          </button>
         </div>
       </div>
     </div>
-    <!-- Button trigger modal -->
+  </div>
+  <!-- Button trigger modal -->
 
-    <RodapeVue />
- 
+  <RodapeVue />
+
 </template>
-  <script>
+<script>
 import SidebarVue from "../../components/menu/Sidebar.vue";
 import axios from "axios";
 //import DataService from "../../services/DataService";
@@ -513,14 +327,17 @@ import userService from "../../services/user.service";
 import Pagination from "../../components/Pagination.vue";
 import Message from "../../components/modal/Message.vue";
 import RodapeVue from "../../components/menu/Rodape.vue";
+import Navgator from "../../components/menu/Navgator.vue";
 
 export default {
   name: "Usuários",
   components: {
     SidebarVue,
+    Navgator,
     Pagination,
     Message,
-    RodapeVue
+    RodapeVue,
+
   },
   data() {
     return {
@@ -555,7 +372,7 @@ export default {
         { id: 52, sigla: "GO" },
         { id: 53, sigla: "DF" },
       ],
-      search_nome:'',
+      search_nome: '',
       search_cpf: '',
       search_tel: '',
 
@@ -667,9 +484,9 @@ export default {
         })
         .catch((error) => {
           if (error.response.status == 400) {
-          this.abrir_modal = true;
-          this.msg = error.response.data.message;
-        } 
+            this.abrir_modal = true;
+            this.msg = error.response.data.message;
+          }
         });
     },
 
@@ -717,7 +534,7 @@ export default {
         if (error.response.status == 400) {
           this.abrir_modal = true;
           this.msg = error.response.data.message;
-        } 
+        }
       }
     },
     async retrieveCliente() {
@@ -740,7 +557,7 @@ export default {
         if (error.response.status == 400) {
           this.abrir_modal = true;
           this.msg = error.response.data.message;
-        } 
+        }
       }
     },
     async editar_cliente(item) {
@@ -836,51 +653,51 @@ export default {
       console.log("Testando email")
       console.log(email)
       var re = /\S+@\S+\.\S+/;
-       if (re.test(email) == false) {
-         this.abrir_modal = true;
-         this.email= ""
-         this.msg = "Digite um email válido, ex: email@email.com!";
-         setTimeout(() => (this.abrir_modal = false), 4000);
-       }
+      if (re.test(email) == false) {
+        this.abrir_modal = true;
+        this.email = ""
+        this.msg = "Digite um email válido, ex: email@email.com!";
+        setTimeout(() => (this.abrir_modal = false), 4000);
+      }
     },
-    verifica_tel(valor) {     
-      valor = valor.toString();      
-      valor = valor.replace(/[^0-9]/g, "");      
+    verifica_tel(valor) {
+      valor = valor.toString();
+      valor = valor.replace(/[^0-9]/g, "");
       if (valor.length === 10) {
         return "TELEFONE";
-      }      
+      }
       else if (valor.length === 11) {
         return "CELULAR";
-      }      
+      }
       else {
         return false;
       }
     },
-    formata_tel(valor) {     
-      var formatado = false;     
-      var valida = this.verifica_tel(valor);     
-      valor = valor.toString();     
-      valor = valor.replace(/[^0-9]/g, "");      
-      if (valida === "TELEFONE") {      
+    formata_tel(valor) {
+      var formatado = false;
+      var valida = this.verifica_tel(valor);
+      valor = valor.toString();
+      valor = valor.replace(/[^0-9]/g, "");
+      if (valida === "TELEFONE") {
         formatado = valor.substr(0, 2) + " ";
         formatado += valor.substr(2, 4) + "-";
         formatado += valor.substr(6, 4) + "";
-      }     
-      else if (valida === "CELULAR") {        
+      }
+      else if (valida === "CELULAR") {
         formatado = valor.substr(0, 2) + " ";
         formatado += valor.substr(2, 5) + "-";
         formatado += valor.substr(7, 4) + "";
       } else {
         formatado = valor;
-      }    
+      }
       return formatado;
     },
-    verifica_cpf_cnpj(valor) {      
-      valor = valor.toString(); 
+    verifica_cpf_cnpj(valor) {
+      valor = valor.toString();
       valor = valor.replace(/[^0-9]/g, "");
       if (valor.length === 11) {
         return "CPF";
-      }  
+      }
       else if (valor.length === 14) {
         return "CNPJ";
       }
@@ -888,17 +705,17 @@ export default {
         return false;
       }
     },
-    calc_digitos_posicoes(digitos, posicoes = 10, soma_digitos = 0) {     
+    calc_digitos_posicoes(digitos, posicoes = 10, soma_digitos = 0) {
       digitos = digitos.toString();
-      for (var i = 0; i < digitos.length; i++) {      
-        soma_digitos = soma_digitos + digitos[i] * posicoes;    
+      for (var i = 0; i < digitos.length; i++) {
+        soma_digitos = soma_digitos + digitos[i] * posicoes;
         posicoes--;
-        if (posicoes < 2) {        
+        if (posicoes < 2) {
           posicoes = 9;
         }
-      }  
+      }
       soma_digitos = soma_digitos % 11;
-      if (soma_digitos < 2) {  
+      if (soma_digitos < 2) {
         soma_digitos = 0;
       } else {
         soma_digitos = 11 - soma_digitos;
@@ -906,42 +723,42 @@ export default {
       var cpf = digitos + soma_digitos;
       return cpf;
     },
-    valida_cpf(valor) {     
-      valor = valor.toString();    
+    valida_cpf(valor) {
+      valor = valor.toString();
       valor = valor.replace(/[^0-9]/g, "");
-      var digitos = valor.substr(0, 9);      
-      var novo_cpf = this.calc_digitos_posicoes(digitos);     
-      novo_cpf = this.calc_digitos_posicoes(novo_cpf, 11);    
-      if (novo_cpf === valor) {       
+      var digitos = valor.substr(0, 9);
+      var novo_cpf = this.calc_digitos_posicoes(digitos);
+      novo_cpf = this.calc_digitos_posicoes(novo_cpf, 11);
+      if (novo_cpf === valor) {
         return true;
-      } else {  
+      } else {
         return false;
       }
     },
-    valida_cnpj(valor) {     
-      valor = valor.toString();   
-      valor = valor.replace(/[^0-9]/g, "");     
-      var cnpj_original = valor;    
-      var primeiros_numeros_cnpj = valor.substr(0, 12);    
+    valida_cnpj(valor) {
+      valor = valor.toString();
+      valor = valor.replace(/[^0-9]/g, "");
+      var cnpj_original = valor;
+      var primeiros_numeros_cnpj = valor.substr(0, 12);
       var primeiro_calculo = this.calc_digitos_posicoes(
         primeiros_numeros_cnpj,
         5
-      );    
-      var segundo_calculo = this.calc_digitos_posicoes(primeiro_calculo, 6);      
-      var cnpj = segundo_calculo;      
+      );
+      var segundo_calculo = this.calc_digitos_posicoes(primeiro_calculo, 6);
+      var cnpj = segundo_calculo;
       if (cnpj === cnpj_original) {
         return true;
-      }    
+      }
       return false;
     },
     valida_cpf_cnpj(valor) {
-      var valida = this.verifica_cpf_cnpj(valor);    
-      valor = valor.toString();    
+      var valida = this.verifica_cpf_cnpj(valor);
+      valor = valor.toString();
       valor = valor.replace(/[^0-9]/g, "");
-      if (valida === "CPF") {  
+      if (valida === "CPF") {
         return this.valida_cpf(valor);
       }
-      else if (valida === "CNPJ") {      
+      else if (valida === "CNPJ") {
         return this.valida_cnpj(valor);
       }
       else {
@@ -952,27 +769,26 @@ export default {
       var formatado = false;
       var valida = this.verifica_cpf_cnpj(valor);
       valor = valor.toString();
-      valor = valor.replace(/[^0-9]/g, "");     
-      if (valida === "CPF") {       
-        if (this.valida_cpf(valor)) {          
+      valor = valor.replace(/[^0-9]/g, "");
+      if (valida === "CPF") {
+        if (this.valida_cpf(valor)) {
           formatado = valor.substr(0, 3) + ".";
           formatado += valor.substr(3, 3) + ".";
           formatado += valor.substr(6, 3) + "-";
           formatado += valor.substr(9, 2) + "";
         }
-      }    
-      else if (valida === "CNPJ") {       
-        if (this.valida_cnpj(valor)) {         
+      }
+      else if (valida === "CNPJ") {
+        if (this.valida_cnpj(valor)) {
           formatado = valor.substr(0, 2) + ".";
           formatado += valor.substr(2, 3) + ".";
           formatado += valor.substr(5, 3) + "/";
           formatado += valor.substr(8, 4) + "-";
           formatado += valor.substr(12, 14) + "";
         }
-      } 
+      }
       return formatado;
     },
   },
 };
 </script>
-  

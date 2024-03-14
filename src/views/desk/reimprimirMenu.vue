@@ -4008,7 +4008,7 @@ export default {
     generatePdf() {
       // console.log("Imprimir ----------------------------------------------------------------------------------------------------------------- 0001")
       const options = {
-        margin: [0, 0],
+        margin: [5, 5],
         filename: 'meu-pdf.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 1 },
@@ -4017,6 +4017,10 @@ export default {
         enableLinks: true,
 
       };
+      // Modificar o tamanho da fonte para impressão
+      document.querySelectorAll('.rf_texto_pdf').forEach(element => {
+        element.style.fontSize = '9px'; // Tamanho de fonte para impressão
+      });
       setTimeout(() => {
         html2pdf().from(this.$refs.contentToPrint).set(options).save();
       }, 500);

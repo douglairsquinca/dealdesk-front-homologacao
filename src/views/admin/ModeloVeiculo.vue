@@ -1,189 +1,83 @@
 <template>
-  <div>
-    <SidebarVue />
-    <nav class="navbar navbar-expand-lg rf_bg_form rf_texto rf_container">
-      <div class="container-fluid">
-        <div><i class="bi bi-sliders fs-5"> Administração - Modelo Veículo </i></div>
-        <div>
-          <ul class="nav justify-content-end">
-            <li class="nav-item">
-              <router-link class="nav-link rf_texto active" to="/admin">Dashboard /</router-link>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link rf_texto_a disabled">Modelo</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <div class="card rf_bg_form rf_margin">
-      <form @submit.prevent="onSubmit" id="form">
-        <div class="row g-2 p-2">
-          <div class="card-title rf_texto gy-4">
-            <i class="bi bi-person-fill-add fs-5"> Cadastrar Modelo </i>
-          </div>
-        </div>
-        <div class="row g-2 p-2">
-          <div class="col-1">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="codigo" required />
-              <label class="rf_texto">Código</label>
-            </div>
-          </div>
-          <div class="col-4">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="descricao" required
-                autocomplete="off" />
-              <label class="rf_texto">Descrição</label>
-            </div>
-          </div>
-          <div class="col-1">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="edicao" />
-              <label class="rf_texto">Edição</label>
-            </div>
-          </div>
-          <div class="col-1">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="cilindro" />
-              <label class="rf_texto">Cilindro</label>
-            </div>
-          </div>
-          <div class="col-1">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="potencia" />
-              <label class="rf_texto">Potência</label>
-            </div>
-          </div>
-          <div class="col-1">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="precoForcado" />
-              <label class="rf_texto">Preço Forçado</label>
-            </div>
-          </div>
-          <div class="col-1">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="custoMarcacao"
-                @input="custoMarcacao = formatarValor(custoMarcacao)" />
-              <label class="rf_texto">Custo Marcação</label>
-            </div>
-          </div>
-          <div class="col-1">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="precoVenda"
-                @input="precoVenda = formatarValor(precoVenda)" />
-              <label class="rf_texto">Preço Venda</label>
-            </div>
-          </div>
-          <div class="col-1">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="anoFabricacao" required
-                autocomplete="off" />
-              <label class="rf_texto">Ano Fabricação</label>
-            </div>
-          </div>
-          <div class="col-1">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="anoModelo" required
-                autocomplete="off" />
-              <label class="rf_texto">Ano Modelo</label>
-            </div>
-          </div>
-          <div class="col-2">
-            <div class="form-floating">
-              <select class="form-select rf_bg_form rf_texto" v-model="vendaFutura" id="valid_status" required>
-                <option value="0">Não</option>
-                <option value="1">Sim</option>
-              </select>
-              <label class="rf_texto">Venda Futura</label>
-            </div>
-          </div>
-          <div class="col-2">
-            <div class="form-floating">
-              <select class="form-select rf_bg_form rf_texto" v-model="status" id="valid_status" required>
-                <option value="0">Desabilitado</option>
-                <option value="1">Habilitado</option>
-              </select>
-              <label for="valid_status" class="rf_texto">Status</label>
-              <div class="invalid-feedback">
-                Selecione um status, esse campo é obrigatório!
-              </div>
-            </div>
-          </div>
-          <div class="col-2">
-            <div class="form-floating">
-              <input v-model="familiaSelecionada" class="form-control rf_bg_form rf_texto" list="datalistFamilia"
-                id="familia" autocomplete="off" required />
+  <SidebarVue ref="sidebar" />
+  <Navgator ref="navgator" :barraTitulo="' Administração - Modelo Veículo'" :titulo="'modelo'" />
 
-              <label class="rf_texto">Família</label>
-              <datalist id="datalistFamilia">
-                <option v-for="familia in familias" :data-id="familia.id" :value="familia.descricao" :key="familia.id">
-                </option>
-              </datalist>
-            </div>
-          </div>
-          <div class="col-2">
-            <div class="form-floating">
-              <input v-model="combustivelSelecionado" class="form-control rf_bg_form rf_texto" list="datalistCombustivel"
-                id="combustivel" autocomplete="off" required />
-
-              <label class="rf_texto">Combustível</label>
-              <datalist id="datalistCombustivel">
-                <option v-for="comb in combustiveis" :data-id="comb.id" :value="comb.descricao" :key="comb.id"></option>
-              </datalist>
-            </div>
-          </div>
-          <div class="col-2">
-            <div class="form-floating">
-              <select class="form-select rf_bg_form rf_texto" v-model="tipo_empresa" required>
-                <option value="1">Quatro Rodas</option>
-                <option value="2">Duas Rodas</option>
-              </select>
-              <label class="rf_texto">Tipo Empresa</label>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md p-2">
-          <div class="form-floating">
-            <button type="submit" class="btn btn-secondary">Cadastrar</button>
-          </div>
-        </div>
-      </form>
-      <div v-if="abrir_modal">
-        <Message :msg="msg" v-show="msg" />
-      </div>
-    </div>
-    <!--Bloco do Filtro-->
-    <div class="card rf_bg_form rf_margin">
+  <div class="card card-filtro">
+    <form @submit.prevent="onSubmit" id="form">
       <div class="row g-2 p-2">
-        <div class="card-title rf_texto gy-4">
-          <i class="bi bi-person-fill-add fs-5"> Filtros </i>
+        <div class="card-title gy-4">
+          <i class="bi bi-journal-text fs-5 icone_filtro"><span class="texto_filtro">Cadastrar Modelo</span></i>
         </div>
       </div>
       <div class="row g-2 p-2">
-        <div class="col-4">
+        <div class="col-1">
           <div class="form-floating">
-            <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchTitle" />
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="codigo" required />
+            <label class="rf_texto">Código</label>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="descricao" required
+              autocomplete="off" />
             <label class="rf_texto">Descrição</label>
           </div>
         </div>
         <div class="col-1">
           <div class="form-floating">
-            <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchAnoFab" />
-            <label class="rf_texto">Ano Fab.</label>
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="edicao" />
+            <label class="rf_texto">Edição</label>
           </div>
         </div>
         <div class="col-1">
           <div class="form-floating">
-            <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchAnoMod" />
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="cilindro" />
+            <label class="rf_texto">Cilindro</label>
+          </div>
+        </div>
+        <div class="col-1">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="potencia" />
+            <label class="rf_texto">Potência</label>
+          </div>
+        </div>
+        <div class="col-1">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="precoForcado" />
+            <label class="rf_texto">Preço Forçado</label>
+          </div>
+        </div>
+        <div class="col-1">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="custoMarcacao"
+              @input="custoMarcacao = formatarValor(custoMarcacao)" />
+            <label class="rf_texto">Custo Marcação</label>
+          </div>
+        </div>
+        <div class="col-1">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="precoVenda"
+              @input="precoVenda = formatarValor(precoVenda)" />
+            <label class="rf_texto">Preço Venda</label>
+          </div>
+        </div>
+        <div class="col-1">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="anoFabricacao" required
+              autocomplete="off" />
+            <label class="rf_texto">Ano Fabricação</label>
+          </div>
+        </div>
+        <div class="col-1">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="anoModelo" required
+              autocomplete="off" />
             <label class="rf_texto">Ano Modelo</label>
           </div>
         </div>
         <div class="col-1">
           <div class="form-floating">
-            <select class="form-select rf_bg_form rf_texto" v-model="searchVendaFutura">
-              <option value="">-----</option>
+            <select class="form-select rf_bg_form rf_texto" v-model="vendaFutura" id="valid_status" required>
               <option value="0">Não</option>
               <option value="1">Sim</option>
             </select>
@@ -192,17 +86,19 @@
         </div>
         <div class="col-1">
           <div class="form-floating">
-            <select class="form-select rf_bg_form rf_texto" v-model="searchStatus">
-              <option value="">------</option>
+            <select class="form-select rf_bg_form rf_texto" v-model="status" id="valid_status" required>
               <option value="0">Desabilitado</option>
               <option value="1">Habilitado</option>
             </select>
-            <label class="rf_texto">Status</label>
+            <label for="valid_status" class="rf_texto">Status</label>
+            <div class="invalid-feedback">
+              Selecione um status, esse campo é obrigatório!
+            </div>
           </div>
         </div>
-        <div class="col-1">
+        <div class="col-2">
           <div class="form-floating">
-            <input v-model="searchFamiliaSelecionada" class="form-control rf_bg_form rf_texto" list="datalistFamilia"
+            <input v-model="familiaSelecionada" class="form-control rf_bg_form rf_texto" list="datalistFamilia"
               id="familia" autocomplete="off" required />
 
             <label class="rf_texto">Família</label>
@@ -214,246 +110,336 @@
         </div>
         <div class="col-1">
           <div class="form-floating">
-            <!-- <input v-model="searchCombustivelSelecionado" class="form-control rf_bg_form rf_texto"
-              list="datalistCombustivel" id="combustivel" autocomplete="off" required /> -->
+            <input v-model="combustivelSelecionado" class="form-control rf_bg_form rf_texto" list="datalistCombustivel"
+              id="combustivel" autocomplete="off" required />
 
             <label class="rf_texto">Combustível</label>
-            <!-- <datalist id="datalistCombustivel">
-              <option v-for="comb in combustiveis" :data-id="comb.id" :value="comb.descricao" :key="comb.id"></option>
-            </datalist> -->
             <datalist id="datalistCombustivel">
-                <option v-for="comb in combustiveisFiltrados" :data-id="comb.id" :value="comb.descricao" :key="comb.id"></option>
+              <option v-for="comb in combustiveis" :data-id="comb.id" :value="comb.descricao" :key="comb.id"></option>
             </datalist>
-
           </div>
         </div>
-
         <div class="col-1">
           <div class="form-floating">
-            <select class="form-select rf_bg_form rf_texto" v-model="pageSize" @change="handlePageSizeChange(pageSize)">
-              <option v-for="size in pageSizes" :key="size" :value="size">
-                {{ size }}
-              </option>
+            <select class="form-select rf_bg_form rf_texto" v-model="tipo_empresa" required>
+              <option value="1">Quatro Rodas</option>
+              <option value="2">Duas Rodas</option>
             </select>
-            <label class="rf_texto">Itens pág.</label>
+            <label class="rf_texto">Tipo Empresa</label>
           </div>
         </div>
         <div class="col-1">
-          <div class="input-group-append">
-            <button class="btn btn-lg btn-secondary mt-2" type="button" @click="page = 1; retrieveModelos();">
-              Pesquisar
-            </button>
-          </div>
-        </div>
-
-
-      </div>
-    </div>
-    <!--Tabelas-->
-    <div class="card rf_bg_form g-2 p-2 rf_margin">
-      <table class="table rf_texto">
-        <thead>
-          <tr>
-            <th scope="col">Código</th>
-            <th scope="col">Descrição</th>
-            <th scope="col">Edição</th>
-            <th scope="col">Cilindro</th>
-            <th scope="col">Potência</th>
-            <th scope="col">Preço Forçado</th>
-            <th scope="col">Preço Venda</th>
-            <th scope="col">Ano Fabricação</th>
-            <th scope="col">Ano Modelo</th>
-            <th scope="col">Venda Futura</th>
-            <th scope="col">Familia</th>
-            <th scope="col">Combustível</th>
-            <th scope="col">Status</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in modelos" :key="item.descricao">
-            <td>{{ item.codigo }}</td>
-            <td>{{ item.descricao }}</td>
-            <td>{{ item.edicao }}</td>
-            <td>{{ item.cilindro }}</td>
-            <td>{{ item.potencia }}</td>
-            <td>{{ item.precoForcado }}</td>
-            <td>{{ currency(item.precoVenda) }}</td>
-            <td>{{ item.anoFabricacao }}</td>
-            <td>{{ item.anoModelo }}</td>
-            <td>{{ getVendaFut(item.vendaFutura) }}</td>
-            <td>{{ item.familia_veiculo.descricao }}</td>
-            <td>{{ item.combustivel_veiculo.descricao }}</td>
-            <td>{{ getStatus(item.status) }}</td>
-
-            <td>
-              <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                @click="editar_modelo(item)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil"
-                  viewBox="0 0 16 16">
-                  <path
-                    d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-                </svg>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <pagination v-if="modelos.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
-        @change-page="handlePageChange" />
-    </div>
-    <!-- Modal para edição -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content rf_bg_form rf_texto">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Modelo de Veículo</h1>
-          </div>
-          <div class="modal-body">
-            <div class="row g-2 p-2">
-              <div class="col-1">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_id" disabled />
-                  <label class="rf_texto">ID</label>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_codigo" required />
-                  <label class="rf_texto">Código</label>
-                </div>
-              </div>
-              <div class="col">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_descricao" required
-                    autocomplete="off" />
-                  <label class="rf_texto">Descrição</label>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_edicao" />
-                  <label class="rf_texto">Edição</label>
-                </div>
-              </div>
-            </div>
-            <div class="row g-2 p-2">
-              <div class="col-2">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_cilindro" />
-                  <label class="rf_texto">Cilindro</label>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_potencia" />
-                  <label class="rf_texto">Potência</label>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_precoForcado" />
-                  <label class="rf_texto">Preço Forçado</label>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_precoVenda"
-                    @input="edit_precoVenda = formatarValor(edit_precoVenda)" />
-                  <label class="rf_texto">Preço Venda</label>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_anoFabricacao" required
-                    autocomplete="off" />
-                  <label class="rf_texto">Ano Fabricação</label>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_anoModelo" required
-                    autocomplete="off" />
-                  <label class="rf_texto">Ano Modelo</label>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="form-floating">
-                  <select class="form-select rf_bg_form rf_texto" v-model="edit_vendaFutura" id="valid_status" required>
-                    <option value="0">Não</option>
-                    <option value="1">Sim</option>
-                  </select>
-                  <label class="rf_texto">Venda Futura</label>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="form-floating">
-                  <select class="form-select rf_bg_form rf_texto" v-model="edit_status" id="valid_status" required>
-                    <option value="0">Desabilitado</option>
-                    <option value="1">Habilitado</option>
-                  </select>
-                  <label for="valid_status" class="rf_texto">Status</label>
-                  <div class="invalid-feedback">
-                    Selecione um status, esse campo é obrigatório!
-                  </div>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="form-floating">
-                  <input type="text" list="datalistFamilia" v-model="selectedOption.descricao"
-                    @change="updateSelectedOption" class="form-control rf_bg_form rf_texto" />
-                  <label class="rf_texto">Família</label>
-
-                  <datalist id="datalistFamilia">
-                    <option>{{ this.edit_familia }}</option>
-                    <option v-for="familia in familias" :value="familia.descricao"
-                      :selected="selectedOption.id === familia.id" :key="familia.id">{{ familia.descricao }}</option>
-                  </datalist>
-                </div>
-              </div>
-
-              <div class="col-2">
-                <div class="form-floating">
-                  <input type="text" list="datalistCombustivel" v-model="selectedOptionCombustivel.descricao"
-                    @change="updateSelectedOptionCombustivel" class="form-control rf_bg_form rf_texto" />
-                  <label class="rf_texto">Combustível</label>
-
-                  <datalist id="datalistCombustivel">
-                    <option>{{ this.edit_combustivel }}</option>
-                    <option v-for="comb in combustiveis" :value="comb.descricao" :selected="selectedOptionCombustivel.id === comb.id"
-                      :key="comb.id">{{ comb.descricao }}</option>
-                  </datalist>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="form-floating">
-                  <select class="form-select rf_bg_form rf_texto" v-model="edit_tipo_empresa" id="valid_status" required>
-                    <option value="1">Quatro Rodas</option>
-                    <option value="2">Duas Rodas</option>
-                  </select>
-                  <label for="valid_status" class="rf_texto">Tipo Empresa</label>
-                  <div class="invalid-feedback">
-                    Selecione um status, esse campo é obrigatório!
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-              Fechar
-            </button>
-            <button type="button" @click="update()" data-bs-dismiss="modal" class="btn btn-secondary">
-              Salvar
-            </button>
-          </div>
+        <div class="finput-group-append">
+          <button type="submit" class="btn btn-lg btn-filtro">
+            <span class="rf_texto_btn">Cadastrar</span>
+          </button>
         </div>
       </div>
+      </div>
+
+      
+    </form>
+    <div v-if="abrir_modal">
+      <Message :msg="msg" v-show="msg" />
     </div>
-    <RodapeVue />
   </div>
+  <!--Bloco do Filtro-->
+  <div class="card card-filtro">
+    <div class="row g-2 p-2">
+      <div class="card-title rf_texto gy-4">
+        <i class="bi bi-funnel fs-5 icone_filtro"><span class="texto_filtro">Filtro</span></i>
+      </div>
+    </div>
+    <div class="row g-2 p-2">
+      <div class="col">
+        <div class="form-floating">
+          <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchTitle" />
+          <label class="rf_texto">Descrição</label>
+        </div>
+      </div>
+      <div class="col-1">
+        <div class="form-floating">
+          <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchAnoFab" />
+          <label class="rf_texto">Ano Fab.</label>
+        </div>
+      </div>
+      <div class="col-1">
+        <div class="form-floating">
+          <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchAnoMod" />
+          <label class="rf_texto">Ano Modelo</label>
+        </div>
+      </div>
+      <div class="col-1">
+        <div class="form-floating">
+          <select class="form-select rf_bg_form rf_texto" v-model="searchVendaFutura">
+            <option value="">-----</option>
+            <option value="0">Não</option>
+            <option value="1">Sim</option>
+          </select>
+          <label class="rf_texto">Venda Futura</label>
+        </div>
+      </div>
+      <div class="col-1">
+        <div class="form-floating">
+          <select class="form-select rf_bg_form rf_texto" v-model="searchStatus">
+            <option value="">------</option>
+            <option value="0">Desabilitado</option>
+            <option value="1">Habilitado</option>
+          </select>
+          <label class="rf_texto">Status</label>
+        </div>
+      </div>
+      <div class="col-1">
+        <div class="form-floating">
+          <input v-model="searchFamiliaSelecionada" class="form-control rf_bg_form rf_texto" list="datalistFamilia"
+            id="familia" autocomplete="off" required />
+
+          <label class="rf_texto">Família</label>
+          <datalist id="datalistFamilia">
+            <option v-for="familia in familias" :data-id="familia.id" :value="familia.descricao" :key="familia.id">
+            </option>
+          </datalist>
+        </div>
+      </div>
+      <!-- <div class="col-1">
+        <div class="form-floating">
+          <input v-model="searchCombustivelSelecionado" class="form-control rf_bg_form rf_texto"
+              list="datalistCombustivel" id="combustivel" autocomplete="off" required /> 
+
+          <label class="rf_texto">Combustível</label> 
+          <datalist id="datalistCombustivel">
+              <option v-for="comb in combustiveis" :data-id="comb.id" :value="comb.descricao" :key="comb.id"></option>
+            </datalist> 
+          <datalist id="datalistCombustivel">
+            <option v-for="comb in combustiveisFiltrados" :data-id="comb.id" :value="comb.descricao" :key="comb.id">
+            </option>
+          </datalist>
+
+        </div>
+      </div> -->
+
+      <div class="col-1">
+        <div class="form-floating">
+          <select class="form-select rf_bg_form rf_texto" v-model="pageSize" @change="handlePageSizeChange(pageSize)">
+            <option v-for="size in pageSizes" :key="size" :value="size">
+              {{ size }}
+            </option>
+          </select>
+          <label class="rf_texto">Itens pág.</label>
+        </div>
+      </div>
+      <div class="col-1">
+        <div class="input-group-append">
+          <button class="btn btn-lg btn-filtro" type="button" @click="page = 1; retrieveModelos();">
+            <span class="rf_texto_btn">Pesquisar</span>
+          </button>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  <!--Tabelas-->
+  <div class="card card-tabela g-2 p-2 rf_margin">
+    <table class="table rf_texto">
+      <thead>
+        <tr>
+          <th scope="col">Código</th>
+          <th scope="col">Descrição</th>
+          <th scope="col">Edição</th>
+          <th scope="col">Cilindro</th>
+          <th scope="col">Potência</th>
+          <th scope="col">Preço Forçado</th>
+          <th scope="col">Preço Venda</th>
+          <th scope="col">Ano Fabricação</th>
+          <th scope="col">Ano Modelo</th>
+          <th scope="col">Venda Futura</th>
+          <th scope="col">Familia</th>
+          <th scope="col">Combustível</th>
+          <th scope="col">Status</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in modelos" :key="item.descricao" class="table-linha">
+          <td>{{ item.codigo }}</td>
+          <td>{{ item.descricao }}</td>
+          <td>{{ item.edicao }}</td>
+          <td>{{ item.cilindro }}</td>
+          <td>{{ item.potencia }}</td>
+          <td>{{ item.precoForcado }}</td>
+          <td>{{ currency(item.precoVenda) }}</td>
+          <td>{{ item.anoFabricacao }}</td>
+          <td>{{ item.anoModelo }}</td>
+          <td>{{ getVendaFut(item.vendaFutura) }}</td>
+          <td>{{ item.familia_veiculo.descricao }}</td>
+          <td>{{ item.combustivel_veiculo.descricao }}</td>
+          <td>{{ getStatus(item.status) }}</td>
+
+          <td>
+            <button type="button" class="dropdown-toggle-icon" data-bs-toggle="modal" data-bs-target="#exampleModal"
+              @click="editar_modelo(item)">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <pagination v-if="modelos.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
+      @change-page="handlePageChange" />
+  </div>
+  <!-- Modal para edição -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content card-container rf_texto">
+        <div class="modal-header">
+          <div class="card-title gy-4">
+            <i class="bi bi-pencil-square fs-5 icone_kit"><span class="texto_kit">Editar Modelo</span></i>
+          </div>
+          <button class="btn btn-modal btn-lg p-1 mt-1" type="button" data-bs-target="#ModalProposta"
+            data-bs-toggle="modal" aria-label="Close"> Sair </button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-2 p-2">
+            <div class="col-1">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_id" disabled />
+                <label class="rf_texto">ID</label>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_codigo" required />
+                <label class="rf_texto">Código</label>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_descricao" required
+                  autocomplete="off" />
+                <label class="rf_texto">Descrição</label>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_edicao" />
+                <label class="rf_texto">Edição</label>
+              </div>
+            </div>
+          </div>
+          <div class="row g-2 p-2">
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_cilindro" />
+                <label class="rf_texto">Cilindro</label>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_potencia" />
+                <label class="rf_texto">Potência</label>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_precoForcado" />
+                <label class="rf_texto">Preço Forçado</label>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_precoVenda"
+                  @input="edit_precoVenda = formatarValor(edit_precoVenda)" />
+                <label class="rf_texto">Preço Venda</label>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_anoFabricacao" required
+                  autocomplete="off" />
+                <label class="rf_texto">Ano Fabricação</label>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_anoModelo" required
+                  autocomplete="off" />
+                <label class="rf_texto">Ano Modelo</label>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-floating">
+                <select class="form-select rf_bg_form rf_texto" v-model="edit_vendaFutura" id="valid_status" required>
+                  <option value="0">Não</option>
+                  <option value="1">Sim</option>
+                </select>
+                <label class="rf_texto">Venda Futura</label>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-floating">
+                <select class="form-select rf_bg_form rf_texto" v-model="edit_status" id="valid_status" required>
+                  <option value="0">Desabilitado</option>
+                  <option value="1">Habilitado</option>
+                </select>
+                <label for="valid_status" class="rf_texto">Status</label>
+                <div class="invalid-feedback">
+                  Selecione um status, esse campo é obrigatório!
+                </div>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" list="datalistFamilia" v-model="selectedOption.descricao"
+                  @change="updateSelectedOption" class="form-control rf_bg_form rf_texto" />
+                <label class="rf_texto">Família</label>
+
+                <datalist id="datalistFamilia">
+                  <option>{{ this.edit_familia }}</option>
+                  <option v-for="familia in familias" :value="familia.descricao"
+                    :selected="selectedOption.id === familia.id" :key="familia.id">{{ familia.descricao }}</option>
+                </datalist>
+              </div>
+            </div>
+
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" list="datalistCombustivel" v-model="selectedOptionCombustivel.descricao"
+                  @change="updateSelectedOptionCombustivel" class="form-control rf_bg_form rf_texto" />
+                <label class="rf_texto">Combustível</label>
+
+                <datalist id="datalistCombustivel">
+                  <option>{{ this.edit_combustivel }}</option>
+                  <option v-for="comb in combustiveis" :value="comb.descricao"
+                    :selected="selectedOptionCombustivel.id === comb.id" :key="comb.id">{{ comb.descricao }}</option>
+                </datalist>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-floating">
+                <select class="form-select rf_bg_form rf_texto" v-model="edit_tipo_empresa" id="valid_status" required>
+                  <option value="1">Quatro Rodas</option>
+                  <option value="2">Duas Rodas</option>
+                </select>
+                <label for="valid_status" class="rf_texto">Tipo Empresa</label>
+                <div class="invalid-feedback">
+                  Selecione um status, esse campo é obrigatório!
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+        <div class="modal-footer">    
+          <button type="button" @click="update()" data-bs-dismiss="modal" class="btn btn-modal btn-lg p-1 mt-1">
+            Salvar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <RodapeVue />
 </template>
 <script>
 import SidebarVue from "../../components/menu/Sidebar.vue";
@@ -462,12 +448,14 @@ import userService from "../../services/user.service";
 import Pagination from "../../components/Pagination.vue";
 import Message from "../../components/modal/Message.vue";
 import RodapeVue from "../../components/menu/Rodape.vue";
+import Navgator from "../../components/menu/Navgator.vue";
 
 
 export default {
   name: "Modelo",
   components: {
     SidebarVue,
+    Navgator,
     Pagination,
     Message,
     RodapeVue
@@ -768,7 +756,7 @@ export default {
           this.combustiveis = combustivel.filter(comb => comb.status === 1);
           this.totalPages = totalPages;
           this.totalItems = totalItems;
-      
+
         });
       } catch (error) {
         if (error.response.status == 400) {
@@ -864,4 +852,3 @@ export default {
   }
 };
 </script>
-  

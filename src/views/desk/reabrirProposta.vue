@@ -1,16 +1,13 @@
 <template>
-    <div>
+
         <SidebarVue ref="sidebar" />
+  <NavgatorDk ref="navgator" :barraTitulo="' Lista de Propostas'" :titulo="'lista'" />
 
 
-        <nav class="navbar navbar-expand-lg rf_bg_form rf_texto mt-4">
-            <div class="container-fluid">
-                <div><i class="bi  bi-file-earmark-text fs-5"> Lista de Propostas </i></div>
-            </div>
-        </nav>
+
 
         <!--Tabelas-->
-        <div class="card rf_bg_form g-2 p-2 rf_margin">
+        <div class="card card-filtro g-2 p-2 rf_margin">
 
             <div class="g-1 p-1">
                 <div class="col row">
@@ -20,40 +17,19 @@
                             <label class="rf_texto">Nº Ordem</label>
                         </div>
                     </div>
-                    <div class="col-2 mt-1">
+                    <div class="col-2 mt-2">
                         <div class="input-group-append">
-                            <button class="btn btn-lg btn-secondary mt-2" type="button"
+                            <button class="btn btn-lg btn-desk-filtro" type="button"
                                 @click="status_proposta = 'Ordem', filtrarPropostas()">
-                                Pesquisar
+                                <span class="rf_texto_btn">Pesquisar</span>
                             </button>
                         </div>
                     </div>
-
-
-                    <!-- <div class="col-3 mt-3">
-                        <select class="form-select" v-model="selectedFilter" @change="filtrarPropostas()">
-                            <option value="">Selecione um filtro</option>
-                            <option value="Venda Finalizada">Venda Finalizada</option>
-                            <option value="Venda Perdida">Venda Perdida</option>
-                            <option value="Pesquisar por Período">Pesquisar por Período</option>
-                        </select>
-                    </div>
-                    <div class="col-3 mt-3" v-if="selectedFilter === 'Pesquisar por Período'">
-                        <div class="input-group">
-                            <input type="date" class="form-control" v-model="startDate" />
-                            <span class="input-group-text">até</span>
-                            <input type="date" class="form-control" v-model="endDate" />
-                            <button class="btn btn-secondary" @click="filterByPeriod">Filtrar</button>
-                        </div>
-                    </div> -->
                 </div>
-
-
-
             </div>
 
 
-            <table class="table border-dark rf_texto">
+            <table class="table rf_texto_desk">
                 <thead>
                     <tr>
                         <th scope="col" class="rf_header_table">Nº Ordem</th>
@@ -107,7 +83,7 @@
         </div>
 
        <RodapeVue/>
-    </div>
+
 </template>
 <script>
 import SidebarVue from "../../components/menu/Sidebar.vue";
@@ -124,12 +100,14 @@ import TokenService from "../../services/token.service";
 import jwt_decode from 'jwt-decode';
 import Message from "../../components/modal/Message.vue";
 import RodapeVue from "../../components/menu/Rodape.vue";
+import NavgatorDk from "../../components/menu/NavgatorDk.vue";
 
 export default {
     name: "Usuários",
 
     components: {
         SidebarVue,
+        NavgatorDk,
         //Pagination,
         Message,
         RodapeVue

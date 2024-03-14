@@ -1,688 +1,651 @@
 <template>
-  <div>
-    <SidebarVue ref="sidebar" />
-    <nav class="navbar navbar-expand-lg rf_bg_form rf_texto rf_container">
-      <div class="container-fluid">
-        <div><i class="bi bi-sliders fs-5"> Administração - Desk </i></div>
-        <div>
-          <ul class="nav justify-content-end">
-            <li class="nav-item">
-              <router-link class="nav-link rf_texto active" to="/desk/relatorio">Abrir Relatório</router-link>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+  <SidebarVue ref="sidebar" />
+  <NavgatorDk ref="navgator" :barraTitulo="' Administração - Desk'" :titulo="'desk'" />
 
-    <!--Gráficos Veículos Novos-->
-    <nav class="navbar navbar-expand-lg rf_bg_form rf_texto mt-4">
-      <div class="container-fluid">
-        <div><i class="bi bi-car-front fs-5"> Veículos Novos </i></div>
-      </div>
-    </nav>
-    <div class="card rf_bg_form mt-4 p-2">
-      <!--Rodapé Gráfico-->
-      <div class="row">
-        <div id="chart">
-          <apexchart type="bar" height="350" :options="chartOptions" :series="series"></apexchart>
-        </div>
+  <!--Gráficos Veículos Novos-->
+  <div class="card card-filtro g-2 p-2">
+    <div class="card-title gy-4">
+      <i class="bi bi-car-front fs-5 fs-5 icone_filtro"><span class="texto_filtro">Veículos Novos</span></i>
+    </div>
+  </div>
+  <div class="card card-filtro mt-4 p-2">
+    <!--Rodapé Gráfico-->
+    <div class="row">
+      <div id="chart">
+        <apexchart type="bar" height="350" :options="chartOptions" :series="series"></apexchart>
       </div>
     </div>
-    <!--Tabelas-->
-    <div class="card rf_bg_form g-2 p-2 rf_margin">
-      <div class="d-flex justify-content-between mb-3">
-        <div>
-          <select class="form-select" v-model="selectedFilter" @change="filtrarPropostas()">
-            <option value="">Selecione um filtro</option>
-            <option value="Dia">Diário</option>
-            <option value="Todos">Todos</option>
-            <option value="Em Atendimento">Em Atendimento</option>
-            <option value="Venda Finalizada">Venda Finalizada</option>
-            <option value="Venda Perdida">Venda Perdida</option>
-            <option value="Pesquisar por Período">Pesquisar por Período</option>
-          </select>
+  </div>
+  <!--Tabelas-->
+  <div class="card card-tabela g-2 p-2 rf_margin">
+    <div class="d-flex justify-content-between mb-3">
+      <div>
+        <select class="form-select rf_bg_form rf_texto" v-model="selectedFilter" @change="filtrarPropostas()">
+          <option value="">Selecione um filtro</option>
+          <option value="Dia">Diário</option>
+          <option value="Todos">Todos</option>
+          <option value="Em Atendimento">Em Atendimento</option>
+          <option value="Venda Finalizada">Venda Finalizada</option>
+          <option value="Venda Perdida">Venda Perdida</option>
+          <option value="Pesquisar por Período">Pesquisar por Período</option>
+        </select>
+      </div>
+      <div v-if="selectedFilter === 'Pesquisar por Período'">
+        <div class="input-group">
+          <input type="date" class="form-control rf_bg_form rf_texto" v-model="startDate" />
+          <span class="input-group-text">até</span>
+          <input type="date" class="form-control rf_bg_form rf_texto" v-model="endDate" />
+          <button class="btn btn-lg btn-desk-filtro" @click="filterByPeriod"><span class="rf_texto_btn">Filtrar</span></button>
         </div>
-        <div v-if="selectedFilter === 'Pesquisar por Período'">
-          <div class="input-group">
-            <input type="date" class="form-control" v-model="startDate" />
-            <span class="input-group-text">até</span>
-            <input type="date" class="form-control" v-model="endDate" />
-            <button class="btn btn-secondary" @click="filterByPeriod">Filtrar</button>
+      </div>
+
+    </div>
+    <table class="table rf_texto_desk">
+      <thead>
+        <tr>
+          <th scope="col" class="rf_header_table">Nº Atendimento</th>
+          <th scope="col" class="rf_header_table">Vendedor</th>
+          <th scope="col" class="rf_header_table">Cliente</th>
+          <th scope="col" class="rf_header_table">Modelo</th>
+          <th scope="col" class="rf_header_table">Tempo Espera</th>
+          <th scope="col" class="rf_header_table">Tempo Atendimento</th>
+          <th scope="col" class="rf_header_table">Total Atendimento</th>
+          <th scope="col" class="rf_header_table">Data Atendimento</th>
+          <th scope="col" class="rf_header_table">Gerados</th>
+          <th scope="col" class="rf_header_table">Retorno</th>
+          <th scope="col" class="rf_header_table">Status</th>
+          <th scope="col" class="rf_header_table">Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in propostasFiltradasNovo" :key="item.id" class="table-linha" :class="item.status === 'Atendimento'
+    ? css
+    : item.status === 'Atendimento Excedido'
+      ? css1
+      : item.status === 'Aguardando Atendimento'
+        ? css2
+        : item.status === 'Venda Finalizada'
+          ? css3
+          : item.status === 'Venda Perdida'
+            ? css4
+            : ''
+    ">
+
+          <td class="rf_header_table">{{ item.id }}</td>
+          <td class="rf_header_table">{{ item.vendedor }}</td>
+          <td class="rf_header_table">{{ item.cliente }}</td>
+          <td class="rf_header_table">{{ item.modelo }}</td>
+          <td class="rf_header_table">{{ item.tempo_espera }}</td>
+          <td class="rf_header_table">{{ item.tempo_atendimento }}</td>
+          <td class="rf_header_table">{{ item.total_atendimento }}</td>
+          <td class="rf_header_table">{{ item.data_atendimento }}</td>
+          <td class="rf_header_table">{{ item.quantidade_proposta_menu }}</td>
+          <td class="rf_header_table">{{ item.retorno }}</td>
+
+          <td class="rf_header_table">{{ item.status }}</td>
+
+          <td>
+            <button type="button" class="btn-desk" data-bs-target="#ModalDuplicacao" data-bs-toggle="modal"
+              v-if="item_duplicado === 1">
+              <i class="bi bi-ev-front-fill"></i>
+            </button>
+
+            <button type="button" class="btn-desk "
+              v-bind:disabled="item.status === 'Venda Finalizada' || item.status === 'Venda Perdida'">
+              <router-link class="nav-link active" :to="`/desk/menu/proposta/${item.id}`">
+                <i class="bi bi-pencil-square"></i>
+              </router-link>
+            </button>
+            
+            <button type="button" class=" btn-desk "
+              v-bind:disabled="item.status === 'Atendimento' || item.status === 'Aguardando Atendimento' || item.status === 'Atendimento Excedido'">
+              <router-link class="nav-link  active" :to="`/desk/menu/reimprimirMenu/${item.id}`">
+                <i class="bi bi-printer"></i>
+              </router-link>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <pagination v-if="propostas_at.length" :offset="totalPages_4" :total="totalItems_4" :limit="pageSize_4"
+      @change-page="handlePageChangeProposta" />
+  </div>
+
+
+  <!--Gráficos Veículos Usados-->
+  <div class="card card-filtro g-2 p-2">
+    <div class="card-title gy-4">
+      <i class="bi bi-car-front fs-5 fs-5 icone_filtro"><span class="texto_filtro">Veículos Usados</span></i>
+    </div>
+  </div>
+  <div class="card card-filtro mt-4 p-2">
+    <div class="row">
+      <div id="chart_usado">
+        <apexchart type="bar" height="350" :options="chartOptions" :series="series_usado"></apexchart>
+      </div>
+    </div>
+  </div>
+
+  <!--Tabelas-->
+  <div class="card card-tabela g-2 p-2 rf_margin">
+    <div class="d-flex justify-content-between mb-3">
+      <div>
+        <select class="form-select rf_bg_form rf_texto" v-model="selectedFilter" @change="filtrarPropostas()">
+          <option value="">Selecione um filtro</option>
+          <option value="Dia">Diário</option>
+          <option value="Todos">Todos</option>
+          <option value="Em Atendimento">Em Atendimento</option>
+          <option value="Venda Finalizada">Venda Finalizada</option>
+          <option value="Venda Perdida">Venda Perdida</option>
+          <option value="Pesquisar por Período">Pesquisar por Período</option>
+        </select>
+      </div>
+      <div v-if="selectedFilter === 'Pesquisar por Período'">
+        <div class="input-group">
+          <input type="date" class="form-control rf_bg_form rf_texto" v-model="startDate" />
+          <span class="input-group-text rf-texto">até</span>
+          <input type="date" class="form-control rf_bg_form rf_texto" v-model="endDate" />
+          <button class="btn btn-lg btn-desk-filtro" @click="filterByPeriod"><span class="rf_texto_btn">Filtrar</span></button>
+        </div>
+      </div>
+
+    </div>
+    <table class="table rf_texto_desk">
+      <thead>
+        <tr>
+          <th scope="col" class="rf_header_table">Nº Atendimento</th>
+          <th scope="col" class="rf_header_table">Vendedor</th>
+          <th scope="col" class="rf_header_table">Cliente</th>
+          <th scope="col" class="rf_header_table">Modelo</th>
+          <th scope="col" class="rf_header_table">Tempo Espera</th>
+          <th scope="col" class="rf_header_table">Tempo Atendimento</th>
+          <th scope="col" class="rf_header_table">Total Atendimento</th>
+          <th scope="col" class="rf_header_table">Data Atendimento</th>
+          <th scope="col" class="rf_header_table">Gerados</th>
+          <th scope="col" class="rf_header_table">Retorno</th>
+          <th scope="col" class="rf_header_table">Status</th>
+          <th scope="col" class="rf_header_table">Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in propostasFiltradasUsado" :key="item.id" class="table-linha" :class="item.status === 'Atendimento'
+    ? css
+    : item.status === 'Atendimento Excedido'
+      ? css1
+      : item.status === 'Aguardando Atendimento'
+        ? css2
+        : item.status === 'Venda Finalizada'
+          ? css3
+          : item.status === 'Venda Perdida'
+            ? css4
+            : ''
+    ">
+          <td class="rf_header_table">{{ item.id }}</td>
+          <td class="rf_header_table">{{ item.vendedor }}</td>
+          <td class="rf_header_table">{{ item.cliente }}</td>
+          <td class="rf_header_table">{{ item.modelo }}</td>
+          <td class="rf_header_table">{{ item.tempo_espera }}</td>
+          <td class="rf_header_table">{{ item.tempo_atendimento }}</td>
+          <td class="rf_header_table">{{ item.total_atendimento }}</td>
+          <td class="rf_header_table">{{ item.data_atendimento }}</td>
+          <td class="rf_header_table">{{ item.quantidade_proposta_menu }}</td>
+          <td class="rf_header_table">{{ item.retorno }}</td>
+          <td class="rf_header_table">{{ item.status }}</td>
+
+          <td>
+            <button type="button" class="btn-desk"
+              v-bind:disabled="item.status === 'Venda Finalizada' || item.status === 'Venda Perdida'">
+              <router-link class="nav-link  active" :to="`/desk/menu/proposta/${item.id}`">
+                <i class="bi bi-pencil-square"></i>
+              </router-link>
+            </button>
+
+            <button type="button" class="btn-desk"
+              v-bind:disabled="item.status === 'Atendimento' || item.status === 'Aguardando Atendimento' || item.status === 'Atendimento Excedido'">
+              <router-link class="nav-link active" :to="`/desk/menu/reimprimirMenu/${item.id}`">
+                <i class="bi bi-printer"></i>
+              </router-link>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <pagination v-if="propostas_at.length" :offset="totalPages_4" :total="totalItems_4" :limit="pageSize_4"
+      @change-page="handlePageChangeProposta" />
+  </div>
+  <div v-if="abrir_modal">
+    <Message :msg="msg" v-show="msg" />
+  </div>
+
+  <div v-if="abrir_modal_reimpressao">
+    <div class="modal  d-block py-5" tabindex="-1" role="dialog" id="Modal_Mensagem">
+      <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content rf_bg_form">
+          <div class="modal-header bg-dark rf_border">
+            <h5 class="modal-title fs-5 rf_texto" id="staticBackdropLabel">
+              <i class="bi bi-info-square"> Reimpressão do Menu</i>
+            </h5>
           </div>
-        </div>
+          <div class="modal-body bg-secondary  text-center">
 
-      </div>
-      <table class="table border-dark rf_texto">
-        <thead>
-          <tr>
-            <th scope="col" class="rf_header_table">Nº Atendimento</th>
-            <th scope="col" class="rf_header_table">Vendedor</th>
-            <th scope="col" class="rf_header_table">Cliente</th>
-            <th scope="col" class="rf_header_table">Modelo</th>
-            <th scope="col" class="rf_header_table">Tempo Espera</th>
-            <th scope="col" class="rf_header_table">Tempo Atendimento</th>
-            <th scope="col" class="rf_header_table">Total Atendimento</th>
-            <th scope="col" class="rf_header_table">Data Atendimento</th>
-            <th scope="col" class="rf_header_table">Gerados</th>
-            <th scope="col" class="rf_header_table">Retorno</th>
-            <th scope="col" class="rf_header_table">Status</th>
-            <th scope="col" class="rf_header_table">Ação</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in propostasFiltradasNovo" :key="item.id" :class="item.status === 'Atendimento'
-            ? css
-            : item.status === 'Atendimento Excedido'
-              ? css1
-              : item.status === 'Aguardando Atendimento'
-                ? css2
-                : item.status === 'Venda Finalizada'
-                  ? css3
-                  : item.status === 'Venda Perdida'
-                    ? css4
-                    : ''
-            ">
+            <p class="fs-6 fw-bold">
+              O sistema está buscando os dados do menu gerado para reimpressão.
+              Aguarde!
 
-            <td class="rf_header_table">{{ item.id }}</td>
-            <td class="rf_header_table">{{ item.vendedor }}</td>
-            <td class="rf_header_table">{{ item.cliente }}</td>
-            <td class="rf_header_table">{{ item.modelo }}</td>
-            <td class="rf_header_table">{{ item.tempo_espera }}</td>
-            <td class="rf_header_table">{{ item.tempo_atendimento }}</td>
-            <td class="rf_header_table">{{ item.total_atendimento }}</td>
-            <td class="rf_header_table">{{ item.data_atendimento }}</td>
-            <td class="rf_header_table">{{ item.quantidade_proposta_menu }}</td>
-            <td class="rf_header_table">{{ item.retorno }}</td>
-
-            <td class="rf_header_table">{{ item.status }}</td>
-
-            <td>
-              <button type="button" class="btn btn-secondary btn-sm rf_btn" data-bs-target="#ModalDuplicacao"
-                data-bs-toggle="modal" v-if="item_duplicado === 1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                  class="bi bi-ev-front-fill" viewBox="0 0 16 16">
-                  <path
-                    d="M2.52 3.515A2.5 2.5 0 0 1 4.82 2h6.362c1 0 1.904.596 2.298 1.515l.792 1.848c.075.175.21.319.38.404.5.25.855.715.965 1.262l.335 1.679c.033.161.049.325.049.49v.413c0 .814-.39 1.543-1 1.997V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.338c-1.292.048-2.745.088-4 .088s-2.708-.04-4-.088V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.892c-.61-.454-1-1.183-1-1.997v-.413a2.5 2.5 0 0 1 .049-.49l.335-1.68c.11-.546.465-1.012.964-1.261a.807.807 0 0 0 .381-.404l.792-1.848Zm6.75.51a.186.186 0 0 0-.23.034L6.05 7.246a.188.188 0 0 0 .137.316h1.241l-.673 2.195a.188.188 0 0 0 .085.218c.075.043.17.03.23-.034l2.88-3.187a.188.188 0 0 0-.137-.316H8.572l.782-2.195a.188.188 0 0 0-.085-.218Z" />
-                </svg>
-              </button>
-
-              <button type="button" class="btn btn-secondary btn-sm rf_btn "
-                v-bind:disabled="item.status === 'Venda Finalizada' || item.status === 'Venda Perdida'">
-                <router-link class="nav-link rf_texto active" :to="`/desk/menu/proposta/${item.id}`">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil"
-                    viewBox="0 0 16 16">
-                    <path
-                      d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-                  </svg>
-                </router-link>
-              </button>   
-              <button type="button" class="btn btn-secondary btn-sm  rf_btn"
-                v-bind:disabled="item.status === 'Atendimento' || item.status === 'Aguardando Atendimento' || item.status === 'Atendimento Excedido'">
-                <router-link class="nav-link rf_texto active" :to="`/desk/menu/reimprimirMenu/${item.id}`">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer"
-                    viewBox="0 0 16 16">
-                    <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />
-                    <path
-                      d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z" />
-                  </svg>
-                </router-link>
-              </button>          
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <pagination v-if="propostas_at.length" :offset="totalPages_4" :total="totalItems_4" :limit="pageSize_4"
-        @change-page="handlePageChangeProposta" />
-    </div>
-
-
-    <!--Gráficos Veículos Usados-->
-    <nav class="navbar navbar-expand-lg rf_bg_form rf_texto mt-4">
-      <div class="container-fluid">
-        <div><i class="bi bi-car-front-fill fs-5"> Veículos Usados </i></div>
-      </div>
-    </nav>
-    <div class="card rf_bg_form mt-4 p-2">
-      <div class="row">
-        <div id="chart_usado">
-          <apexchart type="bar" height="350" :options="chartOptions" :series="series_usado"></apexchart>
-        </div>
-      </div>
-    </div>
-
-    <!--Tabelas-->
-    <div class="card rf_bg_form g-2 p-2 rf_margin">
-      <div class="d-flex justify-content-between mb-3">
-        <div>
-          <select class="form-select" v-model="selectedFilter" @change="filtrarPropostas()">
-            <option value="">Selecione um filtro</option>
-            <option value="Dia">Diário</option>
-            <option value="Todos">Todos</option>
-            <option value="Em Atendimento">Em Atendimento</option>
-            <option value="Venda Finalizada">Venda Finalizada</option>
-            <option value="Venda Perdida">Venda Perdida</option>
-            <option value="Pesquisar por Período">Pesquisar por Período</option>
-          </select>
-        </div>
-        <div v-if="selectedFilter === 'Pesquisar por Período'">
-          <div class="input-group">
-            <input type="date" class="form-control" v-model="startDate" />
-            <span class="input-group-text">até</span>
-            <input type="date" class="form-control" v-model="endDate" />
-            <button class="btn btn-secondary" @click="filterByPeriod">Filtrar</button>
-          </div>
-        </div>
-
-      </div>
-      <table class="table border-dark rf_texto">
-        <thead>
-          <tr>
-            <th scope="col" class="rf_header_table">Nº Atendimento</th>
-            <th scope="col" class="rf_header_table">Vendedor</th>        
-            <th scope="col" class="rf_header_table">Cliente</th>  
-            <th scope="col" class="rf_header_table">Modelo</th>
-            <th scope="col" class="rf_header_table">Tempo Espera</th>
-            <th scope="col" class="rf_header_table">Tempo Atendimento</th>
-            <th scope="col" class="rf_header_table">Total Atendimento</th>
-            <th scope="col" class="rf_header_table">Data Atendimento</th>
-            <th scope="col" class="rf_header_table">Gerados</th>
-            <th scope="col" class="rf_header_table">Retorno</th>   
-            <th scope="col" class="rf_header_table">Status</th>
-            <th scope="col" class="rf_header_table">Ação</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in propostasFiltradasUsado" :key="item.id" :class="item.status === 'Atendimento'
-            ? css
-            : item.status === 'Atendimento Excedido'
-              ? css1
-              : item.status === 'Aguardando Atendimento'
-                ? css2
-                : item.status === 'Venda Finalizada'
-                  ? css3
-                  : item.status === 'Venda Perdida'
-                    ? css4
-                    : ''
-            ">
-            <td class="rf_header_table">{{ item.id }}</td>
-            <td class="rf_header_table">{{ item.vendedor }}</td>      
-            <td class="rf_header_table">{{ item.cliente }}</td>  
-            <td class="rf_header_table">{{ item.modelo }}</td>
-            <td class="rf_header_table">{{ item.tempo_espera }}</td>
-            <td class="rf_header_table">{{ item.tempo_atendimento }}</td>
-            <td class="rf_header_table">{{ item.total_atendimento }}</td>
-            <td class="rf_header_table">{{ item.data_atendimento }}</td>
-            <td class="rf_header_table">{{ item.quantidade_proposta_menu }}</td>
-            <td class="rf_header_table">{{ item.retorno }}</td> 
-            <td class="rf_header_table">{{ item.status }}</td>
-           
-            <td>
-              <button type="button" class="btn btn-secondary btn-sm rf_btn"
-                v-bind:disabled="item.status === 'Venda Finalizada' || item.status === 'Venda Perdida'">
-                <router-link class="nav-link rf_texto active" :to="`/desk/menu/proposta/${item.id}`">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil"
-                    viewBox="0 0 16 16">
-                    <path
-                      d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-                  </svg>
-                </router-link>
-              </button>
-             
-              <button type="button" class="btn btn-secondary btn-sm  rf_btn"
-                v-bind:disabled="item.status === 'Atendimento' || item.status === 'Aguardando Atendimento' || item.status === 'Atendimento Excedido'">
-                <router-link class="nav-link rf_texto active" :to="`/desk/menu/reimprimirMenu/${item.id}`">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer"
-                    viewBox="0 0 16 16">
-                    <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />
-                    <path
-                      d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z" />
-                  </svg>
-                </router-link>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <pagination v-if="propostas_at.length" :offset="totalPages_4" :total="totalItems_4" :limit="pageSize_4"
-        @change-page="handlePageChangeProposta" />
-    </div>
-    <div v-if="abrir_modal">
-      <Message :msg="msg" v-show="msg" />
-    </div>
-
-    <div v-if="abrir_modal_reimpressao">
-      <div class="modal  d-block py-5" tabindex="-1" role="dialog" id="Modal_Mensagem">
-        <div class="modal-dialog  modal-dialog-centered">
-          <div class="modal-content rf_bg_form">
-            <div class="modal-header bg-dark rf_border">
-              <h5 class="modal-title fs-5 rf_texto" id="staticBackdropLabel">
-                <i class="bi bi-info-square"> Reimpressão do Menu</i>
-              </h5>
-            </div>
-            <div class="modal-body bg-secondary  text-center">
-
-              <p class="fs-6 fw-bold">
-                O sistema está buscando os dados do menu gerado para reimpressão.
-                Aguarde!
-
-              </p>
-              <button class="btn btn-dark  m-1" :disabled="liberar_impressao" data-bs-toggle="modal"
-                data-bs-target="#ModalGerarMenu" @click="chamar_modal()">
-                GERAR MENU
-              </button>
-            </div>
+            </p>
+            <button class="btn btn-dark  m-1" :disabled="liberar_impressao" data-bs-toggle="modal"
+              data-bs-target="#ModalGerarMenu" @click="chamar_modal()">
+              GERAR MENU
+            </button>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="modal fade" id="ModalDuplicacao" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
-      tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content bg-dark rf_texto">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
-              Veículo em outros atendimentos
-            </h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="card rf_bg_form g-2 p-2 rf_margin">
-              <table class="table border-dark rf_texto">
-                <thead>
-                  <tr>
-                    <th scope="col" class="rf_header_table">Nº Proposta</th>
-                    <th scope="col" class="rf_header_table">Empresa</th>
+  <div class="modal fade" id="ModalDuplicacao" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-dark rf_texto">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
+            Veículo em outros atendimentos
+          </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="card rf_bg_form g-2 p-2 rf_margin">
+            <table class="table border-dark rf_texto">
+              <thead>
+                <tr>
+                  <th scope="col" class="rf_header_table">Nº Proposta</th>
+                  <th scope="col" class="rf_header_table">Empresa</th>
 
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="item in duplicatas" :key="item.id">
-                    <td class="rf_header_table">{{ item.id_proposta_2 }}</td>
-                    <td class="rf_header_table">{{ item.nome_empresa }}</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in duplicatas" :key="item.id">
+                  <td class="rf_header_table">{{ item.id_proposta_2 }}</td>
+                  <td class="rf_header_table">{{ item.nome_empresa }}</td>
 
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </div>
-    <!--Modal Gerar Menu-->
-    <div class="modal fade" id="ModalGerarMenu" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
-      tabindex="-1">
-      <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
-              Menu Gerado
-            </h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="card mt-3 rf_texto_pdf" ref="contentToPrint">
-              <div class="col">
-                <div class="row g-2 p-2">
+  </div>
+  <!--Modal Gerar Menu-->
+  <div class="modal fade" id="ModalGerarMenu" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
+            Menu Gerado
+          </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="card mt-3 rf_texto_pdf" ref="contentToPrint">
+            <div class="col">
+              <div class="row g-2 p-2">
 
-                  <div class="col-4">
-                    <div class="card ">
-                      <div class="card-header rf_card_header">Informações do Cliente</div>
-                      <div class="rf_card_pdf">
-                        <div>
-                          <div class="col "><strong>Cliente</strong></div>
-                          <div class="col"><span class="">{{ g_menu_cliente }}</span></div>
-                        </div>
-                        <div>
-                          <div class="col"><strong>CPF/CNPJ</strong></div>
-                          <div class="col"><span class="">{{ g_menu_cpfCnpj }}</span></div>
-                        </div>
-                        <div>
-                          <div class="col"><strong>Telefone</strong></div>
-                          <div class="col"><span class="">{{ g_menu_fone }}</span></div>
-                        </div>
-                        <div>
-                          <div class="col"><strong>Telefone 2</strong></div>
-                          <div class="col"><span class="">{{ g_menu_fone2 }}</span></div>
-                        </div>
-                        <div>
-                          <div class="col"><strong>Email</strong></div>
-                          <div class="col"><span class="">{{ g_menu_email }}</span></div>
-                        </div>
+                <div class="col-4">
+                  <div class="card ">
+                    <div class="card-header rf_card_header">Informações do Cliente</div>
+                    <div class="rf_card_pdf">
+                      <div>
+                        <div class="col "><strong>Cliente</strong></div>
+                        <div class="col"><span class="">{{ g_menu_cliente }}</span></div>
+                      </div>
+                      <div>
+                        <div class="col"><strong>CPF/CNPJ</strong></div>
+                        <div class="col"><span class="">{{ g_menu_cpfCnpj }}</span></div>
+                      </div>
+                      <div>
+                        <div class="col"><strong>Telefone</strong></div>
+                        <div class="col"><span class="">{{ g_menu_fone }}</span></div>
+                      </div>
+                      <div>
+                        <div class="col"><strong>Telefone 2</strong></div>
+                        <div class="col"><span class="">{{ g_menu_fone2 }}</span></div>
+                      </div>
+                      <div>
+                        <div class="col"><strong>Email</strong></div>
+                        <div class="col"><span class="">{{ g_menu_email }}</span></div>
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  <div class="col-4">
-                    <div class="card">
-                      <div class="card-header rf_card_header">Informações da Proposta</div>
-                      <div class="rf_card_pdf">
-                        <div>
-                          <div class="col "><strong>Gerente</strong></div>
-                          <div class="col"><span class="">{{ g_menu_gerente }}</span></div>
-                        </div>
-                        <div>
-                          <div class="col"><strong>Vendedor</strong></div>
-                          <div class="col"><span class="">{{ g_menu_vendedor }}</span></div>
-                        </div>
-                        <div>
-                          <div class="col"><strong>Negociação</strong></div>
-                          <div class="col"><span class="">{{ g_menu_negociacao }}</span></div>
-                        </div>
-                        <div>
-                          <div class="col"><strong>Data</strong></div>
-                          <div class="col"><span class="">{{ g_menu_data_negociacao }}</span></div>
-                        </div>
+                <div class="col-4">
+                  <div class="card">
+                    <div class="card-header rf_card_header">Informações da Proposta</div>
+                    <div class="rf_card_pdf">
+                      <div>
+                        <div class="col "><strong>Gerente</strong></div>
+                        <div class="col"><span class="">{{ g_menu_gerente }}</span></div>
+                      </div>
+                      <div>
+                        <div class="col"><strong>Vendedor</strong></div>
+                        <div class="col"><span class="">{{ g_menu_vendedor }}</span></div>
+                      </div>
+                      <div>
+                        <div class="col"><strong>Negociação</strong></div>
+                        <div class="col"><span class="">{{ g_menu_negociacao }}</span></div>
+                      </div>
+                      <div>
+                        <div class="col"><strong>Data</strong></div>
+                        <div class="col"><span class="">{{ g_menu_data_negociacao }}</span></div>
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  <div class="col-4">
-                    <div class="card">
-                      <div class="card-header rf_card_header">Acessórios</div>
-                      <div class="rf_container_menu">
-                        <ul class="list-group" v-for="item in itens_acessorios" :key="item.id">
-                          <li class="
+                <div class="col-4">
+                  <div class="card">
+                    <div class="card-header rf_card_header">Acessórios</div>
+                    <div class="rf_container_menu">
+                      <ul class="list-group" v-for="item in itens_acessorios" :key="item.id">
+                        <li class="
                           list-group-item
                           d-flex
                           justify-content-between
                           align-items-center
                         ">
-                            {{ item.descricao }}
-                            <span class="">{{ item.valor }}</span>
-                          </li>
-                        </ul>
-                      </div>
-                      <ul class="list-group">
-                        <li class="
+                          {{ item.descricao }}
+                          <span class="">{{ item.valor }}</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <ul class="list-group">
+                      <li class="
                         list-group-item
                         d-flex
                         justify-content-between
                         align-items-center
                       ">
-                          <span class="badge text-bg-danger">{{ msg }}</span>
-                        </li>
-                      </ul>
+                        <span class="badge text-bg-danger">{{ msg }}</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row g-2 p-2">
+
+                <div class="col-4">
+                  <div class="card">
+                    <div class="card-header rf_card_header">Veículo</div>
+                    <div class="rf_card_pdf">
+
+                      <div class="row">
+                        <div class="col">
+                          <div class="col-4"><strong>Marca</strong></div>
+                          <div class="col-4"><span class="">{{ g_menu_marca }}</span></div>
+                        </div>
+                        <div class="col">
+                          <div class="col"><strong>Modelo</strong></div>
+                          <div class="col"><span class="">{{ g_menu_modelo }}</span></div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <div class="col-4"><strong>Cor</strong></div>
+                          <div class="col"><span class="">{{ g_menu_cor }}</span></div>
+                        </div>
+                        <div class="col">
+                          <div class="col"><strong>Placa</strong></div>
+                          <div class="col"><span class="">{{ g_menu_placa }}</span></div>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="col"><strong>Chassi</strong></div>
+                        <div class="col"><span class="">{{ g_menu_chassi }}</span></div>
+                      </div>
+                      <div>
+                        <div class="row">
+                          <div class="col">
+                            <div class="col-6"><strong>Ano Modelo</strong></div>
+                            <div class="col-6"><span class="">{{ g_menu_ano_modelo }}</span></div>
+                          </div>
+                          <div class="col">
+                            <div class="col-6"><strong>Ano Modelo</strong></div>
+                            <div class="col-6"><span class="">{{ g_menu_ano_fab }}</span></div>
+                          </div>
+                        </div>
+
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-4">
+                  <div class="card">
+                    <div class="card-header rf_card_header">Resumo da Compra</div>
+                    <div class="rf_card_pdf">
+                      <div class="row">
+                        <div class="col">
+                          <div class="col-7"><strong>Valor Sugerido</strong></div>
+                          <div class="col-6"><span class="">{{ g_menu_val_sugerido }}</span></div>
+                        </div>
+                        <div class="col">
+                          <div class="col"><strong>Valor Desconto</strong></div>
+                          <div class="col-6"><span class="">{{ g_menu_val_desconto }}</span></div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <div class="col"><strong>Valor Total Acessórios</strong></div>
+                          <div class="col"><span class="">{{ g_menu_total_acessorios }}</span></div>
+                        </div>
+                        <div class="col">
+                          <div class="col"><strong>Tipo de Pagamento</strong></div>
+                          <div class="col-6"><span class="">{{ tipoPagamento }}</span></div>
+                        </div>
+                      </div>
+                      <div>
+
+                      </div>
+                      <div>
+                        <div class="col"><strong>Valor Total Veículo</strong></div>
+                        <div class="col"><span class="">{{ g_menu_val_veiculo }}</span></div>
+                      </div>
+                      <div>
+                        <div class="col"><strong>Total Financiado</strong></div>
+                        <div class="col"><span class="">{{ Valor_Financiado }}</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-4">
+                  <div class="card">
+                    <div class="card-header rf_card_header">Veículo de Troca</div>
+                    <div class="rf_card_pdf">
+                      <div>
+                        <div class="row">
+                          <div class="col-6">
+                            <div class="col"><strong>Marca</strong></div>
+                            <div class="col"><span class="">{{ g_menu_marca_avaliacao }}</span></div>
+                          </div>
+                          <div class="col-6">
+                            <div class="col"><strong>Placa</strong></div>
+                            <div class="col"><span class="">{{ g_menu_placa_avaliacao }}</span></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="row">
+                          <div class="col-6">
+                            <div class="col"><strong>Modelo</strong></div>
+                            <div class="col"><span class="">{{ g_menu_modelo_avalicao }}</span></div>
+                          </div>
+                          <div class="col-6">
+                            <div class="col"><strong>Ano</strong></div>
+                            <div class="col"><span class="">{{ g_menu_ano_modelo_avaliacao }}</span></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="row">
+                          <div class="col-6">
+                            <div class="col"><strong>Valor itens Av. (-)</strong></div>
+                            <div class="col"><span class="">{{ g_menu_itens_avaliacao_db }}</span></div>
+                          </div>
+                          <div class="col-6">
+                            <div class="col"><strong>Valor itens Av. (+)</strong></div>
+                            <div class="col"><span class="">{{ g_menu_itens_avaliacao_cr }}</span></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="row">
+                          <div class="col-6">
+                            <div class="col"><strong>Valor Avaliado</strong></div>
+                            <div class="col"><span class="">{{ g_menu_valor_avaliado }}</span></div>
+                          </div>
+                          <div class="col-6">
+                            <div class="col"><strong>Valor Final Av.</strong></div>
+                            <div class="col"><span class="">{{ g_menu_valor_avaliacao_final }}</span></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-2 p-2">
+              <div class="col">
+                <div class="card ">
+                  <div class="card-header rf_card_header">Entrada</div>
+                  <div class="rf_card_pdf">
+                    <div>
+                      <div class="col "><strong> {{ Valor_Entrada_1 }}</strong></div>
+                    </div>
+                    <div>
+                      <div class="col"><strong> {{ Valor_Entrada_2 }}</strong></div>
+                    </div>
+                    <div>
+                      <div class="col"><strong> {{ Valor_Entrada_3 }}</strong></div>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="col">
-                <div class="row g-2 p-2">
-
-                  <div class="col-4">
-                    <div class="card">
-                      <div class="card-header rf_card_header">Veículo</div>
-                      <div class="rf_card_pdf">
-
-                        <div class="row">
-                          <div class="col">
-                            <div class="col-4"><strong>Marca</strong></div>
-                            <div class="col-4"><span class="">{{ g_menu_marca }}</span></div>
-                          </div>
-                          <div class="col">
-                            <div class="col"><strong>Modelo</strong></div>
-                            <div class="col"><span class="">{{ g_menu_modelo }}</span></div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col">
-                            <div class="col-4"><strong>Cor</strong></div>
-                            <div class="col"><span class="">{{ g_menu_cor }}</span></div>
-                          </div>
-                          <div class="col">
-                            <div class="col"><strong>Placa</strong></div>
-                            <div class="col"><span class="">{{ g_menu_placa }}</span></div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="col"><strong>Chassi</strong></div>
-                          <div class="col"><span class="">{{ g_menu_chassi }}</span></div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col">
-                              <div class="col-6"><strong>Ano Modelo</strong></div>
-                              <div class="col-6"><span class="">{{ g_menu_ano_modelo }}</span></div>
-                            </div>
-                            <div class="col">
-                              <div class="col-6"><strong>Ano Modelo</strong></div>
-                              <div class="col-6"><span class="">{{ g_menu_ano_fab }}</span></div>
-                            </div>
-                          </div>
-
-                        </div>
-
-                      </div>
+                <div class="card ">
+                  <div class="card-header rf_card_header">Total Financiado</div>
+                  <div class="rf_card_pdf">
+                    <div>
+                      <div class="col "><strong> {{ Valor_Financiado_1 }}</strong></div>
                     </div>
-                  </div>
-
-                  <div class="col-4">
-                    <div class="card">
-                      <div class="card-header rf_card_header">Resumo da Compra</div>
-                      <div class="rf_card_pdf">
-                        <div class="row">
-                          <div class="col">
-                            <div class="col-7"><strong>Valor Sugerido</strong></div>
-                            <div class="col-6"><span class="">{{ g_menu_val_sugerido }}</span></div>
-                          </div>
-                          <div class="col">
-                            <div class="col"><strong>Valor Desconto</strong></div>
-                            <div class="col-6"><span class="">{{ g_menu_val_desconto }}</span></div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col">
-                            <div class="col"><strong>Valor Total Acessórios</strong></div>
-                            <div class="col"><span class="">{{ g_menu_total_acessorios }}</span></div>
-                          </div>
-                          <div class="col">
-                            <div class="col"><strong>Tipo de Pagamento</strong></div>
-                            <div class="col-6"><span class="">{{ tipoPagamento }}</span></div>
-                          </div>
-                        </div>
-                        <div>
-
-                        </div>
-                        <div>
-                          <div class="col"><strong>Valor Total Veículo</strong></div>
-                          <div class="col"><span class="">{{ g_menu_val_veiculo }}</span></div>
-                        </div>
-                        <div>
-                          <div class="col"><strong>Total Financiado</strong></div>
-                          <div class="col"><span class="">{{ Valor_Financiado }}</span></div>
-                        </div>
-                      </div>
+                    <div>
+                      <div class="col"><strong> {{ Valor_Financiado_2 }}</strong></div>
                     </div>
-                  </div>
-
-                  <div class="col-4">
-                    <div class="card">
-                      <div class="card-header rf_card_header">Veículo de Troca</div>
-                      <div class="rf_card_pdf">
-                        <div>
-                          <div class="row">
-                            <div class="col-6">
-                              <div class="col"><strong>Marca</strong></div>
-                              <div class="col"><span class="">{{ g_menu_marca_avaliacao }}</span></div>
-                            </div>
-                            <div class="col-6">
-                              <div class="col"><strong>Placa</strong></div>
-                              <div class="col"><span class="">{{ g_menu_placa_avaliacao }}</span></div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-6">
-                              <div class="col"><strong>Modelo</strong></div>
-                              <div class="col"><span class="">{{ g_menu_modelo_avalicao }}</span></div>
-                            </div>
-                            <div class="col-6">
-                              <div class="col"><strong>Ano</strong></div>
-                              <div class="col"><span class="">{{ g_menu_ano_modelo_avaliacao }}</span></div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-6">
-                              <div class="col"><strong>Valor itens Av. (-)</strong></div>
-                              <div class="col"><span class="">{{ g_menu_itens_avaliacao_db }}</span></div>
-                            </div>
-                            <div class="col-6">
-                              <div class="col"><strong>Valor itens Av. (+)</strong></div>
-                              <div class="col"><span class="">{{ g_menu_itens_avaliacao_cr }}</span></div>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="row">
-                            <div class="col-6">
-                              <div class="col"><strong>Valor Avaliado</strong></div>
-                              <div class="col"><span class="">{{ g_menu_valor_avaliado }}</span></div>
-                            </div>
-                            <div class="col-6">
-                              <div class="col"><strong>Valor Final Av.</strong></div>
-                              <div class="col"><span class="">{{ g_menu_valor_avaliacao_final }}</span></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                    <div>
+                      <div class="col"><strong> {{ Valor_Financiado_3 }}</strong></div>
                     </div>
                   </div>
                 </div>
               </div>
+              <div class="col">
+                <div class="card ">
+                  <div class="card-header rf_card_header">{{ parcela_1 }} Meses</div>
+                  <div class="rf_card_pdf">
+                    <div>
+                      <div class="col "><strong> {{ parcela_1_1 }}</strong></div>
+                    </div>
+                    <div>
+                      <div class="col"><strong> {{ parcela_2_1 }}</strong></div>
+                    </div>
+                    <div>
+                      <div class="col"><strong> {{ parcela_3_1 }}</strong></div>
+                    </div>
 
-              <div class="row g-2 p-2">
-                <div class="col">
-                  <div class="card ">
-                    <div class="card-header rf_card_header">Entrada</div>
-                    <div class="rf_card_pdf">
-                      <div>
-                        <div class="col "><strong> {{ Valor_Entrada_1 }}</strong></div>
-                      </div>
-                      <div>
-                        <div class="col"><strong> {{ Valor_Entrada_2 }}</strong></div>
-                      </div>
-                      <div>
-                        <div class="col"><strong> {{ Valor_Entrada_3 }}</strong></div>
-                      </div>
-                    </div>
                   </div>
-                </div>
-                <div class="col">
-                  <div class="card ">
-                    <div class="card-header rf_card_header">Total Financiado</div>
-                    <div class="rf_card_pdf">
-                      <div>
-                        <div class="col "><strong> {{ Valor_Financiado_1 }}</strong></div>
-                      </div>
-                      <div>
-                        <div class="col"><strong> {{ Valor_Financiado_2 }}</strong></div>
-                      </div>
-                      <div>
-                        <div class="col"><strong> {{ Valor_Financiado_3 }}</strong></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="card ">
-                    <div class="card-header rf_card_header">{{ parcela_1 }} Meses</div>
-                    <div class="rf_card_pdf">
-                      <div>
-                        <div class="col "><strong> {{ parcela_1_1 }}</strong></div>
-                      </div>
-                      <div>
-                        <div class="col"><strong> {{ parcela_2_1 }}</strong></div>
-                      </div>
-                      <div>
-                        <div class="col"><strong> {{ parcela_3_1 }}</strong></div>
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="card ">
-                    <div class="card-header rf_card_header">{{ parcela_2 }} Meses</div>
-                    <div class="rf_card_pdf">
-                      <div>
-                        <div class="col "><strong> {{ parcela_1_2 }}</strong></div>
-                      </div>
-                      <div>
-                        <div class="col"><strong> {{ parcela_2_2 }}</strong></div>
-                      </div>
-                      <div>
-                        <div class="col"><strong> {{ parcela_3_2 }}</strong></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="card ">
-                    <div class="card-header rf_card_header">{{ parcela_3 }} Meses</div>
-                    <div class="rf_card_pdf">
-                      <div>
-                        <div class="col "><strong> {{ parcela_1_3 }}</strong></div>
-                      </div>
-                      <div>
-                        <div class="col"><strong> {{ parcela_2_3 }}</strong></div>
-                      </div>
-                      <div>
-                        <div class="col"><strong> {{ parcela_3_3 }}</strong></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-              <div class="row g-2 p-2">
-                <div class="col">
-                  <span>
-                    * O preço sugerido é válido enquanto durarem os veículos em
-                    estoque.</span>
-                  <br />
-                  <span>** Despesa Operacional para preparação do veículo</span>
-                  <br />
-                  <!-- <span>A contratação de seguros é opcional, sendo possível a desistência do
-                    contrato em até 7 (sete) dias corridos com a devolução integral do
-                    valor pago.</span> -->
-                  <br />
-                  <span>É proibido condicionar desconto de bem à aquisição de seguro.</span>
-                  <br />
                 </div>
               </div>
-              <div class="row g-2 p-2 mt-4">
-                <div class="col rf_assinatura">
-                  <span>Gerente: {{ g_menu_gerente }}</span>
-                </div>
-                <div class="col rf_assinatura">
-                  <span>Cliente: {{ g_menu_cliente }}</span>
+              <div class="col">
+                <div class="card ">
+                  <div class="card-header rf_card_header">{{ parcela_2 }} Meses</div>
+                  <div class="rf_card_pdf">
+                    <div>
+                      <div class="col "><strong> {{ parcela_1_2 }}</strong></div>
+                    </div>
+                    <div>
+                      <div class="col"><strong> {{ parcela_2_2 }}</strong></div>
+                    </div>
+                    <div>
+                      <div class="col"><strong> {{ parcela_3_2 }}</strong></div>
+                    </div>
+                  </div>
                 </div>
               </div>
-
+              <div class="col">
+                <div class="card ">
+                  <div class="card-header rf_card_header">{{ parcela_3 }} Meses</div>
+                  <div class="rf_card_pdf">
+                    <div>
+                      <div class="col "><strong> {{ parcela_1_3 }}</strong></div>
+                    </div>
+                    <div>
+                      <div class="col"><strong> {{ parcela_2_3 }}</strong></div>
+                    </div>
+                    <div>
+                      <div class="col"><strong> {{ parcela_3_3 }}</strong></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
             </div>
+            <div class="row g-2 p-2">
+              <div class="col">
+                <span>
+                  * O preço sugerido é válido enquanto durarem os veículos em
+                  estoque.</span>
+                <br />
+                <span>** Despesa Operacional para preparação do veículo</span>
+                <br />
+                <!-- <span>A contratação de seguros é opcional, sendo possível a desistência do
+                    contrato em até 7 (sete) dias corridos com a devolução integral do
+                    valor pago.</span> -->
+                <br />
+                <span>É proibido condicionar desconto de bem à aquisição de seguro.</span>
+                <br />
+              </div>
+            </div>
+            <div class="row g-2 p-2 mt-4">
+              <div class="col rf_assinatura">
+                <span>Gerente: {{ g_menu_gerente }}</span>
+              </div>
+              <div class="col rf_assinatura">
+                <span>Cliente: {{ g_menu_cliente }}</span>
+              </div>
+            </div>
+
+
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-target="#ModaProposta" data-bs-toggle="modal">
-              Fechar
-            </button>
-            <button class="btn btn-secondary" @click="generatePdf">IMPRIMIR</button>
-          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-target="#ModaProposta" data-bs-toggle="modal">
+            Fechar
+          </button>
+          <button class="btn btn-secondary" @click="generatePdf">IMPRIMIR</button>
         </div>
       </div>
     </div>
-
-
-    <RodapeVue />
   </div>
 
-  <!--Scripts para trabalhar com gráficos-->
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-  <script src="https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js"></script> -->
+
+  <RodapeVue />
+
 </template>
 <script>
 import SidebarVue from "../../components/menu/Sidebar.vue";
@@ -702,12 +665,14 @@ import VueApexCharts from "vue3-apexcharts";
 import axios from "axios";
 import moment from 'moment';
 import RodapeVue from "../../components/menu/Rodape.vue";
+import NavgatorDk from "../../components/menu/NavgatorDk.vue";
 
 export default {
   name: "Usuários",
 
   components: {
     SidebarVue,
+    NavgatorDk,
     Pagination,
     Message,
     apexchart: VueApexCharts,
@@ -720,7 +685,7 @@ export default {
   },
   data() {
     return {
-      selectedFilter: '',      
+      selectedFilter: '',
       startDate: '',
       endDate: '',
       adicional: "",
@@ -1246,22 +1211,22 @@ export default {
 
   mounted() {
     let dataAtual = new Date();
-    let numeroDoMes = dataAtual.getMonth() + 1;   
-    if(numeroDoMes == 1){this.chartOptions.xaxis.categories = this.janeiro;}
-    if(numeroDoMes == 2){this.chartOptions.xaxis.categories = this.fevereiro;}
-    if(numeroDoMes == 3){this.chartOptions.xaxis.categories = this.marco;}
-    if(numeroDoMes == 4){this.chartOptions.xaxis.categories = this.abril;}
-    if(numeroDoMes == 5){this.chartOptions.xaxis.categories = this.maio;}
-    if(numeroDoMes == 6){this.chartOptions.xaxis.categories = this.junho;}
-    if(numeroDoMes == 7){this.chartOptions.xaxis.categories = this.julho;}
-    if(numeroDoMes == 8){this.chartOptions.xaxis.categories = this.agosto;}
-    if(numeroDoMes == 9){this.chartOptions.xaxis.categories = this.setembro;}
-    if(numeroDoMes == 10){this.chartOptions.xaxis.categories = this.outubro;}
-    if(numeroDoMes == 11){this.chartOptions.xaxis.categories = this.novembro;}
-    if(numeroDoMes == 12){this.chartOptions.xaxis.categories = this.dezembro;}
-    
+    let numeroDoMes = dataAtual.getMonth() + 1;
+    if (numeroDoMes == 1) { this.chartOptions.xaxis.categories = this.janeiro; }
+    if (numeroDoMes == 2) { this.chartOptions.xaxis.categories = this.fevereiro; }
+    if (numeroDoMes == 3) { this.chartOptions.xaxis.categories = this.marco; }
+    if (numeroDoMes == 4) { this.chartOptions.xaxis.categories = this.abril; }
+    if (numeroDoMes == 5) { this.chartOptions.xaxis.categories = this.maio; }
+    if (numeroDoMes == 6) { this.chartOptions.xaxis.categories = this.junho; }
+    if (numeroDoMes == 7) { this.chartOptions.xaxis.categories = this.julho; }
+    if (numeroDoMes == 8) { this.chartOptions.xaxis.categories = this.agosto; }
+    if (numeroDoMes == 9) { this.chartOptions.xaxis.categories = this.setembro; }
+    if (numeroDoMes == 10) { this.chartOptions.xaxis.categories = this.outubro; }
+    if (numeroDoMes == 11) { this.chartOptions.xaxis.categories = this.novembro; }
+    if (numeroDoMes == 12) { this.chartOptions.xaxis.categories = this.dezembro; }
+
     this.getToken();
-    this.retrievePropostas();  
+    this.retrievePropostas();
     this.graficos();
     this.graficos_usados();
 
@@ -2443,4 +2408,3 @@ export default {
   },
 };
 </script>
-    

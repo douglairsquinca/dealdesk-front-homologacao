@@ -1,221 +1,205 @@
 <template>
-  <div>
-    <SidebarVue />
-    <nav class="navbar navbar-expand-lg rf_bg_form rf_texto rf_container">
-      <div class="container-fluid">
-        <div><i class="bi bi-sliders fs-5"> Novo Atendimento</i></div>
-        <div>
-          <ul class="nav justify-content-end">
-            <li class="nav-item">
-              <router-link class="nav-link rf_texto active" to="/atendimento/dashboard">Dashboard /</router-link>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link rf_texto_a disabled">Novo Atendimento</a>
-            </li>
-          </ul>
+  <SidebarVue ref="sidebar" />
+  <NavgatorAt ref="navgator" :barraTitulo="' Novo Atendimento'" :titulo="'novo atendimento'" />
+  <!--Formulário de Cadastro Cliente-->
+
+  <div class="card card-filtro">
+    <form @submit.prevent="cadastrar_cliente">
+      <div class="row g-2 p-2">
+        <div class="card-title gy-4">
+          <i class="bi bi-journal-text fs-5 icone_filtro"><span class="texto_filtro">Dados do Cliente</span></i>
         </div>
       </div>
-    </nav>
-    <!--Formulário de Cadastro Cliente-->
-
-    <div class="card rf_bg_form rf_margin">
-      <form @submit.prevent="cadastrar_cliente">
-        <div class="row g-2 p-2">
-          <div class="card-title rf_texto gy-4">
-            <i class="bi bi-person-fill-add fs-5"> Dados do Cliente </i>
-          </div>
-        </div>
-        <div class="row g-2 p-2">
-          <!--Telefone-->
-          <div class="col-md-2">
-            <div class="form-floating">
-              <input type="text" class="form-control " :disabled="habilitar_telefone" v-model="tel"
-                v-on:blur="vTel" />
-              <label for="valid_nome">Telefone</label>
-            </div>
-          </div>
-          <!--Telefone 2 -->
-          <div class="col-md-2">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="cel"
-                :style="{ 'border-color': nomeBorderColor }"  v-on:blur="vCel" />
-              <label for="valid_nome" class="rf_texto">Telefone 2</label>
-            </div>
-          </div>
-          <!--Cliente-->
-          <div class="col-md">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="modal_nome"
-                :style="{ 'border-color': nomeBorderColor }"  v-on:blur="checkForm" required />
-              <label for="valid_nome" class="rf_texto">Nome</label>
-            </div>
-          </div>
-          <!--Email-->
-          <div class="col-md-3">
-            <div class="form-floating">
-              <input type="email" class="form-control rf_bg_form rf_texto" v-model="email"
-                :style="{ 'border-color': nomeBorderColor }"  v-on:blur="validateEmail(email)" />
-              <label for="valid_email" class="rf_texto">Email</label>
-            </div>
-          </div>
-        </div>
-      </form>
-      <div class="row">
-        <div class="col-1 ">
+      <div class="row g-2 p-2">
+        <!--Telefone-->
+        <div class="col-md-2">
           <div class="form-floating">
-            <button type="submit" :disabled="habilitar_cadastro" @click="cadastrar_cliente" class="btn btn-secondary m-2">
-              Cadastrar
-            </button>
+            <input type="text" class="form-control " :disabled="habilitar_telefone" v-model="tel" v-on:blur="vTel" />
+            <label for="valid_nome">Telefone</label>
           </div>
         </div>
-        <div class="col-1 ">
+        <!--Telefone 2 -->
+        <div class="col-md-2">
           <div class="form-floating">
-            <button type="submit" :disabled="habilitar_proposta" @click="update_cliente" class="btn btn-secondary m-2">
-              Editar
-            </button>
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="cel"
+              :style="{ 'border-color': nomeBorderColor }" v-on:blur="vCel" />
+            <label for="valid_nome" class="rf_texto">Telefone 2</label>
+          </div>
+        </div>
+        <!--Cliente-->
+        <div class="col-md">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="modal_nome"
+              :style="{ 'border-color': nomeBorderColor }" v-on:blur="checkForm" required />
+            <label for="valid_nome" class="rf_texto">Nome</label>
+          </div>
+        </div>
+        <!--Email-->
+        <div class="col-md-3">
+          <div class="form-floating">
+            <input type="email" class="form-control rf_bg_form rf_texto" v-model="email"
+              :style="{ 'border-color': nomeBorderColor }" v-on:blur="validateEmail(email)" />
+            <label for="valid_email" class="rf_texto">Email</label>
           </div>
         </div>
       </div>
-
-      <div v-if="abrir_modal">
-        <Message :msg="msg" v-show="msg" />
-      </div>
-
-      <!-- Modal -->
-      <div class="modal" id="modal_cadastrar_cliente">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content rf_bg_form">
-            <div class="modal-header bg-dark rf_border box-atendimento">
-              <h5 class="modal-title fs-5" id="staticBackdropLabel">
-                Cadastrar Cliente
-              </h5>
-            </div>
-            <div class="modal-body ">
-              <p class="fs-6 fw-bold">Cliente não encontrado na base de dados, deseja cadastrar?</p>
-            </div>
-            <div class="modal-footer rf_border">
-              <button type="button" class="btn btn-dark" data-bs-dismiss="modal" @click="modal_cliente">
-                Sim
-              </button>
-              <button type="button" class="btn btn-dark" data-bs-dismiss="modal" @click="close_modal">
-                Não
-              </button>
-            </div>
-          </div>
+    </form>
+    <div class="row">
+      <div class="col-1 ">
+        <div class="input-group-append">
+          <button type="submit" :disabled="habilitar_cadastro" @click="cadastrar_cliente" class="btn btn-lg btn-filtro m-2">
+            <span class="rf_texto_btn">Cadastrar</span>
+          </button>
         </div>
       </div>
-      <!-- Modal Justificativa -->
-      <div class="modal" id="modal_justificar">
-        <div class="modal-dialog modal-dialog-centered ">
-          <div class="modal-content rf_bg_form">
-            <div class="modal-header bg-dark rf_border box-atendimento">
-              <h5 class="modal-title fs-5 " id="staticBackdropLabel">
-                Você está trocando a ordem do vendedor!
-              </h5>
-            </div>
-            <div class="modal-body ">
-              <p class="fs-6 fw-bold">Escolha um das justificativas abaixo para prosseguir!</p>
-              <div class="form-floating">
-                <select class="form-select fw-bold" id="valid_funcao" required v-model="dialog_justificativa">
-                  <option v-for="item in justificativas" :value="item.id" :key="item.id">
-                    {{ item.desc }}
-                  </option>
-                </select>
-                <label class="fw-bold">Justificativa</label>
-              </div>
-            </div>
-            <div class="modal-footer rf_border">
-              <button type="button" class="btn btn-dark" data-bs-dismiss="modal" @click="Justificar">
-                Justificar
-              </button>
-              <button type="button" class="btn btn-dark" data-bs-dismiss="modal" @click="fechar_sem_justificar">
-                Fechar sem Justificar
-              </button>
-            </div>
-          </div>
+      <div class="col-1 ">
+        <div class="input-group-append">
+          <button type="submit" :disabled="habilitar_proposta" @click="update_cliente" class="btn btn-lg btn-filtro m-2">
+            <span class="rf_texto_btn">Editar</span>
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- Formulário de Cadastro Proposta-->
-    <div class="card rf_bg_form rf_margin">
-      <form @submit.prevent="onSubmit">
-        <div class="row g-2 p-2">
-          <div class="card-title rf_texto gy-4">
-            <i class="bi bi-person-fill-add fs-5"> Dados da Proposta </i>
-          </div>
-        </div>
-        <div class="row g-2 p-2">
-          <!--Vendedor-->
-          <div class="col-2">
-            <div class="form-floating">
-              <select class="form-select rf_bg_form rf_texto" :disabled="input_proposta" v-model="vendedor_inicial"
-                v-on:blur="checar_vendedor">
-                <option v-for="item in vendedor" :value="item.id" :key="item.id" :class="getStatusClass(item)">
-                  {{ item.username }}
-                </option>
-              </select>
-              <label class="rf_texto">Vendedor</label>
-            </div>
-          </div>
-          <!--Tipo Veiculo-->
-          <div class="col-1">
-            <div class="form-floating">
-              <select class="form-select rf_bg_form rf_texto" :disabled="input_proposta" v-model="tipo_veiculo">
-                <option value="0">Novo</option>
-                <option value="1">Usado</option>
-              </select>
-              <label class="rf_texto">Tipo Veículo</label>
-            </div>
-          </div>
-          <!--Midia-->
-          <div class="col-md-1">
-            <div class="form-floating">
-              <select class="form-select rf_bg_form rf_texto " :disabled="input_proposta" required v-model="midia_id">
-
-                <option v-for="item in midia" :value="item.id" :key="item.id">
-                  {{ item.descricao }}
-                </option>
-              </select>
-              <label class="rf_texto">Midia</label>
-            </div>
-          </div>
-          <!--Veiculo troca-->
-          <div class="col-md-1">
-            <div class="form-floating">
-              <select class="form-select rf_bg_form rf_texto" id="valid_funcao" :disabled="input_proposta" required
-                v-model="searchTroca">
-                <option value="0">Não</option>
-                <option value="1">Sim</option>
-              </select>
-              <label class="rf_texto">Veículo Troca</label>
-            </div>
-          </div>
-        </div>
-        <div class="row g-2 p-2">
-          <!--Observação-->
-          <div class="col-md">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" :disabled="input_proposta" v-model="obs" />
-              <label class="rf_texto">Observação</label>
-            </div>
-          </div>
-        </div>
-        <div class="row g-2 p-2">
-          <div class="col-2 ">
-            <div class="form-floating">
-              <button type="submit" :disabled="habilitar_proposta" class="btn btn-secondary">
-                Abrir Proposta
-              </button>
-            </div>
-          </div>
-        </div>
-      </form>
+    <div v-if="abrir_modal">
+      <Message :msg="msg" v-show="msg" />
     </div>
 
-    <!-- <button class="btn" @click="open_modal">open</button> -->
-    <RodapeVue />
+    <!-- Modal -->
+    <div class="modal" id="modal_cadastrar_cliente">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rf_bg_form">
+          <div class="modal-header bg-dark rf_border box-atendimento">
+            <h5 class="modal-title fs-5" id="staticBackdropLabel">
+              Cadastrar Cliente
+            </h5>
+          </div>
+          <div class="modal-body ">
+            <p class="fs-6 fw-bold">Cliente não encontrado na base de dados, deseja cadastrar?</p>
+          </div>
+          <div class="modal-footer rf_border">
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal" @click="modal_cliente">
+              Sim
+            </button>
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal" @click="close_modal">
+              Não
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal Justificativa -->
+    <div class="modal" id="modal_justificar">
+      <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content rf_bg_form">
+          <div class="modal-header bg-dark rf_border box-atendimento">
+            <h5 class="modal-title fs-5 " id="staticBackdropLabel">
+              Você está trocando a ordem do vendedor!
+            </h5>
+          </div>
+          <div class="modal-body ">
+            <p class="fs-6 fw-bold">Escolha um das justificativas abaixo para prosseguir!</p>
+            <div class="form-floating">
+              <select class="form-select fw-bold" id="valid_funcao" required v-model="dialog_justificativa">
+                <option v-for="item in justificativas" :value="item.id" :key="item.id">
+                  {{ item.desc }}
+                </option>
+              </select>
+              <label class="fw-bold">Justificativa</label>
+            </div>
+          </div>
+          <div class="modal-footer rf_border">
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal" @click="Justificar">
+              Justificar
+            </button>
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal" @click="fechar_sem_justificar">
+              Fechar sem Justificar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <!-- Formulário de Cadastro Proposta-->
+  <div class="card card-filtro">
+    <form @submit.prevent="onSubmit">
+      <div class="row g-2 p-2">
+        <div class="card-title gy-4">
+          <i class="bi bi-journal-text fs-5 icone_filtro"><span class="texto_filtro">Dados da Proposta</span></i>
+        </div>
+      </div>
+      <div class="row g-2 p-2">
+        <!--Vendedor-->
+        <div class="col-2">
+          <div class="form-floating">
+            <select class="form-select rf_bg_form rf_texto" :disabled="input_proposta" v-model="vendedor_inicial"
+              v-on:blur="checar_vendedor">
+              <option v-for="item in vendedor" :value="item.id" :key="item.id" :class="getStatusClass(item)">
+                {{ item.username }}
+              </option>
+            </select>
+            <label class="rf_texto">Vendedor</label>
+          </div>
+        </div>
+        <!--Tipo Veiculo-->
+        <div class="col-1">
+          <div class="form-floating">
+            <select class="form-select rf_bg_form rf_texto" :disabled="input_proposta" v-model="tipo_veiculo">
+              <option value="0">Novo</option>
+              <option value="1">Usado</option>
+            </select>
+            <label class="rf_texto">Tipo Veículo</label>
+          </div>
+        </div>
+        <!--Midia-->
+        <div class="col-md-1">
+          <div class="form-floating">
+            <select class="form-select rf_bg_form rf_texto " :disabled="input_proposta" required v-model="midia_id">
+
+              <option v-for="item in midia" :value="item.id" :key="item.id">
+                {{ item.descricao }}
+              </option>
+            </select>
+            <label class="rf_texto">Midia</label>
+          </div>
+        </div>
+        <!--Veiculo troca-->
+        <div class="col-md-1">
+          <div class="form-floating">
+            <select class="form-select rf_bg_form rf_texto" id="valid_funcao" :disabled="input_proposta" required
+              v-model="searchTroca">
+              <option value="0">Não</option>
+              <option value="1">Sim</option>
+            </select>
+            <label class="rf_texto">Veículo Troca</label>
+          </div>
+        </div>
+      </div>
+      <div class="row g-2 p-2">
+        <!--Observação-->
+        <div class="col-md">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" :disabled="input_proposta" v-model="obs" />
+            <label class="rf_texto">Observação</label>
+          </div>
+        </div>
+      </div>
+      <div class="row g-2 p-2">
+        <div class="col-2 ">
+          <div class="form-floating">
+            <button type="submit" :disabled="habilitar_proposta" class="btn btn-lg btn-filtro ">
+              <span class="rf_texto_btn">Abrir Proposta</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- <button class="btn" @click="open_modal">open</button> -->
+  <RodapeVue />
+
 </template>
 <script>
 import SidebarVue from "../../components/menu/Sidebar.vue";
@@ -225,12 +209,14 @@ import axios from "axios";
 import TokenService from "../../services/token.service";
 import jwt_decode from 'jwt-decode';
 import RodapeVue from "../../components/menu/Rodape.vue";
+import NavgatorAt from "../../components/menu/NavgatorAt.vue";
 
 
 export default {
   name: "Atendimento",
   components: {
     SidebarVue,
+    NavgatorAt,
     Message,
     RodapeVue
   },
@@ -751,7 +737,7 @@ export default {
           this.abrir_modal = true;
           this.msg = "Cliente atualizado com sucesso!";
           setTimeout(() => (this.abrir_modal = false), 9000);
-         
+
         }
 
       } catch (error) {
@@ -760,7 +746,7 @@ export default {
         this.msg = error.response.data.message;
         setTimeout(() => (this.abrir_modal = false), 4000);
       }
-   
+
     },
     //Gravar função no banco de dados
     async onSubmit() {

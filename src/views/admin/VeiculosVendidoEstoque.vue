@@ -1,39 +1,34 @@
 <template>
-  <div>
     <SidebarVue ref="sidebar" />
-
-
-    <nav class="navbar navbar-expand-lg rf_bg_form rf_texto rf_container">
-      <div class="container-fluid">
-        <div><i class="bi  bi-file-earmark-text fs-5"> Veículos Vendidos Aguardando Faturamento </i></div>
-      </div>
-    </nav>
-
+    <Navgator ref="navgator" :barraTitulo="' Administração - Aguardando Faturamento'" :titulo="'faturamento'" />
+ 
     <!--Bloco do Filtro-->
-    <div class="card rf_bg_form rf_margin">
+    <div class="card card-filtro">
       <div class="row g-2 p-2">
         <div class="card-title rf_texto gy-4">
-          <i class="bi bi-person-fill-add fs-5"> Filtros </i>
-        </div>
+        <i class="bi bi-funnel fs-5 icone_filtro"><span class="texto_filtro">Filtro</span></i>
+      </div>
       </div>
       <div class="row g-2 p-2">
         <div class="col-3">
           <div class="form-floating">
-            <input type="text" class="form-control rf_bg_form rf_texto" v-model="filtroPlaca" @input="filtrarVeiculos" />
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="filtroPlaca"
+              @input="filtrarVeiculos" />
             <label class="rf_texto">Placa</label>
           </div>
         </div>
         <div class="col-3">
           <div class="form-floating">
-            <input type="text" class="form-control rf_bg_form rf_texto" v-model="filtroNumero" @input="filtrarVeiculos" />
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="filtroNumero"
+              @input="filtrarVeiculos" />
             <label class="rf_texto">Número</label>
           </div>
         </div>
 
-        <div class="col-1">
+        <div class="col-2">
           <div class="input-group-append">
-            <button class="btn btn-lg btn-secondary mt-2" type="button" @click="page = 1; retrievePropostas();">
-              Atualizar Lista
+            <button class="btn btn-lg btn-filtro" type="button" @click="page = 1; retrievePropostas();">
+              <span class="rf_texto_btn">Atualizar Lista</span>
             </button>
           </div>
         </div>
@@ -41,8 +36,8 @@
     </div>
 
     <!--Tabelas-->
-    <div class="card rf_bg_form g-2 p-2 rf_margin">
-      <table class="table border-dark rf_texto">
+    <div class="card card-tabela g-2 p-2 rf_margin">
+      <table class="table rf_texto">
         <thead>
           <tr>
             <th scope="col" class="rf_header_table">Nº Atendimento</th>
@@ -56,16 +51,16 @@
             <th scope="col" class="rf_header_table">Data Atendimento</th>
             <th scope="col" class="rf_header_table">Dias desde Atendimento</th>
             <th scope="col" class="rf_header_table">Status</th>
+            <th scope="col" class="rf_header_table">Ação</th>
 
           </tr>
         </thead>
         <tbody>
           <template v-if="veiculosFiltrados.length === 0">
-            <tr v-for="item in veiculos" :key="item.id"
-            :class="{
-                  'row-highlight-red': calcularDiasDesdeAtendimento(item.data_atendimento) > 30,
-                  'row-highlight-yellow': calcularDiasDesdeAtendimento(item.data_atendimento) > 10 && calcularDiasDesdeAtendimento(item.data_atendimento) <= 30
-              }">
+            <tr v-for="item in veiculos" :key="item.id" class="table-linha" :class="{
+      'row-highlight-red': calcularDiasDesdeAtendimento(item.data_atendimento) > 30,
+      'row-highlight-yellow': calcularDiasDesdeAtendimento(item.data_atendimento) > 10 && calcularDiasDesdeAtendimento(item.data_atendimento) <= 30
+    }">
               <td class="rf_header_table">{{ item.id }}</td>
               <td class="rf_header_table">{{ item.loja }}</td>
               <td class="rf_header_table">{{ item.modelo }}</td>
@@ -78,10 +73,10 @@
               <td class="rf_header_table">{{ item.status }}</td>
 
               <td>
-                <button type="button" class="btn btn-secondary btn-sm rf_btn" data-bs-toggle="modal"
+                <button type="button" class="dropdown-toggle-icon" data-bs-toggle="modal"
                   data-bs-target="#exampleModal" @click="edit_proposta(item)">
 
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
                     class="bi bi-file-lock" viewBox="0 0 16 16">
                     <path
                       d="M8 5a1 1 0 0 1 1 1v1H7V6a1 1 0 0 1 1-1zm2 2.076V6a2 2 0 1 0-4 0v1.076c-.54.166-1 .597-1 1.224v2.4c0 .816.781 1.3 1.5 1.3h3c.719 0 1.5-.484 1.5-1.3V8.3c0-.627-.46-1.058-1-1.224zM6.105 8.125A.637.637 0 0 1 6.5 8h3a.64.64 0 0 1 .395.125c.085.068.105.133.105.175v2.4c0 .042-.02.107-.105.175A.637.637 0 0 1 9.5 11h-3a.637.637 0 0 1-.395-.125C6.02 10.807 6 10.742 6 10.7V8.3c0-.042.02-.107.105-.175z" />
@@ -96,7 +91,7 @@
           </template>
 
           <template v-else>
-            <tr v-for="item in veiculosFiltrados" :key="item.id">
+            <tr v-for="item in veiculosFiltrados" :key="item.id" class="table-linha">
               <td class="rf_header_table">{{ item.id }}</td>
               <td class="rf_header_table">{{ item.loja }}</td>
               <td class="rf_header_table">{{ item.modelo }}</td>
@@ -140,17 +135,21 @@
     <!-- Modal para edição -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content rf_bg_form rf_texto">
+        <div class="modal-content card-container rf_texto">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Alterar veículo ou status da proposta</h1>
+          <div class="card-title gy-4">
+            <i class="bi bi-pencil-square fs-5 icone_kit"><span class="texto_kit">Alterar Veículo ou Status da Proposta</span></i>
           </div>
+          <button class="btn btn-modal btn-lg p-1 mt-1" type="button" data-bs-target="#ModalProposta"
+            data-bs-toggle="modal" aria-label="Close"> Sair </button>
+        </div>
           <div class="modal-body">
             <div class="row g-2 p-2">
               <div class="col-4">
                 <div class="mt-2">
                   <span class="rf_texto">Escolha o tipo de Alteração</span>
                   <div class="input-group mt-2">
-                    <select class="form-select" v-model="selected_alteracao" @change="selecionar_alteracao()">
+                    <select class="form-select rf_bg_form rf_texto" v-model="selected_alteracao" @change="selecionar_alteracao()">
                       <option value="venda_perdida">Venda Perdida</option>
                       <option value="alterar_veiculo">Alterar Veículo</option>
                     </select>
@@ -195,9 +194,9 @@
                   <label class="rf_texto">Número Empresa</label>
                 </div>
               </div>
-              <div class="col-2 mt-3">
+              <div class="col-2">
                 <div class="form-floating">
-                  <button type="button" @click="buscar_veiculo()" class="btn btn-secondary">
+                  <button type="button" @click="buscar_veiculo()" class="btn btn-lg btn-filtro">
                     Buscar Veículo
                   </button>
                 </div>
@@ -305,11 +304,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-              Fechar
-            </button>
             <button type="button" @click="update_veiculo()" :disabled="edit_observacao.length <= 20"
-              data-bs-dismiss="modal" class="btn btn-secondary">
+              data-bs-dismiss="modal" class="btn btn-modal btn-lg p-1 mt-1">
               Salvar
             </button>
           </div>
@@ -318,7 +314,6 @@
     </div>
 
     <RodapeVue />
-  </div>
 </template>
 <script>
 import SidebarVue from "../../components/menu/Sidebar.vue";
@@ -335,12 +330,14 @@ import TokenService from "../../services/token.service";
 import jwt_decode from 'jwt-decode';
 import Message from "../../components/modal/Message.vue";
 import RodapeVue from "../../components/menu/Rodape.vue";
+import Navgator from "../../components/menu/Navgator.vue";
 
 export default {
   name: "Usuários",
 
   components: {
     SidebarVue,
+    Navgator,
     //Pagination,
     Message,
     RodapeVue
@@ -796,6 +793,7 @@ export default {
     },
     filtrarVeiculos() {
       // Aplicar os filtros
+      console.log("Dados do array", this.veiculos)
       let veiculosFiltrados = this.veiculos.filter(veiculo => {
         let passouFiltroPlaca = true;
         let passouFiltroNumero = true;
@@ -823,19 +821,19 @@ export default {
       // Atualizar os dados da tabela com os veículos filtrados
       this.veiculos = veiculosFiltrados;
     },
- 
+
     calcularDiasDesdeAtendimento(dataAtendimento) {
       const dataAtual = new Date();
       // Formatar a data para o formato 'YYYY-MM-DD'
       const [dia, mes, ano] = dataAtendimento.split('/');
       const dataAtendimentoFormatada = new Date(`${ano}-${mes}-${dia}`);
-      console.log("Data de Atendimento", dataAtendimentoFormatada);
+
       // Calcular a diferença em dias
       const diffEmDias = Math.ceil((dataAtual - dataAtendimentoFormatada) / (1000 * 60 * 60 * 24));
-      console.log("Diferença em dias", diffEmDias);
+
       return diffEmDias;
     },
- 
+
 
 
 
@@ -851,4 +849,3 @@ export default {
   },
 };
 </script>
-      

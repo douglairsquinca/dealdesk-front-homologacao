@@ -1,22 +1,10 @@
 <template>
-  <div>
-    <SidebarVue />
-    <nav class="navbar navbar-expand-lg rf_bg_form rf_texto rf_container">
-      <div class="container-fluid">
-        <div><i class="bi bi-sliders fs-5"> Relatório Mensal - Desk </i></div>
-        <div>
-          <ul class="nav justify-content-end">
-            <li class="nav-item">
-              <router-link class="nav-link active rf_texto" to="/desk/index">Fechar Menu</router-link>
-            </li>
+  <SidebarVue ref="sidebar" />
+  <NavgatorDk ref="navgator" :barraTitulo="' Relatório Mensal - Desk'" :titulo="'relatório'" />
 
-          </ul>
-        </div>
-      </div>
-    </nav>
 
     <!--Tabelas-->
-    <div class="card rf_bg_form g-2 p-2 rf_margin">
+    <div class="card card-tabela g-2 p-2 mt-4 rf_margin">
       <div class="col-2">
         <div class="mt-2">
           <span class="rf_texto">Escolha o tipo de Relatório</span>
@@ -569,7 +557,7 @@
     </div>
 
     <RodapeVue />
-  </div>
+ 
 </template>
 <script>
 
@@ -580,10 +568,12 @@ import jwt_decode from 'jwt-decode';
 import XLSX from 'xlsx/dist/xlsx.full.min';
 import html2pdf from 'html2pdf.js';
 import RodapeVue from "../../components/menu/Rodape.vue";
+import NavgatorDk from "../../components/menu/NavgatorDk.vue";
 
 export default {
   components: {
     SidebarVue,
+    NavgatorDk,
     RodapeVue
   },
   data() {

@@ -1,449 +1,298 @@
-<template>  
-   <SidebarVue />
-    <nav class="navbar navbar-expand-lg rf_bg_form rf_texto rf_container">
-      <div class="container-fluid">
-        <div>
-          <i class="bi bi-sliders fs-5"> Administração - Acessórios </i>
-        </div>
-        <div>
-          <ul class="nav justify-content-end">
-            <li class="nav-item">
-              <router-link class="nav-link rf_texto active" to="/admin" 
-                >Dashboard /</router-link>              
-            </li>    
-            <li class="nav-item">
-              <a class="nav-link rf_texto_a disabled">Acessório</a>
-            </li>
-          </ul>
+<template>
+  <SidebarVue ref="sidebar" />
+  <Navgator ref="navgator" :barraTitulo="' Administração - Acessórios'" :titulo="'acessório'" />
+
+  <!--Formulário de Cadastro -->
+
+  <div class="card card-filtro">
+    <div class="row g-2 p-2">
+        <div class="card-title gy-4">
+          <i class="bi bi-journal-text fs-5 icone_filtro"><span class="texto_filtro">Dados do Acessório</span></i>         
         </div>
       </div>
-    </nav>
-    <!--Formulário de Cadastro -->
+    <form @submit.prevent="onSubmit">
+      <div class="row g-2 p-2">
+        <!--Item-->
+        <div class="col-1">
+          <div class="form-floating ">
+            <select class="form-select rf_bg_form rf_texto " v-model="item" required>
+              <option value="0">INTERNO</option>
+              <option value="1">EXTERNO</option>
+            </select>
+            <label class="rf_texto">Item</label>
 
-    <div class="card rf_bg_form rf_margin">
-      <form
-        @submit.prevent="onSubmit"      
-      >
-        <div class="row g-2 p-2">
-          <!--Item-->
-          <div class="col-1">
-            <div class="form-floating">
-              <select
-                class="form-select "
-                v-model="item"         
-                required
-              >
-                <option value="0">INTERNO</option>
-                <option value="1">EXTERNO</option>
-              </select>
-              <label class="rf_texto">Item</label>
-          
-            </div>
-          </div>
-          <!--Cortesia-->
-          <div class="col-1">
-            <div class="form-floating">
-              <select
-                class="form-select rf_bg_form rf_texto"
-                v-model="cortesia"
-                required
-              >
-                <option value="NAO">NAO</option>
-                <option value="SIM">SIM</option>
-              </select>
-              <label  class="rf_texto">Cortesia</label>
-          
-            </div>
-          </div>
-          <!--Código-->
-          <div class="col-2">
-            <div class="form-floating">
-              <input
-                type="text"
-                class="form-control rf_bg_form rf_texto"
-                v-model="codigo"
-                required
-              />
-              <label for="valid_descricao" class="rf_texto">Código</label>           
-            </div>
-          </div>
-          <!--Descrição-->
-          <div class="col">
-            <div class="form-floating">
-              <input
-                type="text"
-                class="form-control  "
-                v-model="descricao"
-                required
-              />
-              <label for="valid_descricao" class="rf_texto">Descrição</label>
-        
-            </div>
-          </div>
-          <!--Preço Base-->
-          <div class="col-2">
-            <div class="form-floating">
-              <input
-                type="text"
-                class="form-control rf_bg_form rf_texto"
-                v-model="preco_base_peca"
-                @input="preco_base_peca = formatarValor(preco_base_peca)"
-                required
-              />
-              <label for="valid_descricao" class="rf_texto">Preço Base</label>
-          
-            </div>
           </div>
         </div>
-        <div class="row g-2 p-2">
-          <!--Tmo Instalação-->
-          <div class="col-1">
-            <div class="form-floating">
-              <input
-                type="text"
-                class="form-control rf_bg_form rf_texto"
-                v-model="tmo_instalação"
-                required
-              />
-              <label for="valid_descricao" class="rf_texto"
-                >Tmo. Instalação</label
-              >
-     
-            </div>
-          </div>
-          <!--Tmo Pintura-->
-          <div class="col-1">
-            <div class="form-floating">
-              <input
-                type="text"
-                class="form-control rf_bg_form rf_texto"
-                v-model="tmo_pintura"
-                required
-              />
-              <label for="valid_descricao" class="rf_texto">Tmo. Pintura</label>
-         
-            </div>
-          </div>
-          <!--Preco Final-->
-          <div class="col-2">
-            <div class="form-floating">
-              <input
-                type="text"
-                class="form-control rf_bg_form rf_texto"
-                v-model="preco_final_instalado"
-                @input="preco_final_instalado = formatarValor(preco_final_instalado)"
-                required
-              />
-              <label for="valid_descricao" class="rf_texto">Preço Final </label>
-       
-            </div>
-          </div>
-          <!--Categoria-->
-          <div class="col-2">
-            <div class="form-floating">
-              <select
-                class="form-select rf_bg_form rf_texto"
-                v-model="categoria_id"
-                id="valid_status"
-                required
-              >
-                <option value="1">Novos</option>
-                <option value="2">Usados</option>
-              </select>
-              <label for="valid_status" class="rf_texto">Categoria</label>
-          
-            </div>
-          </div>
-          <!--Modelo-->
-          <div class="col-2">
-            <div class="form-floating">
-              <select
-                class="form-select rf_bg_form rf_texto"
-                v-model="modelo_id"
-                required
-              >
-                <option v-for="item in modelo" :value="item.id" :key="item.id">
-                  {{ item.descricao }}
-                </option>
-              </select>
-              <label for="valid_status" class="rf_texto">Modelo</label>
-          
-            </div>
-          </div>
-          <!--Mão de Obra-->
-          <div class="col-2">
-            <div class="form-floating">
-              <select
-                class="form-select rf_bg_form rf_texto"
-                v-model="mao_obra_id"
-                id="valid_status"
-                required
-              >
-                <option value="4">Ambos</option>
-                <option value="1">Instalação</option>
-                <option value="2">Pintura</option>
-              </select>
-              <label for="valid_status" class="rf_texto">Mão de Obra</label>
-         
-            </div>
-          </div>
-          <div class="col-md-2 p-2">
-            <div class="form-floating">
-              <button
-                type="submit"
-                :disabled="btn_cadastrar"
-                class="btn btn-lg btn-secondary"
-              >
-                Cadastrar
-              </button>
-            </div>
+        <!--Cortesia-->
+        <div class="col-1">
+          <div class="form-floating">
+            <select class="form-select rf_bg_form rf_texto" v-model="cortesia" required>
+              <option value="NAO">NAO</option>
+              <option value="SIM">SIM</option>
+            </select>
+            <label class="rf_texto">Cortesia</label>
+
           </div>
         </div>
-      </form>
-      <div v-if="abrir_modal">
-        <Message :msg="msg" v-show="msg" />
+        <!--Código-->
+        <div class="col-2">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="codigo" required />
+            <label for="valid_descricao" class="rf_texto">Código</label>
+          </div>
+        </div>
+        <!--Descrição-->
+        <div class="col">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="descricao" required />
+            <label for="valid_descricao" class="rf_texto">Descrição</label>
+
+          </div>
+        </div>
+        <!--Preço Base-->
+        <div class="col-2">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="preco_base_peca"
+              @input="preco_base_peca = formatarValor(preco_base_peca)" required />
+            <label for="valid_descricao" class="rf_texto">Preço Base</label>
+
+          </div>
+        </div>
       </div>
-    </div>
-    <!--Tabelas-->
-    <div class="card rf_bg_form g-2 p-2 rf_margin">
-      <table class="table rf_texto">
-        <thead>
-          <tr>
-            <th scope="col">Descrição</th>
-            <th scope="col">Preço Base</th>
-            <th scope="col">Preço Instalado</th>
-            <th scope="col">Ação</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in acessorios" :key="item.descricao">
-            <td>{{ item.descricao }}</td>
-            <td>{{ this.currency(item.preco_base_peca) }}</td>
-            <td>{{ this.currency(item.preco_final_instalado) }}</td>
- 
-            <td>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-                @click="editar_acessorio(item)"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-pencil"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"
-                  />
-                </svg>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <pagination
-        v-if="acessorios.length"
-        :offset="totalPages"
-        :total="totalItems"
-        :limit="pageSize"
-        @change-page="handlePageChange"
-      />
-    </div>
+      <div class="row g-2 p-2">
+        <!--Tmo Instalação-->
+        <div class="col-1">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="tmo_instalação" required />
+            <label for="valid_descricao" class="rf_texto">Tmo. Instalação</label>
 
-    <!-- Modal para edição -->
+          </div>
+        </div>
+        <!--Tmo Pintura-->
+        <div class="col-1">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="tmo_pintura" required />
+            <label for="valid_descricao" class="rf_texto">Tmo. Pintura</label>
 
-    <div
-      class="modal fade"
-      id="exampleModal"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content ">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5 rf_texto" id="exampleModalLabel">
-              Editar Acessórios
-            </h1>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
           </div>
-          <div class="modal-body">
-            <div class="row g-2 p-2">
-              <!--Item-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <select
-                    class="form-select rf_bg_form rf_texto"
-                    v-model="edit_item"
-                  >
-                    <option value="0">INTERNO</option>
-                    <option value="1">EXTERNO</option>
-                  </select>
-                  <label for="valid_status" class="rf_texto">Item</label>
-                </div>
-              </div>
-              <!--Cortesia-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <select
-                    class="form-select rf_bg_form rf_texto"
-                    v-model="edit_cortesia"
-                  >
-                    <option value="NAO">NAO</option>
-                    <option value="SIM">SIM</option>
-                  </select>
-                  <label class="rf_texto">Cortesia</label>
-                </div>
-              </div>
-              <!--Código-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="edit_codigo"
-                  />
-                  <label class="rf_texto">Código</label>
-                </div>
-              </div>
-              <!--Descrição-->
-              <div class="col">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="edit_descricao"
-                  />
-                  <label class="rf_texto">Descrição</label>
-                </div>
-              </div>
-            </div>
-            <div class="row g-2 p-2">
-              <!--Preço Base-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="edit_preco_base_peca"
-                    @input="edit_preco_base_peca = formatarValor(edit_preco_base_peca)"
-                  />
-                  <label class="rf_texto">Preço Base</label>
-                </div>
-              </div>
-              <!--Tmo Instalação-->
-              <div class="col-1">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="edit_tmo_inst"
-                  />
-                  <label class="rf_texto">Tmo. Instalação</label>
-                </div>
-              </div>
-              <!--Tmo Pintura-->
-              <div class="col-1">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="edit_tmo_pintura"
-                  />
-                  <label class="rf_texto">Tmo. Pintura</label>
-                </div>
-              </div>
-              <!--Item-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="edit_preco_final_instalado"
-                    @input="edit_preco_final_instalado = formatarValor(edit_preco_final_instalado)"
-                  />
-                  <label class="rf_texto">Preço Instalação</label>
-                </div>
-              </div>
-              <!--Categoria-->
-              <div class="col">
-                <div class="form-floating">
-                  <select
-                    class="form-select rf_bg_form rf_texto"
-                    v-model="edit_categoria_id"
-                    id="valid_status"
-                    required
-                  >
-                    <option value="1">Novos</option>
-                    <option value="2">Usados</option>
-                  </select>
-                  <label class="rf_texto">Categoria</label>
-                </div>
-              </div>
-              <!--Modelo-->
-              <div class="col">
-                <div class="form-floating">
-                  <select
-                    class="form-select rf_bg_form rf_texto"
-                    v-model="edit_modelo_id"
-                  >
-                    <option
-                      v-for="item in modelo"
-                      :value="item.id"
-                      :key="item.id"
-                    >
-                      {{ item.descricao }}
-                    </option>
-                  </select>
-                  <label class="rf_texto">Modelo</label>
-                </div>
-              </div>
-              <!--Mão de Obra-->
-              <div class="col">
-                <div class="form-floating">
-                  <select
-                    class="form-select rf_bg_form rf_texto"
-                    v-model="edit_mao_obra_id"
-                  >
-                    <option value="4">Ambos</option>
-                    <option value="1">Instalação</option>
-                    <option value="2">Pintura</option>
-                  </select>
-                  <label class="rf_texto">Mão de Obra</label>
-                </div>
-              </div>
-            </div>
+        </div>
+        <!--Preco Final-->
+        <div class="col-2">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" v-model="preco_final_instalado"
+              @input="preco_final_instalado = formatarValor(preco_final_instalado)" required />
+            <label for="valid_descricao" class="rf_texto">Preço Final </label>
+
           </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Fechar
-            </button>
-            <button type="button" @click="update()"  data-bs-dismiss="modal" class="btn btn-secondary">
-              Salvar
+        </div>
+        <!--Categoria-->
+        <div class="col-2">
+          <div class="form-floating">
+            <select class="form-select rf_bg_form rf_texto" v-model="categoria_id" id="valid_status" required>
+              <option value="1">Novos</option>
+              <option value="2">Usados</option>
+            </select>
+            <label for="valid_status" class="rf_texto">Categoria</label>
+
+          </div>
+        </div>
+        <!--Modelo-->
+        <div class="col-2">
+          <div class="form-floating">
+            <select class="form-select rf_bg_form rf_texto" v-model="modelo_id" required>
+              <option v-for="item in modelo" :value="item.id" :key="item.id">
+                {{ item.descricao }}
+              </option>
+            </select>
+            <label for="valid_status" class="rf_texto">Modelo</label>
+
+          </div>
+        </div>
+        <!--Mão de Obra-->
+        <div class="col-2">
+          <div class="form-floating">
+            <select class="form-select rf_bg_form rf_texto" v-model="mao_obra_id" id="valid_status" required>
+              <option value="4">Ambos</option>
+              <option value="1">Instalação</option>
+              <option value="2">Pintura</option>
+            </select>
+            <label for="valid_status" class="rf_texto">Mão de Obra</label>
+
+          </div>
+        </div>
+        <div class="col-1 d-flex ">
+          <div class="input-group-append">
+            <button type="submit" :disabled="btn_cadastrar" class="btn btn-lg btn-filtro">
+              <span class="rf_texto_btn">Cadastrar</span>
             </button>
           </div>
         </div>
       </div>
+    </form>
+    <div v-if="abrir_modal">
+      <Message :msg="msg" v-show="msg" />
     </div>
-    <RodapeVue />
-  </template>
+  </div>
+  <!--Tabelas-->
+  <div class="card card-tabela">
+    <table class="table rf_texto">
+      <thead>
+        <tr>
+          <th scope="col">Descrição</th>
+          <th scope="col">Preço Base</th>
+          <th scope="col">Preço Instalado</th>
+          <th scope="col">Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in acessorios" :key="item.descricao" class="table-linha">
+          <td>{{ item.descricao }}</td>
+          <td>{{ this.currency(item.preco_base_peca) }}</td>
+          <td>{{ this.currency(item.preco_final_instalado) }}</td>
+
+          <td>
+            <button type="button" class="dropdown-toggle-icon" data-bs-toggle="modal" data-bs-target="#exampleModal"
+              @click="editar_acessorio(item)">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <pagination v-if="acessorios.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
+      @change-page="handlePageChange" />
+  </div>
+
+  <!-- Modal para edição -->
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content ">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 rf_texto" id="exampleModalLabel">
+            Editar Acessórios
+          </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-2 p-2">
+            <!--Item-->
+            <div class="col-2">
+              <div class="form-floating">
+                <select class="form-select rf_bg_form rf_texto" v-model="edit_item">
+                  <option value="0">INTERNO</option>
+                  <option value="1">EXTERNO</option>
+                </select>
+                <label for="valid_status" class="rf_texto">Item</label>
+              </div>
+            </div>
+            <!--Cortesia-->
+            <div class="col-2">
+              <div class="form-floating">
+                <select class="form-select rf_bg_form rf_texto" v-model="edit_cortesia">
+                  <option value="NAO">NAO</option>
+                  <option value="SIM">SIM</option>
+                </select>
+                <label class="rf_texto">Cortesia</label>
+              </div>
+            </div>
+            <!--Código-->
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_codigo" />
+                <label class="rf_texto">Código</label>
+              </div>
+            </div>
+            <!--Descrição-->
+            <div class="col">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_descricao" />
+                <label class="rf_texto">Descrição</label>
+              </div>
+            </div>
+          </div>
+          <div class="row g-2 p-2">
+            <!--Preço Base-->
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_preco_base_peca"
+                  @input="edit_preco_base_peca = formatarValor(edit_preco_base_peca)" />
+                <label class="rf_texto">Preço Base</label>
+              </div>
+            </div>
+            <!--Tmo Instalação-->
+            <div class="col-1">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_tmo_inst" />
+                <label class="rf_texto">Tmo. Instalação</label>
+              </div>
+            </div>
+            <!--Tmo Pintura-->
+            <div class="col-1">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_tmo_pintura" />
+                <label class="rf_texto">Tmo. Pintura</label>
+              </div>
+            </div>
+            <!--Item-->
+            <div class="col-2">
+              <div class="form-floating">
+                <input type="text" class="form-control rf_bg_form rf_texto" v-model="edit_preco_final_instalado"
+                  @input="edit_preco_final_instalado = formatarValor(edit_preco_final_instalado)" />
+                <label class="rf_texto">Preço Instalação</label>
+              </div>
+            </div>
+            <!--Categoria-->
+            <div class="col">
+              <div class="form-floating">
+                <select class="form-select rf_bg_form rf_texto" v-model="edit_categoria_id" id="valid_status" required>
+                  <option value="1">Novos</option>
+                  <option value="2">Usados</option>
+                </select>
+                <label class="rf_texto">Categoria</label>
+              </div>
+            </div>
+            <!--Modelo-->
+            <div class="col">
+              <div class="form-floating">
+                <select class="form-select rf_bg_form rf_texto" v-model="edit_modelo_id">
+                  <option v-for="item in modelo" :value="item.id" :key="item.id">
+                    {{ item.descricao }}
+                  </option>
+                </select>
+                <label class="rf_texto">Modelo</label>
+              </div>
+            </div>
+            <!--Mão de Obra-->
+            <div class="col">
+              <div class="form-floating">
+                <select class="form-select rf_bg_form rf_texto" v-model="edit_mao_obra_id">
+                  <option value="4">Ambos</option>
+                  <option value="1">Instalação</option>
+                  <option value="2">Pintura</option>
+                </select>
+                <label class="rf_texto">Mão de Obra</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Fechar
+          </button>
+          <button type="button" @click="update()" data-bs-dismiss="modal" class="btn btn-secondary">
+            Salvar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <RodapeVue />
+</template>
 
 <script>
 import SidebarVue from "../../components/menu/Sidebar.vue";
+import Navgator from "../../components/menu/Navgator.vue";
 import axios from "axios";
 //import DataService from "../../services/DataService";
 import userService from "../../services/user.service";
@@ -458,7 +307,8 @@ export default {
     SidebarVue,
     Pagination,
     Message,
-    RodapeVue
+    RodapeVue,
+    Navgator
   },
   data() {
     return {
@@ -485,7 +335,7 @@ export default {
       btn_cadastrar: false,
 
       /// Campos Modal Editar
-      edit_id:"",
+      edit_id: "",
       edit_item: "",
       edit_cortesia: "",
       edit_codigo: "",
@@ -512,7 +362,7 @@ export default {
   mounted() {
     this.retrieveAcessorios();
     this.retrieveModelo();
-  
+
   },
   methods: {
     formatarValor(valor) {
@@ -571,7 +421,7 @@ export default {
         if (error.response.status == 400) {
           this.abrir_modal = true;
           this.msg = error.response.data.message;
-        } 
+        }
       }
     },
     //Buscar dados no banco de dados
@@ -615,7 +465,7 @@ export default {
         if (error.response.status == 400) {
           this.abrir_modal = true;
           this.msg = error.response.data.message;
-        } 
+        }
       }
     },
     async retrieveModelo() {
@@ -635,18 +485,18 @@ export default {
         if (error.response.status == 400) {
           this.abrir_modal = true;
           this.msg = error.response.data.message;
-        } 
+        }
       }
     },
 
     async editar_acessorio(item) {
       console.log(item)
       this.edit_id = item.id,
-      (this.edit_item = item.item),
+        (this.edit_item = item.item),
         (this.edit_cortesia = item.cortesia),
         (this.edit_codigo = item.codigo),
         (this.edit_descricao = item.descricao),
-       
+
         (this.edit_tmo_inst = item.tmo_instalacao),
         (this.edit_tmo_pintura = item.tmo_pintura),
         (this.edit_preco_final_instalado = this.currency(
@@ -655,11 +505,11 @@ export default {
         (this.edit_categoria_id = item.categoria_id),
         (this.edit_modelo_id = item.modelo_id),
         (this.edit_mao_obra_id = item.mao_obra_id);
-        (this.edit_preco_base_peca = this.currency(item.preco_base_peca))
-  
+      (this.edit_preco_base_peca = this.currency(item.preco_base_peca))
+
     },
     async update() {
-      const token = this.$store.state.auth.user.accessToken;  
+      const token = this.$store.state.auth.user.accessToken;
       const headers = {
         "x-access-token": token,
       };
@@ -687,11 +537,11 @@ export default {
       console.log(resp)
       if (resp == 200) {
         this.abrir_modal = true;
-        this.msg = "Acessório atualizado com sucesso!";       
+        this.msg = "Acessório atualizado com sucesso!";
         setTimeout(() => (this.abrir_modal = false), 4000);
         location.reload();
 
-             
+
       }
     },
     currency(number) {

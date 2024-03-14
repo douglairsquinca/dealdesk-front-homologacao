@@ -1,103 +1,87 @@
 <template>
-  <div>
-    <SidebarVue />
-    <nav class="navbar navbar-expand-lg rf_bg_form rf_texto rf_container">
-      <div class="container-fluid">
-        <div><i class="bi bi-sliders fs-5"> Administração - Estoque de Veículo </i></div>
-        <div>
-          <ul class="nav justify-content-end">
-            <li class="nav-item">
-              <router-link class="nav-link rf_texto active" to="/admin">Dashboard /</router-link>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link rf_texto_a disabled">Estoque</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+  <SidebarVue ref="sidebar" />
+  <Navgator ref="navgator" :barraTitulo="' Administração - Estoque de Veículos'" :titulo="'estoque'" />
 
-    <!--Bloco do Filtro-->
-
-
-    <div class="card rf_bg_form rf_margin">
-      <div class="row g-2 p-2">
-        <div class="card-title rf_texto gy-4">
-          <i class="bi bi-person-fill-add fs-5"> Filtros </i>
-        </div>
-      </div>
-      <div class="row g-2 p-2">       
-        <div class="col-3">
-          <div class="form-floating">
-            <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchPlaca" />
-            <label class="rf_texto">Placa</label>
-          </div>
-        </div>
-        <div class="col-3">
-          <div class="form-floating">
-            <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchChassi" />
-            <label class="rf_texto">Chassi</label>
-          </div>
-        </div>
-        <div class="col-1">
-          <div class="form-floating">
-            <select class="form-select rf_bg_form rf_texto" v-model="tipoVeiculo">
-              <option value="NOVO">Novo</option>
-              <option value="USADO">Usado</option>
-            </select>
-            <label class="rf_texto">Tipo Veículo</label>
-
-          </div>
-        </div>
-
-        <div class="col-1">
-          <div class="form-floating">
-            <select class="form-select rf_bg_form rf_texto" v-model="pageSize" @change="handlePageSizeChange(pageSize)">
-              <option v-for="size in pageSizes" :key="size" :value="size">
-                {{ size }}
-              </option>
-            </select>
-            <label class="rf_texto">Itens pág.</label>
-          </div>
-        </div>
-        <div class="col-1">
-          <div class="input-group-append">
-            <button class="btn btn-lg btn-secondary mt-2" type="button" @click="page = 1; retrieveEstoque();">
-              Pesquisar
-            </button>
-          </div>
-        </div>
-        <div class="col-2">
-          <div class="input-group-append">
-            <button class="btn btn-lg btn-secondary mt-2" type="button" @click="page = 1; sincronizarEstoque();">
-              Sincronizar Estoque
-            </button>
-          </div>
-        </div>
-
-
+  <!--Bloco do Filtro-->
+  <div class="card card-filtro">
+    <div class="row g-2 p-2">
+      <div class="card-title rf_texto gy-4">
+        <i class="bi bi-funnel fs-5 icone_filtro"><span class="texto_filtro">Filtro</span></i>
       </div>
     </div>
-    <!--Tabelas-->
-    <div class="card rf_bg_form  rf_margin">
-      <table class="table rf_texto">
-        <thead>
-          <tr>
-            <th scope="col">Loja</th>
-            <th scope="col">Tipo Veículo</th>
-            <th scope="col">Marca</th>
-            <th scope="col">Modelo</th>
-            <th scope="col">Ano Fab.</th>
-            <th scope="col">Ano Mod.</th>
-            <th scope="col">Placa</th>
-            <th scope="col">Chassi</th>
-            <th scope="col">Combustível</th>
-            <th scope="col">Cor</th>
-            <th scope="col">Dias Estoque</th>
+    <div class="row g-2 p-2">
+      <div class="col-3">
+        <div class="form-floating">
+          <input type="text" class="form-control rf_bg_form rf_texto" v-model="filtroPlaca" @input="filtrarVeiculos" />
+          <label class="rf_texto">Placa</label>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="form-floating">
+          <input type="text" class="form-control rf_bg_form rf_texto" v-model="filtroChassi" @input="filtrarVeiculos" />
+          <label class="rf_texto">Chassi</label>
+        </div>
+      </div>
+      <div class="col-1">
+        <div class="form-floating">
+          <select class="form-select rf_bg_form rf_texto" v-model="tipoVeiculo">
+            <option value="NOVO">Novo</option>
+            <option value="USADO">Usado</option>
+          </select>
+          <label class="rf_texto">Tipo Veículo</label>
 
-          </tr>
-        </thead>
-        <tbody>
+        </div>
+      </div>
+
+      <div class="col-1">
+        <div class="form-floating">
+          <select class="form-select rf_bg_form rf_texto" v-model="pageSize" @change="handlePageSizeChange(pageSize)">
+            <option v-for="size in pageSizes" :key="size" :value="size">
+              {{ size }}
+            </option>
+          </select>
+          <label class="rf_texto">Itens pág.</label>
+        </div>
+      </div>
+      <div class="col-1">
+        <div class="input-group-append">
+          <button class="btn btn-lg btn-filtro" type="button" @click="page = 1; retrieveEstoque();">
+            <span class="rf_texto_btn">Pesquisar</span>
+          </button>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="input-group-append">
+          <button class="btn btn-lg btn-filtro" type="button" @click="page = 1; sincronizarEstoque();">
+            <span class="rf_texto_btn">Sincronizar Estoque</span>
+          </button>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  <!--Tabelas-->
+  <div class="card card-tabela g-2 p-2 rf_margin">
+    <table class="table rf_texto">
+      <thead>
+        <tr>
+          <th scope="col">Loja</th>
+          <th scope="col">Tipo Veículo</th>
+          <th scope="col">Marca</th>
+          <th scope="col">Modelo</th>
+          <th scope="col">Ano Fab.</th>
+          <th scope="col">Ano Mod.</th>
+          <th scope="col">Placa</th>
+          <th scope="col">Chassi</th>
+          <th scope="col">Combustível</th>
+          <th scope="col">Cor</th>
+          <th scope="col">Dias Estoque</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <template v-if="veiculosFiltrados.length === 0">
           <tr v-for="item in estoque" :key="item.modelo">
             <td>{{ item.codigoempresa }}</td>
             <td>{{ item.estadoveiculo }}</td>
@@ -111,16 +95,32 @@
             <td>{{ item.cor }}</td>
             <td>{{ item.diasestoque }}</td>
           </tr>
-        </tbody>
-      </table>
-      <pagination v-if="estoque.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
-        @change-page="handlePageChange" />
-    </div>
-    <div v-if="abrir_modal">
-      <Message :msg="msg" v-show="msg" />
-    </div>
-    <RodapeVue />
+        </template>
+        <template v-else>
+          <tr v-for="item in veiculosFiltrados" :key="item.modelo">
+            <td>{{ item.codigoempresa }}</td>
+            <td>{{ item.estadoveiculo }}</td>
+            <td>{{ item.marca }}</td>
+            <td>{{ item.modelo }}</td>
+            <td>{{ item.anofabricacao }}</td>
+            <td>{{ item.anomodelo }}</td>
+            <td>{{ item.placa }}</td>
+            <td>{{ item.chassi }}</td>
+            <td>{{ item.combustivel }}</td>
+            <td>{{ item.cor }}</td>
+            <td>{{ item.diasestoque }}</td>
+          </tr>
+        </template>
+
+      </tbody>
+    </table>
+    <pagination v-if="estoque.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
+      @change-page="handlePageChange" />
   </div>
+  <div v-if="abrir_modal">
+    <Message :msg="msg" v-show="msg" />
+  </div>
+  <RodapeVue />
 </template>
 <script>
 import SidebarVue from "../../components/menu/Sidebar.vue";
@@ -130,9 +130,12 @@ import Message from "../../components/modal/Message.vue";
 import TokenService from "../../services/token.service";
 import jwt_decode from 'jwt-decode';
 import RodapeVue from "../../components/menu/Rodape.vue";
+import Navgator from "../../components/menu/Navgator.vue";
+
 export default {
   components: {
     SidebarVue,
+    Navgator,
     Pagination,
     Message,
     RodapeVue
@@ -147,8 +150,10 @@ export default {
       tipoVeiculo: "",
 
       //Params
-      searchPlaca: "",
-      searchChassi: "",
+      filtroPlaca: '', // Filtro para a placa
+      filtroChassi: '', // Filtro para o número
+      filtroCategoria: '',// Filtro para a categoria
+      veiculosFiltrados: [],
       page: 1,
       totalPages: 0,
       totalItems: 0,
@@ -185,8 +190,41 @@ export default {
       return vendaFutura === 0 ? 'Não' : 'Sim';
     },
 
+    filtrarVeiculos() {
+      // Acessar o array subjacente usando Array.from() ou spread operator
+      const estoqueArray = Array.from(this.estoque); // ou const estoqueArray = [...this.estoque];
 
-    getRequestParams(  
+      // Verificar se ambos os filtros estão vazios
+      if (!this.filtroPlaca && !this.filtroChassi) {
+        // Se ambos estiverem vazios, mostrar todos os veículos
+        this.veiculos = estoqueArray;
+        return;
+      }
+      // Aplicar os filtros
+      let veiculosFiltrados = estoqueArray.filter(estoque => {
+        let passouFiltroPlaca = true;
+        let passouFiltroNumero = true;
+
+        // Aplicar filtro da placa, se fornecido
+        if (this.filtroPlaca) {
+          passouFiltroPlaca = estoque.placa.toLowerCase().includes(this.filtroPlaca.toLowerCase());
+        }
+
+        // Aplicar filtro do número, se fornecido
+        if (this.filtroChassi) {
+          passouFiltroNumero = estoque.chassi.toLowerCase().includes(this.filtroChassi.toLowerCase());
+        }
+
+
+        // Retornar verdadeiro se o veículo passar por todos os filtros
+        return passouFiltroPlaca && passouFiltroNumero;
+      });
+
+      // Atualizar os dados da tabela com os veículos filtrados
+      this.estoque = veiculosFiltrados;
+    },
+
+    getRequestParams(
       searchPlaca,
       searchChassi,
       tipoVeiculo,
@@ -230,8 +268,8 @@ export default {
 
     async retrieveEstoque() {
       try {
-        const params = this.getRequestParams(     
-         
+        const params = this.getRequestParams(
+
           this.searchPlaca,
           this.searchChassi,
           this.tipoVeiculo,
@@ -244,6 +282,7 @@ export default {
           this.estoque = veiculoEstoque;
           this.totalPages = totalPages;
           this.totalItems = totalItems;
+          this.veiculosFiltrados = [];
           console.log(response.data);
         });
       } catch (error) {
@@ -275,4 +314,3 @@ export default {
   }
 };
 </script>
-    

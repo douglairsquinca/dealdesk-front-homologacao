@@ -6,13 +6,13 @@
     id="Modal_Mensagem"
   >
     <div class="modal-dialog  modal-dialog-centered">
-      <div class="modal-content rf_bg_form">
-        <div class="modal-header bg-dark rf_border">
-              <h5 class="modal-title fs-5 rf_texto" id="staticBackdropLabel">
-                <i class="bi bi-info-square"> Informação</i>
-              </h5>
-            </div>
-        <div class="modal-body bg-secondary  text-center">
+      <div class="modal-content card-container rf_texto ">
+        <div class="modal-header">
+          <div class="card-title gy-4">
+            <i class="bi bi-pencil-square fs-5 icone_kit"><span class="texto_kit">Informação</span></i>
+          </div>          
+        </div>
+        <div class="modal-body bg-info-msg  text-center">
           
           <p class="fs-6 fw-bold">
            

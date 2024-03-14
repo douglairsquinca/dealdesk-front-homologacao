@@ -1,29 +1,15 @@
 <template>
-  <div>
-    <SidebarVue />
-    <nav class="navbar navbar-expand-lg rf_bg_form rf_texto rf_container">
-      <div class="container-fluid">
-        <div><i class="bi bi-sliders fs-5"> Administração - Cor Veículo </i></div>
-        <div>
-          <ul class="nav justify-content-end">
-            <li class="nav-item">
-              <router-link class="nav-link rf_texto active" to="/admin">Dashboard /</router-link>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link rf_texto_a disabled">Cor Veículo</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <SidebarVue ref="sidebar" />
+  <Navgator ref="navgator" :barraTitulo="' Administração - Cor Veículo'" :titulo="'cor'" />
+
     <!--Formulário de Cadastro -->
 
-    <div class="card rf_bg_form rf_margin">
+    <div class="card card-filtro">
       <form @submit.prevent="onSubmit" class="needs-validation" novalidate="true">
         <div class="row g-2 p-2">
-          <div class="card-title rf_texto gy-4">
-            <i class="bi bi-person-fill-add fs-5"> Cadastrar Cor </i>
-          </div>
+          <div class="card-title gy-4">
+          <i class="bi bi-journal-text fs-5 icone_filtro"><span class="texto_filtro">Cadastrar Cor</span></i>
+        </div>
         </div>
         <div class="row g-2 p-2">
           <!--Descrição-->
@@ -50,8 +36,8 @@
           </div>
           <div class="col-md-2 p-2">
             <div class="form-floating">
-              <button type="submit" :disabled="btn_cadastrar" class="btn btn-lg btn-secondary">
-                Cadastrar
+              <button type="submit" :disabled="btn_cadastrar" class="btn btn-lg btn-filtro">
+                <span class="rf_texto_btn">Cadastrar</span>
               </button>
             </div>
           </div>
@@ -62,11 +48,11 @@
       </div>
     </div>
       <!--Bloco do Filtro-->
-    <div class="card rf_bg_form rf_margin">
+    <div class="card card-filtro">
       <div class="row g-2 p-2">
         <div class="card-title rf_texto gy-4">
-          <i class="bi bi-person-fill-add fs-5"> Filtros </i>
-        </div>
+        <i class="bi bi-funnel fs-5 icone_filtro"><span class="texto_filtro">Filtro</span></i>
+      </div>
       </div>
       <div class="row g-2 p-2">
         <div class="col-4">
@@ -98,8 +84,8 @@
         </div>
         <div class="col-1">
           <div class="input-group-append">
-            <button class="btn btn-lg btn-secondary mt-2" type="button" @click="page = 1; retrieveCores();">
-              Pesquisar
+            <button class="btn btn-lg btn-filtro" type="button" @click="page = 1; retrieveCores();">
+              <span class="rf_texto_btn">Pesquisar</span>
             </button>
           </div>
         </div>
@@ -108,7 +94,7 @@
       </div>
     </div>
     <!--Tabelas-->
-    <div class="card rf_bg_form g-2 p-2 rf_margin">
+    <div class="card card-tabela g-2 p-2 rf_margin">
       <table class="table rf_texto">
         <thead>
           <tr>
@@ -118,17 +104,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in cores" :key="item.descricao">
+          <tr v-for="item in cores" :key="item.descricao" class="table-linha">
             <td>{{ item.descricao }}</td>
             <td>{{ getStatus(item.status) }}</td>
             <td>
-              <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+              <button type="button" class="dropdown-toggle-icon" data-bs-toggle="modal" data-bs-target="#exampleModal"
                 @click="editar_cor(item)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil"
-                  viewBox="0 0 16 16">
-                  <path
-                    d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-                </svg>
+                <i class="bi bi-pencil-square"></i>
               </button>
             </td>
           </tr>
@@ -142,10 +124,14 @@
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content rf_bg_form rf_texto">
+        <div class="modal-content card-container rf_texto">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Cor</h1>
+          <div class="card-title gy-4">
+            <i class="bi bi-pencil-square fs-5 icone_kit"><span class="texto_kit">Editar Cor</span></i>
           </div>
+          <button class="btn btn-modal btn-lg p-1 mt-1" type="button" data-bs-target="#ModalProposta"
+            data-bs-toggle="modal" aria-label="Close"> Sair </button>
+        </div>
           <div class="modal-body">
             <div class="row g-2 p-2">
               <div class="col">
@@ -173,11 +159,8 @@
               </div>
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-              Fechar
-            </button>
-            <button type="button" @click="update()" data-bs-dismiss="modal" class="btn btn-secondary">
+          <div class="modal-footer">   
+            <button type="button" @click="update()" data-bs-dismiss="modal" class="btn btn-modal btn-lg p-1 mt-1">
               Salvar
             </button>
           </div>
@@ -187,7 +170,6 @@
     <!-- Button trigger modal -->
 
     <RodapeVue />
-  </div>
 </template>
 <script>
 import SidebarVue from "../../components/menu/Sidebar.vue";

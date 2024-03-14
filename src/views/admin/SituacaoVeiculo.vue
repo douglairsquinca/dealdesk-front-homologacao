@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <SidebarVue ref="sidebar" />
+      <SidebarVue ref="sidebar" />
+  <Navgator ref="navgator" :barraTitulo="' Administração - Mídia'" :titulo="'mídia'" />
 
 
     <nav class="navbar navbar-expand-lg rf_bg_form rf_texto rf_container">
@@ -278,9 +278,7 @@
         </div>
       </div>
     </div>
-
     <RodapeVue />
-  </div>
 </template>
 <script>
 import SidebarVue from "../../components/menu/Sidebar.vue";
@@ -297,13 +295,14 @@ import TokenService from "../../services/token.service";
 import jwt_decode from 'jwt-decode';
 import Message from "../../components/modal/Message.vue";
 import RodapeVue from "../../components/menu/Rodape.vue";
+import Navgator from "../../components/menu/Navgator.vue";
 
 export default {
   name: "Usuários",
 
   components: {
     SidebarVue,
-    //Pagination,
+    Navgator,
     Message,
     RodapeVue
 
