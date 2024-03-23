@@ -1,85 +1,82 @@
 <template>
-    <div>
-        <SidebarVue />
-        <nav class="navbar navbar-expand-lg rf_bg_form rf_texto rf_container">
-            <div class="container-fluid">
-                <div><i class="bi bi-sliders fs-5"> Relatório Mensal - Desk </i></div>
-                <div>
-                    <ul class="nav justify-content-end">
-                        <li class="nav-item">
-                            <router-link class="nav-link active rf_texto" to="/desk/index">Fechar Menu</router-link>
-                        </li>
 
-                    </ul>
-                </div>
+    <SidebarVue ref="sidebar" />
+    <NavgatorDk ref="navgator" :barraTitulo="' Situação Geral Lojas - Desk'" :titulo="'situação geral'" />
+
+    <div class="card card-filtro">
+        <div class="row g-2 p-2">
+            <div class="card-title rf_texto gy-4">
+                <i class="bi bi-funnel fs-5 icone_filtro"><span class="texto_filtro">Parâmetros do Relatório</span></i>
             </div>
-        </nav>
-        <div class="card rf_bg_form  mt-4 p-2">
-            <div class="row g-2 p-2">
+            <div class="row p-2">
                 <div class="col-2">
-                    <div class="mt-2">
-                        <span class="rf_texto">Referência</span>
-                        <div class="input-group mt-2">
-                            <select class="form-select" v-model="selectedFilter" @change="filtarRelatorios()">
-                                <option value="hoje">Hoje</option>
-                                <option value="ontem">Ontem</option>
-                                <option value="mes_atual">Mês Atual</option>
-                                <option value="mes_anterior">Mês Anterior</option>
-                                <option value="personalizado">Personalizado</option>
-                            </select>
-                        </div>
+                    <div class="form-floating">
+                        <select class="form-select rf_bg_form rf_texto_desk" v-model="selectedTipoLoja"
+                            @change="getEmpresas()">
+                            <option value=1>Quatro Rodas</option>
+                            <option value=2>Duas Rodas</option>
+                        </select>
+                        <label class="rf_texto"><strong>Tipo Loja</strong></label>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-floating">
+                        <select class="form-select rf_bg_form rf_texto_desk" v-model="selectedFilter"
+                            @change="filtarRelatorios()">
+                            <option value="hoje">Hoje</option>
+                            <option value="ontem">Ontem</option>
+                            <option value="mes_atual">Mês Atual</option>
+                            <option value="mes_anterior">Mês Anterior</option>
+                            <option value="personalizado">Personalizado</option>
+                        </select>
+                        <label class="rf_texto"><strong>Referência</strong></label>
                     </div>
                 </div>
                 <div class="col-3">
-                    <div class="mt-2">
-                        <div v-if="selectedFilter === 'personalizado'">
-                            <span class="rf_texto">Selecione as datas</span>
-                            <div class="input-group mt-2">
-                                <input type="date" class="form-control" v-model="startDate" />
-                                <span class="input-group-text">até</span>
-                                <input type="date" class="form-control" v-model="endDate" />
-                                <button class="btn btn-secondary" @click="filterByPeriod">Filtrar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-2">
-                    <div class="mt-2">
-                        <span class="rf_texto">Tipo Loja</span>
-                        <div class="input-group mt-2">
-                            <select class="form-select" v-model="selectedTipoLoja" @change="getEmpresas()">
-                                <option value=1>Quatro Rodas</option>
-                                <option value=2>Duas Rodas</option>
-                            </select>
+                    <div v-if="selectedFilter === 'personalizado'">
+
+                        <div class="input-group btn-entre-data">
+                            <input type="date" class="form-control" v-model="startDate" />
+                            <span class="input-group-text">até</span>
+                            <input type="date" class="form-control" v-model="endDate" />
+                            <!-- <button class="btn btn-secondary" @click="filterByPeriod">Filtrar</button> -->
                         </div>
                     </div>
                 </div>
 
-                <div class="col-12">
-                    <label class="text-info p-2">Lojas</label>
-                    <div class="d-flex justify-content-between mb-1">
-                        <div class="p-2 rf_texto">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="checkboxTodos" v-model="marcarTodos">
-                                <label class="form-check-label" for="checkboxTodos">Marcar Todos</label>
-                            </div>
-                            <div class="form-check form-check-inline" v-for="item in lista_empresas" :key="item.id">
-                                <input class="form-check-input" type="checkbox" :id="item.id" :value="item.id"
-                                    v-model="selectedEmpresas">
-                                <label class="form-check-label" :for="item.id">{{ item.nome }}</label>
-                            </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card card-tabela g-2 p-2">
+        <div class="row g-2 p-2">
+            <div class="col-12">
+                <div class="card-title rf_texto gy-4">
+                    <i class="bi bi-shop fs-5 icone_filtro"><span class="texto_filtro">Lojas</span></i>
+                </div>
+                <div class="d-flex justify-content-between mb-1">
+                    <div class="box-conversao rf_texto_desk">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="checkboxTodos" v-model="marcarTodos">
+                            <label class="form-check-label" for="checkboxTodos">Marcar Todos</label>
+                        </div>
+                        <div class="form-check form-check-inline" v-for="item in lista_empresas" :key="item.id">
+                            <input class="form-check-input" type="checkbox" :id="item.id" :value="item.id"
+                                v-model="selectedEmpresas">
+                            <label class="form-check-label" :for="item.id">{{ item.nome }}</label>
                         </div>
                     </div>
                 </div>
-                <div class="col-12">
-                    <div class="form-group p-2">
-                        <button class="btn btn-secondary btn-block mt-2 " @click="propostas_mes">
-                            <span>Pesquisar</span>
-                        </button>
-                    </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <button class="btn btn-lg btn-filtro " @click="propostas_mes">
+                        <span class="rf_texto_btn">Pesquisar</span>
+                    </button>
                 </div>
+            </div>
 
-                <!-- <div class="col">
+            <!-- <div class="col">
                     <div class="card car shadow-sm text-center rf_texto rf_border " style="margin-right:0.5rem">
                         <div class=" card-header bg-dark">Lucro Operacional</div>
                         <div class="card-body bg-success ">
@@ -115,162 +112,169 @@
                         </div>
                     </div>
                 </div> -->
-            </div>
-            <!--Situação Geral-->
-            <div class="row g-2 p-2">
-                <!--Veículos Novos-->
-                <div class="col">
-                    <div class="card shadow-sm text-center rf_texto rf_border" style="margin-right:0.5rem">
-                        <div class=" card-header bg-dark ">Novos</div>
-                        <!--Passagens-->
-                        <div class="card-body bg-primary ">
-                            <p>Passagens - {{ total_passagem_zero }}</p>
-                            <p>Novas - {{ total_passagem_zero_novas }} | Retorno - {{ total_passagem_zero_retorno }}</p>
-                        </div>
-                        <!--Em Atendimento-->
-                        <div class="card-body bg-secondary">
-                            <p>Em Atendimento</p>
-                            <p> {{ total_em_atendimento_zero }} ({{ total_em_atendimento_zero_porcentagem }} %) </p>
-                        </div>
-                        <!--Venda Efetuada-->
-                        <div class="card-body bg-success ">
-                            <p> Venda Efetuada - {{ total_vendas_finalizadas_zero }}
-                                ({{ total_vendas_finalizadas_zero_porcentagem }}%)</p>
-                            <p>Novos - {{ total_vendas_finalizadas_zero_novos }} ({{
-                                total_vendas_finalizadas_zero_novos_porcentagem
-                            }}%) | Retorno - {{ total_vendas_finalizadas_zero_retorno }} ({{
-    total_vendas_finalizadas_zero_retorno_porcentagem }}%)</p>
-                        </div>                      
-                        <!--Venda Perdida-->    
-                        <div class="card-body bg-danger ">
-                            <p>Venda Perdida</p>
-                            <p>{{ total_vendas_perdidas_zero }} ({{ total_vendas_perdidas_zero_porcentagem }} %)</p>
-
-                        </div>
+        </div>
+        <!--Situação Geral-->
+        <div class="row ">
+            <!--Veículos Novos-->
+            <div class="col">
+                <div class="card-desk-rel-geral-novo   text-center">
+                    <div class="card-desk-titulo">
+                        <span class="texto-titulo-desk"><strong> Novos</strong></span>
                     </div>
-                </div>
-                <!--Veículos Usados-->
-                <div class="col">
-                    <div class="card shadow-sm text-center rf_texto rf_border">
-                        <div class=" card-header bg-dark ">Usados</div>
-                        <!--Passagem-->
-                        <div class="card-body bg-primary ">
-                            <p>Passagens - {{ total_passagem_usado }}</p>
-                            <p>Novas - {{ total_passagem_usado_novas }} | Retorno - {{ total_passagem_usado_retorno }}</p>
+                    <!--Passagens-->
+                    <div class="card-desk-passagem ">
+                        <p>Passagens - {{ total_passagem_zero }}</p>
+                        <p>Novas - {{ total_passagem_zero_novas }} | Retorno - {{ total_passagem_zero_retorno }}</p>
+                    </div>
+                    <!--Em Atendimento-->
+                    <div class="card-desk-atendimento">
+                        <p>Em Atendimento</p>
+                        <p> {{ total_em_atendimento_zero }} ({{ total_em_atendimento_zero_porcentagem }} %) </p>
+                    </div>
+                    <!--Venda Efetuada-->
+                    <div class="card-desk-finalizado ">
+                        <p> Venda Efetuada - {{ total_vendas_finalizadas_zero }}
+                            ({{ total_vendas_finalizadas_zero_porcentagem }}%)</p>
+                        <p>Novos - {{ total_vendas_finalizadas_zero_novos }} ({{
+        total_vendas_finalizadas_zero_novos_porcentagem
+    }}%) | Retorno - {{ total_vendas_finalizadas_zero_retorno }} ({{
+        total_vendas_finalizadas_zero_retorno_porcentagem }}%)</p>
+                    </div>
+                    <!--Venda Perdida-->
+                    <div class="card-desk-perdido ">
+                        <p>Venda Perdida</p>
+                        <p>{{ total_vendas_perdidas_zero }} ({{ total_vendas_perdidas_zero_porcentagem }} %)</p>
 
-                        </div>
-                        <!-- Em Atendimento-->
-                        <div class="card-body bg-secondary">
-                            <p>Em Atendimento</p>
-                            <p> {{ total_em_atendimento_usados }} ({{ total_em_atendimento_usados_porcentagem }} %) </p>
-
-                        </div>
-                        <!-- Venda Efetuada -->
-                        <div class="card-body bg-success ">
-                            <p> Venda Efetuada - {{ total_vendas_finalizadas_usado }}
-                                ({{ total_vendas_finalizadas_usado_porcentagem }}%)</p>
-                            <p>Novos - {{ total_vendas_finalizadas_usado_novos }} ({{
-                                total_vendas_finalizadas_usado_novos_porcentagem
-                            }}%) | Retorno - {{ total_vendas_finalizadas_usado_retorno }} ({{
-    total_vendas_finalizadas_usado_retorno_porcentagem }}%)</p>
-                        </div>
-                        <!-- Venda Perdida-->
-                        <div class="card-body bg-danger ">
-                            <p>Venda Perdida</p>
-                            <p>{{ total_vendas_perdidas_usados }} ({{ total_vendas_perdidas_usados_porcentagem }}%) </p>
-
-                        </div>
                     </div>
                 </div>
             </div>
+            <!--Veículos Usados-->
+            <div class="col">
+                <div class="card-desk-rel-geral-usado text-center">
+                    <div class="card-desk-titulo">
+                        <span class="texto-titulo-desk"><strong> Usados</strong></span>
+                    </div>
+                    <!--Passagem-->
+                    <div class="card-desk-passagem ">
+                        <p>Passagens - {{ total_passagem_usado }}</p>
+                        <p>Novas - {{ total_passagem_usado_novas }} | Retorno - {{ total_passagem_usado_retorno }}</p>
 
-            <!--Quadro por Empresa-->
-            <div class="row p-2 mt-5">
-                <div class="col-4" v-for="(item, index) in resumosPorEmpresa" :key="index">
-                    <div class=" card-header bg-dark rf_texto text-center mt-2">{{ item.nome }}</div>
-                    <div class="row mt-2">
-                        <!--Veículos Novos-->
-                        <div class="col">
-                            <div class="card shadow-sm text-center rf_texto rf_border">
-                                <div class=" card-header bg-dark ">Novos</div>
-                                <div class="card-body bg-success ">
-                                    <p> Vendidos - {{ item.total_vendas_finalizadas_zero }}
-                                        ({{ item.total_vendas_finalizadas_zero_porcentagem }}%)</p>
-                                    <p>Novos - {{ item.total_vendas_finalizadas_zero_novos }} ({{
-                                        item.total_vendas_finalizadas_zero_novos_porcentagem
-                                    }}%) | Retorno - {{ item.total_vendas_finalizadas_zero_retorno }} ({{
-    item.total_vendas_finalizadas_zero_retorno_porcentagem }}%)</p>
-                                </div>
-                                <div class="card-body bg-primary ">
-                                    <p>Passagens - {{ item.total_passagem_zero }}</p>
-                                    <p>Novas - {{ item.total_passagem_zero_novas }} | Retorno - {{
-                                        item.total_passagem_zero_retorno }}
-                                    </p>
+                    </div>
+                    <!-- Em Atendimento-->
+                    <div class="card-desk-atendimento">
+                        <p>Em Atendimento</p>
+                        <p> {{ total_em_atendimento_usados }} ({{ total_em_atendimento_usados_porcentagem }} %) </p>
 
-                                </div>
-                                <div class="card-body bg-secondary">
-                                    <p>Em Atendimento</p>
-                                    <p> {{ item.total_em_atendimento_zero }} ({{ item.total_em_atendimento_zero_porcentagem
+                    </div>
+                    <!-- Venda Efetuada -->
+                    <div class="card-desk-finalizado ">
+                        <p> Venda Efetuada - {{ total_vendas_finalizadas_usado }}
+                            ({{ total_vendas_finalizadas_usado_porcentagem }}%)</p>
+                        <p>Novos - {{ total_vendas_finalizadas_usado_novos }} ({{
+        total_vendas_finalizadas_usado_novos_porcentagem
+    }}%) | Retorno - {{ total_vendas_finalizadas_usado_retorno }} ({{
+        total_vendas_finalizadas_usado_retorno_porcentagem }}%)</p>
+                    </div>
+                    <!-- Venda Perdida-->
+                    <div class="card-desk-perdido ">
+                        <p>Venda Perdida</p>
+                        <p>{{ total_vendas_perdidas_usados }} ({{ total_vendas_perdidas_usados_porcentagem }}%) </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Quadro por Empresa-->
+        <div class="row p-2 mt-5">
+            <div class="col-4 mt-5" v-for="(item, index) in resumosPorEmpresa" :key="index">
+                <div class="text-center gy-4">
+                    <i class="bi bi-shop fs-5 icone_filtro"><span class=" texto_filtro">{{ item.nome }}</span></i>
+                </div>
+                <div class="row mt-2">
+                    <!--Veículos Novos-->
+                    <div class="col">
+                        <div class="card-desk-rel text-center rf_texto_desk_rel">
+                            <span class="texto-titulo-desk"><strong> Novos</strong></span>
+                            <div class="card-desk-passagem ">
+                                <p>Passagens - {{ item.total_passagem_zero }}</p>
+                                <p>Novas - {{ item.total_passagem_zero_novas }} | Retorno - {{
+        item.total_passagem_zero_retorno }}
+                                </p>
+
+                            </div>
+                            <div class="card-desk-atendimento">
+                                <p>Em Atendimento</p>
+                                <p> {{ item.total_em_atendimento_zero }} ({{ item.total_em_atendimento_zero_porcentagem
                                     }} %)
-                                    </p>
+                                </p>
 
-                                </div>
-                                <div class="card-body bg-danger ">
-                                    <p>Perdidas</p>
-                                    <p>{{ item.total_vendas_perdidas_zero }} ({{ item.total_vendas_perdidas_zero_porcentagem
+                            </div>
+                            <div class="card-desk-finalizado">
+                                <p> Vendidos - {{ item.total_vendas_finalizadas_zero }}
+                                    ({{ item.total_vendas_finalizadas_zero_porcentagem }}%)</p>
+                                <p>Novos - {{ item.total_vendas_finalizadas_zero_novos }} ({{
+        item.total_vendas_finalizadas_zero_novos_porcentagem
+    }}%) | Retorno - {{ item.total_vendas_finalizadas_zero_retorno }} ({{
+        item.total_vendas_finalizadas_zero_retorno_porcentagem }}%)</p>
+                            </div>                      
+                            <div class="card-desk-perdido">
+                                <p>Perdidas</p>
+                                <p>{{ item.total_vendas_perdidas_zero }} ({{ item.total_vendas_perdidas_zero_porcentagem
                                     }} %)
-                                    </p>
+                                </p>
 
-                                </div>
                             </div>
                         </div>
-                        <!--Veículos Usados-->
-                        <div class="col">
-                            <div class="card shadow-sm text-center rf_texto rf_border">
-                                <div class=" card-header bg-dark ">Usados</div>
-                                <div class="card-body bg-success ">
-                                    <p> Vendidos - {{ item.total_vendas_finalizadas_usado }}
-                                        ({{ item.total_vendas_finalizadas_usado_porcentagem }}%)</p>
-                                    <p>Novos - {{ item.total_vendas_finalizadas_usado_novos }} ({{
-                                        item.total_vendas_finalizadas_usado_novos_porcentagem
-                                    }}%) | Retorno - {{ item.total_vendas_finalizadas_usado_retorno }} ({{
-    item.total_vendas_finalizadas_usado_retorno_porcentagem }}%)</p>
-                                </div>
-                                <div class="card-body bg-primary ">
-                                    <p>Passagens - {{ item.total_passagem_usado }}</p>
-                                    <p>Novas - {{ item.total_passagem_usado_novas }} | Retorno - {{
-                                        item.total_passagem_usado_retorno
+                    </div>
+                    <!--Veículos Usados-->
+                    <div class="col">
+                        <div class="card-desk-rel text-center rf_texto_desk_rel">
+                            <span class="texto-titulo-desk"><strong> Usados</strong></span>
+                            <div class="card-desk-passagem ">
+                                <p>Passagens - {{ item.total_passagem_usado }}</p>
+                                <p>Novas - {{ item.total_passagem_usado_novas }} | Retorno - {{
+        item.total_passagem_usado_retorno
                                     }}</p>
 
-                                </div>
-                                <div class="card-body bg-secondary">
-                                    <p>Em Atendimento</p>
-                                    <p> {{ item.total_em_atendimento_usados }} ({{
-                                        item.total_em_atendimento_usados_porcentagem }}
-                                        %)
-                                    </p>
+                            </div>
+                            <div class="card-desk-atendimento">
+                                <p>Em Atendimento</p>
+                                <p> {{ item.total_em_atendimento_usados }} ({{
+                                    item.total_em_atendimento_usados_porcentagem }}
+                                    %)
+                                </p>
 
-                                </div>
-                                <div class="card-body bg-danger ">
-                                    <p>Perdidas</p>
-                                    <p>{{ item.total_vendas_perdidas_usados }} ({{
-                                        item.total_vendas_perdidas_usados_porcentagem
+                            </div>
+                            <div class="card-desk-finalizado ">
+                                <p> Vendidos - {{ item.total_vendas_finalizadas_usado }}
+                                    ({{ item.total_vendas_finalizadas_usado_porcentagem }}%)</p>
+                                <p>Novos - {{ item.total_vendas_finalizadas_usado_novos }} ({{
+        item.total_vendas_finalizadas_usado_novos_porcentagem
+    }}%) | Retorno - {{ item.total_vendas_finalizadas_usado_retorno }} ({{
+        item.total_vendas_finalizadas_usado_retorno_porcentagem }}%)</p>
+                            </div>                           
+                        
+                            <div class="card-desk-perdido ">
+                                <p>Perdidas</p>
+                                <p>{{ item.total_vendas_perdidas_usados }} ({{
+                                    item.total_vendas_perdidas_usados_porcentagem
                                     }}%)
-                                    </p>
+                                </p>
 
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
             </div>
+
 
         </div>
 
-        <RodapeVue />
     </div>
+
+    <RodapeVue />
+
 </template>
 <script>
 
@@ -279,10 +283,12 @@ import axios from "axios";
 import TokenService from "../../services/token.service";
 import jwt_decode from 'jwt-decode';
 import RodapeVue from "../../components/menu/Rodape.vue";
+import NavgatorDk from "../../components/menu/NavgatorDk.vue";
 
 export default {
     components: {
         SidebarVue,
+        NavgatorDk,
         RodapeVue
     },
     data() {

@@ -1,15 +1,12 @@
-<template> 
-    
-    <SidebarVue />
-    <nav class="navbar navbar-expand-lg rf_bg_form rf_texto rf_container ">
-      <div class="container-fluid">
-        <div><i class="bi bi-sliders fs-5"> Administração - Dashboard </i></div>
-        <div></div>
-      </div>
-    </nav>
-    <!--Formulário de Cadastro -->
+<template>
 
-    <!-- <div class="card rf_bg_form rf_texto rf_margin"> -->
+  <SidebarVue ref="sidebar" />
+  <Navgator ref="navgator" :barraTitulo="' Administração - Dashboard'" :titulo="'dashboard'" />
+
+  <!--Formulário de Cadastro -->
+
+  <!-- <div class="card rf_bg_form rf_texto rf_margin"> -->
+  <div class="card-container ">
     <div class="rf_bg_form rf_texto rf_margin ">
       <div class="container-fluid px-4 py-5" id="icon-grid">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4
@@ -17,7 +14,7 @@
             py-5
           ">
           <div class="col d-flex align-items-start">
-            <div>
+            <div class="card-menu">
               <h3 class="fw-bold mb-0 fs-4">
                 <router-link to="/admin/acessorios" class="nav-link p-2">
                   <i class="bi bi-person-gear"> Acessórios</i>
@@ -26,7 +23,7 @@
             </div>
           </div>
           <div class="col d-flex align-items-start">
-            <div>
+            <div class="card-menu">
               <h3 class="fw-bold mb-0 fs-4">
                 <router-link to="/admin/clientes" class="nav-link p-2">
                   <i class="bi bi-person-vcard"> Clientes</i>
@@ -35,7 +32,7 @@
             </div>
           </div>
           <div class="col d-flex align-items-start">
-            <div>
+            <div class="card-menu">
               <h3 class="fw-bold mb-0 fs-4">
                 <router-link to="/admin/empresas" class="nav-link p-2">
                   <i class="bi bi-buildings"> Empresas</i>
@@ -54,7 +51,7 @@
             </div>
           </div> -->
           <div class="col d-flex align-items-start">
-            <div>
+            <div class="card-menu">
               <h3 class="fw-bold mb-0 fs-4">
                 <router-link to="/admin/midias" class="nav-link p-2">
                   <i class="bi bi-person-gear"> Mídias</i>
@@ -63,7 +60,7 @@
             </div>
           </div>
           <div class="col d-flex align-items-start">
-            <div>
+            <div class="card-menu">
               <h3 class="fw-bold mb-0 fs-4">
                 <router-link to="/admin/usuarios" class="nav-link p-2">
                   <i class="bi bi-person-gear"> Usuários</i>
@@ -72,7 +69,7 @@
             </div>
           </div>
           <div class="col d-flex align-items-start">
-            <div>
+            <div class="card-menu">
               <h3 class="fw-bold mb-0 fs-4">
                 <router-link to="/admin/bancos" class="nav-link p-2">
                   <i class="bi bi-cash-coin"> Bancos</i>
@@ -81,7 +78,7 @@
             </div>
           </div>
           <div class="col d-flex align-items-start">
-            <div>
+            <div class="card-menu">
               <h3 class="fw-bold mb-0 fs-4">
                 <router-link to="/admin/custos_variaveis" class="nav-link p-2">
                   <i class="bi bi-cash-coin"> Custos Variáveis</i>
@@ -91,7 +88,7 @@
           </div>
 
           <div class="col d-flex align-items-start">
-            <div>
+            <div class="card-menu">
               <h3 class="fw-bold mb-0 fs-4">
                 <router-link to="/admin/taxas" class="nav-link p-2">
                   <i class="bi bi-person-gear"> Importar Taxas</i>
@@ -101,7 +98,7 @@
           </div>
 
           <div class="col d-flex align-items-start">
-            <div>
+            <div class="card-menu">
               <h3 class="fw-bold mb-0 fs-4">
                 <router-link to="/admin/combustiveis" class="nav-link p-2">
                   <i class="bi bi-ev-station"> Combustíveis</i>
@@ -110,7 +107,7 @@
             </div>
           </div>
           <div class="col d-flex align-items-start">
-            <div>
+            <div class="card-menu">
               <h3 class="fw-bold mb-0 fs-4">
                 <router-link to="/admin/cor_veiculos" class="nav-link p-2">
                   <i class="bi bi-car-front-fill"> Cor Veículo</i>
@@ -119,7 +116,7 @@
             </div>
           </div>
           <div class="col d-flex align-items-start">
-            <div>
+            <div class="card-menu">
               <h3 class="fw-bold mb-0 fs-4">
                 <router-link to="/admin/familia_veiculos" class="nav-link p-2">
                   <i class="bi bi-car-front-fill"> Família Veículos</i>
@@ -128,7 +125,7 @@
             </div>
           </div>
           <div class="col d-flex align-items-start">
-            <div>
+            <div class="card-menu">
               <h3 class="fw-bold mb-0 fs-4">
                 <router-link to="/admin/marca_veiculos" class="nav-link p-2">
                   <i class="bi bi-car-front-fill"> Marca Veículos</i>
@@ -137,7 +134,7 @@
             </div>
           </div>
           <div class="col d-flex align-items-start">
-            <div>
+            <div class="card-menu">
               <h3 class="fw-bold mb-0 fs-4">
                 <router-link to="/admin/modelo_veiculos" class="nav-link p-2">
                   <i class="bi bi-car-front-fill"> Modelo Veículos</i>
@@ -146,7 +143,7 @@
             </div>
           </div>
           <div class="col d-flex align-items-start">
-            <div>
+            <div class="card-menu">
               <h3 class="fw-bold mb-0 fs-4">
                 <router-link to="/admin/estoque_veiculos" class="nav-link p-2">
                   <i class="bi bi-car-front-fill"> Sincronizar Estoque</i>
@@ -158,7 +155,9 @@
       </div>
     </div>
 
-    <Rodape />
+  </div>
+
+  <Rodape />
 
 
 </template>
@@ -168,10 +167,12 @@ import UserService from "../services/user.service";
 //import EventBus from "../common/EventBus";
 import SidebarVue from "./menu/Sidebar.vue";
 import Rodape from "./menu/Rodape.vue";
+import Navgator from "./menu/Navgator.vue";
 
 export default {
   components: {
     SidebarVue,
+    Navgator,
     Rodape
   },
   data() {
@@ -197,7 +198,7 @@ export default {
             error.response.data.message) ||
           error.message ||
           error.toString();
-          console.log("Erro de login", error)
+        console.log("Erro de login", error)
         if (error.response && error.response.status === 403) {
           console.log("Entrei no IF")
           this.$store.dispatch("auth/logout");

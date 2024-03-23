@@ -1,14 +1,16 @@
-<template lang="pt-br">
-    <SidebarVue ref="sidebar" />
-    <NavgatorFI ref="navgator" :barraTitulo="' F&I - Dashboard'" :titulo="'dashboard'"/>
-
-       <div class="card-container"> 
-        <div class="rf_bg_form rf_texto rf_margin ">
+<template>
+  <SidebarVue ref="sidebar" />
+  <NavgatorFI
+    ref="navgator"
+    :barraTitulo="' F&I - Dashboard'"
+    :titulo="'dashboard'"
+  />
+  <div class="card-container">
+    <div class="rf_bg_form rf_texto rf_margin">
       <div class="container-fluid px-4 py-5" id="icon-grid">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4
-            g-4
-            py-5
-          ">
+        <div
+          class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 py-5"
+        >
           <div class="col d-flex align-items-start">
             <div class="card-menu">
               <h3 class="fw-bold mb-0 fs-4">
@@ -82,14 +84,13 @@
                 </router-link>
               </h3>
             </div>
-          </div>         
+          </div>
         </div>
       </div>
     </div>
 
     <RodapeVue />
-       </div>
-   
+  </div>
 </template>
 
 <script>
@@ -103,7 +104,7 @@ export default {
   components: {
     SidebarVue,
     NavgatorFI,
-    RodapeVue
+    RodapeVue,
   },
-}
+};
 </script>

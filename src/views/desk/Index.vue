@@ -35,7 +35,7 @@
           <input type="date" class="form-control rf_bg_form rf_texto" v-model="startDate" />
           <span class="input-group-text">até</span>
           <input type="date" class="form-control rf_bg_form rf_texto" v-model="endDate" />
-          <button class="btn btn-lg btn-desk-filtro" @click="filterByPeriod"><span class="rf_texto_btn">Filtrar</span></button>
+          <button class="btn btn-lg btn-desk-filtro-vendas" @click="filterByPeriod"><span class="rf_texto_btn">Filtrar</span></button>
         </div>
       </div>
 
@@ -145,7 +145,7 @@
           <input type="date" class="form-control rf_bg_form rf_texto" v-model="startDate" />
           <span class="input-group-text rf-texto">até</span>
           <input type="date" class="form-control rf_bg_form rf_texto" v-model="endDate" />
-          <button class="btn btn-lg btn-desk-filtro" @click="filterByPeriod"><span class="rf_texto_btn">Filtrar</span></button>
+          <button class="btn btn-lg btn-desk-filtro-vendas" @click="filterByPeriod"><span class="rf_texto_btn">Filtrar</span></button>
         </div>
       </div>
 

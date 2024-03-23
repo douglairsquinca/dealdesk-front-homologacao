@@ -11,8 +11,8 @@
           <div class="input-group-append">
             <button class="btn btn-lg btn-filtro" type="button">
               <router-link to="/atendimento/proposta" class="nav-link">
-                <span class="rf_texto_btn">NOVA</span><br>
-                <span class="rf_texto_btn">PROPOSTA</span>
+                <span class="rf_texto_btn">NOVO</span><br>
+                <span class="rf_texto_btn">ATENDIMENTO</span>
               </router-link>
             </button>
           </div>
@@ -116,7 +116,7 @@
     <table class="table rf_texto">
       <thead>
         <tr>
-          <th scope="col">Cod. Proposta</th>
+          <th scope="col">Nº Atendimento</th>
           <th scope="col">Cliente</th>
           <th scope="col">Vendedor</th>
           <th scope="col">Status Proposta</th>

@@ -23,13 +23,13 @@
                 </div>
                 <br />
                 <div class="form-group">
-                  <button class="btn btn_login btn-block" :disabled="loading">
+                  <button class="btn btn-lg btn-filtro" :disabled="loading">
                     <span v-show="loading" class="spinner-border spinner-border-sm"></span>
-                    <span>Login</span>
+                    <span class="rf_texto_btn" >Login</span>
                   </button>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group mt-1">
                   <label class="rf_texto">Empresa</label>
                   <div class="form-floating">
                     <select class="form-select" v-model="empresaSelecionada" @change="redirecionar">

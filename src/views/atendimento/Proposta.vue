@@ -45,7 +45,7 @@
       </div>
     </form>
     <div class="row">
-      <div class="col-1 ">
+      <div class="col-2 ">
         <div class="input-group-append">
           <button type="submit" :disabled="habilitar_cadastro" @click="cadastrar_cliente" class="btn btn-lg btn-filtro m-2">
             <span class="rf_texto_btn">Cadastrar</span>

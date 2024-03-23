@@ -98,6 +98,14 @@
     color: #B92E2E;
     /* Cor do ícone */
   }
+  .dropdown-toggle-icon-desk {
+    background: none;
+    border: none;
+    font-size: 36px;
+    /* Tamanho do ícone */
+    color: #fff;
+    /* Cor do ícone */
+  }
   .dropdown-toggle-icon-atendimento {
     background: none;
     border: none;
@@ -279,7 +287,7 @@
   }
 
   .texto_filtro_btn {
-    font-size: 30px !important;
+    font-size: 28px !important;
     color: #fff !important;
     padding-left: 20px;
     padding-right: 20px;
@@ -291,7 +299,7 @@
     border-color: transparent;
     color: #fff;
     width: 100%;
-    padding-bottom: 13px;
+
 
 
   }
@@ -677,8 +685,15 @@
     border-color: transparent;
     color: #fff;
     width: 100%;
-    padding-bottom: 13px; 
-    
+    padding-bottom: 13px;     
+
+  }
+  .btn-desk-filtro-vendas{
+    background: #B92E2E;
+    border-color: transparent;
+    color: #fff;
+  
+   
 
   }
   .btn-desk-filtro:hover {
@@ -749,4 +764,81 @@
   }
   .custom-highlight-row {
     --bs-table-bg: pink;
+  }
+  .btn-entre-data{
+    height: 58px;
+  }
+  .box-conversao{
+    border: solid 1px;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+  .text-info{
+    color: #2A2B3F !important;
+    font-size: 15px;
+  }
+
+  /*Situação Geral*/
+  .card-desk-rel-geral-novo {
+    margin-top: 10px;
+    margin-left: 5px; 
+    border-radius:10px 10px 0 0;
+    border: solid 1px;
+    border-color: #ccc;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+  }
+  .card-desk-rel-geral-usado {
+    margin-top: 10px;
+    margin-right: 5px; 
+    border-radius:10px 10px 0 0;
+    border: solid 1px;
+    border-color: #ccc;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+  }
+  .card-desk-rel {
+    margin-top: 10px; 
+    border-radius:10px 10px 0 0;
+    border: solid 1px;
+    border-color: #ccc;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+  }
+  .card-desk-titulo{
+    border-radius:10px 10px 0 0;
+    background-color: #fff;
+    color: #2A2B3F !important;
+    padding: 10px;
+  }
+  .card-desk-passagem{
+    background-color: #007BFF;
+    color: #fff;
+    padding: 10px;
+  }
+  .card-desk-atendimento{
+    background-color: #6C757D;
+    color: #fff;
+    padding: 10px;
+  }
+  .card-desk-finalizado{
+    background-color: #28A745;
+    color: #fff;
+    padding: 10px;
+  }
+  .card-desk-perdido{
+    background-color: #B92E2E;
+    color: #fff;
+    padding: 10px;
+  }
+  .texto-titulo-desk {
+    font-size: 24px !important;
+    color: #2A2B3F !important;
+  }
+  .rf_texto_desk_rel {
+    font-style: normal;
+    color: #2A2B3F !important;
+    font-size: 13px;
   }
