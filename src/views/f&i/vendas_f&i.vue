@@ -941,22 +941,7 @@
                         <span class="rf_texto_btn">Gerar Menu</span>
                       </button>
                     </div>
-                  </td>
-                  <td>
-                    <div class="d-grid gap-2">          
-                        <button
-                          class="btn btn-lg btn-desk-filtro"
-                          type="button"
-                          @click="finalizar_fei()"
-                        >
-                          <span class="rf_texto_btn">Ranquear</span>
-                        </button>
-                     
-                    </div>
-                  </td>
-                  <td>
-                    <div class="f-grid gap-2"></div>
-                  </td>
+                  </td>              
                 </tr>
               </tbody>
             </table>
