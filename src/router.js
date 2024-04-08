@@ -49,6 +49,7 @@ import CadastroSeguros from "./views/f&i/cadastro_seguro.vue";
 import CadastroKits from "./views/f&i/cadastro_kits.vue";
 import KitsModelo from "./views/f&i/kits_modelo.vue";
 import VendasF$I from "./views/f&i/vendas_f&i.vue";
+import ModeloFeiEstoque from "./views/f&i/modelo_fei_estoque.vue";
 
 // lazy-loaded
 const Profile = () => import("./components/Profile.vue")
@@ -407,6 +408,12 @@ const routes = [
     path:"/f&i/index",
     name:"dashboard",
     component: Dashboard,
+    beforeEnter: [vendedorFEI],
+  },
+  {
+    path:"/f&i/modelos_fei",
+    name:"modelos_fei",
+    component: ModeloFeiEstoque,
     beforeEnter: [vendedorFEI],
   },
   {

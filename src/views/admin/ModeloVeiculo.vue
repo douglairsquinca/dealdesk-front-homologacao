@@ -86,6 +86,15 @@
         </div>
         <div class="col-1">
           <div class="form-floating">
+            <select class="form-select rf_bg_form rf_texto" v-model="venda_fei" id="valid_status" required>
+              <option value="0">Não</option>
+              <option value="1">Sim</option>
+            </select>
+            <label class="rf_texto">Venda F&I</label>
+          </div>
+        </div>
+        <div class="col-1">
+          <div class="form-floating">
             <select class="form-select rf_bg_form rf_texto" v-model="status" id="valid_status" required>
               <option value="0">Desabilitado</option>
               <option value="1">Habilitado</option>
@@ -254,6 +263,7 @@
           <th scope="col">Ano Fabricação</th>
           <th scope="col">Ano Modelo</th>
           <th scope="col">Venda Futura</th>
+          <th scope="col">Venda F&I</th>
           <th scope="col">Familia</th>
           <th scope="col">Combustível</th>
           <th scope="col">Status</th>
@@ -272,6 +282,7 @@
           <td>{{ item.anoFabricacao }}</td>
           <td>{{ item.anoModelo }}</td>
           <td>{{ getVendaFut(item.vendaFutura) }}</td>
+          <td>{{ getVendaFEI(item.venda_fei) }}</td>
           <td>{{ item.familia_veiculo.descricao }}</td>
           <td>{{ item.combustivel_veiculo.descricao }}</td>
           <td>{{ getStatus(item.status) }}</td>
@@ -374,6 +385,15 @@
                   <option value="1">Sim</option>
                 </select>
                 <label class="rf_texto">Venda Futura</label>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-floating">
+                <select class="form-select rf_bg_form rf_texto" v-model="edit_venda_fei" id="valid_status" required>
+                  <option value="0">Não</option>
+                  <option value="1">Sim</option>
+                </select>
+                <label class="rf_texto">Venda F&I</label>
               </div>
             </div>
             <div class="col-2">
@@ -490,6 +510,7 @@ export default {
       combustivelVeiculoId: "",
       combustivelSelecionado: "",
       tipo_empresa: "",
+      venda_fei: "",
 
       //Campos de edição
       edit_id: "",
@@ -508,6 +529,7 @@ export default {
       edit_descricao: "",
       edit_combustivel: "",
       edit_tipo_empresa: "",
+      edit_venda_fei:"",
 
 
       edit_familia: "",
@@ -591,6 +613,9 @@ export default {
     getVendaFut(vendaFutura) {
       return vendaFutura === 0 ? 'Não' : 'Sim';
     },
+    getVendaFEI(venda_fei) {
+      return venda_fei === 0 ? 'Não' : 'Sim';
+    },
 
     async onSubmit() {
       try {
@@ -611,6 +636,7 @@ export default {
             precoVenda: this.precoVenda,
             custoMarcacao: this.custoMarcacao,
             vendaFutura: this.vendaFutura,
+            venda_fei: this.venda_fei,
             anoFabricacao: this.anoFabricacao,
             anoModelo: this.anoModelo,
             status: this.status,
@@ -781,6 +807,7 @@ export default {
         this.edit_anoFabricacao = item.anoFabricacao,
         this.edit_anoModelo = item.anoModelo,
         this.edit_vendaFutura = item.vendaFutura,
+        this.edit_venda_fei = item.venda_fei,
         this.selectedOption.descricao = item.familia_veiculo.descricao,
         this.edit_familiaVeiculoId = item.familiaVeiculoId,
         this.edit_combustivelVeiculoId = item.combustivelVeiculoId,
@@ -822,6 +849,7 @@ export default {
         precoVenda: this.edit_precoVenda,
         custoMarcacao: this.custoMarcacao,
         vendaFutura: this.edit_vendaFutura,
+        venda_fei: this.edit_venda_fei,
         anoFabricacao: this.edit_anoFabricacao,
         anoModelo: this.edit_anoModelo,
         status: this.edit_status,

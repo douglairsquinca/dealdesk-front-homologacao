@@ -18,13 +18,19 @@
     height: auto;
     /* Altura automática para manter a proporção */
   }
+  .logo_cliente {
+    width: 250px;
+    /* Largura da logo */
+    height: auto;
+    /* Altura automática para manter a proporção */
+  }
 
   .btn-menu {
     --bs-btn-color: #B92E2E;
     --bs-btn-bg: #fff;
     --bs-btn-border-color: #212529;
     --bs-btn-hover-color: #fff;
-    --bs-btn-hover-bg: #B92E2E;
+    --bs-btn-hover-bg: ;
     --bs-btn-hover-border-color: #e9116b;
     --bs-btn-focus-shadow-rgb: 66, 70, 73;
     --bs-btn-active-border-color: #373b3e;
@@ -34,10 +40,11 @@
     --bs-btn-disabled-border-color: #212529;
   }
 
-  .btn-active {
-    --bs-btn-bg: #B92E2E;
-    --bs-btn-color: #fff !important;
-  }
+  .btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active {
+    color: var(--bs-btn-active-color);
+    background-color: #440000;
+    border-color: var(--bs-btn-active-border-color);
+}
 
   .nav-link {
     display: block;
@@ -476,9 +483,9 @@
 
   }
   .txt-table-vendas{
-    margin-top: 20px;
+    margin: 20px;
     font-size: 24px;
-    color: #B92E2E;
+    color: #fff;
     background: none;
     border: none;
   }
@@ -841,4 +848,150 @@
     font-style: normal;
     color: #2A2B3F !important;
     font-size: 13px;
+  }
+  .barra_fei{
+    background-color: #B92E2E;
+  
+  }
+  /**Impressão Menu*/
+  .barra_fei_menu_ouro{
+    background-color: #DBB000;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .barra_fei_menu_ouro .texto_centralizado {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    color: #fff;
+    font-size: 26px;
+  }
+
+  .barra_fei_menu_prata{
+    background-color: #9E9D99;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .barra_fei_menu_prata .texto_centralizado {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    color: #fff;
+    font-size: 26px;
+  }
+
+  .barra_fei_menu_bronze{
+    background-color: #CD7F32;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .barra_fei_menu_bronze .texto_centralizado {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    color: #fff;
+    font-size: 26px;
+  }
+  .barra_fei_menu_customizado{
+    background-color: #B92E2E;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .barra_fei_menu_customizado .texto_centralizado {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    color: #fff;
+    font-size: 26px;
+  }
+
+  .sp_icon{
+    padding-left: 10px;
+    text-transform: uppercase;
+    font-size: 12px;
+  }
+  .esquerda {
+    text-align: left;
+    padding-left: 10px;
+  }
+
+  .direita {
+      text-align: right;      
+      padding-right: 10px;
+  }
+  .rodape{
+    display: flex;
+    justify-content: space-between;
+  }
+  .tachado{
+    text-decoration: line-through;
+  }
+  .texto_tachado{
+    font-size: 10px;
+  }
+  .texto_oferta{
+    font-size: 12px;
+  }
+  .economia{
+    border: solid 1px ;
+  }
+  .texto_pacotes{
+    font-size: 18px;
+    color: #fff;
+  }
+  .economia{
+    height: 150px;
+    width: 150px;
+    /* Impede que a imagem de fundo se repita */
+  }
+  .texto-sobre-imagem {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #1b1b1b; /* Cor do texto */
+    font-size: 15px; /* Tamanho da fonte */
+    font-weight: bold; /* Peso da fonte */
+    z-index: 1;
+  }
+  .rf_assinatura {
+    border-top: solid;
+    text-align: center;
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .texto_cartao{
+    font-size: 26px;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .icone_filtro_menu {
+    font-size: 20px !important;
+    color: #B92E2E !important;
+  }
+  .texto_filtro_menu {
+    font-size: 18px !important;
+    color: #2A2B3F !important;
+    padding-left: 20px;
+  }  
+  .rf_texto_menu {
+    font-style: normal;
+    color: #2A2B3F !important;
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+  .rf_bg_form_menu {
+    border: #2A2B3F solid 1px ;
+    border-radius: 8px;
+    margin-left: 2px;
+    margin-right: 2px;
+    height: 40px;
   }

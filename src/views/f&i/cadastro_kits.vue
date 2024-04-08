@@ -93,6 +93,19 @@
           <label class="rf_texto">Descrição</label>
         </div>
       </div>
+      <div class="col-3">
+        <div class="form-floating">
+          <select
+            class="form-select rf_bg_form rf_texto_desk"
+            v-model="filtro_modelo_id"
+          >
+            <option v-for="item in modelos" :key="item.id" :value="item.id">
+              {{ item.descricao }}
+            </option>
+          </select>
+          <label class="rf_texto">Modelo</label>
+        </div>
+      </div>
 
       <div class="col-2">
         <div class="form-floating">
@@ -445,7 +458,6 @@
     </table>
   </div>
 
-
   <!-- Modal de confirmação Acessório -->
   <div
     class="modal fade"
@@ -539,7 +551,7 @@
         </div>
         <div class="modal-body">
           <div class="row g-2 p-2">
-            <span class="texto_kit">Deseja remover o acessório do Kit?</span>    
+            <span class="texto_kit">Deseja remover o acessório do Kit?</span>
           </div>
         </div>
         <div class="modal-footer">
@@ -605,9 +617,7 @@
                   class="form-control rf_bg_form rf_texto_desk"
                   v-model="precoAjustadoSeguro"
                   @input="
-                    precoAjustadoSeguro = formatarValor(
-                      precoAjustadoSeguro
-                    )
+                    precoAjustadoSeguro = formatarValor(precoAjustadoSeguro)
                   "
                   required
                 />
@@ -661,7 +671,7 @@
         </div>
         <div class="modal-body">
           <div class="row g-2 p-2">
-            <span class="texto_kit">Deseja remover o seguro do Kit?</span>    
+            <span class="texto_kit">Deseja remover o seguro do Kit?</span>
           </div>
         </div>
         <div class="modal-footer">
@@ -690,8 +700,8 @@
       </div>
     </div>
   </div>
-   <!-- Modal de confirmação Revisao -->
-   <div
+  <!-- Modal de confirmação Revisao -->
+  <div
     class="modal fade"
     id="confirmModalRevisao"
     tabindex="-1"
@@ -727,9 +737,7 @@
                   class="form-control rf_bg_form rf_texto_desk"
                   v-model="precoAjustadoRevisao"
                   @input="
-                    precoAjustadoRevisao = formatarValor(
-                      precoAjustadoRevisao
-                    )
+                    precoAjustadoRevisao = formatarValor(precoAjustadoRevisao)
                   "
                   required
                 />
@@ -783,7 +791,7 @@
         </div>
         <div class="modal-body">
           <div class="row g-2 p-2">
-            <span class="texto_kit">Deseja remover a revisão do Kit?</span>    
+            <span class="texto_kit">Deseja remover a revisão do Kit?</span>
           </div>
         </div>
         <div class="modal-footer">
@@ -812,9 +820,6 @@
       </div>
     </div>
   </div>
-
-
-
 
   <!--Modal Acessórios-->
   <div
@@ -1241,7 +1246,7 @@ export default {
       filtroCodigoSeguro: "",
       filtroPlaca: "",
       filtroMarca: "",
-      filtroModelo: "",
+      filtro_modelo_id: "",
       filtroCor: "",
 
       page: 1,
@@ -1253,15 +1258,15 @@ export default {
       precoAjustadoAcessorio: "",
       precoAjustadoSeguro: "",
       precoAjustadoRevisao: "",
-      
+
       abrir_modal: false,
       msg: "",
       id_kit_acessorio: "",
       id_kit_seguro: "",
       id_kit_revisao: "",
-      status_acessorio:1,
-      status_seguro:1,
-      status_revisao:1,
+      status_acessorio: 1,
+      status_seguro: 1,
+      status_revisao: 1,
     };
   },
   mounted() {
@@ -1303,15 +1308,15 @@ export default {
       this.id_kit_revisao = item.id;
       this.status_revisao = 1;
     },
-    remover_item_acessorio(item){
+    remover_item_acessorio(item) {
       this.id_kit_acessorio = item.id;
       this.status_acessorio = 0;
     },
-    remover_item_seguro(item){
+    remover_item_seguro(item) {
       this.id_kit_seguro = item.id;
       this.status_seguro = 0;
     },
-    remover_item_revisao(item){
+    remover_item_revisao(item) {
       this.id_kit_revisao = item.id;
       this.status_revisao = 0;
     },
@@ -1391,7 +1396,6 @@ export default {
               this.msg = resposta.message;
               setTimeout(() => (this.abrir_modal = false), 4000);
               this.retrievekitsAcessoriosItens();
-              
             }
           });
       } catch (error) {
@@ -1417,21 +1421,18 @@ export default {
       const preco_ajustado = this.precoAjustadoSeguro;
       const status = this.status_seguro;
       try {
-        await fetch(
-          `${process.env.VUE_APP_API_URL}listar_kits_seguros/${id}`,
-          {
-            method: "PUT",
+        await fetch(`${process.env.VUE_APP_API_URL}listar_kits_seguros/${id}`, {
+          method: "PUT",
 
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              id: id,
-              preco_ajustado: preco_ajustado,
-              status: status,
-            }),
-          }
-        )
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: id,
+            preco_ajustado: preco_ajustado,
+            status: status,
+          }),
+        })
           .then((data) => {
             if (!data.ok) {
               throw Error(data.status);
@@ -1445,7 +1446,6 @@ export default {
               this.msg = resposta.message;
               setTimeout(() => (this.abrir_modal = false), 4000);
               this.retrievekitsSegurosItens();
-              
             }
           });
       } catch (error) {
@@ -1499,7 +1499,6 @@ export default {
               this.msg = resposta.message;
               setTimeout(() => (this.abrir_modal = false), 4000);
               this.retrievekitsRevisoesItens();
-              
             }
           });
       } catch (error) {
@@ -1579,8 +1578,7 @@ export default {
             this.abrir_modal = true;
             this.msg = resposta.message;
             setTimeout(() => (this.abrir_modal = false), 4000);
-
-            //window.location.reload();
+            this.retrievekitsAcessoriosItens();
           }
           if (resposta.StatusOk == 204) {
             this.abrir_modal = true;
@@ -1639,7 +1637,7 @@ export default {
             this.msg = resposta.message;
             setTimeout(() => (this.abrir_modal = false), 4000);
 
-            //window.location.reload();
+            this.retrievekitsSegurosItens();
           }
           if (resposta.StatusOk == 204) {
             this.abrir_modal = true;
@@ -1698,7 +1696,7 @@ export default {
             this.msg = resposta.message;
             setTimeout(() => (this.abrir_modal = false), 4000);
 
-            //window.location.reload();
+            this.retrievekitsRevisoesItens();
           }
           if (resposta.StatusOk == 204) {
             this.abrir_modal = true;
@@ -1779,6 +1777,7 @@ export default {
         .get(`${process.env.VUE_APP_API_URL}listar_kits_modelo`, {
           params: {
             descricao: this.filtroDescricao,
+            modelo_id: this.filtro_modelo_id,
             page: this.page - 1,
             size: this.pageSize,
           },

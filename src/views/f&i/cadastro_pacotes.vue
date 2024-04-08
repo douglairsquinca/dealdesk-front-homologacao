@@ -5,7 +5,7 @@
     :barraTitulo="' F&I - Pacotes'"
     :titulo="'pacotes'"
   />
-  <div class="card card-filtro">
+  <!-- <div class="card card-filtro">
     <form @submit.prevent="onSubmit" id="form">
       <div class="row g-2 p-2">
         <div class="card-title gy-4">
@@ -73,7 +73,7 @@
         </div>
       </div>
     </form>
-  </div>
+  </div> -->
   <!--Bloco do Filtro-->
   <div class="card card-filtro">
     <div class="row g-2 p-2">

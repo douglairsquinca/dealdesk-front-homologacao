@@ -401,8 +401,7 @@
                       type="text"
                       class="form-control rf_bg_form rf_texto_desk"
                       v-model="codigo_peca_editar"
-                      required
-                      v-on:blur="buscar_acessorio"
+                      required                     
                     />
                     <label class="rf_texto_desk">Código</label>
                   </div>
@@ -778,7 +777,7 @@ export default {
       if (this.familias) {
         console.log("Buscando modelos de veículos");
         await axios
-          .get(`${process.env.VUE_APP_API_URL}modelos`, {
+          .get(`${process.env.VUE_APP_API_URL}modelos_fei`, {
             params: {
               familiaVeiculoId: this.selected_familia_veiculo_escolhido,
             },
@@ -787,6 +786,7 @@ export default {
             this.modelo_veiculo_escolhido = response.data.rows;
             console.log(response.data.rows);
             this.retrieveAcessorios();
+
           })
           .catch((error) => {
             if (error.response.status == 400) {

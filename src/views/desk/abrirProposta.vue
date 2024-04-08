@@ -1,13 +1,19 @@
 <template>
   <SidebarVue ref="sidebar" />
-  <NavgatorDk ref="navgator" :barraTitulo="' Informações do Cliente'" :titulo="'propostas'" />
+  <NavgatorDk
+    ref="navgator"
+    :barraTitulo="' Informações do Cliente'"
+    :titulo="'propostas'"
+  />
 
   <!--Bloco dados do cliente-->
   <div class="card card-filtro">
     <form @submit.prevent="onSubmit">
       <div class="row g-2 p-2">
         <div class="card-title gy-4">
-          <i class="bi bi-journal-text fs-5 icone_filtro"><span class="texto_filtro">Dados do Cliente</span></i>
+          <i class="bi bi-journal-text fs-5 icone_filtro"
+            ><span class="texto_filtro">Dados do Cliente</span></i
+          >
         </div>
       </div>
 
@@ -15,71 +21,121 @@
       <div class="row g-2 p-2">
         <div class="col-1">
           <div class="form-floating">
-            <input type="text" class="form-control rf_bg_form  rf_texto" v-model="id_proposta" :disabled="true" />
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="id_proposta"
+              :disabled="true"
+            />
             <label for="valid_descricao" class="rf_texto">Nº Proposta</label>
           </div>
         </div>
         <div class="col">
           <div class="form-floating">
-            <input type="text" class="form-control rf_bg_form rf_texto" v-model="recepcionista" :disabled="true" />
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="recepcionista"
+              :disabled="true"
+            />
             <label for="valid_descricao" class="rf_texto">Atendente</label>
           </div>
         </div>
         <div class="col">
           <div class="form-floating">
-            <input type="text" class="form-control rf_bg_form rf_texto" v-model="vendedor_info" :disabled="true" />
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="vendedor_info"
+              :disabled="true"
+            />
             <label for="valid_descricao" class="rf_texto">Vendedor</label>
           </div>
         </div>
         <div class="col-2">
           <div class="form-floating">
-            <button type="button" class="btn btn-lg btn-filtro" data-bs-toggle="modal"
-              data-bs-target="#ModalTrocarVendedor" @click="retrieveVendedorDispo">
+            <button
+              type="button"
+              class="btn btn-lg btn-filtro"
+              data-bs-toggle="modal"
+              data-bs-target="#ModalTrocarVendedor"
+              @click="retrieveVendedorDispo"
+            >
               <span class="rf_texto_btn">Troca Vendedor</span>
             </button>
           </div>
         </div>
         <div class="col-2">
           <div class="form-floating">
-            <button type="button" class="btn btn-lg btn-filtro" @click="habilitar_cadastro">
+            <button
+              type="button"
+              class="btn btn-lg btn-filtro"
+              @click="habilitar_cadastro"
+            >
               <span class="rf_texto_btn">Habilitar Cadastro</span>
             </button>
           </div>
         </div>
       </div>
 
-
       <!-- Dados do Cliente-->
       <div class="row g-2 p-2">
         <!--Nome do Cliente-->
         <div class="col-4">
           <div class="form-floating">
-            <input type="text" class="form-control rf_bg_form rf_texto" :style="{ 'border-color': nomeBorderColor }"
-              v-model="cliente" :disabled="input_cliente" required />
-            <label for="valid_descricao" class="rf_texto">Nome do Cliente</label>
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              :style="{ 'border-color': nomeBorderColor }"
+              v-model="cliente"
+              :disabled="input_cliente"
+              required
+            />
+            <label for="valid_descricao" class="rf_texto"
+              >Nome do Cliente</label
+            >
           </div>
         </div>
         <!--CPF/CNPJ-->
         <div class="col-md-2">
           <div class="form-floating">
-            <input type="text" class="form-control rf_bg_form rf_texto" v-model="cpfCnpj"
-              :style="{ 'border-color': cnpjBorderColor }" :disabled="input_cliente" required v-on:blur="vData" />
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="cpfCnpj"
+              :style="{ 'border-color': cnpjBorderColor }"
+              :disabled="input_cliente"
+              required
+              v-on:blur="vData"
+            />
             <label for="valid_descricao" class="rf_texto">CPF/CNPJ</label>
           </div>
         </div>
         <!--Data Nascimento-->
         <div class="col-2">
           <div class="form-floating">
-            <input type="date" class="form-control rf_bg_form rf_texto" v-model="dataNascimento"
-              :style="{ 'border-color': dataNascimentoBorderColor }" :disabled="input_cliente" autocomplete="off" />
+            <input
+              type="date"
+              class="form-control rf_bg_form rf_texto"
+              v-model="dataNascimento"
+              :style="{ 'border-color': dataNascimentoBorderColor }"
+              :disabled="input_cliente"
+              autocomplete="off"
+            />
             <label class="rf_texto">Data Nascimento</label>
           </div>
         </div>
         <!--Email-->
         <div class="col">
           <div class="form-floating">
-            <input type="text" class="form-control rf_bg_form rf_texto" v-model="email" v-on:blur="validateEmail(email)"
-              :style="{ 'border-color': emailBorderColor }" :disabled="input_cliente" />
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="email"
+              v-on:blur="validateEmail(email)"
+              :style="{ 'border-color': emailBorderColor }"
+              :disabled="input_cliente"
+            />
             <label for="valid_descricao" class="rf_texto">Email</label>
           </div>
         </div>
@@ -88,56 +144,109 @@
         <!--Endereço-->
         <div class="col-4">
           <div class="form-floating">
-            <input type="text" class="form-control rf_bg_form rf_texto" v-model="endereco"
-              :style="{ 'border-color': enderecoBorderColor }" :disabled="input_cliente" required autocomplete="off" />
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="endereco"
+              :style="{ 'border-color': enderecoBorderColor }"
+              :disabled="input_cliente"
+              required
+              autocomplete="off"
+            />
             <label class="rf_texto">Endereço</label>
           </div>
         </div>
         <!--Complemento-->
         <div class="col-2">
           <div class="form-floating">
-            <input type="text" class="form-control rf_bg_form rf_texto" v-model="complemento"
-              :style="{ 'border-color': complementoBorderColor }" :disabled="input_cliente" autocomplete="off" />
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="complemento"
+              :style="{ 'border-color': complementoBorderColor }"
+              :disabled="input_cliente"
+              autocomplete="off"
+            />
             <label class="rf_texto">Complemento</label>
           </div>
         </div>
         <!--UF-->
         <div class="col-1">
           <div class="form-floating">
-            <input v-model="uf" :style="{ 'border-color': ufBorderColor }" :disabled="input_cliente"
-              class="form-control rf_bg_form rf_texto" list="datalistOptions" id="estado" required autocomplete="off" />
+            <input
+              v-model="uf"
+              :style="{ 'border-color': ufBorderColor }"
+              :disabled="input_cliente"
+              class="form-control rf_bg_form rf_texto"
+              list="datalistOptions"
+              id="estado"
+              required
+              autocomplete="off"
+            />
 
             <label class="rf_texto">UF</label>
             <datalist id="datalistOptions">
-              <option v-for="opt in estados" :data-value="opt.id" :value="opt.sigla" :key="opt.id"></option>
+              <option
+                v-for="opt in estados"
+                :data-value="opt.id"
+                :value="opt.sigla"
+                :key="opt.id"
+              ></option>
             </datalist>
           </div>
         </div>
         <!--Cidade-->
         <div class="col-2">
           <div class="form-floating">
-            <input v-model="cidade" :style="{ 'border-color': cidadeBorderColor }" :disabled="input_cliente"
-              class="form-control rf_bg_form rf_texto" list="datalistCidades" id="cidade" required autocomplete="off" />
+            <input
+              v-model="cidade"
+              :style="{ 'border-color': cidadeBorderColor }"
+              :disabled="input_cliente"
+              class="form-control rf_bg_form rf_texto"
+              list="datalistCidades"
+              id="cidade"
+              required
+              autocomplete="off"
+            />
 
             <label class="rf_texto">Cidade</label>
             <datalist id="datalistCidades">
-              <option v-for="opt in cidades" :data-value="opt.id" :value="opt.nome" :key="opt.id"></option>
+              <option
+                v-for="opt in cidades"
+                :data-value="opt.id"
+                :value="opt.nome"
+                :key="opt.id"
+              ></option>
             </datalist>
           </div>
         </div>
         <!--Bairro-->
         <div class="col-2">
           <div class="form-floating">
-            <input type="text" class="form-control rf_bg_form rf_texto" v-model="bairro"
-              :style="{ 'border-color': bairroBorderColor }" :disabled="input_cliente" autocomplete="off" required />
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="bairro"
+              :style="{ 'border-color': bairroBorderColor }"
+              :disabled="input_cliente"
+              autocomplete="off"
+              required
+            />
             <label class="rf_texto">Bairro</label>
           </div>
         </div>
         <!--CEP-->
         <div class="col-1">
           <div class="form-floating">
-            <input type="text" class="form-control rf_bg_form rf_texto" v-model="cep"
-              :style="{ 'border-color': cepBorderColor }" :disabled="input_cliente" autocomplete="off" required />
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="cep"
+              :style="{ 'border-color': cepBorderColor }"
+              :disabled="input_cliente"
+              autocomplete="off"
+              required
+            />
             <label class="rf_texto">CEP</label>
           </div>
         </div>
@@ -146,24 +255,41 @@
         <!--Telefone-->
         <div class="col-2">
           <div class="form-floating">
-            <input type="text" class="form-control rf_bg_form rf_texto" v-model="tel"
-              :style="{ 'border-color': telBorderColor }" :disabled="input_cliente" required v-on:blur="vTel" />
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="tel"
+              :style="{ 'border-color': telBorderColor }"
+              :disabled="input_cliente"
+              required
+              v-on:blur="vTel"
+            />
             <label for="valid_descricao" class="rf_texto">Telefone</label>
           </div>
         </div>
         <!--Telefone-->
         <div class="col-2">
           <div class="form-floating">
-            <input type="text" class="form-control rf_bg_form rf_texto" v-model="cel"
-              :style="{ 'border-color': celBorderColor }" :disabled="input_cliente" v-on:blur="vTel2" />
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="cel"
+              :style="{ 'border-color': celBorderColor }"
+              :disabled="input_cliente"
+              v-on:blur="vTel2"
+            />
             <label for="valid_descricao" class="rf_texto">Telefone 2</label>
           </div>
         </div>
         <!--Histórico Cliente-->
         <div class="col-2">
           <div class="form-floating">
-            <button class="btn btn-lg btn-filtro" data-bs-target="#ModalHistoricoCliente" data-bs-toggle="modal"
-              @click="habilitar_historico_cliente">
+            <button
+              class="btn btn-lg btn-filtro"
+              data-bs-target="#ModalHistoricoCliente"
+              data-bs-toggle="modal"
+              @click="habilitar_historico_cliente"
+            >
               <span class="rf_texto_btn">Histórico Cliente</span>
             </button>
           </div>
@@ -173,7 +299,12 @@
       <div class="row g-2 p-2">
         <div class="col-1">
           <div class="form-floating">
-            <button type="button" class="btn btn-lg btn-filtro" :disabled="input_cliente" @click="atualizar_cliente()">
+            <button
+              type="button"
+              class="btn btn-lg btn-filtro"
+              :disabled="input_cliente"
+              @click="atualizar_cliente()"
+            >
               <span class="rf_texto_btn">Atualizar</span>
             </button>
           </div>
@@ -183,9 +314,16 @@
       <div class="row g-2 p-2">
         <div class="col-2" v-if="venda_Futura">
           <div class="form-floating">
-            <select class="form-select rf_bg_form rf_texto" v-model="selected_familia_veiculo_escolhido"
-              @change="vendaFutura">
-              <option v-for="item in familia_veiculo_escolhido" :value="item.id" :key="item.id">
+            <select
+              class="form-select rf_bg_form rf_texto"
+              v-model="selected_familia_veiculo_escolhido"
+              @change="vendaFutura"
+            >
+              <option
+                v-for="item in familia_veiculo_escolhido"
+                :value="item.id"
+                :key="item.id"
+              >
                 {{ item.descricao }}
               </option>
             </select>
@@ -194,9 +332,16 @@
         </div>
         <div class="col-2" v-if="venda_Futura">
           <div class="form-floating">
-            <select class="form-select rf_bg_form rf_texto" v-model="selected_modelo_veiculo_escolhido"
-              @change="completar_modelo(selected_modelo_veiculo_escolhido)">
-              <option v-for="item in modelo_veiculo_escolhido" :value="item.id" :key="item.id">
+            <select
+              class="form-select rf_bg_form rf_texto"
+              v-model="selected_modelo_veiculo_escolhido"
+              @change="completar_modelo(selected_modelo_veiculo_escolhido)"
+            >
+              <option
+                v-for="item in modelo_veiculo_escolhido"
+                :value="item.id"
+                :key="item.id"
+              >
                 {{ item.descricao }}
               </option>
             </select>
@@ -206,27 +351,39 @@
         <div class="col-2">
           <div class="form-floating">
             <div class="form-check form-switch rf_texto mt-3">
-              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked1"
-                v-model="venda_Futura" @click="select_familia" />
-              <label class="form-check-label" for="flexSwitchCheckChecked1">Venda Futura</label>
+              <input
+                class="form-check-input"
+                type="checkbox"
+                role="switch"
+                id="flexSwitchCheckChecked1"
+                v-model="venda_Futura"
+                @click="select_familia"
+              />
+              <label class="form-check-label" for="flexSwitchCheckChecked1"
+                >Venda Futura</label
+              >
             </div>
           </div>
         </div>
         <div class="col-2">
           <div class="form-floating">
             <div class="form-check form-switch rf_texto mt-3">
-              <input class="form-check-input" type="checkbox" role="switch" v-model="pagamento" />
+              <input
+                class="form-check-input"
+                type="checkbox"
+                role="switch"
+                v-model="pagamento"
+              />
               <label class="form-check-label">Venda à Vista</label>
             </div>
           </div>
         </div>
-
       </div>
     </form>
   </div>
   <!--Bloco Veiculos-->
   <div class="card card-filtro">
-    <div class="row ">
+    <div class="row">
       <!--Veículos para troca-->
       <!-- <div class="col-6">
       <div class="card rf_bg_form mt-3">
@@ -403,35 +560,55 @@
         <form @submit.prevent="onSubmitVeiculo">
           <div class="row g-2 p-2">
             <div class="card-title gy-4">
-              <i class="bi bi-car-front-fill fs-5 icone_filtro"><span class="texto_filtro">Veículo de Compra</span></i>
+              <i class="bi bi-car-front-fill fs-5 icone_filtro"
+                ><span class="texto_filtro">Veículo de Compra</span></i
+              >
             </div>
             <!--Chassi-->
             <div class="col-2">
               <div class="form-floating">
-                <input type="text" class="form-control rf_bg_form rf_texto" v-model="chassi_proposta"
-                  :disabled="true" />
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="chassi_proposta"
+                  :disabled="true"
+                />
                 <label class="rf_texto">Chassi</label>
               </div>
             </div>
             <!--Marca-->
             <div class="col-2">
               <div class="form-floating">
-                <input type="text" class="form-control rf_bg_form rf_texto" v-model="marca_proposta" :disabled="true" />
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="marca_proposta"
+                  :disabled="true"
+                />
                 <label class="rf_texto">Marca</label>
               </div>
             </div>
             <!--Modelo-->
             <div class="col-6">
               <div class="form-floating">
-                <input type="text" class="form-control rf_bg_form rf_texto" v-model="modelo_proposta"
-                  :disabled="true" />
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="modelo_proposta"
+                  :disabled="true"
+                />
                 <label class="rf_texto">Modelo</label>
               </div>
             </div>
             <!--Cor-->
             <div class="col-2">
               <div class="form-floating">
-                <input type="text" class="form-control rf_bg_form rf_texto" v-model="cor_proposta" :disabled="true" />
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="cor_proposta"
+                  :disabled="true"
+                />
                 <label class="rf_texto">Cor</label>
               </div>
             </div>
@@ -440,49 +617,67 @@
             <!--Ano Fabricação-->
             <div class="col-2">
               <div class="form-floating">
-                <input type="text" class="form-control rf_bg_form rf_texto" v-model="anoFabricacao_proposta"
-                  :disabled="true" />
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="anoFabricacao_proposta"
+                  :disabled="true"
+                />
                 <label class="rf_texto">Ano Fabricação</label>
               </div>
             </div>
             <!--Ano Modelo-->
             <div class="col-2">
               <div class="form-floating">
-                <input type="text" class="form-control rf_bg_form rf_texto" v-model="anoModelo_proposta"
-                  :disabled="true" />
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="anoModelo_proposta"
+                  :disabled="true"
+                />
                 <label class="rf_texto">Ano Modelo</label>
               </div>
             </div>
             <!--Combustivel-->
             <div class="col-2">
               <div class="form-floating">
-                <input type="text" class="form-control rf_bg_form rf_texto" v-model="combustivel_proposta"
-                  :disabled="true" />
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="combustivel_proposta"
+                  :disabled="true"
+                />
                 <label class="rf_texto">Combustível</label>
               </div>
             </div>
             <div class="col-2">
               <div class="form-floating">
-                <button type="submit" class="btn btn-lg btn-filtro" data-bs-toggle="modal"
-                  data-bs-target="#ModalVeiculoEstoque" :disabled="inserir_veiculo" @click="habilitar_veiculo">
+                <button
+                  type="submit"
+                  class="btn btn-lg btn-filtro"
+                  data-bs-toggle="modal"
+                  data-bs-target="#ModalVeiculoEstoque"
+                  :disabled="inserir_veiculo"
+                  @click="habilitar_veiculo"
+                >
                   <span class="rf_texto_btn">Inserir</span>
                 </button>
               </div>
             </div>
           </div>
-          <div class="row g-2 p-2">
-
-          </div>
+          <div class="row g-2 p-2"></div>
         </form>
         <!--Acessórios e Cortesia-->
         <div class="row g-2 p-2">
           <div class="card-title gy-4">
-            <i class="bi bi-shop fs-5 icone_filtro"><span class="texto_filtro">Acessórios e Cortesia</span></i>
+            <i class="bi bi-shop fs-5 icone_filtro"
+              ><span class="texto_filtro">Acessórios e Cortesia</span></i
+            >
           </div>
         </div>
 
-        <div class="card card-tabela-desk  rf_margin">
-          <table class="table rf_texto ">
+        <div class="card card-tabela-desk rf_margin">
+          <table class="table rf_texto">
             <thead>
               <tr>
                 <th scope="col">Descrição</th>
@@ -493,13 +688,21 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in itens_acessorios" :key="item.descricao" class="table-linha">
+              <tr
+                v-for="item in itens_acessorios"
+                :key="item.descricao"
+                class="table-linha"
+              >
                 <td>{{ item.descricao }}</td>
                 <td>{{ item.valor }}</td>
                 <td>{{ item.custo }}</td>
                 <td>{{ cortesia }}</td>
                 <td>
-                  <button type="button" class="dropdown-toggle-icon" @click="excluir_item_ac(item)">
+                  <button
+                    type="button"
+                    class="dropdown-toggle-icon"
+                    @click="excluir_item_ac(item)"
+                  >
                     <i class="bi bi-trash"></i>
                   </button>
                 </td>
@@ -510,8 +713,14 @@
         <div class="row g-2 p-2">
           <div class="col-1">
             <div class="form-floating">
-              <button type="button" class="btn btn-lg btn-filtro" data-bs-target="#ModalItensAcessorios"
-                data-bs-toggle="modal" :disabled="inserir_acessorios" @click="habilitar_itens_acessorios">
+              <button
+                type="button"
+                class="btn btn-lg btn-filtro"
+                data-bs-target="#ModalItensAcessorios"
+                data-bs-toggle="modal"
+                :disabled="inserir_acessorios"
+                @click="habilitar_itens_acessorios"
+              >
                 <span class="rf_texto_btn">Inserir</span>
               </button>
             </div>
@@ -520,9 +729,18 @@
           <div class="col mt-4">
             <div class="form-floating">
               <div class="form-check form-switch rf_texto">
-                <input class="form-check-input " type="checkbox" role="switch" id="flexSwitchCheckChecked"
-                  v-model="incluir_acessorios" @click="habilitar_incluir_itens_financiamento" checked />
-                <label class="form-check-label" for="flexSwitchCheckChecked">Incluir no Financiamento</label>
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  role="switch"
+                  id="flexSwitchCheckChecked"
+                  v-model="incluir_acessorios"
+                  @click="habilitar_incluir_itens_financiamento"
+                  checked
+                />
+                <label class="form-check-label" for="flexSwitchCheckChecked"
+                  >Incluir no Financiamento</label
+                >
               </div>
             </div>
           </div>
@@ -534,7 +752,9 @@
   <div class="card card-filtro">
     <div class="row g-2 p-2">
       <div class="card-title rf_texto gy-4">
-        <i class="bi bi-car-front-fill fs-5 icone_filtro"><span class="texto_filtro">Resumo da Proposta</span></i>
+        <i class="bi bi-car-front-fill fs-5 icone_filtro"
+          ><span class="texto_filtro">Resumo da Proposta</span></i
+        >
       </div>
     </div>
 
@@ -545,34 +765,42 @@
     <div class="row g-2 p-2">
       <!--Descrição-->
       <div class="col">
-        <span class="rf_texto">Valor Sugerido de Venda</span><br>
-        <span class="rf_texto"> {{ (Valor_Sugerido) }}</span>
+        <span class="rf_texto">Valor Sugerido de Venda</span><br />
+        <span class="rf_texto"> {{ Valor_Sugerido }}</span>
       </div>
       <div class="col">
-        <span class="rf_texto">Valor Custos Variáveis (+)</span><br>
+        <span class="rf_texto">Valor Custos Variáveis (+)</span><br />
         <span class="rf_texto">{{ Valor_Custo_variaveis }}</span>
       </div>
       <div class="col">
-        <span class="rf_texto">Valor dos Acessórios</span><br>
+        <span class="rf_texto">Valor dos Acessórios</span><br />
         <span class="rf_texto">{{ Valor_Itens_Acessorios }}</span>
       </div>
       <div class="col">
-        <span class="rf_texto">Desconto</span><br>
-        <input type="text" class="form-control rf_bg_form rf_texto" v-model="desconto" v-on:blur="inserir_desconto"
-          @input="desconto = formatarValor(desconto)" />
+        <span class="rf_texto">Desconto</span><br />
+        <input
+          type="text"
+          class="form-control rf_bg_form rf_texto"
+          v-model="desconto"
+          v-on:blur="inserir_desconto"
+          @input="desconto = formatarValor(desconto)"
+        />
       </div>
       <div class="col">
-        <span class="rf_texto">Acréscimo</span><br>
-        <input type="text" class="form-control rf_bg_form rf_texto" v-model="adicional" v-on:blur="inserir_acrescimo"
-          @input="adicional = formatarValor(adicional)" />
+        <span class="rf_texto">Acréscimo</span><br />
+        <input
+          type="text"
+          class="form-control rf_bg_form rf_texto"
+          v-model="adicional"
+          v-on:blur="inserir_acrescimo"
+          @input="adicional = formatarValor(adicional)"
+        />
       </div>
       <div class="col">
-        <span class="rf_texto">Valor Total Veículo Venda</span><br>
-        <span class="rf_texto"> {{ Valor_Total_Venda }}</span><br>
+        <span class="rf_texto">Valor Total Veículo Venda</span><br />
+        <span class="rf_texto"> {{ Valor_Total_Venda }}</span
+        ><br />
       </div>
-
-
-
     </div>
     <!--Layoute atual utilizando tabela-->
     <!-- <div class="card card-tabela-desk">
@@ -641,23 +869,23 @@
     <div class="row g-2 p-2">
       <!--Descrição-->
       <div class="col-2">
-        <span class="rf_texto">Valor Resultado Bruto</span><br>
+        <span class="rf_texto">Valor Resultado Bruto</span><br />
         <span class="rf_texto"> {{ Lucro_Bruto }}</span>
       </div>
       <div class="col-2">
-        <span class="rf_texto">Valor Resultado Gerencial</span><br>
+        <span class="rf_texto">Valor Resultado Gerencial</span><br />
         <span class="rf_texto">{{ Lucro_Operacional }}</span>
       </div>
       <div class="col-2">
-        <span class="rf_texto">Valor Resultado Financiamento</span><br>
+        <span class="rf_texto">Valor Resultado Financiamento</span><br />
         <span class="rf_texto">{{ Valor_Resultado_Financiamento }}</span>
       </div>
 
       <div class="col-2">
-        <span class="rf_texto">Valor Resultado Liquído</span><br>
-        <span class="rf_texto"> {{ Lucro_liquido }}</span><br>
+        <span class="rf_texto">Valor Resultado Liquído</span><br />
+        <span class="rf_texto"> {{ Lucro_liquido }}</span
+        ><br />
       </div>
-
     </div>
 
     <div class="card-desk-menu">
@@ -665,23 +893,23 @@
     </div>
     <div class="row g-2 p-2">
       <div class="col-2">
-        <span class="rf_texto">Valor Avaliação</span><br>
+        <span class="rf_texto">Valor Avaliação</span><br />
         <span class="rf_texto"> {{ Valor_Avaliado }}</span>
       </div>
       <div class="col-2">
-        <span class="rf_texto">Valor itens Avaliados DB(-)</span><br>
+        <span class="rf_texto">Valor itens Avaliados DB(-)</span><br />
         <span class="rf_texto">{{ Valor_Itens_Avaliacao_db }}</span>
       </div>
       <div class="col-2">
-        <span class="rf_texto">Valor itens Avaliados CR(2)</span><br>
+        <span class="rf_texto">Valor itens Avaliados CR(2)</span><br />
         <span class="rf_texto">{{ Valor_Itens_Avaliacao_cr }}</span>
       </div>
 
       <div class="col-2">
-        <span class="rf_texto">Valor Avaliação Final</span><br>
-        <span class="rf_texto"> {{ Valor_Avaliacao_Final }}</span><br>
+        <span class="rf_texto">Valor Avaliação Final</span><br />
+        <span class="rf_texto"> {{ Valor_Avaliacao_Final }}</span
+        ><br />
       </div>
-
     </div>
 
     <div class="card-desk-menu">
@@ -689,32 +917,33 @@
     </div>
     <div class="row g-2 p-2">
       <div class="col-2">
-        <span class="rf_texto">Valor Entrada</span><br>
+        <span class="rf_texto">Valor Entrada</span><br />
         <span class="rf_texto"> {{ Valor_Entrada }}</span>
       </div>
       <div class="col-2">
-        <span class="rf_texto">Valor Financiado</span><br>
+        <span class="rf_texto">Valor Financiado</span><br />
         <span class="rf_texto">{{ Valor_Financiado }}</span>
       </div>
       <div class="col-2">
-        <span class="rf_texto">Quantidade de Meses</span><br>
+        <span class="rf_texto">Quantidade de Meses</span><br />
         <span class="rf_texto">{{ Quantidade_Meses }}</span>
       </div>
 
       <div class="col-2">
-        <span class="rf_texto">Valor da Parcela</span><br>
-        <span class="rf_texto"> {{ Pmt }}</span><br>
+        <span class="rf_texto">Valor da Parcela</span><br />
+        <span class="rf_texto"> {{ Pmt }}</span
+        ><br />
       </div>
-
     </div>
   </div>
 
-
-  <div class="modal-content ">
-    <div class="card card-filtro ">
+  <div class="modal-content">
+    <div class="card card-filtro">
       <div class="row g-2 p-2">
         <div class="card-title rf_texto gy-4">
-          <i class="bi bi-car-front-fill fs-5 icone_filtro"><span class="texto_filtro">Financiamento</span></i>
+          <i class="bi bi-car-front-fill fs-5 icone_filtro"
+            ><span class="texto_filtro">Financiamento</span></i
+          >
         </div>
       </div>
       <div class="row g-2 p-2">
@@ -723,7 +952,7 @@
             <span>Avaliação do Veículo</span>
           </div>
 
-          <table class="table rf_texto ">
+          <table class="table rf_texto">
             <thead>
               <tr>
                 <th class="col-2"></th>
@@ -732,8 +961,15 @@
                 <!--Parcela 1-->
                 <th>
                   <div class="form-floating">
-                    <select class="form-select rf_bg_form rf_texto" v-model="parcela_1">
-                      <option v-for="item in itens_financiamento" :value="item.value" :key="item.value">
+                    <select
+                      class="form-select rf_bg_form rf_texto"
+                      v-model="parcela_1"
+                    >
+                      <option
+                        v-for="item in itens_financiamento"
+                        :value="item.value"
+                        :key="item.value"
+                      >
                         {{ item.value }}
                       </option>
                     </select>
@@ -743,8 +979,16 @@
                 <!--Parcela 2-->
                 <th>
                   <div class="form-floating">
-                    <select class="form-select rf_bg_form rf_texto" v-model="parcela_2" v-on:blur="hab_ranquear">
-                      <option v-for="item in itens_financiamento" :value="item.value" :key="item.value">
+                    <select
+                      class="form-select rf_bg_form rf_texto"
+                      v-model="parcela_2"
+                      v-on:blur="hab_ranquear"
+                    >
+                      <option
+                        v-for="item in itens_financiamento"
+                        :value="item.value"
+                        :key="item.value"
+                      >
                         {{ item.value }}
                       </option>
                     </select>
@@ -754,8 +998,16 @@
                 <!--Parcela 3-->
                 <th>
                   <div class="form-floating">
-                    <select class="form-select rf_bg_form rf_texto" v-model="parcela_3" v-on:blur="hab_ranquear">
-                      <option v-for="item in itens_financiamento" :value="item.value" :key="item.value">
+                    <select
+                      class="form-select rf_bg_form rf_texto"
+                      v-model="parcela_3"
+                      v-on:blur="hab_ranquear"
+                    >
+                      <option
+                        v-for="item in itens_financiamento"
+                        :value="item.value"
+                        :key="item.value"
+                      >
                         {{ item.value }}
                       </option>
                     </select>
@@ -769,47 +1021,68 @@
               <tr>
                 <th scope="row">
                   <div class="d-grid gap-2 disabled">
-                    <button class="btn btn-lg btn-desk-filtro-disabled ">
+                    <button class="btn btn-lg btn-desk-filtro-disabled">
                       <span class="rf_texto_btn">Simulação 1</span>
                     </button>
                   </div>
                 </th>
                 <td>
                   <div class="form-floating">
-                    <input type="text" class="form-control rf_bg_form rf_texto_desk" v-model="entrada_1"
-                      v-on:blur="calcular_real_1" :disabled="bloquear_entrada"
-                      @input="entrada_1 = formatarValor(entrada_1)" />
+                    <input
+                      type="text"
+                      class="form-control rf_bg_form rf_texto_desk"
+                      v-model="entrada_1"
+                      v-on:blur="calcular_real_1"
+                      :disabled="bloquear_entrada"
+                      @input="entrada_1 = formatarValor(entrada_1)"
+                    />
                     <label class="rf_texto">Entrada R$</label>
                   </div>
-
                 </td>
                 <td>
                   <div class="form-floating">
-                    <input type="text" class="form-control rf_bg_form rf_texto_desk" :disabled="bloquear_entrada"
-                      v-model="entrada_1_perc" @input="calcular_perc_1()" />
+                    <input
+                      type="text"
+                      class="form-control rf_bg_form rf_texto_desk"
+                      :disabled="bloquear_entrada"
+                      v-model="entrada_1_perc"
+                      @input="calcular_perc_1()"
+                    />
                     <label class="rf_texto">Entrada %</label>
                   </div>
                 </td>
                 <td>
                   <div class="d-grid gap-2">
-                    <button type="button" class="btn btn-lg btn-desk-filtro"
-                      :class="{ 'active': pmtSelected === 11 }" @click="select_pmt(parcela_1_1, 11)">
+                    <button
+                      type="button"
+                      class="btn btn-lg btn-desk-filtro"
+                      :class="{ active: pmtSelected === 11 }"
+                      @click="select_pmt(parcela_1_1, 11)"
+                    >
                       {{ parcela_1_1 }}
                     </button>
                   </div>
                 </td>
                 <td>
                   <div class="d-grid gap-2">
-                    <button type="button" class="btn btn-lg btn-desk-filtro"
-                      :class="{ 'active': pmtSelected === 12 }" @click="select_pmt(parcela_1_2, 12)">
+                    <button
+                      type="button"
+                      class="btn btn-lg btn-desk-filtro"
+                      :class="{ active: pmtSelected === 12 }"
+                      @click="select_pmt(parcela_1_2, 12)"
+                    >
                       {{ parcela_1_2 }}
                     </button>
                   </div>
                 </td>
                 <td>
                   <div class="d-grid gap-2">
-                    <button type="button" class="btn btn-lg btn-desk-filtro"
-                      :class="{ 'active': pmtSelected === 13 }" @click="select_pmt(parcela_1_3, 13)">
+                    <button
+                      type="button"
+                      class="btn btn-lg btn-desk-filtro"
+                      :class="{ active: pmtSelected === 13 }"
+                      @click="select_pmt(parcela_1_3, 13)"
+                    >
                       {{ parcela_1_3 }}
                     </button>
                   </div>
@@ -826,39 +1099,61 @@
                 </th>
                 <td>
                   <div class="form-floating">
-                    <input type="text" class="form-control rf_bg_form rf_texto rf_texto_desk" v-model="entrada_2"
-                      :disabled="bloquear_entrada" v-on:blur="calcular_real_2"
-                      @input="entrada_2 = formatarValor(entrada_2)" />
+                    <input
+                      type="text"
+                      class="form-control rf_bg_form rf_texto rf_texto_desk"
+                      v-model="entrada_2"
+                      :disabled="bloquear_entrada"
+                      v-on:blur="calcular_real_2"
+                      @input="entrada_2 = formatarValor(entrada_2)"
+                    />
                     <label class="rf_texto">Entrada R$</label>
                   </div>
                 </td>
                 <td>
                   <div class="form-floating">
-                    <input type="text" class="form-control rf_bg_form rf_texto rf_texto_desk" :disabled="bloquear_entrada"
-                      v-model="entrada_2_perc" @input="calcular_perc_2()" />
+                    <input
+                      type="text"
+                      class="form-control rf_bg_form rf_texto rf_texto_desk"
+                      :disabled="bloquear_entrada"
+                      v-model="entrada_2_perc"
+                      @input="calcular_perc_2()"
+                    />
                     <label class="rf_texto">Entrada %</label>
                   </div>
                 </td>
                 <td>
                   <div class="d-grid gap-2">
-                    <button type="button" class="btn btn-lg btn-desk-filtro"
-                      :class="{ 'active': pmtSelected === 21 }" @click="select_pmt(parcela_2_1, 21)">
+                    <button
+                      type="button"
+                      class="btn btn-lg btn-desk-filtro"
+                      :class="{ active: pmtSelected === 21 }"
+                      @click="select_pmt(parcela_2_1, 21)"
+                    >
                       {{ parcela_2_1 }}
                     </button>
                   </div>
                 </td>
                 <td>
                   <div class="d-grid gap-2">
-                    <button type="button" class="btn btn-lg btn-desk-filtro"
-                      :class="{ 'active': pmtSelected === 22 }" @click="select_pmt(parcela_2_2, 22)">
+                    <button
+                      type="button"
+                      class="btn btn-lg btn-desk-filtro"
+                      :class="{ active: pmtSelected === 22 }"
+                      @click="select_pmt(parcela_2_2, 22)"
+                    >
                       {{ parcela_2_2 }}
                     </button>
                   </div>
                 </td>
                 <td>
                   <div class="d-grid gap-2">
-                    <button type="button" class="btn btn-lg btn-desk-filtro"
-                      :class="{ 'active': pmtSelected === 23 }" @click="select_pmt(parcela_2_3, 23)">
+                    <button
+                      type="button"
+                      class="btn btn-lg btn-desk-filtro"
+                      :class="{ active: pmtSelected === 23 }"
+                      @click="select_pmt(parcela_2_3, 23)"
+                    >
                       {{ parcela_2_3 }}
                     </button>
                   </div>
@@ -875,39 +1170,61 @@
                 </th>
                 <td>
                   <div class="form-floating">
-                    <input type="text" class="form-control rf_bg_form rf_texto rf_texto_desk" v-model="entrada_3"
-                      :disabled="bloquear_entrada" v-on:blur="calcular_real_3"
-                      @input="entrada_3 = formatarValor(entrada_3)" />
+                    <input
+                      type="text"
+                      class="form-control rf_bg_form rf_texto rf_texto_desk"
+                      v-model="entrada_3"
+                      :disabled="bloquear_entrada"
+                      v-on:blur="calcular_real_3"
+                      @input="entrada_3 = formatarValor(entrada_3)"
+                    />
                     <label class="rf_texto">Entrada R$</label>
                   </div>
                 </td>
                 <td>
                   <div class="form-floating">
-                    <input type="text" class="form-control rf_bg_form rf_texto rf_texto_desk" :disabled="bloquear_entrada"
-                      v-model="entrada_3_perc" @input="calcular_perc_3()" />
+                    <input
+                      type="text"
+                      class="form-control rf_bg_form rf_texto rf_texto_desk"
+                      :disabled="bloquear_entrada"
+                      v-model="entrada_3_perc"
+                      @input="calcular_perc_3()"
+                    />
                     <label class="rf_texto">Entrada %</label>
                   </div>
                 </td>
                 <td>
                   <div class="d-grid gap-2">
-                    <button type="button" class="btn btn-lg btn-desk-filtro"
-                      :class="{ 'active': pmtSelected === 31 }" @click="select_pmt(parcela_3_1, 31)">
+                    <button
+                      type="button"
+                      class="btn btn-lg btn-desk-filtro"
+                      :class="{ active: pmtSelected === 31 }"
+                      @click="select_pmt(parcela_3_1, 31)"
+                    >
                       {{ parcela_3_1 }}
                     </button>
                   </div>
                 </td>
                 <td>
                   <div class="d-grid gap-2">
-                    <button type="button" class="btn btn-lg btn-desk-filtro"
-                      :class="{ 'active': pmtSelected === 32 }" @click="select_pmt(parcela_3_2, 32)">
+                    <button
+                      type="button"
+                      class="btn btn-lg btn-desk-filtro"
+                      :class="{ active: pmtSelected === 32 }"
+                      @click="select_pmt(parcela_3_2, 32)"
+                    >
                       {{ parcela_3_2 }}
                     </button>
                   </div>
                 </td>
                 <td>
                   <div class="d-grid gap-2">
-                    <button type="button" class="btn btn-lg btn-desk-filtro"
-                      :class="{ 'active': pmtSelected === 33 }" @click="select_pmt(parcela_3_3, 33)">
+                    <button
+                      type="button"
+                      class="btn btn-lg btn-desk-filtro"
+                      :class="{ active: pmtSelected === 33 }"
+                      @click="select_pmt(parcela_3_3, 33)"
+                    >
                       {{ parcela_3_3 }}
                     </button>
                   </div>
@@ -917,7 +1234,10 @@
               <tr>
                 <td>
                   <div class="d-grid gap-2">
-                    <button class="btn btn-lg btn-desk-filtro" @click="limpar_financiamento">
+                    <button
+                      class="btn btn-lg btn-desk-filtro"
+                      @click="limpar_financiamento"
+                    >
                       <span class="rf_texto_btn">Limpar Entradas</span>
                     </button>
                   </div>
@@ -926,48 +1246,71 @@
                 <th></th>
                 <th scope="row">
                   <div class="d-grid gap-2">
-                    <button class="btn btn-lg btn-desk-filtro" id="btn_1" :disabled="entrada_1 === ''"
-                      data-bs-target="#ModalRanqueamento" data-bs-toggle="modal" @click="ranqueamento_1()">
+                    <button
+                      class="btn btn-lg btn-desk-filtro"
+                      id="btn_1"
+                      :disabled="entrada_1 === ''"
+                      data-bs-target="#ModalRanqueamento"
+                      data-bs-toggle="modal"
+                      @click="ranqueamento_1()"
+                    >
                       <span class="rf_texto_btn">Ranquear</span>
                     </button>
                   </div>
                 </th>
                 <th scope="row">
                   <div class="d-grid gap-2">
-                    <button class="btn btn-lg btn-desk-filtro" id="btn_2" :disabled="entrada_1 === ''"
-                      data-bs-target="#ModalRanqueamento" data-bs-toggle="modal" @click="ranqueamento_2()">
+                    <button
+                      class="btn btn-lg btn-desk-filtro"
+                      id="btn_2"
+                      :disabled="entrada_1 === ''"
+                      data-bs-target="#ModalRanqueamento"
+                      data-bs-toggle="modal"
+                      @click="ranqueamento_2()"
+                    >
                       <span class="rf_texto_btn">Ranquear</span>
                     </button>
                   </div>
                 </th>
                 <th scope="row">
                   <div class="d-grid gap-2">
-                    <button class="btn btn-lg btn-desk-filtro" id="btn_3" :disabled="entrada_1 === ''"
-                      data-bs-target="#ModalRanqueamento" data-bs-toggle="modal" @click="ranqueamento_3()">
+                    <button
+                      class="btn btn-lg btn-desk-filtro"
+                      id="btn_3"
+                      :disabled="entrada_1 === ''"
+                      data-bs-target="#ModalRanqueamento"
+                      data-bs-toggle="modal"
+                      @click="ranqueamento_3()"
+                    >
                       <span class="rf_texto_btn">Ranquear</span>
                     </button>
                   </div>
                 </th>
               </tr>
-
-
             </tbody>
           </table>
-          <div class="row g-2 ">
+          <div class="row g-2">
             <div class="col">
               <div class="form-floating">
-                <textarea v-model="info_adicionais" class="form-control rf_bg_form rf_texto"></textarea>
+                <textarea
+                  v-model="info_adicionais"
+                  class="form-control rf_bg_form rf_texto"
+                ></textarea>
                 <label class="rf_texto">Informações Adicionais</label>
               </div>
             </div>
-            <div class="col-2 ">
-              <button class="btn btn-lg btn-desk-filtro" :disabled="info_adicionais === ''" @click="grava_info_adicional"><span class="rf_texto_btn">Gravar Informações</span></button>
+            <div class="col-2">
+              <button
+                class="btn btn-lg btn-desk-filtro"
+                :disabled="info_adicionais === ''"
+                @click="grava_info_adicional"
+              >
+                <span class="rf_texto_btn">Gravar Informações</span>
+              </button>
             </div>
           </div>
-
         </div>
       </div>
-
     </div>
     <div v-if="abrir_modal">
       <Message :msg="msg" v-show="msg" />
@@ -977,195 +1320,272 @@
     </div>
     <div class="desk-footer">
       <div class="col-1 p-1">
-        <button type="submit" class="btn btn-lg btn-desk-filtro" data-bs-toggle="modal" data-bs-target="#ModalGerarMenu"
-        :disabled="btn_gerar_menu" @click="carregarDadosMenu()">
-        <span class="rf_texto_btn_desk"> GERAR MENU</span>        
-      </button>
+        <button
+          type="submit"
+          class="btn btn-lg btn-desk-filtro"
+          data-bs-toggle="modal"
+          data-bs-target="#ModalGerarMenu"
+          :disabled="btn_gerar_menu"
+          @click="carregarDadosMenu()"
+        >
+          <span class="rf_texto_btn_desk"> GERAR MENU</span>
+        </button>
       </div>
       <div class="col-2 p-1">
-        <button class="btn btn-lg btn-desk-filtro" :disabled="btn_finalizar_venda" @click="finalizar_venda">
-        <span class="rf_texto_btn_desk">FINALIZAR VENDA</span>
-      </button>
+        <button
+          class="btn btn-lg btn-desk-filtro"
+          :disabled="btn_finalizar_venda"
+          @click="finalizar_venda"
+        >
+          <span class="rf_texto_btn_desk">FINALIZAR VENDA</span>
+        </button>
       </div>
       <div class="col-1 p-1">
         <button class="btn btn-lg btn-desk-filtro" @click="venda_perdida">
-        <span class="rf_texto_btn_desk">VENDA PERDIDA</span>
-      </button>
+          <span class="rf_texto_btn_desk">VENDA PERDIDA</span>
+        </button>
       </div>
-    
     </div>
   </div>
 
-
   <!--Modal Estoque-->
-  <div class="modal fade" id="ModalVeiculoEstoque" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
-    tabindex="-1">
+  <div
+    class="modal fade"
+    id="ModalVeiculoEstoque"
+    aria-hidden="true"
+    aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1"
+  >
     <div class="modal-dialog modal-dialog-centered modal-fullscreen">
       <div class="modal-content card-container-desk rf_texto">
         <div class="modal-header">
           <div class="card-title gy-4">
-            <i class="bi bi-pencil-square fs-5 icone_kit"><span class="texto_kit">Estoque de Veículos</span></i>
-          </div>          
+            <i class="bi bi-pencil-square fs-5 icone_kit"
+              ><span class="texto_kit">Estoque de Veículos</span></i
+            >
+          </div>
         </div>
         <div class="modal-body">
           <!--Modal Estoque-->
           <div class="row g-2 p-2">
             <div class="card-title rf_texto gy-4">
-              <i class="bi bi-funnel fs-5 icone_filtro"><span class="texto_filtro">Filtro</span></i>
+              <i class="bi bi-funnel fs-5 icone_filtro"
+                ><span class="texto_filtro">Filtro</span></i
+              >
             </div>
           </div>
 
-        
-            <div class="row g-2 p-2">
-              <div class="col-1">
-                <div class="form-floating">
-                  <select class="form-select rf_bg_form rf_texto_desk" v-model="tipoVeiculo">
-                    <option value="NOVO">Novo</option>
-                    <option value="USADO">Usado</option>
-                  </select>
-                  <label class="rf_texto">Tipo Veículo</label>
-
-                </div>
+          <div class="row g-2 p-2">
+            <div class="col-1">
+              <div class="form-floating">
+                <select
+                  class="form-select rf_bg_form rf_texto_desk"
+                  v-model="tipoVeiculo"
+                >
+                  <option value="NOVO">Novo</option>
+                  <option value="USADO">Usado</option>
+                </select>
+                <label class="rf_texto">Tipo Veículo</label>
               </div>
-              <!--Marca-->
-              <div class="col-1">
-                <div class="form-floating">
-                  <input v-model="searchMarca" class="form-control rf_bg_form rf_texto_desk" list="dataListMarcaEstoque"
-                    autocomplete="off" />
-
-                  <label class="rf_texto">Marca</label>
-                  <datalist id="dataListMarcaEstoque">
-                    <option v-for="opt in marcas_estoque" :data-value="opt.marca" :value="opt.marca" :key="opt.marca">
-                    </option>
-                  </datalist>
-                </div>
-              </div>
-              <!--Modelo-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <input v-model="searchTitle" class="form-control rf_bg_form rf_texto_desk" list="dataListModeloEstoque"
-                    autocomplete="off" />
-
-                  <label class="rf_texto">Modelo</label>
-                  <datalist id="dataListModeloEstoque">
-                    <option v-for="opt in modelos_estoque" :data-value="opt.modelo" :value="opt.modelo"
-                      :key="opt.modelo"></option>
-                  </datalist>
-                </div>
-              </div>
-              <!--Ano modelo-->
-              <div class="col-1">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto_desk" v-model="searchAnoMod" />
-                  <label class="rf_texto">Ano Mod.</label>
-                </div>
-              </div>
-              <!--Ano Fabricação-->
-              <div class="col-1">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto_desk" v-model="searchAnoFab" />
-                  <label class="rf_texto">Ano Fab.</label>
-                </div>
-              </div>
-              <!--Cor-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <input v-model="searchCor" class="form-control rf_bg_form rf_texto_desk" list="dataListCorEstoque"
-                    autocomplete="off" />
-
-                  <label class="rf_texto">Cor</label>
-                  <datalist id="dataListCorEstoque">
-                    <option v-for="opt in cores_estoque" :data-value="opt.cor" :value="opt.cor" :key="opt.cor">
-                    </option>
-                  </datalist>
-                </div>
-              </div>
-              <!--Chassi-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto_desk" v-model="searchChassi" />
-                  <label class="rf_texto">Chassi</label>
-                </div>
-              </div>
-              <!--Placa-->
-              <div class="col-2">
-                <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto_desk" v-model="searchPlaca" />
-                  <label class="rf_texto">Placa</label>
-                </div>
-              </div>
-
             </div>
-        
-            <div class="row g-2 p-2">
-              <div class="col-1">
-                <div class="form-floating">
-                <button class="btn btn-lg btn-desk-filtro" @click="page = 1;  retrieveEstoque();">
+            <!--Marca-->
+            <div class="col-1">
+              <div class="form-floating">
+                <input
+                  v-model="searchMarca"
+                  class="form-control rf_bg_form rf_texto_desk"
+                  list="dataListMarcaEstoque"
+                  autocomplete="off"
+                />
+
+                <label class="rf_texto">Marca</label>
+                <datalist id="dataListMarcaEstoque">
+                  <option
+                    v-for="opt in marcas_estoque"
+                    :data-value="opt.marca"
+                    :value="opt.marca"
+                    :key="opt.marca"
+                  ></option>
+                </datalist>
+              </div>
+            </div>
+            <!--Modelo-->
+            <div class="col-2">
+              <div class="form-floating">
+                <input
+                  v-model="searchTitle"
+                  class="form-control rf_bg_form rf_texto_desk"
+                  list="dataListModeloEstoque"
+                  autocomplete="off"
+                />
+
+                <label class="rf_texto">Modelo</label>
+                <datalist id="dataListModeloEstoque">
+                  <option
+                    v-for="opt in modelos_estoque"
+                    :data-value="opt.modelo"
+                    :value="opt.modelo"
+                    :key="opt.modelo"
+                  ></option>
+                </datalist>
+              </div>
+            </div>
+            <!--Ano modelo-->
+            <div class="col-1">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto_desk"
+                  v-model="searchAnoMod"
+                />
+                <label class="rf_texto">Ano Mod.</label>
+              </div>
+            </div>
+            <!--Ano Fabricação-->
+            <div class="col-1">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto_desk"
+                  v-model="searchAnoFab"
+                />
+                <label class="rf_texto">Ano Fab.</label>
+              </div>
+            </div>
+            <!--Cor-->
+            <div class="col-2">
+              <div class="form-floating">
+                <input
+                  v-model="searchCor"
+                  class="form-control rf_bg_form rf_texto_desk"
+                  list="dataListCorEstoque"
+                  autocomplete="off"
+                />
+
+                <label class="rf_texto">Cor</label>
+                <datalist id="dataListCorEstoque">
+                  <option
+                    v-for="opt in cores_estoque"
+                    :data-value="opt.cor"
+                    :value="opt.cor"
+                    :key="opt.cor"
+                  ></option>
+                </datalist>
+              </div>
+            </div>
+            <!--Chassi-->
+            <div class="col-2">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto_desk"
+                  v-model="searchChassi"
+                />
+                <label class="rf_texto">Chassi</label>
+              </div>
+            </div>
+            <!--Placa-->
+            <div class="col-2">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto_desk"
+                  v-model="searchPlaca"
+                />
+                <label class="rf_texto">Placa</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-2 p-2">
+            <div class="col-1">
+              <div class="form-floating">
+                <button
+                  class="btn btn-lg btn-desk-filtro"
+                  @click="
+                    page = 1;
+                    retrieveEstoque();
+                  "
+                >
                   <span class="rf_texto_btn">Pesquisar</span>
                 </button>
               </div>
-              </div>
             </div>
-            <!--Tabelas-->
-            <div class="card card-tabela g-2 p-2 m-2">
-              <table class="table rf_texto_desk">
-                <thead>
-                  <tr>
-                    <th scope="col">Estoque</th>
-                    <th scope="col">Loja</th>
-                    <th scope="col">Cat.</th>
-                    <th scope="col">Chassis</th>
-                    <th scope="col">Modelo</th>
-                    <th scope="col">R$ PPS</th>
-                    <th scope="col">Dias Est.</th>
-                    <th scope="col">Cor</th>
-                    <th scope="col">Marca</th>
-                    <th scope="col">Ano Mod.</th>
-                    <th scope="col">Ano Fab.</th>
-                    <th scope="col">KM</th>
-                    <th scope="col">Placa</th>
-                    <th scope="col">Comb.</th>
-                    <th scope="col">Ação</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="  item   in   estoque_veiculo   " :key="item.id" class="table-linha">
-                    <td>{{ item.situacaoestoque }}</td>
-                    <td>{{ item.descricaoreduzida }}</td>
-                    <td>{{ item.estadoveiculo }}</td>
-                    <td>{{ item.chassi }}</td>
-                    <td>{{ item.modelo }}</td>
-                    <td>
-                      {{ currency(item.valortotalvenda) }}
+          </div>
+          <!--Tabelas-->
+          <div class="card card-tabela g-2 p-2 m-2">
+            <table class="table rf_texto_desk">
+              <thead>
+                <tr>
+                  <th scope="col">Estoque</th>
+                  <th scope="col">Loja</th>
+                  <th scope="col">Cat.</th>
+                  <th scope="col">Chassis</th>
+                  <th scope="col">Modelo</th>
+                  <th scope="col">R$ PPS</th>
+                  <th scope="col">Dias Est.</th>
+                  <th scope="col">Cor</th>
+                  <th scope="col">Marca</th>
+                  <th scope="col">Ano Mod.</th>
+                  <th scope="col">Ano Fab.</th>
+                  <th scope="col">KM</th>
+                  <th scope="col">Placa</th>
+                  <th scope="col">Comb.</th>
+                  <th scope="col">Ação</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="item in estoque_veiculo"
+                  :key="item.id"
+                  class="table-linha"
+                >
+                  <td>{{ item.situacaoestoque }}</td>
+                  <td>{{ item.descricaoreduzida }}</td>
+                  <td>{{ item.estadoveiculo }}</td>
+                  <td>{{ item.chassi }}</td>
+                  <td>{{ item.modelo }}</td>
+                  <td>
+                    {{ currency(item.valortotalvenda) }}
+                  </td>
 
-                    </td>
+                  <td>{{ item.diasestoque }}</td>
+                  <td>{{ item.cor }}</td>
+                  <td>{{ item.marca }}</td>
+                  <td>{{ item.anomodelo }}</td>
+                  <td>{{ item.anofabricacao }}</td>
+                  <td>{{ item.quilometragem }}</td>
+                  <td>{{ item.placa }}</td>
+                  <td>{{ item.combustivel }}</td>
 
-                    <td>{{ item.diasestoque }}</td>
-                    <td>{{ item.cor }}</td>
-                    <td>{{ item.marca }}</td>
-                    <td>{{ item.anomodelo }}</td>
-                    <td>{{ item.anofabricacao }}</td>
-                    <td>{{ item.quilometragem }}</td>
-                    <td>{{ item.placa }}</td>
-                    <td>{{ item.combustivel }}</td>
-
-                    <td>
-                      <button type="button" class="dropdown-toggle-icon" data-bs-dismiss="modal"
-                        @click=" carregarVeiculo(item)">
-                     
-                        <i class="bi bi-pencil-square"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <pagination v-if="estoque_veiculo.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
-                @change-page="handlePageChange" />
-            </div>
-        
+                  <td>
+                    <button
+                      type="button"
+                      class="dropdown-toggle-icon"
+                      data-bs-dismiss="modal"
+                      @click="carregarVeiculo(item)"
+                    >
+                      <i class="bi bi-pencil-square"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <pagination
+              v-if="estoque_veiculo.length"
+              :offset="totalPages"
+              :total="totalItems"
+              :limit="pageSize"
+              @change-page="handlePageChange"
+            />
+          </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-modal btn-lg p-1 mt-1" data-bs-dismiss="modal">
+          <button
+            type="button"
+            class="btn btn-modal btn-lg p-1 mt-1"
+            data-bs-dismiss="modal"
+          >
             Fechar
           </button>
         </div>
@@ -1173,40 +1593,67 @@
     </div>
   </div>
   <!--Modal Trocar Vendedor-->
-  <div class="modal fade" id="ModalTrocarVendedor" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
-    tabindex="-1">
+  <div
+    class="modal fade"
+    id="ModalTrocarVendedor"
+    aria-hidden="true"
+    aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1"
+  >
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content card-container-desk rf_texto">
         <div class="modal-header">
           <div class="card-title gy-4">
-            <i class="bi bi-pencil-square fs-5 icone_kit"><span class="texto_kit">Troca Vendedor</span></i>
+            <i class="bi bi-pencil-square fs-5 icone_kit"
+              ><span class="texto_kit">Troca Vendedor</span></i
+            >
           </div>
-          <button class="btn btn-modal btn-lg p-1 mt-1" type="button" data-bs-target="#ModalProposta"
-            data-bs-toggle="modal" aria-label="Close"> Sair </button>
+          <button
+            class="btn btn-modal btn-lg p-1 mt-1"
+            type="button"
+            data-bs-target="#ModalProposta"
+            data-bs-toggle="modal"
+            aria-label="Close"
+          >
+            Sair
+          </button>
         </div>
         <div class="modal-body">
           <form @submit.prevent="onSubmitTrocaVendedor">
             <div class="row g-2 p-2">
               <div v-if="abrir_modal">
-                <div class="alert bg-dark text-center" role="alert">{{ msg }}</div>
+                <div class="alert bg-dark text-center" role="alert">
+                  {{ msg }}
+                </div>
               </div>
             </div>
             <!--Item-->
             <div class="row g-2 p-2">
               <div class="col">
                 <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="justificativa_vendedor"
-                    v-on:blur="validar_vendedor" />
+                  <input
+                    type="text"
+                    class="form-control rf_bg_form rf_texto"
+                    v-model="justificativa_vendedor"
+                    v-on:blur="validar_vendedor"
+                  />
                   <label class="rf_texto">Justificativa</label>
                 </div>
               </div>
-
             </div>
             <div class="row g-2 p-2">
               <div class="col-6">
                 <div class="form-floating">
-                  <select class="form-select rf_bg_form rf_texto" v-model="vendedor_troca" :disabled="check_vend">
-                    <option v-for="item in troca_vendedor" :value="item.id" :key="item.id">
+                  <select
+                    class="form-select rf_bg_form rf_texto"
+                    v-model="vendedor_troca"
+                    :disabled="check_vend"
+                  >
+                    <option
+                      v-for="item in troca_vendedor"
+                      :value="item.id"
+                      :key="item.id"
+                    >
                       {{ item.username }}
                     </option>
                   </select>
@@ -1215,8 +1662,12 @@
               </div>
               <div class="col-3">
                 <div class="form-floating">
-                  <button class="btn btn-lg btn-desk-filtro" data-bs-dismiss="modal" :disabled="check_vend"
-                    type="submit">
+                  <button
+                    class="btn btn-lg btn-desk-filtro"
+                    data-bs-dismiss="modal"
+                    :disabled="check_vend"
+                    type="submit"
+                  >
                     <span class="rf_texto_btn">Alterar</span>
                   </button>
                 </div>
@@ -1228,43 +1679,70 @@
     </div>
   </div>
   <!--Modal Histórico Cliente-->
-  <div class="modal fade" id="ModalHistoricoCliente" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
-    tabindex="-1">
+  <div
+    class="modal fade"
+    id="ModalHistoricoCliente"
+    aria-hidden="true"
+    aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1"
+  >
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content card-container-desk rf_texto">
         <div class="modal-header">
           <div class="card-title gy-4">
-            <i class="bi bi-pencil-square fs-5 icone_kit"><span class="texto_kit">Histórioco do Cliente</span></i>
+            <i class="bi bi-pencil-square fs-5 icone_kit"
+              ><span class="texto_kit">Histórioco do Cliente</span></i
+            >
           </div>
-          <button class="btn btn-modal btn-lg p-1 mt-1" type="button" data-bs-target="#ModalProposta"
-            data-bs-toggle="modal" aria-label="Close"> Sair </button>
+          <button
+            class="btn btn-modal btn-lg p-1 mt-1"
+            type="button"
+            data-bs-target="#ModalProposta"
+            data-bs-toggle="modal"
+            aria-label="Close"
+          >
+            Sair
+          </button>
         </div>
         <div class="modal-body">
           <div class="row g-2 p-2">
             <div class="col-2">
               <div class="form-floating">
-                <input type="text" class="form-control rf_bg_form rf_texto" disabled v-model="id_historico_cliente" />
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto"
+                  disabled
+                  v-model="id_historico_cliente"
+                />
                 <label class="rf_texto">Id</label>
               </div>
             </div>
             <div class="col">
               <div class="form-floating">
-                <input type="text" class="form-control rf_bg_form rf_texto" disabled v-model="nome_historico_cliente" />
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto"
+                  disabled
+                  v-model="nome_historico_cliente"
+                />
                 <label class="rf_texto">Cliente</label>
               </div>
             </div>
 
             <div class="col-2">
               <div class="form-floating">
-                <button class="btn btn-lg btn-desk-filtro" type="button" @click="
-    page = 1;
-  historico_cliente(id_historico_cliente);
-  ">
-                 <span class="rf_texto_btn">Pesquisar</span>
+                <button
+                  class="btn btn-lg btn-desk-filtro"
+                  type="button"
+                  @click="
+                    page = 1;
+                    historico_cliente(id_historico_cliente);
+                  "
+                >
+                  <span class="rf_texto_btn">Pesquisar</span>
                 </button>
               </div>
             </div>
-
           </div>
           <!--Tabelas-->
           <div class="card card-tabela-desk g-2 p-2 mt-2">
@@ -1279,18 +1757,24 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="      item       in  hist_cliente      " :key="item.id">
+                <tr v-for="item in hist_cliente" :key="item.id">
                   <td>{{ item.id }}</td>
                   <td>{{ item.empresa_proposta.nome }}</td>
-                  <td>{{ new Date(item.createdAt).toLocaleDateString('pt-BR') }}</td>
+                  <td>
+                    {{ new Date(item.createdAt).toLocaleDateString("pt-BR") }}
+                  </td>
                   <td>{{ item.status_proposta }}</td>
                   <!-- <td>{{ item.status }}</td> -->
-
                 </tr>
               </tbody>
             </table>
-            <pagination v-if="hist_cliente.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
-              @change-page="handlePageChange" />
+            <pagination
+              v-if="hist_cliente.length"
+              :offset="totalPages"
+              :total="totalItems"
+              :limit="pageSize"
+              @change-page="handlePageChange"
+            />
           </div>
         </div>
       </div>
@@ -1298,15 +1782,25 @@
   </div>
 
   <!--Modal Itens Avaliação-->
-  <div class="modal fade" id="ModalItensAvaliacao" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
-    tabindex="-1">
+  <div
+    class="modal fade"
+    id="ModalItensAvaliacao"
+    aria-hidden="true"
+    aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1"
+  >
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-dark rf_texto">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
             Itens Avaliação
           </h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body">
           <form @submit.prevent="onSubmitItensAvaliacao">
@@ -1314,13 +1808,21 @@
             <div class="row g-2 p-2">
               <div class="col">
                 <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="item_p_avaliacao" />
+                  <input
+                    type="text"
+                    class="form-control rf_bg_form rf_texto"
+                    v-model="item_p_avaliacao"
+                  />
                   <label class="rf_texto">Item Avaliado</label>
                 </div>
               </div>
               <div class="col-3">
                 <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="valor_p_avaliacao" />
+                  <input
+                    type="text"
+                    class="form-control rf_bg_form rf_texto"
+                    v-model="valor_p_avaliacao"
+                  />
                   <label class="rf_texto">R$ Valor</label>
                 </div>
               </div>
@@ -1328,8 +1830,15 @@
             <div class="row g-2 p-2">
               <div class="col-3">
                 <div class="form-floating">
-                  <select class="form-select rf_bg_form rf_texto" v-model="tipo">
-                    <option v-for="      item       in       items_avaliacao      " :value="item.value" :key="item.id">
+                  <select
+                    class="form-select rf_bg_form rf_texto"
+                    v-model="tipo"
+                  >
+                    <option
+                      v-for="item in items_avaliacao"
+                      :value="item.value"
+                      :key="item.id"
+                    >
                       {{ item.value }}
                     </option>
                   </select>
@@ -1338,7 +1847,11 @@
               </div>
               <div class="col-3">
                 <div class="form-floating">
-                  <button class="btn btn-secondary btn-lg mt-1" data-bs-dismiss="modal" type="submit">
+                  <button
+                    class="btn btn-secondary btn-lg mt-1"
+                    data-bs-dismiss="modal"
+                    type="submit"
+                  >
                     Cadastrar
                   </button>
                 </div>
@@ -1350,42 +1863,67 @@
     </div>
   </div>
   <!--Modal Itens Acessorios-->
-  <div class="modal fade" id="ModalItensAcessorios" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
-    tabindex="-1">
+  <div
+    class="modal fade"
+    id="ModalItensAcessorios"
+    aria-hidden="true"
+    aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1"
+  >
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content card-container-desk rf_texto">
         <div class="modal-header">
           <div class="card-title gy-4">
-            <i class="bi bi-pencil-square fs-5 icone_kit"><span class="texto_kit">Acessórios</span></i>
+            <i class="bi bi-pencil-square fs-5 icone_kit"
+              ><span class="texto_kit">Acessórios</span></i
+            >
           </div>
-          <button class="btn btn-modal btn-lg p-1 mt-1" type="button" data-bs-target="#ModalProposta"
-            data-bs-toggle="modal" aria-label="Close"> Sair </button>
+          <button
+            class="btn btn-modal btn-lg p-1 mt-1"
+            type="button"
+            data-bs-target="#ModalProposta"
+            data-bs-toggle="modal"
+            aria-label="Close"
+          >
+            Sair
+          </button>
         </div>
         <div class="modal-body">
           <div class="row g-2 p-2">
             <div class="col-2">
               <div class="form-floating">
-                <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchCodigo" />
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="searchCodigo"
+                />
                 <label class="rf_texto">Código</label>
               </div>
             </div>
             <div class="col">
               <div class="form-floating">
-                <input type="text" class="form-control rf_bg_form rf_texto" v-model="searchDescricao" />
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="searchDescricao"
+                />
                 <label class="rf_texto">Descrição</label>
               </div>
             </div>
             <div class="col-2">
               <div class="form-floating">
-                <button class="btn btn-lg btn-desk-filtro" type="button" @click="
-    page = 1;
-  retrieveAcessorios();
-  ">
+                <button
+                  class="btn btn-lg btn-desk-filtro"
+                  type="button"
+                  @click="
+                    page = 1;
+                    retrieveAcessorios();
+                  "
+                >
                   <span class="rf_texto_btn">Pesquisar</span>
                 </button>
               </div>
             </div>
-
           </div>
           <!--Tabelas-->
           <div class="card card-tabela-desk g-2 p-2 mt-2">
@@ -1400,57 +1938,92 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="      item       in       acessorios      " :key="item.id" class="table-linha">
+                <tr
+                  v-for="item in acessorios"
+                  :key="item.id"
+                  class="table-linha"
+                >
                   <td>{{ item.codigo }}</td>
                   <td>{{ item.descricao }}</td>
                   <td>{{ currency(item.preco_final_instalado) }}</td>
                   <!-- <td>{{ item.preco_base_peca }}</td> -->
                   <!-- <td>{{ item.status }}</td> -->
                   <td>
-                    <button type="button" class="dropdown-toggle-icon" data-bs-dismiss="modal"
-                      @click=" inserirAcessorios(item)">
+                    <button
+                      type="button"
+                      class="dropdown-toggle-icon"
+                      data-bs-dismiss="modal"
+                      @click="inserirAcessorios(item)"
+                    >
                       <i class="bi bi-pencil-square"></i>
                     </button>
                   </td>
                 </tr>
               </tbody>
             </table>
-            <pagination v-if="acessorios.length" :offset="totalPages" :total="totalItems" :limit="pageSize"
-              @change-page="handlePageChange" />
+            <pagination
+              v-if="acessorios.length"
+              :offset="totalPages"
+              :total="totalItems"
+              :limit="pageSize"
+              @change-page="handlePageChange"
+            />
           </div>
         </div>
       </div>
     </div>
   </div>
   <!--Modal Ranqueamento-->
-  <div class="modal fade" id="ModalRanqueamento" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
-    tabindex="-1">
+  <div
+    class="modal fade"
+    id="ModalRanqueamento"
+    aria-hidden="true"
+    aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1"
+  >
     <div class="modal-dialog modal-fullscreen">
       <div class="modal-content card-container-desk rf_texto">
         <div class="modal-header">
           <div class="card-title gy-4">
-            <i class="bi bi-pencil-square fs-5 icone_kit"><span class="texto_kit">Ranqueamento</span></i>
-          </div>          
+            <i class="bi bi-pencil-square fs-5 icone_kit"
+              ><span class="texto_kit">Ranqueamento</span></i
+            >
+          </div>
         </div>
         <div class="modal-body">
           <div class="row g-2 p-2">
             <!--Tabela Padrão-->
             <div class="col-2">
               <div class="form-floating">
-                <select class="form-select rf_bg_form rf_texto" v-model="filtro_tipo_tabela">
-                  <option v-for="      item       in       tabela_financiamento      " :value="item.value"
-                    :key="item.id">
+                <select
+                  class="form-select rf_bg_form rf_texto"
+                  v-model="filtro_tipo_tabela"
+                >
+                  <option
+                    v-for="item in tabela_financiamento"
+                    :value="item.value"
+                    :key="item.id"
+                  >
                     {{ item.value }}
                   </option>
                 </select>
-                <label for="valid_empresa" class="rf_texto">Tabela Padrão</label>
+                <label for="valid_empresa" class="rf_texto"
+                  >Tabela Padrão</label
+                >
               </div>
             </div>
             <!--Utiliza SPF-->
             <div class="col-2">
               <div class="form-floating">
-                <select class="form-select rf_bg_form rf_texto" v-model="filtro_spf">
-                  <option v-for="      item       in       spf_financiamento      " :value="item.value" :key="item.id">
+                <select
+                  class="form-select rf_bg_form rf_texto"
+                  v-model="filtro_spf"
+                >
+                  <option
+                    v-for="item in spf_financiamento"
+                    :value="item.value"
+                    :key="item.id"
+                  >
                     {{ item.value }}
                   </option>
                 </select>
@@ -1460,15 +2033,23 @@
             <!--Razão Social-->
             <div class="col">
               <div class="form-floating">
-                <input type="text" class="form-control rf_bg_form rf_texto" v-model="razao_financiamento" />
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="razao_financiamento"
+                />
                 <label class="rf_texto">Razão Social</label>
               </div>
             </div>
             <!--Plano-->
             <div class="col-2">
               <div class="form-floating">
-                <input type="text" class="form-control rf_bg_form rf_texto" v-model="plano"
-                  v-on:blur="handleOrderChangeEntrada1" />
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="plano"
+                  v-on:blur="handleOrderChangeEntrada1"
+                />
                 <label class="rf_texto">Plano</label>
               </div>
             </div>
@@ -1477,125 +2058,146 @@
             <div class="col">
               <div class="form-floating text-center">
                 <div class="btn-group" role="group" aria-label="Basic example">
-                  <button type="button" class="btn btn-desk-filtro p-1" @click="
-    sortDesc = 0;
-  sortBy = 'financeira';
-  sortDesc_2 = 0;
-  sortBy_2 = 'financeira';
-  sortDesc_3 = 0;
-  sortBy_3 = 'financeira';
-  btn_filtro_1 = 1;
-  btn_filtro_2 = 0;
-  btn_filtro_3 = 0;
-  btn_filtro_4 = 0;
-  btn_filtro_5 = 0;
-  btn_filtro_6 = 0;
-  btn_filtro_7 = 0;
-  btn_filtro_8 = 0;
-  btn_filtro_9 = 0;
-  btn_filtro_10 = 0;
-  btn_filtro_11 = 0;
-  btn_filtro_11 = 0;
-  handleOrderChangeEntradaFiltro();
-  ">
-                   
-                    <i :class="icon_1">  <span>FINANCEIRA</span> </i>
+                  <button
+                    type="button"
+                    class="btn btn-desk-filtro p-1"
+                    @click="
+                      sortDesc = 0;
+                      sortBy = 'financeira';
+                      sortDesc_2 = 0;
+                      sortBy_2 = 'financeira';
+                      sortDesc_3 = 0;
+                      sortBy_3 = 'financeira';
+                      btn_filtro_1 = 1;
+                      btn_filtro_2 = 0;
+                      btn_filtro_3 = 0;
+                      btn_filtro_4 = 0;
+                      btn_filtro_5 = 0;
+                      btn_filtro_6 = 0;
+                      btn_filtro_7 = 0;
+                      btn_filtro_8 = 0;
+                      btn_filtro_9 = 0;
+                      btn_filtro_10 = 0;
+                      btn_filtro_11 = 0;
+                      btn_filtro_11 = 0;
+                      handleOrderChangeEntradaFiltro();
+                    "
+                  >
+                    <i :class="icon_1"> <span>FINANCEIRA</span> </i>
                   </button>
-                  <button type="button" class="btn btn-desk-filtro p-1" @click="
-    sortDesc = 0;
-  sortBy = 'plano';
-  sortDesc_2 = 0;
-  sortBy_2 = 'plano';
-  sortDesc_3 = 0;
-  sortBy_3 = 'plano';
-  btn_filtro_1 = 0;
-  btn_filtro_2 = 1;
-  btn_filtro_3 = 0;
-  btn_filtro_4 = 0;
-  btn_filtro_5 = 0;
-  btn_filtro_6 = 0;
-  btn_filtro_7 = 0;
-  btn_filtro_8 = 0;
-  btn_filtro_9 = 0;
-  btn_filtro_10 = 0;
-  btn_filtro_11 = 0;
+                  <button
+                    type="button"
+                    class="btn btn-desk-filtro p-1"
+                    @click="
+                      sortDesc = 0;
+                      sortBy = 'plano';
+                      sortDesc_2 = 0;
+                      sortBy_2 = 'plano';
+                      sortDesc_3 = 0;
+                      sortBy_3 = 'plano';
+                      btn_filtro_1 = 0;
+                      btn_filtro_2 = 1;
+                      btn_filtro_3 = 0;
+                      btn_filtro_4 = 0;
+                      btn_filtro_5 = 0;
+                      btn_filtro_6 = 0;
+                      btn_filtro_7 = 0;
+                      btn_filtro_8 = 0;
+                      btn_filtro_9 = 0;
+                      btn_filtro_10 = 0;
+                      btn_filtro_11 = 0;
 
-  handleOrderChangeEntradaFiltro();
-  ">
-                    
+                      handleOrderChangeEntradaFiltro();
+                    "
+                  >
                     <i :class="icon_2"><span> PLANO</span> </i>
                   </button>
-                  <button type="button" class="btn btn-desk-filtro p-1" @click="
-    sortDesc = 0;
-  sortBy = 'ret';
-  sortDesc_2 = 0;
-  sortBy_2 = 'ret';
-  sortDesc_3 = 0;
-  sortBy_3 = 'ret';
-  btn_filtro_1 = 0;
-  btn_filtro_2 = 0;
-  btn_filtro_3 = 1;
-  btn_filtro_4 = 0;
-  btn_filtro_5 = 0;
-  btn_filtro_6 = 0;
-  btn_filtro_7 = 0;
-  btn_filtro_8 = 0;
-  btn_filtro_9 = 0;
-  btn_filtro_10 = 0;
-  btn_filtro_11 = 0;
+                  <button
+                    type="button"
+                    class="btn btn-desk-filtro p-1"
+                    @click="
+                      sortDesc = 0;
+                      sortBy = 'ret';
+                      sortDesc_2 = 0;
+                      sortBy_2 = 'ret';
+                      sortDesc_3 = 0;
+                      sortBy_3 = 'ret';
+                      btn_filtro_1 = 0;
+                      btn_filtro_2 = 0;
+                      btn_filtro_3 = 1;
+                      btn_filtro_4 = 0;
+                      btn_filtro_5 = 0;
+                      btn_filtro_6 = 0;
+                      btn_filtro_7 = 0;
+                      btn_filtro_8 = 0;
+                      btn_filtro_9 = 0;
+                      btn_filtro_10 = 0;
+                      btn_filtro_11 = 0;
 
-  handleOrderChangeEntradaFiltro();
-  ">
+                      handleOrderChangeEntradaFiltro();
+                    "
+                  >
                     <i :class="icon_3"><span> RET</span> </i>
                   </button>
-                  <button type="button" class="btn btn-desk-filtro p-1" @click="
-    sortDesc = 0;
-  sortBy = 'entrada_min_porcentagem';
-  sortDesc_2 = 0;
-  sortBy_2 = 'entrada_min_porcentagem';
-  sortDesc_3 = 0;
-  sortBy_3 = 'entrada_min_porcentagem';
-  btn_filtro_1 = 0;
-  btn_filtro_2 = 0;
-  btn_filtro_3 = 0;
-  btn_filtro_4 = 1;
-  btn_filtro_5 = 0;
-  btn_filtro_6 = 0;
-  btn_filtro_7 = 0;
-  btn_filtro_8 = 0;
-  btn_filtro_9 = 0;
-  btn_filtro_10 = 0;
-  btn_filtro_11 = 0;
+                  <button
+                    type="button"
+                    class="btn btn-desk-filtro p-1"
+                    @click="
+                      sortDesc = 0;
+                      sortBy = 'entrada_min_porcentagem';
+                      sortDesc_2 = 0;
+                      sortBy_2 = 'entrada_min_porcentagem';
+                      sortDesc_3 = 0;
+                      sortBy_3 = 'entrada_min_porcentagem';
+                      btn_filtro_1 = 0;
+                      btn_filtro_2 = 0;
+                      btn_filtro_3 = 0;
+                      btn_filtro_4 = 1;
+                      btn_filtro_5 = 0;
+                      btn_filtro_6 = 0;
+                      btn_filtro_7 = 0;
+                      btn_filtro_8 = 0;
+                      btn_filtro_9 = 0;
+                      btn_filtro_10 = 0;
+                      btn_filtro_11 = 0;
 
-  handleOrderChangeEntradaFiltro();
-  ">
-                     <i :class="icon_4"><span> % ENT. MIN</span> </i>
+                      handleOrderChangeEntradaFiltro();
+                    "
+                  >
+                    <i :class="icon_4"><span> % ENT. MIN</span> </i>
                   </button>
-                  <button type="button" class="btn btn-desk-filtro p-1" @click="
-    sortDesc = 0;
-  sortBy = 'entrada_min_valor';
-  sortDesc_2 = 0;
-  sortBy_2 = 'entrada_min_valor';
-  sortDesc_3 = 0;
-  sortBy_3 = 'entrada_min_valor';
+                  <button
+                    type="button"
+                    class="btn btn-desk-filtro p-1"
+                    @click="
+                      sortDesc = 0;
+                      sortBy = 'entrada_min_valor';
+                      sortDesc_2 = 0;
+                      sortBy_2 = 'entrada_min_valor';
+                      sortDesc_3 = 0;
+                      sortBy_3 = 'entrada_min_valor';
 
-  btn_filtro_1 = 0;
-  btn_filtro_2 = 0;
-  btn_filtro_3 = 0;
-  btn_filtro_4 = 0;
-  btn_filtro_5 = 1;
-  btn_filtro_6 = 0;
-  btn_filtro_7 = 0;
-  btn_filtro_8 = 0;
-  btn_filtro_9 = 0;
-  btn_filtro_10 = 0;
-  btn_filtro_11 = 0;
+                      btn_filtro_1 = 0;
+                      btn_filtro_2 = 0;
+                      btn_filtro_3 = 0;
+                      btn_filtro_4 = 0;
+                      btn_filtro_5 = 1;
+                      btn_filtro_6 = 0;
+                      btn_filtro_7 = 0;
+                      btn_filtro_8 = 0;
+                      btn_filtro_9 = 0;
+                      btn_filtro_10 = 0;
+                      btn_filtro_11 = 0;
 
-  handleOrderChangeEntradaFiltro();
-  ">
-                     <i :class="icon_5"><span> R$ ENT. MIN</span> </i>
+                      handleOrderChangeEntradaFiltro();
+                    "
+                  >
+                    <i :class="icon_5"><span> R$ ENT. MIN</span> </i>
                   </button>
-                  <button type="button" class="btn btn-desk-filtro p-1" @click="
+                  <button
+                    type="button"
+                    class="btn btn-desk-filtro p-1"
+                    @click="
                       sortDesc = 0;
                       sortBy = 'rentabilidade_1';
                       sortDesc_2 = 0;
@@ -1614,122 +2216,143 @@
                       btn_filtro_10 = 0;
                       btn_filtro_11 = 0;
                       handleOrderChangeEntradaFiltro();
-                    ">
+                    "
+                  >
                     <span>RENTABILIDADE</span> <i :class="icon_6"> </i>
                   </button>
-                  <button type="button" class="btn btn-desk-filtro p-1" @click="
-    sortDesc = 0;
-  sortBy = 'pmt_1';
-  sortDesc_2 = 0;
-  sortBy_2 = 'pmt_2';
-  sortDesc_3 = 0;
-  sortBy_3 = 'pmt_3';
-  btn_filtro_1 = 0;
-  btn_filtro_2 = 0;
-  btn_filtro_3 = 0;
-  btn_filtro_4 = 0;
-  btn_filtro_5 = 0;
-  btn_filtro_6 = 0;
-  btn_filtro_7 = 1;
-  btn_filtro_8 = 0;
-  btn_filtro_9 = 0;
-  btn_filtro_10 = 0;
-  btn_filtro_11 = 0;
-  handleOrderChangeEntradaFiltro();
-  ">
-                     <i :class="icon_7"><span> PMT</span> </i>
+                  <button
+                    type="button"
+                    class="btn btn-desk-filtro p-1"
+                    @click="
+                      sortDesc = 0;
+                      sortBy = 'pmt_1';
+                      sortDesc_2 = 0;
+                      sortBy_2 = 'pmt_2';
+                      sortDesc_3 = 0;
+                      sortBy_3 = 'pmt_3';
+                      btn_filtro_1 = 0;
+                      btn_filtro_2 = 0;
+                      btn_filtro_3 = 0;
+                      btn_filtro_4 = 0;
+                      btn_filtro_5 = 0;
+                      btn_filtro_6 = 0;
+                      btn_filtro_7 = 1;
+                      btn_filtro_8 = 0;
+                      btn_filtro_9 = 0;
+                      btn_filtro_10 = 0;
+                      btn_filtro_11 = 0;
+                      handleOrderChangeEntradaFiltro();
+                    "
+                  >
+                    <i :class="icon_7"><span> PMT</span> </i>
                   </button>
-                  <button type="button" class="btn btn-desk-filtro p-1" @click="
-    sortDesc = 0;
-  sortBy = 'retorno';
-  sortDesc_2 = 0;
-  sortBy_2 = 'retorno';
-  sortDesc_2 = 0;
-  sortBy_2 = 'retorno';
-  btn_filtro_1 = 0;
-  btn_filtro_2 = 0;
-  btn_filtro_3 = 0;
-  btn_filtro_4 = 0;
-  btn_filtro_5 = 0;
-  btn_filtro_6 = 0;
-  btn_filtro_7 = 0;
-  btn_filtro_8 = 1;
-  btn_filtro_9 = 0;
-  btn_filtro_10 = 0;
-  btn_filtro_11 = 0;
+                  <button
+                    type="button"
+                    class="btn btn-desk-filtro p-1"
+                    @click="
+                      sortDesc = 0;
+                      sortBy = 'retorno';
+                      sortDesc_2 = 0;
+                      sortBy_2 = 'retorno';
+                      sortDesc_2 = 0;
+                      sortBy_2 = 'retorno';
+                      btn_filtro_1 = 0;
+                      btn_filtro_2 = 0;
+                      btn_filtro_3 = 0;
+                      btn_filtro_4 = 0;
+                      btn_filtro_5 = 0;
+                      btn_filtro_6 = 0;
+                      btn_filtro_7 = 0;
+                      btn_filtro_8 = 1;
+                      btn_filtro_9 = 0;
+                      btn_filtro_10 = 0;
+                      btn_filtro_11 = 0;
 
-  handleOrderChangeEntradaFiltro();
-  ">
-                     <i :class="icon_8"><span> RETORNO</span></i>
+                      handleOrderChangeEntradaFiltro();
+                    "
+                  >
+                    <i :class="icon_8"><span> RETORNO</span></i>
                   </button>
-                  <button type="button" class="btn btn-desk-filtro p-1" @click="
-    sortDesc = 0;
-  sortBy = 'tc_cob';
-  sortDesc_2 = 0;
-  sortBy_2 = 'tc_cob';
-  sortDesc_3 = 0;
-  sortBy_3 = 'tc_cob';
-  btn_filtro_1 = 0;
-  btn_filtro_2 = 0;
-  btn_filtro_3 = 0;
-  btn_filtro_4 = 0;
-  btn_filtro_5 = 0;
-  btn_filtro_6 = 0;
-  btn_filtro_7 = 0;
-  btn_filtro_8 = 0;
-  btn_filtro_9 = 1;
-  btn_filtro_10 = 0;
-  btn_filtro_11 = 0;
+                  <button
+                    type="button"
+                    class="btn btn-desk-filtro p-1"
+                    @click="
+                      sortDesc = 0;
+                      sortBy = 'tc_cob';
+                      sortDesc_2 = 0;
+                      sortBy_2 = 'tc_cob';
+                      sortDesc_3 = 0;
+                      sortBy_3 = 'tc_cob';
+                      btn_filtro_1 = 0;
+                      btn_filtro_2 = 0;
+                      btn_filtro_3 = 0;
+                      btn_filtro_4 = 0;
+                      btn_filtro_5 = 0;
+                      btn_filtro_6 = 0;
+                      btn_filtro_7 = 0;
+                      btn_filtro_8 = 0;
+                      btn_filtro_9 = 1;
+                      btn_filtro_10 = 0;
+                      btn_filtro_11 = 0;
 
-  handleOrderChangeEntradaFiltro();
-  ">
-                     <i :class="icon_9"> <span>TAC. COB</span> </i>
+                      handleOrderChangeEntradaFiltro();
+                    "
+                  >
+                    <i :class="icon_9"> <span>TAC. COB</span> </i>
                   </button>
-                  <button type="button" class="btn btn-desk-filtro p-1" @click="
-    sortDesc = 0;
-  sortBy = 'tc_dev';
-  sortDesc_2 = 0;
-  sortBy_2 = 'tc_dev';
-  sortDesc_3 = 0;
-  sortBy_3 = 'tc_dev';
+                  <button
+                    type="button"
+                    class="btn btn-desk-filtro p-1"
+                    @click="
+                      sortDesc = 0;
+                      sortBy = 'tc_dev';
+                      sortDesc_2 = 0;
+                      sortBy_2 = 'tc_dev';
+                      sortDesc_3 = 0;
+                      sortBy_3 = 'tc_dev';
 
-  btn_filtro_1 = 0;
-  btn_filtro_2 = 0;
-  btn_filtro_3 = 0;
-  btn_filtro_4 = 0;
-  btn_filtro_5 = 0;
-  btn_filtro_6 = 0;
-  btn_filtro_7 = 0;
-  btn_filtro_8 = 0;
-  btn_filtro_9 = 0;
-  btn_filtro_10 = 1;
-  btn_filtro_11 = 0;
+                      btn_filtro_1 = 0;
+                      btn_filtro_2 = 0;
+                      btn_filtro_3 = 0;
+                      btn_filtro_4 = 0;
+                      btn_filtro_5 = 0;
+                      btn_filtro_6 = 0;
+                      btn_filtro_7 = 0;
+                      btn_filtro_8 = 0;
+                      btn_filtro_9 = 0;
+                      btn_filtro_10 = 1;
+                      btn_filtro_11 = 0;
 
-  handleOrderChangeEntradaFiltro();
-  ">
-                     <i :class="icon_10"> <span>TAC. DEV</span> </i>
+                      handleOrderChangeEntradaFiltro();
+                    "
+                  >
+                    <i :class="icon_10"> <span>TAC. DEV</span> </i>
                   </button>
-                  <button type="button" class="btn btn-desk-filtro p-1" @click="
-    sortDesc = 0;
-  sortBy = 'coeficiente';
-  sortDesc_2 = 0;
-  sortBy_2 = 'coeficiente';
-  sortDesc_3 = 0;
-  sortBy_3 = 'coeficiente';
-  btn_filtro_1 = 0;
-  btn_filtro_2 = 0;
-  btn_filtro_3 = 0;
-  btn_filtro_4 = 0;
-  btn_filtro_5 = 0;
-  btn_filtro_6 = 0;
-  btn_filtro_7 = 0;
-  btn_filtro_8 = 0;
-  btn_filtro_9 = 0;
-  btn_filtro_10 = 0;
-  btn_filtro_11 = 1;
-  handleOrderChangeEntradaFiltro();
-  ">
-                     <i :class="icon_11"><span> COEF</span> </i>
+                  <button
+                    type="button"
+                    class="btn btn-desk-filtro p-1"
+                    @click="
+                      sortDesc = 0;
+                      sortBy = 'coeficiente';
+                      sortDesc_2 = 0;
+                      sortBy_2 = 'coeficiente';
+                      sortDesc_3 = 0;
+                      sortBy_3 = 'coeficiente';
+                      btn_filtro_1 = 0;
+                      btn_filtro_2 = 0;
+                      btn_filtro_3 = 0;
+                      btn_filtro_4 = 0;
+                      btn_filtro_5 = 0;
+                      btn_filtro_6 = 0;
+                      btn_filtro_7 = 0;
+                      btn_filtro_8 = 0;
+                      btn_filtro_9 = 0;
+                      btn_filtro_10 = 0;
+                      btn_filtro_11 = 1;
+                      handleOrderChangeEntradaFiltro();
+                    "
+                  >
+                    <i :class="icon_11"><span> COEF</span> </i>
                   </button>
                 </div>
               </div>
@@ -1741,69 +2364,20 @@
               <div class="row">
                 <div class="col">
                   <div class="card-title gy-4">
-                      <i class="bi bi-cash-coin fs-5 icone_filtro"><span class="texto_filtro">Valor de Entrada: <strong>{{ Valor_Entrada }}</strong> </span></i>  <i class="bi bi-cash-coin p-3 icone_filtro"><span class="texto_filtro">Valor Financiado: <strong>{{ Valor_Financiado }}</strong> </span></i>
-                    </div>               
+                    <i class="bi bi-cash-coin fs-5 icone_filtro"
+                      ><span class="texto_filtro"
+                        >Valor de Entrada: <strong>{{ Valor_Entrada }}</strong>
+                      </span></i
+                    >
+                    <i class="bi bi-cash-coin p-3 icone_filtro"
+                      ><span class="texto_filtro"
+                        >Valor Financiado:
+                        <strong>{{ Valor_Financiado }}</strong>
+                      </span></i
+                    >
                   </div>
+                </div>
               </div>
-            </div>
-            <table class="table  rf_texto_desk">
-              <thead>
-                <tr>
-
-                  <th scope="col">Financeira</th>
-                  <th scope="col">Plano</th>
-                  <th scope="col">Ret</th>
-                  <th scope="col">R$ Ent. Min</th>
-                  <th scope="col">% Ent. Min</th>
-                  <th scope="col">Rentabilidade</th>
-                  <th scope="col">Rebate</th>
-                  <th scope="col">Pmt</th>
-                  <th scope="col">Spf</th>
-                  <th scope="col">Retorno</th>
-                  <th scope="col">Tc Cob</th>
-                  <th scope="col">Tc Dev</th>
-                  <th scope="col">Coef</th>
-                  <th scope="col">Qtd. Parc</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr :class="item.id === linhaSelecionada ? 'custom-highlight-row' : ''
-    " @click=" rowSelect(key, item.id, 1)" v-for="(      item, key      ) in       parcelamento_1      "
-                  :key="item.id">
-
-                  <td>{{ item.financeira }}</td>
-                  <td>{{ item.plano }}</td>
-                  <td>{{ item.ret }}</td>
-                  <td>{{ currency(item.entrada_min_valor) }}</td>
-                  <td>{{ item.entrada_min_porcentagem }}</td>
-                  <td>{{ currency(item.rentabilidade_1) }}</td>
-
-                  <td>{{ currency((parseFloat(Valor_Financiado.replace(/[^\d,]+/g, '').replace(",", ".")) +
-    item.tc_cob)
-    * item.descontoCoeficiente) }}</td>
-                  <td>{{ currency(item.pmt_1) }}</td>
-                  <td>{{ item.spf }}</td>
-                  <td>{{ item.retorno }}</td>
-                  <td>{{ currency(item.tc_cob) }}</td>
-                  <td>{{ item.tc_dev }}</td>
-                  <td>{{ item.coeficiente }}</td>
-                  <td>{{ item.qtd_parcelas }}</td>
-                </tr>
-              </tbody>
-            </table>
-            <pagination v-if="parcelamento_1.length" :offset="totalPages_1" :total="totalItems_1" :limit="pageSize_1"
-              @change-page="handlePageChangeEntrada1" />
-          </div>
-          <!--Tabelas 2-->
-          <div class="card card-tabela-desk g-2 p-2 mt-2">
-            <div class="card-body">
-              <div class="row">
-                <div class="col">
-                  <div class="card-title gy-4">
-                      <i class="bi bi-cash-coin fs-5 icone_filtro"><span class="texto_filtro">Valor de Entrada: <strong>{{ Valor_Entrada_2 }}</strong> </span></i>  <i class="bi bi-cash-coin p-3 icone_filtro"><span class="texto_filtro">Valor Financiado: <strong>{{ Valor_Financiado_2 }}</strong> </span></i>
-                    </div>               
-                  </div>
-              </div>           
             </div>
             <table class="table rf_texto_desk">
               <thead>
@@ -1825,19 +2399,123 @@
                 </tr>
               </thead>
               <tbody>
-                <tr :class="item.id === linhaSelecionada2
-    ? 'custom-highlight-row'
-    : ''
-    " @click=" rowSelect2(key, item.id, 2)" v-for="(      item, key      ) in       parcelamento_2      "
-                  :key="item.id">
+                <tr
+                  :class="
+                    item.id === linhaSelecionada ? 'custom-highlight-row' : ''
+                  "
+                  @click="rowSelect(key, item.id, 1)"
+                  v-for="(item, key) in parcelamento_1"
+                  :key="item.id"
+                >
+                  <td>{{ item.financeira }}</td>
+                  <td>{{ item.plano }}</td>
+                  <td>{{ item.ret }}</td>
+                  <td>{{ currency(item.entrada_min_valor) }}</td>
+                  <td>{{ item.entrada_min_porcentagem }}</td>
+                  <td>{{ currency(item.rentabilidade_1) }}</td>
+
+                  <td>
+                    {{
+                      currency(
+                        (parseFloat(
+                          Valor_Financiado.replace(/[^\d,]+/g, "").replace(
+                            ",",
+                            "."
+                          )
+                        ) +
+                          item.tc_cob) *
+                          item.descontoCoeficiente
+                      )
+                    }}
+                  </td>
+                  <td>{{ currency(item.pmt_1) }}</td>
+                  <td>{{ item.spf }}</td>
+                  <td>{{ item.retorno }}</td>
+                  <td>{{ currency(item.tc_cob) }}</td>
+                  <td>{{ item.tc_dev }}</td>
+                  <td>{{ item.coeficiente }}</td>
+                  <td>{{ item.qtd_parcelas }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <pagination
+              v-if="parcelamento_1.length"
+              :offset="totalPages_1"
+              :total="totalItems_1"
+              :limit="pageSize_1"
+              @change-page="handlePageChangeEntrada1"
+            />
+          </div>
+          <!--Tabelas 2-->
+          <div class="card card-tabela-desk g-2 p-2 mt-2">
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <div class="card-title gy-4">
+                    <i class="bi bi-cash-coin fs-5 icone_filtro"
+                      ><span class="texto_filtro"
+                        >Valor de Entrada:
+                        <strong>{{ Valor_Entrada_2 }}</strong>
+                      </span></i
+                    >
+                    <i class="bi bi-cash-coin p-3 icone_filtro"
+                      ><span class="texto_filtro"
+                        >Valor Financiado:
+                        <strong>{{ Valor_Financiado_2 }}</strong>
+                      </span></i
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <table class="table rf_texto_desk">
+              <thead>
+                <tr>
+                  <th scope="col">Financeira</th>
+                  <th scope="col">Plano</th>
+                  <th scope="col">Ret</th>
+                  <th scope="col">R$ Ent. Min</th>
+                  <th scope="col">% Ent. Min</th>
+                  <th scope="col">Rentabilidade</th>
+                  <th scope="col">Rebate</th>
+                  <th scope="col">Pmt</th>
+                  <th scope="col">Spf</th>
+                  <th scope="col">Retorno</th>
+                  <th scope="col">Tc Cob</th>
+                  <th scope="col">Tc Dev</th>
+                  <th scope="col">Coef</th>
+                  <th scope="col">Qtd. Parc</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  :class="
+                    item.id === linhaSelecionada2 ? 'custom-highlight-row' : ''
+                  "
+                  @click="rowSelect2(key, item.id, 2)"
+                  v-for="(item, key) in parcelamento_2"
+                  :key="item.id"
+                >
                   <td>{{ item.financeira }}</td>
                   <td>{{ item.plano }}</td>
                   <td>{{ item.ret }}</td>
                   <td>{{ currency(item.entrada_min_valor) }}</td>
                   <td>{{ item.entrada_min_porcentagem }}</td>
                   <td>{{ currency(item.rentabilidade_2) }}</td>
-                  <td>{{ currency((parseFloat(Valor_Financiado_2.replace(/[^\d,]+/g, '').replace(",", ".")) +
-    item.tc_cob) * item.descontoCoeficiente) }}</td>
+                  <td>
+                    {{
+                      currency(
+                        (parseFloat(
+                          Valor_Financiado_2.replace(/[^\d,]+/g, "").replace(
+                            ",",
+                            "."
+                          )
+                        ) +
+                          item.tc_cob) *
+                          item.descontoCoeficiente
+                      )
+                    }}
+                  </td>
                   <td>{{ currency(item.pmt_2) }}</td>
                   <td>{{ item.spf }}</td>
                   <td>{{ item.retorno }}</td>
@@ -1848,8 +2526,13 @@
                 </tr>
               </tbody>
             </table>
-            <pagination v-if="parcelamento_2.length" :offset="totalPages_2" :total="totalItems_2" :limit="pageSize_2"
-              @change-page="handlePageChangeEntrada2" />
+            <pagination
+              v-if="parcelamento_2.length"
+              :offset="totalPages_2"
+              :total="totalItems_2"
+              :limit="pageSize_2"
+              @change-page="handlePageChangeEntrada2"
+            />
           </div>
           <!--Tabelas 3-->
           <div class="card card-tabela-desk g-2 p-2 mt-2">
@@ -1857,9 +2540,20 @@
               <div class="row">
                 <div class="col">
                   <div class="card-title gy-4">
-                      <i class="bi bi-cash-coin fs-5 icone_filtro"><span class="texto_filtro">Valor de Entrada: <strong>{{ Valor_Entrada_3 }}</strong> </span></i>  <i class="bi bi-cash-coin p-3 icone_filtro"><span class="texto_filtro">Valor Financiado: <strong>{{ Valor_Financiado_3 }}</strong> </span></i>
-                    </div>               
+                    <i class="bi bi-cash-coin fs-5 icone_filtro"
+                      ><span class="texto_filtro"
+                        >Valor de Entrada:
+                        <strong>{{ Valor_Entrada_3 }}</strong>
+                      </span></i
+                    >
+                    <i class="bi bi-cash-coin p-3 icone_filtro"
+                      ><span class="texto_filtro"
+                        >Valor Financiado:
+                        <strong>{{ Valor_Financiado_3 }}</strong>
+                      </span></i
+                    >
                   </div>
+                </div>
               </div>
             </div>
             <table class="table bg-dark rf_texto_desk">
@@ -1882,19 +2576,34 @@
                 </tr>
               </thead>
               <tbody>
-                <tr :class="item.id === linhaSelecionada3
-    ? 'custom-highlight-row'
-    : ''
-    " @click=" rowSelect3(key, item.id, 3)" v-for="(      item, key      ) in       parcelamento_3      "
-                  :key="item.id">
+                <tr
+                  :class="
+                    item.id === linhaSelecionada3 ? 'custom-highlight-row' : ''
+                  "
+                  @click="rowSelect3(key, item.id, 3)"
+                  v-for="(item, key) in parcelamento_3"
+                  :key="item.id"
+                >
                   <td>{{ item.financeira }}</td>
                   <td>{{ item.plano }}</td>
                   <td>{{ item.ret }}</td>
                   <td>{{ currency(item.entrada_min_valor) }}</td>
                   <td>{{ item.entrada_min_porcentagem }}</td>
                   <td>{{ currency(item.rentabilidade_3) }}</td>
-                  <td>{{ currency((parseFloat(Valor_Financiado_3.replace(/[^\d,]+/g, '').replace(",", ".")) +
-    item.tc_cob) * item.descontoCoeficiente) }}</td>
+                  <td>
+                    {{
+                      currency(
+                        (parseFloat(
+                          Valor_Financiado_3.replace(/[^\d,]+/g, "").replace(
+                            ",",
+                            "."
+                          )
+                        ) +
+                          item.tc_cob) *
+                          item.descontoCoeficiente
+                      )
+                    }}
+                  </td>
                   <td>{{ currency(item.pmt_3) }}</td>
                   <td>{{ item.spf }}</td>
                   <td>{{ item.retorno }}</td>
@@ -1905,30 +2614,49 @@
                 </tr>
               </tbody>
             </table>
-            <pagination v-if="parcelamento_3.length" :offset="totalPages_3" :total="totalItems_3" :limit="pageSize_3"
-              @change-page="handlePageChangeEntrada3" />
+            <pagination
+              v-if="parcelamento_3.length"
+              :offset="totalPages_3"
+              :total="totalItems_3"
+              :limit="pageSize_3"
+              @change-page="handlePageChangeEntrada3"
+            />
           </div>
         </div>
         <div class="modal-footer">
           <div class="col-1">
-            <button class="btn btn-lg btn-desk-filtro" data-bs-dismiss="modal" @click="fechar_rank">
-            <span class="rf_texto_btn_desk">RANKING</span>
-          </button>
+            <button
+              class="btn btn-lg btn-desk-filtro"
+              data-bs-dismiss="modal"
+              @click="fechar_rank"
+            >
+              <span class="rf_texto_btn_desk">RANKING</span>
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
   <!--Modal Avaliações do veículo-->
-  <div class="modal fade" id="ModalAvaliacaoVeiculo" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
-    tabindex="-1">
+  <div
+    class="modal fade"
+    id="ModalAvaliacaoVeiculo"
+    aria-hidden="true"
+    aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1"
+  >
     <div class="modal-dialog modal-fullscreen">
       <div class="modal-content rf_bg_form rf_texto">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
             Avaliações do veículo
           </h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body">
           <div class="card rf_bg_form g-2 p-2 rf_margin">
@@ -1943,19 +2671,31 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="      item       in       avaliacoes.avaliacoes      " :key="item.id">
+                <tr v-for="item in avaliacoes.avaliacoes" :key="item.id">
                   <td>{{ currency(item.precoAvaliacao) }}</td>
                   <td>{{ item.kilometragem }}</td>
                   <td>Matriz</td>
                   <td>Gerente 1</td>
                   <td>{{ item.data }}</td>
                   <td>
-                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                      data-bs-target="#exampleModal" @click=" editar_midia(item)">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-pencil" viewBox="0 0 16 16">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                      @click="editar_midia(item)"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-pencil"
+                        viewBox="0 0 16 16"
+                      >
                         <path
-                          d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                          d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"
+                        />
                       </svg>
                     </button>
                   </td>
@@ -1973,15 +2713,25 @@
     </div>
   </div>
   <!--Modal Mensagem Incluir Acessórios-->
-  <div class="modal fade" id="ModalMsgIncluirAcessorios" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
-    tabindex="-1">
+  <div
+    class="modal fade"
+    id="ModalMsgIncluirAcessorios"
+    aria-hidden="true"
+    aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1"
+  >
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
             Modal 8
           </h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body">
           <!--Modal Estoque-->
@@ -1996,46 +2746,70 @@
     </div>
   </div>
   <!--Modal Gerar Menu-->
-  <div class="modal fade" id="ModalGerarMenu" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
-    tabindex="-1">
+  <div
+    class="modal fade"
+    id="ModalGerarMenu"
+    aria-hidden="true"
+    aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1"
+  >
     <div class="modal-dialog modal-fullscreen rf_modal font-pdf-menu">
       <div class="modal-content">
         <div class="modal-header">
-
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body">
-          <div class=" mt-3 rf_texto_pdf" ref="contentToPrint">
+          <div class="mt-3 rf_texto_pdf" ref="contentToPrint">
             <div class="col">
               <a class="navbar-brand logo">
-                <img src="../../assets/logo_menu.png" alt="Bootstrap" width="100" height="30" />
+                <img
+                  src="../../assets/logo_menu.png"
+                  alt="Bootstrap"
+                  width="100"
+                  height="30"
+                />
               </a>
               <div class="row g-2 p-2">
-
                 <div class="col-4">
-                  <div class="card card-menu ">
-
-                    <div class="card-header rf_card_header">Informações do Cliente</div>
+                  <div class="card card-menu">
+                    <div class="card-header rf_card_header">
+                      Informações do Cliente
+                    </div>
                     <div class="rf_card_pdf">
                       <div>
-                        <div class="col "><strong>Cliente</strong></div>
-                        <div class="col"><span class="">{{ g_menu_cliente }}</span></div>
+                        <div class="col"><strong>Cliente</strong></div>
+                        <div class="col">
+                          <span class="">{{ g_menu_cliente }}</span>
+                        </div>
                       </div>
                       <div>
                         <div class="col"><strong>CPF/CNPJ</strong></div>
-                        <div class="col"><span class="">{{ g_menu_cpfCnpj }}</span></div>
+                        <div class="col">
+                          <span class="">{{ g_menu_cpfCnpj }}</span>
+                        </div>
                       </div>
                       <div>
                         <div class="col"><strong>Telefone</strong></div>
-                        <div class="col"><span class="">{{ g_menu_fone }}</span></div>
+                        <div class="col">
+                          <span class="">{{ g_menu_fone }}</span>
+                        </div>
                       </div>
                       <div>
                         <div class="col"><strong>Telefone 2</strong></div>
-                        <div class="col"><span class="">{{ g_menu_fone2 }}</span></div>
+                        <div class="col">
+                          <span class="">{{ g_menu_fone2 }}</span>
+                        </div>
                       </div>
                       <div>
                         <div class="col"><strong>Email</strong></div>
-                        <div class="col"><span class="">{{ g_menu_email }}</span></div>
+                        <div class="col">
+                          <span class="">{{ g_menu_email }}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -2043,23 +2817,33 @@
 
                 <div class="col-4">
                   <div class="card card-menu">
-                    <div class="card-header rf_card_header">Informações da Proposta</div>
+                    <div class="card-header rf_card_header">
+                      Informações da Proposta
+                    </div>
                     <div class="rf_card_pdf">
                       <div>
-                        <div class="col "><strong>Gerente</strong></div>
-                        <div class="col"><span class="">{{ g_menu_gerente }}</span></div>
+                        <div class="col"><strong>Gerente</strong></div>
+                        <div class="col">
+                          <span class="">{{ g_menu_gerente }}</span>
+                        </div>
                       </div>
                       <div>
                         <div class="col"><strong>Vendedor</strong></div>
-                        <div class="col"><span class="">{{ g_menu_vendedor }}</span></div>
+                        <div class="col">
+                          <span class="">{{ g_menu_vendedor }}</span>
+                        </div>
                       </div>
                       <div>
                         <div class="col"><strong>Negociação</strong></div>
-                        <div class="col"><span class="">{{ g_menu_negociacao }}</span></div>
+                        <div class="col">
+                          <span class="">{{ g_menu_negociacao }}</span>
+                        </div>
                       </div>
                       <div>
                         <div class="col"><strong>Data</strong></div>
-                        <div class="col"><span class="">{{ g_menu_data_negociacao }}</span></div>
+                        <div class="col">
+                          <span class="">{{ g_menu_data_negociacao }}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -2069,25 +2853,23 @@
                   <div class="card card-menu">
                     <div class="card-header rf_card_header">Acessórios</div>
                     <div class="rf_container_menu">
-                      <ul class="list-group" v-for="item in itens_acessorios" :key="item.id">
-                        <li class="
-                          list-group-item
-                          d-flex
-                          justify-content-between
-                          align-items-center
-                        ">
+                      <ul
+                        class="list-group"
+                        v-for="item in itens_acessorios"
+                        :key="item.id"
+                      >
+                        <li
+                          class="list-group-item d-flex justify-content-between align-items-center"
+                        >
                           {{ item.descricao }}
                           <span class="">{{ item.valor }}</span>
                         </li>
                       </ul>
                     </div>
                     <ul class="list-group">
-                      <li class="
-                        list-group-item
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                      ">
+                      <li
+                        class="list-group-item d-flex justify-content-between align-items-center"
+                      >
                         <span class="badge text-bg-danger">{{ msg }}</span>
                       </li>
                     </ul>
@@ -2101,83 +2883,114 @@
                   <div class="card card-menu">
                     <div class="card-header rf_card_header">Veículo</div>
                     <div class="rf_card_pdf">
-
                       <div class="row">
                         <div class="col">
                           <div class="col-4"><strong>Marca</strong></div>
-                          <div class="col-4"><span class="">{{ g_menu_marca }}</span></div>
+                          <div class="col-4">
+                            <span class="">{{ g_menu_marca }}</span>
+                          </div>
                         </div>
                         <div class="col">
                           <div class="col"><strong>Modelo</strong></div>
-                          <div class="col"><span class="">{{ g_menu_modelo }}</span></div>
+                          <div class="col">
+                            <span class="">{{ g_menu_modelo }}</span>
+                          </div>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col">
                           <div class="col-4"><strong>Cor</strong></div>
-                          <div class="col"><span class="">{{ g_menu_cor }}</span></div>
+                          <div class="col">
+                            <span class="">{{ g_menu_cor }}</span>
+                          </div>
                         </div>
                         <div class="col">
                           <div class="col"><strong>Placa</strong></div>
-                          <div class="col"><span class="">{{ g_menu_placa }}</span></div>
+                          <div class="col">
+                            <span class="">{{ g_menu_placa }}</span>
+                          </div>
                         </div>
                       </div>
                       <div>
                         <div class="col"><strong>Chassi</strong></div>
-                        <div class="col"><span class="">{{ g_menu_chassi }}</span></div>
+                        <div class="col">
+                          <span class="">{{ g_menu_chassi }}</span>
+                        </div>
                       </div>
                       <div>
                         <div class="row">
                           <div class="col">
                             <div class="col-6"><strong>Ano Modelo</strong></div>
-                            <div class="col-6"><span class="">{{ g_menu_ano_modelo }}</span></div>
+                            <div class="col-6">
+                              <span class="">{{ g_menu_ano_modelo }}</span>
+                            </div>
                           </div>
                           <div class="col">
                             <div class="col-6"><strong>Ano Modelo</strong></div>
-                            <div class="col-6"><span class="">{{ g_menu_ano_fab }}</span></div>
+                            <div class="col-6">
+                              <span class="">{{ g_menu_ano_fab }}</span>
+                            </div>
                           </div>
                         </div>
-
                       </div>
-
                     </div>
                   </div>
                 </div>
 
                 <div class="col-4">
                   <div class="card card-menu">
-                    <div class="card-header rf_card_header">Resumo da Compra</div>
+                    <div class="card-header rf_card_header">
+                      Resumo da Compra
+                    </div>
                     <div class="rf_card_pdf">
                       <div class="row">
                         <div class="col">
-                          <div class="col-7"><strong>Valor Sugerido</strong></div>
-                          <div class="col-6"><span class="">{{ g_menu_val_sugerido }}</span></div>
+                          <div class="col-7">
+                            <strong>Valor Sugerido</strong>
+                          </div>
+                          <div class="col-6">
+                            <span class="">{{ g_menu_val_sugerido }}</span>
+                          </div>
                         </div>
                         <div class="col">
                           <div class="col"><strong>Valor Desconto</strong></div>
-                          <div class="col-6"><span class="">{{ g_menu_val_desconto }}</span></div>
+                          <div class="col-6">
+                            <span class="">{{ g_menu_val_desconto }}</span>
+                          </div>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col">
-                          <div class="col"><strong>Valor Total Acessórios</strong></div>
-                          <div class="col"><span class="">{{ g_menu_total_acessorios }}</span></div>
+                          <div class="col">
+                            <strong>Valor Total Acessórios</strong>
+                          </div>
+                          <div class="col">
+                            <span class="">{{ g_menu_total_acessorios }}</span>
+                          </div>
                         </div>
                         <div class="col">
-                          <div class="col"><strong>Tipo de Pagamento</strong></div>
-                          <div class="col-6"><span class="">{{ tipoPagamento }}</span></div>
+                          <div class="col">
+                            <strong>Tipo de Pagamento</strong>
+                          </div>
+                          <div class="col-6">
+                            <span class="">{{ tipoPagamento }}</span>
+                          </div>
                         </div>
                       </div>
+                      <div></div>
                       <div>
-
-                      </div>
-                      <div>
-                        <div class="col"><strong>Valor Total Veículo</strong></div>
-                        <div class="col"><span class="">{{ g_menu_val_veiculo }}</span></div>
+                        <div class="col">
+                          <strong>Valor Total Veículo</strong>
+                        </div>
+                        <div class="col">
+                          <span class="">{{ g_menu_val_veiculo }}</span>
+                        </div>
                       </div>
                       <div>
                         <div class="col"><strong>Total Financiado</strong></div>
-                        <div class="col"><span class="">{{ Valor_Financiado }}</span></div>
+                        <div class="col">
+                          <span class="">{{ Valor_Financiado }}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -2185,17 +2998,23 @@
 
                 <div class="col-4">
                   <div class="card card-menu">
-                    <div class="card-header rf_card_header">Veículo de Troca</div>
+                    <div class="card-header rf_card_header">
+                      Veículo de Troca
+                    </div>
                     <div class="rf_card_pdf">
                       <div>
                         <div class="row">
                           <div class="col-6">
                             <div class="col"><strong>Marca</strong></div>
-                            <div class="col"><span class="">{{ g_menu_marca_avaliacao }}</span></div>
+                            <div class="col">
+                              <span class="">{{ g_menu_marca_avaliacao }}</span>
+                            </div>
                           </div>
                           <div class="col-6">
                             <div class="col"><strong>Placa</strong></div>
-                            <div class="col"><span class="">{{ g_menu_placa_avaliacao }}</span></div>
+                            <div class="col">
+                              <span class="">{{ g_menu_placa_avaliacao }}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -2203,35 +3022,63 @@
                         <div class="row">
                           <div class="col-6">
                             <div class="col"><strong>Modelo</strong></div>
-                            <div class="col"><span class="">{{ g_menu_modelo_avalicao }}</span></div>
+                            <div class="col">
+                              <span class="">{{ g_menu_modelo_avalicao }}</span>
+                            </div>
                           </div>
                           <div class="col-6">
                             <div class="col"><strong>Ano</strong></div>
-                            <div class="col"><span class="">{{ g_menu_ano_modelo_avaliacao }}</span></div>
+                            <div class="col">
+                              <span class="">{{
+                                g_menu_ano_modelo_avaliacao
+                              }}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
                       <div>
                         <div class="row">
                           <div class="col-6">
-                            <div class="col"><strong>Valor itens Av. (-)</strong></div>
-                            <div class="col"><span class="">{{ g_menu_itens_avaliacao_db }}</span></div>
+                            <div class="col">
+                              <strong>Valor itens Av. (-)</strong>
+                            </div>
+                            <div class="col">
+                              <span class="">{{
+                                g_menu_itens_avaliacao_db
+                              }}</span>
+                            </div>
                           </div>
                           <div class="col-6">
-                            <div class="col"><strong>Valor itens Av. (+)</strong></div>
-                            <div class="col"><span class="">{{ g_menu_itens_avaliacao_cr }}</span></div>
+                            <div class="col">
+                              <strong>Valor itens Av. (+)</strong>
+                            </div>
+                            <div class="col">
+                              <span class="">{{
+                                g_menu_itens_avaliacao_cr
+                              }}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
                       <div>
                         <div class="row">
                           <div class="col-6">
-                            <div class="col"><strong>Valor Avaliado</strong></div>
-                            <div class="col"><span class="">{{ g_menu_valor_avaliado }}</span></div>
+                            <div class="col">
+                              <strong>Valor Avaliado</strong>
+                            </div>
+                            <div class="col">
+                              <span class="">{{ g_menu_valor_avaliado }}</span>
+                            </div>
                           </div>
                           <div class="col-6">
-                            <div class="col"><strong>Valor Final Av.</strong></div>
-                            <div class="col"><span class="">{{ g_menu_valor_avaliacao_final }}</span></div>
+                            <div class="col">
+                              <strong>Valor Final Av.</strong>
+                            </div>
+                            <div class="col">
+                              <span class="">{{
+                                g_menu_valor_avaliacao_final
+                              }}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -2243,93 +3090,128 @@
 
             <div class="row g-2 p-2">
               <div class="col">
-                <div class="card ">
+                <div class="card">
                   <div class="card-header rf_card_header">Entrada</div>
                   <div class="rf_card_pdf">
                     <div>
-                      <div class="col "><strong> {{ Valor_Entrada_1 }}</strong></div>
+                      <div class="col">
+                        <strong> {{ Valor_Entrada_1 }}</strong>
+                      </div>
                     </div>
                     <div>
-                      <div class="col"><strong> {{ Valor_Entrada_2 }}</strong></div>
+                      <div class="col">
+                        <strong> {{ Valor_Entrada_2 }}</strong>
+                      </div>
                     </div>
                     <div>
-                      <div class="col"><strong> {{ Valor_Entrada_3 }}</strong></div>
+                      <div class="col">
+                        <strong> {{ Valor_Entrada_3 }}</strong>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="col">
-                <div class="card ">
+                <div class="card">
                   <div class="card-header rf_card_header">Total Financiado</div>
                   <div class="rf_card_pdf">
                     <div>
-                      <div class="col "><strong> {{ Valor_Financiado_1 }}</strong></div>
+                      <div class="col">
+                        <strong> {{ Valor_Financiado_1 }}</strong>
+                      </div>
                     </div>
                     <div>
-                      <div class="col"><strong> {{ Valor_Financiado_2 }}</strong></div>
+                      <div class="col">
+                        <strong> {{ Valor_Financiado_2 }}</strong>
+                      </div>
                     </div>
                     <div>
-                      <div class="col"><strong> {{ Valor_Financiado_3 }}</strong></div>
+                      <div class="col">
+                        <strong> {{ Valor_Financiado_3 }}</strong>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="col">
-                <div class="card ">
-                  <div class="card-header rf_card_header">{{ parcela_1 }} Meses</div>
-                  <div class="rf_card_pdf">
-                    <div>
-                      <div class="col "><strong> {{ parcela_1_1 }}</strong></div>
-                    </div>
-                    <div>
-                      <div class="col"><strong> {{ parcela_2_1 }}</strong></div>
-                    </div>
-                    <div>
-                      <div class="col"><strong> {{ parcela_3_1 }}</strong></div>
-                    </div>
-
+                <div class="card">
+                  <div class="card-header rf_card_header">
+                    {{ parcela_1 }} Meses
                   </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="card ">
-                  <div class="card-header rf_card_header">{{ parcela_2 }} Meses</div>
                   <div class="rf_card_pdf">
                     <div>
-                      <div class="col "><strong> {{ parcela_1_2 }}</strong></div>
+                      <div class="col">
+                        <strong> {{ parcela_1_1 }}</strong>
+                      </div>
                     </div>
                     <div>
-                      <div class="col"><strong> {{ parcela_2_2 }}</strong></div>
+                      <div class="col">
+                        <strong> {{ parcela_2_1 }}</strong>
+                      </div>
                     </div>
                     <div>
-                      <div class="col"><strong> {{ parcela_3_2 }}</strong></div>
+                      <div class="col">
+                        <strong> {{ parcela_3_1 }}</strong>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="col">
-                <div class="card ">
-                  <div class="card-header rf_card_header">{{ parcela_3 }} Meses</div>
+                <div class="card">
+                  <div class="card-header rf_card_header">
+                    {{ parcela_2 }} Meses
+                  </div>
                   <div class="rf_card_pdf">
                     <div>
-                      <div class="col "><strong> {{ parcela_1_3 }}</strong></div>
+                      <div class="col">
+                        <strong> {{ parcela_1_2 }}</strong>
+                      </div>
                     </div>
                     <div>
-                      <div class="col"><strong> {{ parcela_2_3 }}</strong></div>
+                      <div class="col">
+                        <strong> {{ parcela_2_2 }}</strong>
+                      </div>
                     </div>
                     <div>
-                      <div class="col"><strong> {{ parcela_3_3 }}</strong></div>
+                      <div class="col">
+                        <strong> {{ parcela_3_2 }}</strong>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-
+              <div class="col">
+                <div class="card">
+                  <div class="card-header rf_card_header">
+                    {{ parcela_3 }} Meses
+                  </div>
+                  <div class="rf_card_pdf">
+                    <div>
+                      <div class="col">
+                        <strong> {{ parcela_1_3 }}</strong>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="col">
+                        <strong> {{ parcela_2_3 }}</strong>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="col">
+                        <strong> {{ parcela_3_3 }}</strong>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="row g-2 p-2">
               <div class="col">
                 <span>
                   * O preço sugerido é válido enquanto durarem os veículos em
-                  estoque.</span>
+                  estoque.</span
+                >
                 <br />
                 <span>** Despesa Operacional para preparação do veículo</span>
                 <br />
@@ -2337,7 +3219,10 @@
                     contrato em até 7 (sete) dias corridos com a devolução integral do
                     valor pago.</span> -->
                 <br />
-                <span>É proibido condicionar desconto de bem à aquisição de seguro.</span>
+                <span
+                  >É proibido condicionar desconto de bem à aquisição de
+                  seguro.</span
+                >
                 <br />
               </div>
             </div>
@@ -2349,30 +3234,49 @@
                 <span>Cliente: {{ g_menu_cliente }}</span>
               </div>
             </div>
-
-
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-target="#ModaProposta" data-bs-toggle="modal">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-target="#ModaProposta"
+            data-bs-toggle="modal"
+          >
             Fechar
           </button>
-          <button class="btn btn-secondary" :disabled="btn_gerar_menu" @click="generatePdf">IMPRIMIR</button>
+          <button
+            class="btn btn-secondary"
+            :disabled="btn_gerar_menu"
+            @click="generatePdf"
+          >
+            IMPRIMIR
+          </button>
         </div>
       </div>
     </div>
   </div>
 
   <!--Modal Cadastrar Veículo para avaliação-->
-  <div class="modal fade" id="ModalCadastrarVeiculoAvalicao" aria-hidden="true"
-    aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+  <div
+    class="modal fade"
+    id="ModalCadastrarVeiculoAvalicao"
+    aria-hidden="true"
+    aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1"
+  >
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
             Modal 8
           </h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body">
           <!--Modal Estoque-->
@@ -2398,14 +3302,13 @@ import userService from "../../services/user.service";
 import Pagination from "../../components/Pagination.vue";
 import Message from "../../components/modal/Message.vue";
 import MessageAtualizar from "../../components/modal/MessageAtualizar.vue";
-import { VueMaskDirective } from 'vue-the-mask';
-import html2pdf from 'html2pdf.js';
+import { VueMaskDirective } from "vue-the-mask";
+import html2pdf from "html2pdf.js";
 import router from "../../router";
 import TokenService from "../../services/token.service";
-import jwt_decode from 'jwt-decode';
+import jwt_decode from "jwt-decode";
 import RodapeVue from "../../components/menu/Rodape.vue";
 import NavgatorDk from "../../components/menu/NavgatorDk.vue";
-
 
 export default {
   name: "Usuários",
@@ -2416,19 +3319,17 @@ export default {
     Pagination,
     Message,
     MessageAtualizar,
-    RodapeVue
-
-
+    RodapeVue,
   },
   directives: {
-    mask: VueMaskDirective
+    mask: VueMaskDirective,
   },
   data() {
     return {
-      selectedFilter: 'Todos',
-      searchTerm: '',
-      startDate: '',
-      endDate: '',
+      selectedFilter: "Todos",
+      searchTerm: "",
+      startDate: "",
+      endDate: "",
       adicional: "",
 
       message: "",
@@ -2472,7 +3373,6 @@ export default {
       searchCor: "",
       tipoVeiculo: "",
       tipo_veiculo_escolhido: "",
-
 
       searchCodigo: "",
       searchDescricao: "",
@@ -2527,14 +3427,26 @@ export default {
       page_1: 1,
       totalPages_1: 0,
       totalItems_1: 0,
-      pageSizes_1: [{ value: 10 }, { value: 25 }, { value: 50 }, { value: 75 }, { value: 100 }],
+      pageSizes_1: [
+        { value: 10 },
+        { value: 25 },
+        { value: 50 },
+        { value: 75 },
+        { value: 100 },
+      ],
       pageSize_1: 5,
       //////////////////////
       //Paginação Entrada 2
       page_2: 1,
       totalPages_2: 0,
       totalItems_2: 0,
-      pageSizes_2: [{ value: 10 }, { value: 25 }, { value: 50 }, { value: 75 }, { value: 100 }],
+      pageSizes_2: [
+        { value: 10 },
+        { value: 25 },
+        { value: 50 },
+        { value: 75 },
+        { value: 100 },
+      ],
       pageSize_2: 5,
       //////////////////////
 
@@ -2542,7 +3454,13 @@ export default {
       page_3: 1,
       totalPages_3: 0,
       totalItems_3: 0,
-      pageSizes_3: [{ value: 10 }, { value: 25 }, { value: 50 }, { value: 75 }, { value: 100 }],
+      pageSizes_3: [
+        { value: 10 },
+        { value: 25 },
+        { value: 50 },
+        { value: 75 },
+        { value: 100 },
+      ],
       pageSize_3: 5,
       //////////////////////
 
@@ -2550,14 +3468,26 @@ export default {
       page_4: 1,
       totalPages_4: 0,
       totalItems_4: 0,
-      pageSizes_4: [{ value: 10 }, { value: 25 }, { value: 50 }, { value: 75 }, { value: 100 }],
+      pageSizes_4: [
+        { value: 10 },
+        { value: 25 },
+        { value: 50 },
+        { value: 75 },
+        { value: 100 },
+      ],
       pageSize_4: 100,
       //////////////////////
 
       page: 1,
       totalPages: 0,
       totalItems: 0,
-      pageSizes: [{ value: 10 }, { value: 25 }, { value: 50 }, { value: 75 }, { value: 100 }],
+      pageSizes: [
+        { value: 10 },
+        { value: 25 },
+        { value: 50 },
+        { value: 75 },
+        { value: 100 },
+      ],
       pageSize: 5,
 
       pageVeiculo: 1,
@@ -2660,7 +3590,6 @@ export default {
       modal_gerar_menu_desk: false,
       modal_proposta: false,
 
-
       //Campos para calcular as parcelas
       parcela: "",
       parcela_1: 24,
@@ -2761,7 +3690,7 @@ export default {
       btn_3: true,
       btn_gerar_menu: true,
       btn_finalizar_venda: true,
-      cortesia: '',
+      cortesia: "",
       money: {
         decimal: ",",
         thousands: ".",
@@ -2938,9 +3867,6 @@ export default {
       nome_historico_cliente: "",
       hist_cliente: [],
       modal_historico_cliente: false,
-
-
-
     };
   },
   watch: {
@@ -2953,12 +3879,12 @@ export default {
       this.searchCor = "";
       this.searchChassi = "";
       this.searchPlaca = "";
-    }
+    },
   },
   computed: {
     tipoPagamento() {
-      return this.pagamento ? 'Pagamento à Vista' : 'Financiamento';
-    }
+      return this.pagamento ? "Pagamento à Vista" : "Financiamento";
+    },
   },
 
   mounted() {
@@ -2966,19 +3892,14 @@ export default {
     this.getToken();
     this.habilitar_proposta();
     // this.startTimer();
-
-
-
   },
   methods: {
-    // startTimer(){     
+    // startTimer(){
     //   this.timer = setTimeout(()=>{
-    //     //Ação para voltar a tela de propostas  
+    //     //Ação para voltar a tela de propostas
     //     //this.$router.push('/desk/index')
     //     window.location.reload();
     //   }, 30000);
-
-
 
     // },
     // startTimer() {
@@ -3025,7 +3946,6 @@ export default {
     async habilitar_proposta() {
       const propostaId = this.$route.params.id;
 
-
       //Limpar campos veiculo de compra
       // this.chassi_proposta = "",
       //   this.marca_proposta = "",
@@ -3038,26 +3958,27 @@ export default {
       //Buscar dados da proposta
       try {
         await userService.getPropostaId(propostaId).then((response) => {
-          this.dados_proposta = response.data
-
+          this.dados_proposta = response.data;
 
           console.log(response.data);
           /**Bloco de dados com informações do cliente */
           const dados_cliente = {
-            id_cliente: this.dados_proposta['cliente_id'],
-            nome: this.dados_proposta.clientes['nome'],
-            cpfCnpj: this.dados_proposta.clientes['cpfCnpj'],
-            dataNascimento: this.formatarData(this.dados_proposta.clientes['nascimento']),
-            email: this.dados_proposta.clientes['email'],
-            endereco: this.dados_proposta.clientes['endereco'],
-            complemento: this.dados_proposta.clientes['complemento'],
-            uf: this.dados_proposta.clientes['uf'],
-            cidade: this.dados_proposta.clientes['cidade'],
-            bairro: this.dados_proposta.clientes['bairro'],
-            cep: this.dados_proposta.clientes['cep'],
-            tel: this.dados_proposta.clientes['tel'],
-            cel: this.dados_proposta.clientes['cel'],
-          }
+            id_cliente: this.dados_proposta["cliente_id"],
+            nome: this.dados_proposta.clientes["nome"],
+            cpfCnpj: this.dados_proposta.clientes["cpfCnpj"],
+            dataNascimento: this.formatarData(
+              this.dados_proposta.clientes["nascimento"]
+            ),
+            email: this.dados_proposta.clientes["email"],
+            endereco: this.dados_proposta.clientes["endereco"],
+            complemento: this.dados_proposta.clientes["complemento"],
+            uf: this.dados_proposta.clientes["uf"],
+            cidade: this.dados_proposta.clientes["cidade"],
+            bairro: this.dados_proposta.clientes["bairro"],
+            cep: this.dados_proposta.clientes["cep"],
+            tel: this.dados_proposta.clientes["tel"],
+            cel: this.dados_proposta.clientes["cel"],
+          };
           this.id_cliente = dados_cliente.id_cliente;
           //Alterações Histórico do cliente
           this.id_historico_cliente = dados_cliente.id_cliente;
@@ -3079,13 +4000,13 @@ export default {
 
           /**Bloco de dados com informações da proposta */
           const info_proposta = {
-            id_proposta: this.dados_proposta['id'],
-            empresaID: this.dados_proposta['empresa_id'],
-            info_adicionais: this.dados_proposta['obs'],
-            status_proposta: this.dados_proposta['status_proposta'],
-            recepcionista: this.dados_proposta.usuarios['username'],
-            vendedor_info: this.dados_proposta.vendedores['username']
-          }
+            id_proposta: this.dados_proposta["id"],
+            empresaID: this.dados_proposta["empresa_id"],
+            info_adicionais: this.dados_proposta["obs"],
+            status_proposta: this.dados_proposta["status_proposta"],
+            recepcionista: this.dados_proposta.usuarios["username"],
+            vendedor_info: this.dados_proposta.vendedores["username"],
+          };
           this.id_proposta = info_proposta.id_proposta;
           this.empresaID = info_proposta.empresaID;
           this.info_adicionais = info_proposta.info_adicionais;
@@ -3096,26 +4017,25 @@ export default {
 
           /**Bloco de dados com informações do resumo da proposta */
           const resumo_proposta = {
-            adicional: (this.dados_proposta["adicional"]),
-            desconto: (this.dados_proposta["desconto"]),
-            acessorios: (this.dados_proposta["acessorios"]),
-            impostos: (this.dados_proposta["impostos"]),
-            cortesia: (this.dados_proposta["cortesia"]),
-            custos_variaveis: (this.dados_proposta["custos_variaveis"]),
-            val_sugerido_venda: (this.dados_proposta["val_sugerido_venda"]),
-          }
+            adicional: this.dados_proposta["adicional"],
+            desconto: this.dados_proposta["desconto"],
+            acessorios: this.dados_proposta["acessorios"],
+            impostos: this.dados_proposta["impostos"],
+            cortesia: this.dados_proposta["cortesia"],
+            custos_variaveis: this.dados_proposta["custos_variaveis"],
+            val_sugerido_venda: this.dados_proposta["val_sugerido_venda"],
+          };
 
           this.adicional = this.currency(resumo_proposta.adicional);
           this.desconto = this.currency(resumo_proposta.desconto);
-          this.Valor_Total_Venda = this.currency(resumo_proposta.val_sugerido_venda)
+          this.Valor_Total_Venda = this.currency(
+            resumo_proposta.val_sugerido_venda
+          );
 
           console.log(dados_cliente);
           console.log(info_proposta);
           console.log(resumo_proposta);
           //Dados do Cliente
-
-
-
 
           if (this.dados_proposta.status_proposta == "Aguardando Atendimento") {
             this.alterar_status_proposta(propostaId);
@@ -3123,14 +4043,20 @@ export default {
 
           //Dados do Veículo Usado
           if (this.dados_proposta.veiculoUsado_id != null) {
-            this.marca_avaliacao = this.dados_proposta.veiculos_usados.modeloVeiculo.familiaVeiculo.marcaVeiculo.descricao;
-            this.modelo_avaliacao = this.dados_proposta.veiculos_usados.modeloVeiculo.descricao;
-            this.familia_avaliacao = this.dados_proposta.veiculos_usados.modeloVeiculo.familiaVeiculo.descricao;
+            this.marca_avaliacao =
+              this.dados_proposta.veiculos_usados.modeloVeiculo.familiaVeiculo.marcaVeiculo.descricao;
+            this.modelo_avaliacao =
+              this.dados_proposta.veiculos_usados.modeloVeiculo.descricao;
+            this.familia_avaliacao =
+              this.dados_proposta.veiculos_usados.modeloVeiculo.familiaVeiculo.descricao;
             this.placa_avaliacao = this.dados_proposta.veiculos_usados.placa;
-            this.kilometragem = this.numberToReal(this.dados_proposta.veiculos_usados.kilometragem
+            this.kilometragem = this.numberToReal(
+              this.dados_proposta.veiculos_usados.kilometragem
             );
-            this.anoFabricacao_avaliacao = this.dados_proposta.veiculos_usados.anoFabricacao;
-            this.anoModelo_avaliacao = this.dados_proposta.veiculos_usados.anoModelo;
+            this.anoFabricacao_avaliacao =
+              this.dados_proposta.veiculos_usados.anoFabricacao;
+            this.anoModelo_avaliacao =
+              this.dados_proposta.veiculos_usados.anoModelo;
             //this.verificar_avaliacao();
             console.log(
               "Chamar Avaliação -------------------------------------------------- 0026"
@@ -3171,17 +4097,28 @@ export default {
           }
 
           // //Dados do Veículo para Compra
-          if (this.dados_proposta.propostaVeiculo_id != null && this.dados_proposta.proposta_veiculo.status_veiculo == 1) {
+          if (
+            this.dados_proposta.propostaVeiculo_id != null &&
+            this.dados_proposta.proposta_veiculo.status_veiculo == 1
+          ) {
             this.chassi_proposta = this.dados_proposta.proposta_veiculo.chassis;
             this.marca_proposta = this.dados_proposta.proposta_veiculo.marca;
-            this.modelo_proposta = this.dados_proposta.proposta_veiculo.modelo_veiculo;
+            this.modelo_proposta =
+              this.dados_proposta.proposta_veiculo.modelo_veiculo;
             this.cor_proposta = this.dados_proposta.proposta_veiculo.cor;
-            this.anoModelo_proposta = this.dados_proposta.proposta_veiculo.ano_modelo;
-            this.anoFabricacao_proposta = this.dados_proposta.proposta_veiculo.ano_fabricacao;
-            this.combustivel_proposta = this.dados_proposta.proposta_veiculo.combustivel;
+            this.anoModelo_proposta =
+              this.dados_proposta.proposta_veiculo.ano_modelo;
+            this.anoFabricacao_proposta =
+              this.dados_proposta.proposta_veiculo.ano_fabricacao;
+            this.combustivel_proposta =
+              this.dados_proposta.proposta_veiculo.combustivel;
             ///Alteração na linha de baixo dia 10/05/2023
-            this.Valor_Sugerido = this.currency(this.dados_proposta.proposta_veiculo.valor_veiculo + this.acrescimo);
-            this.valor_sugerido_original = this.dados_proposta.proposta_veiculo.valor_veiculo;
+            this.Valor_Sugerido = this.currency(
+              this.dados_proposta.proposta_veiculo.valor_veiculo +
+                this.acrescimo
+            );
+            this.valor_sugerido_original =
+              this.dados_proposta.proposta_veiculo.valor_veiculo;
             this.inserir_acessorios = false;
             //this.btn_ranquear = false;
             //this.btn_1 = false;
@@ -3191,27 +4128,26 @@ export default {
             );
             console.log(
               "Dados do Veiculo Financiado (" +
-              this.chassi_proposta +
-              " | " +
-              this.marca_proposta +
-              " | " +
-              this.modelo_proposta +
-              " | " +
-              this.cor_proposta +
-              " | " +
-              this.anoModelo_proposta +
-              " | " +
-              this.anoFabricacao_proposta +
-              " | " +
-              this.combustivel_proposta +
-              ") ------ 0033"
+                this.chassi_proposta +
+                " | " +
+                this.marca_proposta +
+                " | " +
+                this.modelo_proposta +
+                " | " +
+                this.cor_proposta +
+                " | " +
+                this.anoModelo_proposta +
+                " | " +
+                this.anoFabricacao_proposta +
+                " | " +
+                this.combustivel_proposta +
+                ") ------ 0033"
             );
           }
 
           //Resumo da Proposta
           this.modal_proposta = true;
           this.resumo();
-
         });
       } catch (error) {
         if (error.response.status == 400) {
@@ -3221,10 +4157,10 @@ export default {
         }
       }
 
-
       //Inserir Gerente
       const gerente_id = this.$store.state.auth.user.id;
-      await fetch(`${process.env.VUE_APP_API_URL}proposta_update_gerente/${propostaId}`,
+      await fetch(
+        `${process.env.VUE_APP_API_URL}proposta_update_gerente/${propostaId}`,
         {
           method: "PUT",
 
@@ -3234,22 +4170,18 @@ export default {
           body: JSON.stringify({
             gerente_id: gerente_id,
           }),
-        })
-        .then((data) => {
-          if (!data.ok) {
-            console.log(data)
-            this.abrir_modal = true;
-            this.msg = "Sistema sendo atualizado!";
-            setTimeout(() => (this.abrir_modal = false), 4000);
-            throw Error(data.status);
+        }
+      ).then((data) => {
+        if (!data.ok) {
+          console.log(data);
+          this.abrir_modal = true;
+          this.msg = "Sistema sendo atualizado!";
+          setTimeout(() => (this.abrir_modal = false), 4000);
+          throw Error(data.status);
+        }
 
-          }
-
-          return data.json();
-        });
-
-
-
+        return data.json();
+      });
     },
 
     /**Função 003 */
@@ -3257,44 +4189,49 @@ export default {
     async completar_modelo(item) {
       try {
         const id_modelo = item;
-        const modelo_venda = await axios.get(`${process.env.VUE_APP_API_URL}modelo/${id_modelo}`, {
-          params: { id: id_modelo }
-        });
+        const modelo_venda = await axios.get(
+          `${process.env.VUE_APP_API_URL}modelo/${id_modelo}`,
+          {
+            params: { id: id_modelo },
+          }
+        );
 
         /**Verifico se veio algum modelo na resposta da api */
         if (Object.keys(modelo_venda.data).length > 0) {
-
           /**Preenchendo os campos com os dados do modelo */
           this.modelo_futuro = modelo_venda.data;
-          this.venda_futura = 1,
-            this.empresa = this.empresaID,
-            this.chassi_proposta = "",
-            this.categoria = "NOVO"
-          this.modelo_proposta = modelo_venda.data.descricao,
-            this.pps_valor = 0,
-            this.valor_veiculo = modelo_venda.data['precoVenda'],
-            this.dias_em_estoque = 0,
-            this.marca_proposta = modelo_venda.data.familia_veiculo.marca_veiculo['descricao'],
-            this.anoModelo_proposta = modelo_venda.data["anoModelo"],
-            this.anoFabricacao_proposta = modelo_venda.data["anoFabricacao"],
-            this.placa = "",
-            this.combustivel_proposta = modelo_venda.data.combustivel_veiculo['descricao'],
-            this.cor_proposta = "",
-            this.numero_veiculo_proposta = 0
-          this.status_veiculo = 1
-          this.valor_custo_contabil = modelo_venda.data['precoVenda'],
-            this.Valor_Sugerido = this.currency(modelo_venda.data['precoVenda']),
-            this.valor_sugerido_original = modelo_venda.data['precoVenda'],
-            this.Valor_Total_Venda = this.currency(modelo_venda.data['precoVenda']),
+          (this.venda_futura = 1),
+            (this.empresa = this.empresaID),
+            (this.chassi_proposta = ""),
+            (this.categoria = "NOVO");
+          (this.modelo_proposta = modelo_venda.data.descricao),
+            (this.pps_valor = 0),
+            (this.valor_veiculo = modelo_venda.data["precoVenda"]),
+            (this.dias_em_estoque = 0),
+            (this.marca_proposta =
+              modelo_venda.data.familia_veiculo.marca_veiculo["descricao"]),
+            (this.anoModelo_proposta = modelo_venda.data["anoModelo"]),
+            (this.anoFabricacao_proposta = modelo_venda.data["anoFabricacao"]),
+            (this.placa = ""),
+            (this.combustivel_proposta =
+              modelo_venda.data.combustivel_veiculo["descricao"]),
+            (this.cor_proposta = ""),
+            (this.numero_veiculo_proposta = 0);
+          this.status_veiculo = 1;
+          (this.valor_custo_contabil = modelo_venda.data["precoVenda"]),
+            (this.Valor_Sugerido = this.currency(
+              modelo_venda.data["precoVenda"]
+            )),
+            (this.valor_sugerido_original = modelo_venda.data["precoVenda"]),
+            (this.Valor_Total_Venda = this.currency(
+              modelo_venda.data["precoVenda"]
+            )),
             this.propostaVeiculo();
-
-
         } else {
           this.abrir_modal = true;
           this.msg = "O servidor não o modelo selecionado!";
           setTimeout(() => (this.abrir_modal = false), 4000);
         }
-
       } catch (error) {
         this.abrir_modal = true;
         this.msg = error;
@@ -3303,35 +4240,37 @@ export default {
     },
     async propostaVeiculo() {
       try {
+        const alterar_veiculo = await fetch(
+          `${process.env.VUE_APP_API_URL}veiculo_proposta`,
+          {
+            method: "POST",
 
-        const alterar_veiculo = await fetch(`${process.env.VUE_APP_API_URL}veiculo_proposta`, {
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            venda_futura: this.venda_futura,
-            empresa: this.empresa,
-            categoria: this.categoria,
-            chassis: "",
-            modelo_veiculo: this.modelo_proposta,
-            pps_valor: this.pps_valor,
-            valor_veiculo: this.valor_veiculo,
-            dias_em_estoque: this.dias_em_estoque,
-            cor: this.cor_proposta,
-            marca: this.marca_proposta,
-            ano_modelo: this.anoModelo_proposta,
-            ano_fabricacao: this.anoFabricacao_proposta,
-            kilometragem: "",
-            placa: this.placa,
-            combustivel: this.combustivel_proposta,
-            numero_veiculo: this.numero_veiculo_proposta,
-            status_veiculo: this.status_veiculo,
-            proposta_id: this.id_proposta,
-            valorcustocontabil: this.valor_custo_contabil
-          }),
-        });
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              venda_futura: this.venda_futura,
+              empresa: this.empresa,
+              categoria: this.categoria,
+              chassis: "",
+              modelo_veiculo: this.modelo_proposta,
+              pps_valor: this.pps_valor,
+              valor_veiculo: this.valor_veiculo,
+              dias_em_estoque: this.dias_em_estoque,
+              cor: this.cor_proposta,
+              marca: this.marca_proposta,
+              ano_modelo: this.anoModelo_proposta,
+              ano_fabricacao: this.anoFabricacao_proposta,
+              kilometragem: "",
+              placa: this.placa,
+              combustivel: this.combustivel_proposta,
+              numero_veiculo: this.numero_veiculo_proposta,
+              status_veiculo: this.status_veiculo,
+              proposta_id: this.id_proposta,
+              valorcustocontabil: this.valor_custo_contabil,
+            }),
+          }
+        );
 
         if (alterar_veiculo.ok) {
           this.adicional = "0.00";
@@ -3340,13 +4279,9 @@ export default {
           this.update_entradas();
           window.location.reload();
         }
-
-
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-
-
     },
     async update_entradas() {
       try {
@@ -3371,64 +4306,60 @@ export default {
         } else {
           window.location.reload();
         }
-
       } catch (error) {
-        console.log(error)
+        console.log(error);
         this.abrir_modal = true;
         this.msg = error;
         setTimeout(() => (this.abrir_modal = false), 4000);
-
       }
-
     },
     async carregarVeiculo(item) {
-
       try {
-
         if (item.estadoveiculo == "NOVO") {
-          this.venda_futura = 1
+          this.venda_futura = 1;
         } else {
-          this.venda_futura = 0
+          this.venda_futura = 0;
         }
 
-        this.empresa = item.codigoempresa
-        this.categoria = item.estadoveiculo
-        this.chassi_proposta = item.chassi
-        this.modelo_proposta = item.modelo
-        this.pps_valor = item.valortotalentrada
-        this.valor_veiculo = item.valortotalvenda
-        this.Valor_Sugerido = this.currency(item.valortotalvenda)
-        this.Valor_Total_Venda = this.currency(item.valortotalvenda)
-        this.valor_sugerido_original = item.valortotalvenda
-        this.dias_em_estoque = item.diasestoque
-        this.marca_proposta = item.marca
-        this.anoModelo_proposta = item.anomodelo
-        this.anoFabricacao_proposta = item.anofabricacao
-        this.placa = item.placa
-        this.combustivel_proposta = item.combustivel
-        this.cor_proposta = item.cor
-        this.numero_veiculo_proposta = item.numero
-        this.status_veiculo = 1
-        this.modal_estoque = false
-        this.filtro_tipo_veiculo = item.estadoveiculo
-        this.inserir_acessorios = false
-        this.valor_custo_contabil = item.valorcustocontabil
-
-
+        this.empresa = item.codigoempresa;
+        this.categoria = item.estadoveiculo;
+        this.chassi_proposta = item.chassi;
+        this.modelo_proposta = item.modelo;
+        this.pps_valor = item.valortotalentrada;
+        this.valor_veiculo = item.valortotalvenda;
+        this.Valor_Sugerido = this.currency(item.valortotalvenda);
+        this.Valor_Total_Venda = this.currency(item.valortotalvenda);
+        this.valor_sugerido_original = item.valortotalvenda;
+        this.dias_em_estoque = item.diasestoque;
+        this.marca_proposta = item.marca;
+        this.anoModelo_proposta = item.anomodelo;
+        this.anoFabricacao_proposta = item.anofabricacao;
+        this.placa = item.placa;
+        this.combustivel_proposta = item.combustivel;
+        this.cor_proposta = item.cor;
+        this.numero_veiculo_proposta = item.numero;
+        this.status_veiculo = 1;
+        this.modal_estoque = false;
+        this.filtro_tipo_veiculo = item.estadoveiculo;
+        this.inserir_acessorios = false;
+        this.valor_custo_contabil = item.valorcustocontabil;
 
         const params = {
           numero: this.numero_veiculo_proposta,
-          empresa: this.empresa
-        }
+          empresa: this.empresa,
+        };
 
         //**Verificar se o mesmo veículo está sendo vendido e avisar ou se o mesmo já foi vendido não deixar finalizar a venda */
-        const verificar_veiculo = await axios.get(`${process.env.VUE_APP_API_URL}venda_mesmo_veiculo`, {
-          params
-        });
+        const verificar_veiculo = await axios.get(
+          `${process.env.VUE_APP_API_URL}venda_mesmo_veiculo`,
+          {
+            params,
+          }
+        );
 
         if (verificar_veiculo.data.statusOk == 1) {
-          console.log(verificar_veiculo.data.message)
-          return
+          console.log(verificar_veiculo.data.message);
+          return;
         }
 
         if (verificar_veiculo.data.statusOk == 2) {
@@ -3459,14 +4390,12 @@ export default {
           };
 
           processarEmpVeiculo(0); // Inicie o processamento a partir do índice 0
-          return
+          return;
         }
 
         this.propostaVeiculo();
-
-
       } catch (error) {
-        console.log(error)
+        console.log(error);
         this.abrir_modal = true;
         this.msg = error;
         setTimeout(() => (this.abrir_modal = false), 4000);
@@ -3500,35 +4429,34 @@ export default {
               this.atualizar_valor_total();
               this.update_entradas();
             }
-
           });
       } catch (error) {
         this.abrir_modal = true;
         this.msg = error;
         setTimeout(() => (this.dialog = false), 4000);
-
       }
-
     },
 
     async atualizar_valor_total() {
-      console.log("Atualizando o valor total da venda!")
+      console.log("Atualizando o valor total da venda!");
       const id = this.id_proposta;
       try {
+        await fetch(
+          `${process.env.VUE_APP_API_URL}proposta_atualizar_valor_total/${id}`,
+          {
+            method: "PUT",
 
-        await fetch(`${process.env.VUE_APP_API_URL}proposta_atualizar_valor_total/${id}`, {
-          method: "PUT",
-
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: id,
-            val_sugerido_venda: this.Valor_Sugerido,
-            adicional: this.adicional,
-            desconto: this.desconto
-          }),
-        })
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: id,
+              val_sugerido_venda: this.Valor_Sugerido,
+              adicional: this.adicional,
+              desconto: this.desconto,
+            }),
+          }
+        )
           .then((data) => {
             if (!data.ok) {
               throw Error(data.status);
@@ -3536,23 +4464,20 @@ export default {
             return data.json();
           })
           .then((resposta) => {
-            console.log(resposta.data)
+            console.log(resposta.data);
             if (resposta.StatusOk == 200) {
-              this.Valor_Total_Venda = this.currency(resposta.data[0].val_sugerido_venda);
+              this.Valor_Total_Venda = this.currency(
+                resposta.data[0].val_sugerido_venda
+              );
               this.adicional = this.currency(resposta.data[0].adicional);
               this.desconto = this.currency(resposta.data[0].desconto);
             }
-
           });
-
-
       } catch (error) {
         this.abrir_modal = true;
         this.msg = error;
         setTimeout(() => (this.abrir_modal = false), 4000);
       }
-
-
 
       //this.habilitar_proposta()
       //this.retrievePropostas();
@@ -3573,32 +4498,26 @@ export default {
           }),
         })
           .then((data) => {
-            console.log(data)
+            console.log(data);
             if (!data.ok) {
               throw Error(data.status);
             }
             return data.json();
-
           })
           .then((resposta) => {
-
             if (resposta.statusOk === 200) {
               this.atualizar_valor_total();
               this.update_entradas();
             }
-
           });
-
       } catch (error) {
-        console.log(error)
+        console.log(error);
         if (error.response.status == 400) {
           this.abrir_modal = true;
           this.msg = error.response.data.message;
           setTimeout(() => (this.abrir_modal = false), 4000);
         }
-
       }
-
     },
     /**Função 0005 */
     async resumo() {
@@ -3620,12 +4539,10 @@ export default {
           return data.json();
         })
         .then((resposta) => {
-
           if (resposta["tipo_veiculo"] == "NOVO") {
             this.Lucro_Bruto = resposta["Lucro_Bruto_Zero"];
             this.Lucro_Operacional = resposta["Lucro_Operacional_Zero"];
             this.Lucro_liquido = resposta["Lucro_liquido_Zero"];
-
           }
           if (resposta["tipo_veiculo"] == "USADO") {
             this.Lucro_Bruto = resposta["Lucro_Bruto"];
@@ -3671,22 +4588,20 @@ export default {
           this.parcela_2_3 = resposta["Pmt_8"];
           this.parcela_3_3 = resposta["Pmt_9"];
           if (resposta["Parcela1"]) {
-            console.log("Existe uma parcela")
+            console.log("Existe uma parcela");
             this.parcela_1 = resposta["Parcela1"];
             this.bloquear_entrada = true;
           }
 
           if (resposta["Parcela2"] === undefined) {
-            this.parcela_2 = 36
+            this.parcela_2 = 36;
           } else {
             this.parcela_2 = resposta["Parcela2"];
-
           }
           if (resposta["Parcela3"] === undefined) {
-            this.parcela_3 = 48
+            this.parcela_3 = 48;
           } else {
             this.parcela_3 = resposta["Parcela3"];
-
           }
 
           let v_entrada_1 = resposta["Entrada1"];
@@ -3696,8 +4611,7 @@ export default {
           this.entrada_2 = this.currency(v_entrada_2);
           this.entrada_3 = this.currency(v_entrada_3);
           this.adicional = resposta["Valor_Adicional"];
-          this.desconto = resposta["Valor_Desconto"]
-
+          this.desconto = resposta["Valor_Desconto"];
 
           if (resposta["incluir_acessorios"] == "1") {
             console.log(
@@ -3722,82 +4636,86 @@ export default {
 
     /**Função 0006 */
 
-
     /**Função 0007 */
-    getRequestParamsTrocaVendedor(tipo_vendedor, empresa_id, justificativa_vendedor) {
+    getRequestParamsTrocaVendedor(
+      tipo_vendedor,
+      empresa_id,
+      justificativa_vendedor
+    ) {
       let params = {};
       if (tipo_vendedor) {
-        params["id_vend"] = tipo_vendedor
+        params["id_vend"] = tipo_vendedor;
       }
       if (empresa_id) {
         params["empresa_id"] = empresa_id;
       }
       if (justificativa_vendedor) {
-        params["justificativa_vendedor"] = justificativa_vendedor
+        params["justificativa_vendedor"] = justificativa_vendedor;
       }
       return params;
     },
     async retrieveVendedorDispo() {
       try {
-        console.log("troca de vendedor")
+        console.log("troca de vendedor");
         const params = this.getRequestParamsTrocaVendedor(
           this.tipo_vendedor,
           this.company_id,
-          this.justificativa_vendedor,
-
-
+          this.justificativa_vendedor
         );
-        userService.getVendedorOrdenado(params).then((response) => {
-          const { users } = response.data;
-          this.troca_vendedor = users;
-          let dados_vendedor = [];
-          let ven = [];
-          let tipo_vend = "";
-          let status_vend = "";
-          console.log(response.data)
-          users.forEach(function (item) {
-            if (item.tipo_vendedor == 2) {
-              tipo_vend = "Ambos";
-            }
+        userService
+          .getVendedorOrdenado(params)
+          .then((response) => {
+            const { users } = response.data;
+            this.troca_vendedor = users;
+            let dados_vendedor = [];
+            let ven = [];
+            let tipo_vend = "";
+            let status_vend = "";
+            console.log(response.data);
+            users.forEach(function (item) {
+              if (item.tipo_vendedor == 2) {
+                tipo_vend = "Ambos";
+              }
 
-            // if (item.tipo_vendedor == 1) {
-            //   tipo_vend = "Novos";
-            // }
-            // if (item.tipo_vendedor == 2) {
-            //   tipo_vend = "Usados";
-            // }
-            if (item.status_vendedor == 1) {
-              status_vend = "Disponível";
-            }
-            if (item.status_vendedor == 0) {
-              status_vend = "Indisponível";
-            }
+              // if (item.tipo_vendedor == 1) {
+              //   tipo_vend = "Novos";
+              // }
+              // if (item.tipo_vendedor == 2) {
+              //   tipo_vend = "Usados";
+              // }
+              if (item.status_vendedor == 1) {
+                status_vend = "Disponível";
+              }
+              if (item.status_vendedor == 0) {
+                status_vend = "Indisponível";
+              }
 
-            dados_vendedor = {
-              id: item.id,
-              username: item.username,
-              tipo_vendedor: tipo_vend,
-              status_vendedor: status_vend,
-            };
+              dados_vendedor = {
+                id: item.id,
+                username: item.username,
+                tipo_vendedor: tipo_vend,
+                status_vendedor: status_vend,
+              };
 
-            ven.push(dados_vendedor);
+              ven.push(dados_vendedor);
+            });
+
+            console.log("Aqui dados do Ven-------------------------------");
+            console.log(response.data);
+
+            this.troca_vendedor = ven;
+            this.vendedor_troca = ven[0]["id"];
+            this.vend_ini = users[0]["id"];
+            this.status_vendedor = ven[0]["status_vendedor"];
+            console.log(this.status_vendedor);
+            console.log(this.vend_ini);
+          })
+          .catch((error) => {
+            if (error.response.status == 400) {
+              this.abrir_modal = true;
+              this.msg = error.response.data.message;
+            }
           });
-
-          console.log("Aqui dados do Ven-------------------------------");
-          console.log(response.data);
-
-          this.troca_vendedor = ven;
-          this.vendedor_troca = ven[0]["id"];
-          this.vend_ini = users[0]['id'];
-          this.status_vendedor = ven[0]["status_vendedor"];
-          console.log(this.status_vendedor);
-          console.log(this.vend_ini);
-        }).catch((error) => {
-          if (error.response.status == 400) {
-            this.abrir_modal = true;
-            this.msg = error.response.data.message;
-          }
-        })
       } catch (error) {
         if (error.response.status == 400) {
           this.abrir_modal = true;
@@ -3816,32 +4734,30 @@ export default {
         this.abrir_modal = true;
         this.msg = "A justificativa de ter mais que 10 caracteres!";
         setTimeout(() => (this.abrir_modal = false), 4000);
+      } else {
+        this.check_vend = false;
       }
-      else {
-        this.check_vend = false
-      }
-
-
     },
     async onSubmitTrocaVendedor() {
-
       const id = this.id_proposta;
       const justificativa = this.justificativa_vendedor;
       const id_vendedor_trocado = this.vendedor_troca;
 
-      await fetch(`${process.env.VUE_APP_API_URL}proposta_troca_vendedor/${id}`, {
-        method: "PUT",
+      await fetch(
+        `${process.env.VUE_APP_API_URL}proposta_troca_vendedor/${id}`,
+        {
+          method: "PUT",
 
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: id,
-          just_troca_vendedor: justificativa,
-          vendedor_id: id_vendedor_trocado
-
-        }),
-      })
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: id,
+            just_troca_vendedor: justificativa,
+            vendedor_id: id_vendedor_trocado,
+          }),
+        }
+      )
         .then((data) => {
           if (!data.ok) {
             throw Error(data.status);
@@ -3849,18 +4765,15 @@ export default {
           return data.json();
         })
         .then((resposta) => {
-          this.justificativa_vendedor = ""
+          this.justificativa_vendedor = "";
           this.abrir_modal = true;
           this.msg = resposta.message;
           setTimeout(() => (this.abrir_modal = false), 4000);
           window.location.reload();
-
         });
-
     },
 
     /**Função 0008 */
-
 
     async retrieveCidade() {
       try {
@@ -3883,7 +4796,7 @@ export default {
     },
     formatarData(data) {
       // Divida a data em partes
-      const partesData = data.split(' ')[0].split('-');
+      const partesData = data.split(" ")[0].split("-");
       const ano = parseInt(partesData[0], 10);
       const mes = parseInt(partesData[1], 10) - 1; // O mês começa em 0 no JavaScript
       const dia = parseInt(partesData[2], 10);
@@ -3896,7 +4809,7 @@ export default {
       return `${ano1}-${mes1}-${dia1}`;
     },
     habilitar_cadastro() {
-      console.log("Habilitando cadastro")
+      console.log("Habilitando cadastro");
       this.input_cliente = false;
       this.modal_cpfcnpj = "";
       // Defina aqui a lógica para mudar as cores das bordas dos campos
@@ -3915,31 +4828,27 @@ export default {
       this.cepBorderColor = "green";
     },
 
-
-
-
-
     async select_familia() {
       if (this.venda_futura == true) {
-        console.log("Habilitado")
-        this.inserir_veiculo = false
+        console.log("Habilitado");
+        this.inserir_veiculo = false;
 
-        this.chassi_proposta = "",
-          this.marca_proposta = "",
-          this.modelo_proposta = "",
-          this.cor_proposta = "",
-          this.anoFabricacao_proposta = "",
-          this.anoModelo_proposta = "",
-          this.combustivel_proposta = "",
-          this.selected_familia_veiculo_escolhido = "",
-          this.selected_modelo_veiculo_escolhido = ""
+        (this.chassi_proposta = ""),
+          (this.marca_proposta = ""),
+          (this.modelo_proposta = ""),
+          (this.cor_proposta = ""),
+          (this.anoFabricacao_proposta = ""),
+          (this.anoModelo_proposta = ""),
+          (this.combustivel_proposta = ""),
+          (this.selected_familia_veiculo_escolhido = ""),
+          (this.selected_modelo_veiculo_escolhido = "");
       }
       if (this.venda_futura == false) {
-        console.log("Desabilitado")
-        this.inserir_veiculo = true
+        console.log("Desabilitado");
+        this.inserir_veiculo = true;
       }
 
-      console.log(this.venda_futura)
+      console.log(this.venda_futura);
       try {
         const params = this.getRequestParams(
           this.searchTitle,
@@ -3947,7 +4856,7 @@ export default {
           this.pageSize,
           this.company_id
         );
-        console.log(params)
+        console.log(params);
         userService.getFamilia_futura(params).then((response) => {
           const { familia_veiculo, totalPages } = response.data;
           this.familia_veiculo_escolhido = familia_veiculo;
@@ -3968,45 +4877,42 @@ export default {
 
       //Carregar apenas estoque de venda futura
       if (this.familia_veiculo_escolhido) {
-        await axios.get(`${process.env.VUE_APP_API_URL}modelos`, {
-          params: { familiaVeiculoId: this.selected_familia_veiculo_escolhido }
-        })
-          .then(response => {
-            this.modelo_veiculo_escolhido = response.data.rows
-            console.log(response.data.rows)
+        await axios
+          .get(`${process.env.VUE_APP_API_URL}modelos`, {
+            params: {
+              familiaVeiculoId: this.selected_familia_veiculo_escolhido,
+            },
           })
-          .catch(error => {
+          .then((response) => {
+            this.modelo_veiculo_escolhido = response.data.rows;
+            console.log(response.data.rows);
+          })
+          .catch((error) => {
             if (error.response.status == 400) {
               this.abrir_modal = true;
               this.msg = error.response.data.message;
               setTimeout(() => (this.abrir_modal = false), 4000);
             }
-          })
-
-
+          });
       } else {
-        this.modelo_veiculo_escolhido = []
+        this.modelo_veiculo_escolhido = [];
       }
-
     },
-
-
 
     generatePdf() {
       // console.log("Imprimir ----------------------------------------------------------------------------------------------------------------- 0001")
       const options = {
         margin: [5, 5],
-        filename: 'meu-pdf.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
+        filename: "meu-pdf.pdf",
+        image: { type: "jpeg", quality: 0.98 },
         html2canvas: { scale: 1 },
-        jsPDF: { format: 'a4', orientation: 'landscape' },
-        pagebreak: { mode: 'avoid-all' },
+        jsPDF: { format: "a4", orientation: "landscape" },
+        pagebreak: { mode: "avoid-all" },
         enableLinks: true,
-
       };
       // Modificar o tamanho da fonte para impressão
-      document.querySelectorAll('.rf_texto_pdf').forEach(element => {
-        element.style.fontSize = '9px'; // Tamanho de fonte para impressão
+      document.querySelectorAll(".rf_texto_pdf").forEach((element) => {
+        element.style.fontSize = "9px"; // Tamanho de fonte para impressão
       });
       setTimeout(() => {
         html2pdf().from(this.$refs.contentToPrint).set(options).save();
@@ -4017,15 +4923,18 @@ export default {
       try {
         const id = this.id_proposta;
 
-        const response = await fetch(`${process.env.VUE_APP_API_URL}gerar_menu/${id}`, {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: id,
-          }),
-        });
+        const response = await fetch(
+          `${process.env.VUE_APP_API_URL}gerar_menu/${id}`,
+          {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: id,
+            }),
+          }
+        );
 
         if (!response.ok) {
           throw Error(response.status);
@@ -4033,7 +4942,6 @@ export default {
 
         const data = await response.json();
         const createdAt = data?.data?.rows[0]?.createdAt;
-
 
         console.log(data);
 
@@ -4052,30 +4960,34 @@ export default {
         this.g_menu_gerente = data?.data?.rows[0]?.gerentes?.username ?? "";
         this.g_menu_vendedor = data?.data?.rows[0]?.vendedores?.username ?? "";
         this.g_menu_negociacao = data?.data?.rows[0]?.id ?? "";
-        this.g_menu_data_negociacao = createdAt ? new Date(createdAt).toLocaleDateString('pt-BR') : "";
+        this.g_menu_data_negociacao = createdAt
+          ? new Date(createdAt).toLocaleDateString("pt-BR")
+          : "";
 
         // Opções de Compra
         this.g_menu_val_sugerido = this.currency(
           parseFloat(data?.data?.rows[0]?.proposta_veiculo.valor_veiculo ?? 0) +
-          parseFloat(data?.data?.rows[0]?.custos_variaveis ?? 0) +
-          parseFloat(data?.data?.rows[0]?.adicional ?? 0)
+            parseFloat(data?.data?.rows[0]?.custos_variaveis ?? 0) +
+            parseFloat(data?.data?.rows[0]?.adicional ?? 0)
         );
-        this.g_menu_val_desconto = this.currency(data?.data?.rows[0]?.desconto ?? 0);
+        this.g_menu_val_desconto = this.currency(
+          data?.data?.rows[0]?.desconto ?? 0
+        );
         // this.g_menu_val_veiculo = this.currency(
         //   parseFloat(data?.data?.rows[0]?.val_sugerido_venda ?? 0) +
         //   parseFloat(data?.data?.rows[0]?.custos_variaveis ?? 0) +
-        //   parseFloat(data?.data?.rows[0]?.acessorios ?? 0) + 
+        //   parseFloat(data?.data?.rows[0]?.acessorios ?? 0) +
         //   parseFloat(data?.data?.rows[0]?.adicional ?? 0)
         // );
         this.g_menu_val_veiculo = this.currency(
           parseFloat(data?.data?.rows[0]?.proposta_veiculo.valor_veiculo ?? 0) +
-          parseFloat(data?.data?.rows[0]?.custos_variaveis ?? 0) +
-          parseFloat(data?.data?.rows[0]?.adicional ?? 0) -
-          parseFloat(data?.data?.rows[0]?.desconto ?? 0)
+            parseFloat(data?.data?.rows[0]?.custos_variaveis ?? 0) +
+            parseFloat(data?.data?.rows[0]?.adicional ?? 0) -
+            parseFloat(data?.data?.rows[0]?.desconto ?? 0)
         );
         this.g_menu_total_financiado = this.currency(
           parseFloat(data?.data?.rows[0]?.val_financiamento ?? 0) +
-          parseFloat(data?.data?.rows[0]?.val_entrada_financiamento ?? 0)
+            parseFloat(data?.data?.rows[0]?.val_entrada_financiamento ?? 0)
         );
 
         // Dados veiculo compra
@@ -4088,9 +5000,12 @@ export default {
         this.g_menu_placa = veiculo.placa ?? "";
 
         // Dados veiculo troca
-        this.g_menu_marca_avaliacao = veiculoAvaliacao.modeloVeiculo?.familiaVeiculo?.marcaVeiculo?.descricao ?? "";
+        this.g_menu_marca_avaliacao =
+          veiculoAvaliacao.modeloVeiculo?.familiaVeiculo?.marcaVeiculo
+            ?.descricao ?? "";
         this.g_menu_placa_avaliacao = veiculoAvaliacao.placa ?? "";
-        this.g_menu_modelo_avaliacao = veiculoAvaliacao.modeloVeiculo?.descricao ?? "";
+        this.g_menu_modelo_avaliacao =
+          veiculoAvaliacao.modeloVeiculo?.descricao ?? "";
         this.g_menu_ano_modelo_avaliacao = veiculoAvaliacao.anoModelo ?? "";
         this.g_menu_valor_avaliado = this.Valor_Avaliado ?? 0;
         this.g_menu_itens_avaliacao_db = this.Valor_Itens_Avaliacao_db ?? 0;
@@ -4100,8 +5015,6 @@ export default {
         // Acessorios
         this.g_menu_total_acessorios = this.Valor_Itens_Acessorios;
         this.itens_acessorios = data?.data?.rows[0]?.acessorios_proposta ?? [];
-
-
 
         if (this.incluir_acessorios == true) {
           this.msg = "Valor incluso no financiamento!";
@@ -4117,7 +5030,6 @@ export default {
       }
     },
 
-
     formatarValor(valor) {
       console.log("Valor obtido");
 
@@ -4125,101 +5037,115 @@ export default {
       this.entrada_2_original = this.entrada_2;
       this.entrada_3_original = this.entrada_3;
 
-      if (!valor) return '';
-      valor = valor.toString().replace(/\D/g, '');
-      valor = (valor / 100).toFixed(2).replace('.', ',');
-      valor = valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      if (!valor) return "";
+      valor = valor.toString().replace(/\D/g, "");
+      valor = (valor / 100).toFixed(2).replace(".", ",");
+      valor = valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
       return valor;
-
     },
     calcular_perc_1() {
-
-      let calc_entrada1 = (this.entrada_1_perc / 100);
+      let calc_entrada1 = this.entrada_1_perc / 100;
       //let valor_original = this.valor_sugerido_original;
-      let valor_original = parseFloat(this.Valor_Total_Venda.replace(/[^\d,]+/g, '').replace(",", "."));
+      let valor_original = parseFloat(
+        this.Valor_Total_Venda.replace(/[^\d,]+/g, "").replace(",", ".")
+      );
       this.entrada_1 = this.currency(valor_original * calc_entrada1);
     },
     calcular_real_1() {
-
-      if (this.entrada_1 != '') {
-        let valor_original = parseFloat(this.Valor_Total_Venda.replace(/[^\d,]+/g, '').replace(",", "."));
-        let valor_numerico = parseFloat(this.entrada_1.replace(/[^\d,]+/g, '').replace(",", "."));
+      if (this.entrada_1 != "") {
+        let valor_original = parseFloat(
+          this.Valor_Total_Venda.replace(/[^\d,]+/g, "").replace(",", ".")
+        );
+        let valor_numerico = parseFloat(
+          this.entrada_1.replace(/[^\d,]+/g, "").replace(",", ".")
+        );
         let entrada_perc = (valor_numerico / valor_original) * 100;
-        this.entrada_1_perc = parseFloat(entrada_perc).toFixed(2)
-
+        this.entrada_1_perc = parseFloat(entrada_perc).toFixed(2);
       } else {
-        this.entrada_1_perc = ''
+        this.entrada_1_perc = "";
       }
     },
     calcular_perc_2() {
-      let calc_entrada2 = (this.entrada_2_perc / 100);
-      let valor_original = parseFloat(this.Valor_Total_Venda.replace(/[^\d,]+/g, '').replace(",", "."));
+      let calc_entrada2 = this.entrada_2_perc / 100;
+      let valor_original = parseFloat(
+        this.Valor_Total_Venda.replace(/[^\d,]+/g, "").replace(",", ".")
+      );
       this.entrada_2 = this.currency(valor_original * calc_entrada2);
     },
     calcular_real_2() {
-      if (this.entrada_2 != '') {
-        let valor_original = parseFloat(this.Valor_Total_Venda.replace(/[^\d,]+/g, '').replace(",", "."));
-        let valor_numerico = parseFloat(this.entrada_2.replace(/[^\d,]+/g, '').replace(",", "."));
+      if (this.entrada_2 != "") {
+        let valor_original = parseFloat(
+          this.Valor_Total_Venda.replace(/[^\d,]+/g, "").replace(",", ".")
+        );
+        let valor_numerico = parseFloat(
+          this.entrada_2.replace(/[^\d,]+/g, "").replace(",", ".")
+        );
         let entrada_perc = (valor_numerico / valor_original) * 100;
-        this.entrada_2_perc = parseFloat(entrada_perc).toFixed(2)
-
+        this.entrada_2_perc = parseFloat(entrada_perc).toFixed(2);
       } else {
-        this.entrada_2_perc = ''
+        this.entrada_2_perc = "";
       }
     },
     calcular_real_3() {
-      if (this.entrada_3 != '') {
-        let valor_original = parseFloat(this.Valor_Total_Venda.replace(/[^\d,]+/g, '').replace(",", "."));
-        let valor_numerico = parseFloat(this.entrada_3.replace(/[^\d,]+/g, '').replace(",", "."));
+      if (this.entrada_3 != "") {
+        let valor_original = parseFloat(
+          this.Valor_Total_Venda.replace(/[^\d,]+/g, "").replace(",", ".")
+        );
+        let valor_numerico = parseFloat(
+          this.entrada_3.replace(/[^\d,]+/g, "").replace(",", ".")
+        );
         let entrada_perc = (valor_numerico / valor_original) * 100;
-        this.entrada_3_perc = parseFloat(entrada_perc).toFixed(2)
-
+        this.entrada_3_perc = parseFloat(entrada_perc).toFixed(2);
       } else {
-        this.entrada_3_perc = ''
+        this.entrada_3_perc = "";
       }
     },
     calcular_perc_3() {
-      let calc_entrada3 = (this.entrada_3_perc / 100);
-      let valor_original = parseFloat(this.Valor_Total_Venda.replace(/[^\d,]+/g, '').replace(",", "."));
+      let calc_entrada3 = this.entrada_3_perc / 100;
+      let valor_original = parseFloat(
+        this.Valor_Total_Venda.replace(/[^\d,]+/g, "").replace(",", ".")
+      );
       this.entrada_3 = this.currency(valor_original * calc_entrada3);
     },
     filtrarPropostas() {
-      if (this.selectedFilter === 'Em Atendimento') {
+      if (this.selectedFilter === "Em Atendimento") {
         // console.log("Filtar propostas em atendimento! ------------------------------------------------------------------------------------------------------------------ 0005")
-        this.status_proposta = this.selectedFilter
+        this.status_proposta = this.selectedFilter;
         this.retrievePropostas();
-      } else if (this.selectedFilter === 'Venda Finalizada') {
+      } else if (this.selectedFilter === "Venda Finalizada") {
         // console.log("Filtar propostas em Finalizadas! ------------------------------------------------------------------------------------------------------------------ 0006")
-        this.status_proposta = this.selectedFilter
+        this.status_proposta = this.selectedFilter;
         this.retrievePropostas();
-      } else if (this.selectedFilter === 'Venda Perdida') {
-        this.status_proposta = this.selectedFilter
+      } else if (this.selectedFilter === "Venda Perdida") {
+        this.status_proposta = this.selectedFilter;
         this.retrievePropostas();
         // console.log("Filtar propostas em vendas perdiadas! ------------------------------------------------------------------------------------------------------------------ 0007")
       }
     },
     filterByPeriod() {
-      this.data_ini = this.startDate
-      this.data_fim = this.endDate
-      this.status_proposta = "Pesquisa Periodo"
+      this.data_ini = this.startDate;
+      this.data_fim = this.endDate;
+      this.status_proposta = "Pesquisa Periodo";
       this.retrievePropostas();
-
     },
 
     async grava_info_adicional() {
       const id = this.id_proposta;
-      await fetch(`${process.env.VUE_APP_API_URL}proposta_info_adicionais/${id}`, {
-        method: "PUT",
+      await fetch(
+        `${process.env.VUE_APP_API_URL}proposta_info_adicionais/${id}`,
+        {
+          method: "PUT",
 
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: id,
-          info_adicional: this.info_adicionais,
-        }),
-      })
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: id,
+            info_adicional: this.info_adicionais,
+          }),
+        }
+      )
         .then((data) => {
           if (!data.ok) {
             throw Error(data.status);
@@ -4371,7 +5297,6 @@ export default {
           }
         }
         this.familia = array_familia;
-
       } catch (error) {
         if (error.response.status == 400) {
           this.abrir_modal = true;
@@ -4462,7 +5387,6 @@ export default {
             tempo_espera = "00:00";
 
             tempo_atendimento = horas_atendimento + ":" + minutos_atendimento;
-
           }
           if (this.propostas_at[i]["status"] == "Aguardando Atendimento") {
             horas_chegada = this.propostas_at[i]["horas_chegada"];
@@ -4676,14 +5600,15 @@ export default {
       this.modal_historico_cliente = true;
     },
     async historico_cliente(id) {
-      console.log("Buscar histórioco do Cliente", id)
-      const historico = await axios.get(`${process.env.VUE_APP_API_URL}historico_cliente/${id}`,
+      console.log("Buscar histórioco do Cliente", id);
+      const historico = await axios.get(
+        `${process.env.VUE_APP_API_URL}historico_cliente/${id}`,
         {
-          params: { id: id }
-        });
-      this.hist_cliente = historico.data.propostas
-      console.log(this.hist_cliente)
-
+          params: { id: id },
+        }
+      );
+      this.hist_cliente = historico.data.propostas;
+      console.log(this.hist_cliente);
     },
     async retrieveItensVeiculo() {
       try {
@@ -4709,7 +5634,9 @@ export default {
           }
 
           this.itens_veiculo = itens_av2;
-          console.log(" Itens de Avaliação ------------------------------------------------------------------------------------------------------------------ 0012");
+          console.log(
+            " Itens de Avaliação ------------------------------------------------------------------------------------------------------------------ 0012"
+          );
           console.log(itens_av2);
         });
       } catch (error) {
@@ -4740,7 +5667,9 @@ export default {
 
       const resp = JSON.stringify(response.status);
       if (resp == 200) {
-        console.log("Metodo para inserir itens de avaliação ------------------------------------------------------------------------------------------------------------------ 0013");
+        console.log(
+          "Metodo para inserir itens de avaliação ------------------------------------------------------------------------------------------------------------------ 0013"
+        );
         this.modal = true;
         this.dialog = true;
         // Limpar Fomulário
@@ -4764,26 +5693,29 @@ export default {
     async onSubmitVeiculoAvaliacao() {
       // const response = await fetch("https://deskbend.azurewebsites.net/avaliacao_veiculo", {
       const id_userCad = this.$store.state.auth.user.id;
-      const response = await fetch(`${process.env.VUE_APP_API_URL}veiculo_usado`, {
-        method: "POST",
+      const response = await fetch(
+        `${process.env.VUE_APP_API_URL}veiculo_usado`,
+        {
+          method: "POST",
 
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          marca: this.marca_avaliacao,
-          modelo: this.modelo_avaliacao,
-          familia: this.familia_avaliacao,
-          placa: this.placa_avaliacao,
-          precoAvaliacao: this.valor_avaliacao,
-          kilometragem: this.kilometragem,
-          anoFabricacao: this.anoFabricacao_avaliacao,
-          anoModelo: this.anoModelo_avaliacao,
-          avaliador_id: id_userCad,
-          veiculoUsado_id: this.veiculoUsado_id,
-          proposta_id: this.id_proposta,
-        }),
-      });
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            marca: this.marca_avaliacao,
+            modelo: this.modelo_avaliacao,
+            familia: this.familia_avaliacao,
+            placa: this.placa_avaliacao,
+            precoAvaliacao: this.valor_avaliacao,
+            kilometragem: this.kilometragem,
+            anoFabricacao: this.anoFabricacao_avaliacao,
+            anoModelo: this.anoModelo_avaliacao,
+            avaliador_id: id_userCad,
+            veiculoUsado_id: this.veiculoUsado_id,
+            proposta_id: this.id_proposta,
+          }),
+        }
+      );
       const resp = JSON.stringify(response.status);
       if (resp == 200) {
         this.modal = true;
@@ -4818,16 +5750,18 @@ export default {
           return data.json();
         })
         .then((resposta) => {
-          console.log(resposta.status)
-          console.log("Avaliações ------------------------------------------------------------------------------------------------------------------------------------- 0014");
+          console.log(resposta.status);
+          console.log(
+            "Avaliações ------------------------------------------------------------------------------------------------------------------------------------- 0014"
+          );
           this.ativar_placa = false;
           this.desativar_placa = true;
           if (resposta.status != 1) {
             (this.marca_avaliacao = resposta.marca_veiculo),
-              this.marca_avaliacao_desc = resposta.marca_veiculo_desc,
+              (this.marca_avaliacao_desc = resposta.marca_veiculo_desc),
               (this.modelo_avaliacao = resposta.modelo_veiculo),
               (this.familia_avaliacao = resposta.familia_veiculo),
-              this.familia_avaliacao_desc = resposta.familia_veiculo_desc,
+              (this.familia_avaliacao_desc = resposta.familia_veiculo_desc),
               (this.kilometragem = resposta.kilometragem),
               (this.anoModelo_avaliacao = resposta.anoModelo),
               (this.anoFabricacao_avaliacao = resposta.anoFabricacao),
@@ -4838,8 +5772,7 @@ export default {
               (this.info_avaliacao =
                 "Existem avaliações para esse veículo, clique no botão info para visualizar!"),
               (this.inserir_item_avaliacao = false),
-              this.hab_avaliacao = false,
-
+              (this.hab_avaliacao = false),
               console.log(
                 "Existe avaliação ------------------------------------------------ 0015"
               ),
@@ -4857,8 +5790,6 @@ export default {
         });
     },
     //** Fim veículo para troca */
-
-
 
     rowSelect(idx, id, id_parcela) {
       if (id_parcela == 1) {
@@ -4919,7 +5850,6 @@ export default {
     fechar_rank() {
       this.modal_ranqueamento = false;
       this.resumo();
-
     },
     hab_ranquear() {
       if (this.parcela_2 > 0) {
@@ -4934,7 +5864,9 @@ export default {
       fetch(`${process.env.VUE_APP_API_URL}propostas_dia`)
         .then((res) => res.json())
         .then((res) => {
-          console.log("------------------------------------------------------------------------------------------------------------------ 0019")
+          console.log(
+            "------------------------------------------------------------------------------------------------------------------ 0019"
+          );
           console.log(res);
           this.qtd_clientes_novos_n = res["Clientes_Novos_VN"];
           this.qtd_clientes_retorno_n = res["Clientes_Retorno_VN"];
@@ -4973,7 +5905,9 @@ export default {
       fetch(`${process.env.VUE_APP_API_URL}propostas_mes`)
         .then((res) => res.json())
         .then((res) => {
-          console.log("------------------------------------------------------------------------------------------------------------------0020")
+          console.log(
+            "------------------------------------------------------------------------------------------------------------------0020"
+          );
           console.log(res);
         })
         .catch((error) => {
@@ -4984,7 +5918,15 @@ export default {
         });
     },
 
-    getRequestParamsProposta(searchProposta, page, pageSize, empresa_id, status_proposta, data_ini, data_fim) {
+    getRequestParamsProposta(
+      searchProposta,
+      page,
+      pageSize,
+      empresa_id,
+      status_proposta,
+      data_ini,
+      data_fim
+    ) {
       let params = {};
       if (searchProposta) {
         params["nome"] = searchProposta;
@@ -4999,13 +5941,13 @@ export default {
         params["empresa_id"] = empresa_id;
       }
       if (status_proposta) {
-        params["status_proposta"] = status_proposta
+        params["status_proposta"] = status_proposta;
       }
       if (data_ini) {
-        params["data_ini"] = data_ini
+        params["data_ini"] = data_ini;
       }
       if (data_fim) {
-        params["data_fim"] = data_fim
+        params["data_fim"] = data_fim;
       }
 
       return params;
@@ -5018,11 +5960,9 @@ export default {
       this.pageSize_4 = size;
       this.page_4 = 1;
       this.retrievePropostas();
-
     },
     async retrievePropostas() {
       try {
-
         const params = this.getRequestParamsProposta(
           this.searchProposta,
           this.page_4,
@@ -5033,7 +5973,6 @@ export default {
           this.data_fim
         );
 
-
         userService.getPropostaCliente(params).then((response) => {
           this.status_proposta = "";
           const { propostas, totalPages, totalItems } = response.data;
@@ -5041,7 +5980,9 @@ export default {
           this.totalPages_4 = totalPages;
           this.totalItems_4 = totalItems;
 
-          console.log("------------------------------------------------------------------------------------------------------------------ 0021")
+          console.log(
+            "------------------------------------------------------------------------------------------------------------------ 0021"
+          );
           console.log(response.data);
 
           var array_proposta_1 = [];
@@ -5063,16 +6004,16 @@ export default {
           const now = new Date();
           var hora_server = new Date(
             now.getFullYear() +
-            "-" +
-            (now.getMonth() + 1) +
-            "-" +
-            now.getDate() +
-            " " +
-            now.getHours() +
-            ":" +
-            now.getMinutes() +
-            ":" +
-            now.getSeconds()
+              "-" +
+              (now.getMonth() + 1) +
+              "-" +
+              now.getDate() +
+              " " +
+              now.getHours() +
+              ":" +
+              now.getMinutes() +
+              ":" +
+              now.getSeconds()
           );
 
           //var diferenca = "";
@@ -5089,29 +6030,29 @@ export default {
 
             var hora_inicio = new Date(
               horario_ini_atendimento.getFullYear() +
-              "-" +
-              (horario_ini_atendimento.getMonth() + 1) +
-              "-" +
-              horario_ini_atendimento.getUTCDate() +
-              " " +
-              horario_ini_atendimento.getUTCHours() +
-              ":" +
-              horario_ini_atendimento.getMinutes() +
-              ":" +
-              horario_ini_atendimento.getSeconds()
+                "-" +
+                (horario_ini_atendimento.getMonth() + 1) +
+                "-" +
+                horario_ini_atendimento.getUTCDate() +
+                " " +
+                horario_ini_atendimento.getUTCHours() +
+                ":" +
+                horario_ini_atendimento.getMinutes() +
+                ":" +
+                horario_ini_atendimento.getSeconds()
             );
             var hora_chegada = new Date(
               horario_chegada.getFullYear() +
-              "-" +
-              (horario_chegada.getMonth() + 1) +
-              "-" +
-              horario_chegada.getUTCDate() +
-              " " +
-              horario_chegada.getUTCHours() +
-              ":" +
-              horario_chegada.getMinutes() +
-              ":" +
-              horario_chegada.getSeconds()
+                "-" +
+                (horario_chegada.getMonth() + 1) +
+                "-" +
+                horario_chegada.getUTCDate() +
+                " " +
+                horario_chegada.getUTCHours() +
+                ":" +
+                horario_chegada.getMinutes() +
+                ":" +
+                horario_chegada.getSeconds()
             );
             status = "";
 
@@ -5146,12 +6087,16 @@ export default {
                   horas_atendimento + ":" + minutos_atendimento);
 
               if (diferenca_atendimento > 2700000) {
-                console.log("Maior -------------- ------------------------------------------------------------------------------------------------------------------ 0023");
+                console.log(
+                  "Maior -------------- ------------------------------------------------------------------------------------------------------------------ 0023"
+                );
                 this.css1 = "cor_atendimento_apos_45min";
                 status = "Atendimento Excedido";
               }
               if (diferenca_atendimento < 2700000) {
-                console.log("Menor -------------------- ------------------------------------------------------------------------------------------------------------------ 0024");
+                console.log(
+                  "Menor -------------------- ------------------------------------------------------------------------------------------------------------------ 0024"
+                );
                 this.css = "cor_atendimento";
                 status = "Atendimento";
               }
@@ -5195,7 +6140,6 @@ export default {
 
             //Armazena o id do vendedor para atualizar quando finalizar a venda
             (this.g_menu_vendedor_id = propostas[i]["vendedor_id"]),
-
               (array_proposta_1 = {
                 acessorios: propostas[i]["acessorios"],
                 adicional: propostas[i]["adicional"],
@@ -5237,15 +6181,17 @@ export default {
                 percentual_lucro: parseFloat(
                   (propostas[i]["lucro_operacional"] /
                     propostas[i]["val_sugerido_venda"]) *
-                  100
+                    100
                 ).toFixed(2),
                 monetario_margem: this.currency(propostas[i]["lucro_final"]),
                 percentual_margem: parseFloat(
                   (propostas[i]["lucro_final"] /
                     propostas[i]["val_sugerido_venda"]) *
-                  100
+                    100
                 ).toFixed(2),
-                modelo: propostas[i].proposta_veiculo ? propostas[i].proposta_veiculo.modelo_veiculo : 'N/A',
+                modelo: propostas[i].proposta_veiculo
+                  ? propostas[i].proposta_veiculo.modelo_veiculo
+                  : "N/A",
                 tempo_espera: tempo_espera,
                 tempo_atendimento: tempo_atendimento,
                 gerados: "",
@@ -5301,7 +6247,6 @@ export default {
         });
     },
 
-
     fechar_modal_proposta() {
       this.dialog_incluir_acessorios = false;
       //location.reload();
@@ -5310,9 +6255,6 @@ export default {
       this.modal_proposta = false;
       location.reload();
     },
-
-
-
 
     habilitar_incluir_itens_financiamento() {
       if (this.incluir_acessorios == true) {
@@ -5349,7 +6291,7 @@ export default {
           console.log(resposta);
         });
     },
-    remover_acessorios_financiamento() { },
+    remover_acessorios_financiamento() {},
 
     ////Fim Proposta
 
@@ -5443,25 +6385,17 @@ export default {
           const { veiculoEstoque, totalPages } = response.data;
           this.estoque_veiculo = veiculoEstoque;
           this.totalPages = totalPages;
-          console.log(response.data)
-
+          console.log(response.data);
         });
         userService.getMarcaEstoque().then((response) => {
           this.marcas_estoque = response.data;
-
-
         });
         userService.getModeloEstoque().then((response) => {
           this.modelos_estoque = response.data;
-
-
         });
         userService.getCorEstoque().then((response) => {
           this.cores_estoque = response.data;
-
-
         });
-
       } catch (error) {
         if (error.response.status == 400) {
           this.abrir_modal = true;
@@ -5585,7 +6519,6 @@ export default {
     },
 
     handleOrderChangeEntrada1() {
-
       if (this.orderBy == this.sortDesc) {
         this.sortDesc = "DESC";
         this.orderBy = 1;
@@ -5680,7 +6613,7 @@ export default {
         const { parcelas, totalPages, totalItems } = response.data;
         this.parcelamento_1 = parcelas;
         this.totalPages_1 = totalPages;
-        this.totalItems_1 = totalItems
+        this.totalItems_1 = totalItems;
         console.log(
           "Iniciando consulta as taxas ranqueadas filtro 1 ----------------------0037"
         );
@@ -5706,9 +6639,8 @@ export default {
 
       /**faço uma consulta na tabela TempTaxas chamando a função ranqueamento_entrada_1 */
       userService.getRanqueamento_1(params).then((response) => {
-
         const { parcelas, totalPages, totalItems } = response.data;
-        console.log(response.data)
+        console.log(response.data);
         this.parcelamento_1 = parcelas;
         this.totalPages_1 = totalPages;
         this.totalItems_1 = totalItems;
@@ -5970,7 +6902,7 @@ export default {
         const { parcelas, totalPages, totalItems } = response.data;
         this.parcelamento_3 = parcelas;
         this.totalPages_3 = totalPages;
-        this.totalItems_3 = totalItems
+        this.totalItems_3 = totalItems;
         this.Total_Financiado_3 = this.parcelamento_3["total_financiado"];
       });
     },
@@ -5996,8 +6928,6 @@ export default {
         this.totalPages_3 = totalPages;
         this.totalItems_3 = totalItems;
         this.Total_Financiado_3 = this.parcelamento_3["total_financiado"];
-
-
       });
     },
     ranqueamento_3() {
@@ -6060,7 +6990,6 @@ export default {
         params["empresa_id"] = empresa_id;
       }
       return params;
-
     },
     getRequestParamsFiltroTaxas(
       parcela,
@@ -6124,7 +7053,6 @@ export default {
       userService.getTaxas(params).then((response) => {
         const cod = response;
 
-
         if (cod.status == 200) {
           /**Caso a resposta seja ok chamo os métodos abaixo */
           this.ranqueamento_entrada_1();
@@ -6155,8 +7083,6 @@ export default {
         this.totalPages_1 = totalPages;
         this.totalPages_2 = totalPages;
         this.totalPages_3 = totalPages;
-
-
       });
     },
     async select_parcela(id, id_linha) {
@@ -6175,7 +7101,6 @@ export default {
           id_coluna = this.id_coluna;
           id_proposta = this.id_proposta;
 
-
           //document.getElementById(id).style.backgroundColor = 'blue';
           //document.getElementsByTagName("tr").style.backgroundColor = 'blue';
         }
@@ -6185,7 +7110,6 @@ export default {
           parcela = this.parcela_2;
           id_coluna = this.id_coluna;
           id_proposta = this.id_proposta;
-
         }
         if (this.id_coluna == 3) {
           //Variaveis
@@ -6193,7 +7117,6 @@ export default {
           parcela = this.parcela_3;
           id_coluna = this.id_coluna;
           id_proposta = this.id_proposta;
-
         }
       }
       if (id_linha == 2) {
@@ -6203,7 +7126,6 @@ export default {
           parcela = this.parcela_1;
           id_coluna = this.id_coluna;
           id_proposta = this.id_proposta;
-
         }
         if (this.id_coluna == 2) {
           //Variaveis
@@ -6211,7 +7133,6 @@ export default {
           parcela = this.parcela_2;
           id_coluna = this.id_coluna;
           id_proposta = this.id_proposta;
-
         }
         if (this.id_coluna == 3) {
           //Variaveis
@@ -6219,7 +7140,6 @@ export default {
           parcela = this.parcela_3;
           id_coluna = this.id_coluna;
           id_proposta = this.id_proposta;
-
         }
       }
       if (id_linha == 3) {
@@ -6229,7 +7149,6 @@ export default {
           parcela = this.parcela_1;
           id_coluna = this.id_coluna;
           id_proposta = this.id_proposta;
-
         }
         if (this.id_coluna == 2) {
           //Variaveis
@@ -6237,7 +7156,6 @@ export default {
           parcela = this.parcela_2;
           id_coluna = this.id_coluna;
           id_proposta = this.id_proposta;
-
         }
         if (this.id_coluna == 3) {
           //Variaveis
@@ -6245,7 +7163,6 @@ export default {
           parcela = this.parcela_3;
           id_coluna = this.id_coluna;
           id_proposta = this.id_proposta;
-
         }
       }
       await fetch(`${process.env.VUE_APP_API_URL}taxas/menu`, {
@@ -6285,19 +7202,22 @@ export default {
       this.retrieveFiltroRanqueamento();
     },
     async limpar_financiamento() {
-      console.log("Limpar Ranqueamento!")
+      console.log("Limpar Ranqueamento!");
       const id = this.id_proposta;
       try {
-        await fetch(`${process.env.VUE_APP_API_URL}proposta_limpar_entradas/${id}`, {
-          method: "PUT",
+        await fetch(
+          `${process.env.VUE_APP_API_URL}proposta_limpar_entradas/${id}`,
+          {
+            method: "PUT",
 
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: id
-          }),
-        })
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: id,
+            }),
+          }
+        )
           .then((data) => {
             if (!data.ok) {
               throw Error(data.status);
@@ -6305,11 +7225,10 @@ export default {
             return data.json();
           })
           .then((resposta) => {
-            console.log(resposta)
+            console.log(resposta);
             if (resposta.StatusOk == 200) {
               window.location.reload();
             }
-
           });
       } catch (error) {
         if (error.response.status == 400) {
@@ -6365,7 +7284,6 @@ export default {
           const { acessorios, totalPages } = response.data;
           this.acessorios = acessorios;
           this.totalPages = totalPages;
-
         });
       } catch (error) {
         if (error.response.status == 400) {
@@ -6398,7 +7316,6 @@ export default {
           }
 
           this.itens_acessorios = itens_ac2;
-
         });
       } catch (error) {
         if (error.response.status == 400) {
@@ -6408,7 +7325,6 @@ export default {
       }
     },
     inserirAcessorios(item) {
-
       (this.descricaoAcessorio = item.descricao),
         (this.valorAcessorio = item.preco_final_instalado),
         (this.custoAcessorio = item.preco_base_peca);
@@ -6465,121 +7381,94 @@ export default {
     select_pmt(value, ordem) {
       this.Pmt = value;
       this.pmtSelected = ordem;
-      const id = this.id_proposta
+      const id = this.id_proposta;
       //Primeira Linha
       if (ordem == 11) {
         this.Valor_Entrada = this.Valor_Entrada_1;
         this.Valor_Financiado = this.Valor_Financiado_1;
         this.Quantidade_Meses = this.Quantidade_Meses_1; //12
-        const params = this.getRequestParamsPMT(
-          id,
-          ordem
-        )
+        const params = this.getRequestParamsPMT(id, ordem);
         userService.getProposta_pmt(params).then((response) => {
-          console.log(response.data)
-        })
+          console.log(response.data);
+        });
       }
       if (ordem == 12) {
         this.Valor_Entrada = this.Valor_Entrada_1;
         this.Valor_Financiado = this.Valor_Financiado_1;
         this.Quantidade_Meses = this.Quantidade_Meses_2; //24
-        const params = this.getRequestParamsPMT(
-          id,
-          ordem
-        )
+        const params = this.getRequestParamsPMT(id, ordem);
         userService.getProposta_pmt(params).then((response) => {
-          console.log(response.data)
-        })
+          console.log(response.data);
+        });
       }
       if (ordem == 13) {
         this.Valor_Entrada = this.Valor_Entrada_1;
         this.Valor_Financiado = this.Valor_Financiado_1;
         this.Quantidade_Meses = this.Quantidade_Meses_3; //36
-        const params = this.getRequestParamsPMT(
-          id,
-          ordem
-        )
+        const params = this.getRequestParamsPMT(id, ordem);
         userService.getProposta_pmt(params).then((response) => {
-          console.log(response.data)
-        })
+          console.log(response.data);
+        });
       }
       //Segunda Linda
       if (ordem == 21) {
         this.Valor_Entrada = this.Valor_Entrada_2;
         this.Valor_Financiado = this.Valor_Financiado_2;
         this.Quantidade_Meses = this.Quantidade_Meses_1;
-        const params = this.getRequestParamsPMT(
-          id,
-          ordem
-        )
+        const params = this.getRequestParamsPMT(id, ordem);
         userService.getProposta_pmt(params).then((response) => {
-          console.log(response.data)
-        })
+          console.log(response.data);
+        });
       }
       if (ordem == 22) {
         this.Valor_Entrada = this.Valor_Entrada_2;
         this.Valor_Financiado = this.Valor_Financiado_2;
         this.Quantidade_Meses = this.Quantidade_Meses_2;
-        const params = this.getRequestParamsPMT(
-          id,
-          ordem
-        )
+        const params = this.getRequestParamsPMT(id, ordem);
         userService.getProposta_pmt(params).then((response) => {
-          console.log(response.data)
-        })
+          console.log(response.data);
+        });
       }
       if (ordem == 23) {
         this.Valor_Entrada = this.Valor_Entrada_2;
         this.Valor_Financiado = this.Valor_Financiado_2;
         this.Quantidade_Meses = this.Quantidade_Meses_3;
-        const params = this.getRequestParamsPMT(
-          id,
-          ordem
-        )
+        const params = this.getRequestParamsPMT(id, ordem);
         userService.getProposta_pmt(params).then((response) => {
-          console.log(response.data)
-        })
+          console.log(response.data);
+        });
       }
       //Terceira Linha
       if (ordem == 31) {
         this.Valor_Entrada = this.Valor_Entrada_3;
         this.Valor_Financiado = this.Valor_Financiado_3;
         this.Quantidade_Meses = this.Quantidade_Meses_1;
-        const params = this.getRequestParamsPMT(
-          id,
-          ordem
-        )
+        const params = this.getRequestParamsPMT(id, ordem);
         userService.getProposta_pmt(params).then((response) => {
-          console.log(response.data)
-        })
+          console.log(response.data);
+        });
       }
       if (ordem == 32) {
         this.Valor_Entrada = this.Valor_Entrada_3;
         this.Valor_Financiado = this.Valor_Financiado_3;
         this.Quantidade_Meses = this.Quantidade_Meses_2;
-        const params = this.getRequestParamsPMT(
-          id,
-          ordem
-        )
+        const params = this.getRequestParamsPMT(id, ordem);
         userService.getProposta_pmt(params).then((response) => {
-          console.log(response.data)
-        })
+          console.log(response.data);
+        });
       }
       if (ordem == 33) {
         this.Valor_Entrada = this.Valor_Entrada_3;
         this.Valor_Financiado = this.Valor_Financiado_3;
         this.Quantidade_Meses = this.Quantidade_Meses_3;
-        const params = this.getRequestParamsPMT(
-          id,
-          ordem
-        )
+        const params = this.getRequestParamsPMT(id, ordem);
         userService.getProposta_pmt(params).then((response) => {
-          console.log(response.data)
-        })
+          console.log(response.data);
+        });
       }
       //window.location.reload();
       //this.resumo()
-      this.habilitar_proposta()
+      this.habilitar_proposta();
     },
 
     preparar_dados_menu() {
@@ -6646,7 +7535,8 @@ export default {
             // (this.g_menu_val_sugerido = this.currency(parseFloat(resposta.data.rows[0].val_sugerido_venda) +
             //   parseFloat(resposta.data.rows[0].custos_variaveis)
             // )),
-            (this.g_menu_val_sugerido = this.currency(parseFloat(resposta.data.rows[0].val_sugerido_venda)
+            (this.g_menu_val_sugerido = this.currency(
+              parseFloat(resposta.data.rows[0].val_sugerido_venda)
             )),
             (this.g_menu_val_desconto = this.currency(
               resposta.data.rows[0].desconto
@@ -6659,13 +7549,11 @@ export default {
 
             (this.g_menu_val_veiculo = this.currency(
               parseFloat(resposta.data.rows[0].val_sugerido_venda)
-
             )),
-
             (this.g_menu_total_financiado = this.currency(
               parseFloat(
                 resposta.data.rows[0].val_financiamento +
-                resposta.data.rows[0].val_entrada_financiamento
+                  resposta.data.rows[0].val_entrada_financiamento
               )
             )),
             //Dados veiculo compra
@@ -6712,18 +7600,20 @@ export default {
     },
 
     async finalizar_venda() {
-
-      const verificar_veiculo = await axios.get(`${process.env.VUE_APP_API_URL}verificar_veiculo_finalizar`, {
-        params: { id: this.id_proposta }
-      });
+      const verificar_veiculo = await axios.get(
+        `${process.env.VUE_APP_API_URL}verificar_veiculo_finalizar`,
+        {
+          params: { id: this.id_proposta },
+        }
+      );
       //console.log(verificar_veiculo.data.data[0].empresa_proposta.nome)
       if (verificar_veiculo.data.statusOk == 1) {
         this.abrir_modal = true;
         this.msg = `Proposta não pode ser finalizada, o veículo já se encontra vendido no atendimento ${verificar_veiculo.data.data[0].id} da loja ${verificar_veiculo.data.data[0].empresa_proposta.nome}`;
         setTimeout(() => (this.abrir_modal = false), 8000);
-        return
+        return;
       }
-      console.log("Nenhum veículo encontrado")
+      console.log("Nenhum veículo encontrado");
       const id = this.id_proposta;
       const lucro_bruto = this.Lucro_Bruto;
       const lucro_gerencial = this.Lucro_Operacional;
@@ -6762,7 +7652,8 @@ export default {
       // Verifique se há erros
       if (Object.keys(erros).length > 0) {
         this.abrir_modal = true;
-        this.msg = "Antes de finzalizar a venda preencha os campos obrigatórios!";
+        this.msg =
+          "Antes de finzalizar a venda preencha os campos obrigatórios!";
 
         // Construa a mensagem de erro com detalhes
         for (const campo in erros) {
@@ -6772,8 +7663,6 @@ export default {
         setTimeout(() => (this.abrir_modal = false), 4000);
         return;
       }
-
-
 
       await fetch(`${process.env.VUE_APP_API_URL}venda_finalizada/${id}`, {
         method: "PUT",
@@ -6789,7 +7678,8 @@ export default {
           lucro_final: lucro_liquido,
           val_entrada_financiamento: val_entrada_financiamento,
           val_financiamento: val_financiamento,
-          tipo_pagamento: tipo_pagamento
+          tipo_pagamento: tipo_pagamento,
+          empresa_id: this.company_id,
         }),
       })
         .then((data) => {
@@ -6800,7 +7690,10 @@ export default {
           return data.json();
         })
         .then((resposta) => {
-          router.push({ path: '/desk/index', query: { empresa_id: encodeURIComponent(this.empresaID) } });
+          router.push({
+            path: "/desk/index",
+            query: { empresa_id: encodeURIComponent(this.empresaID) },
+          });
           console.log(resposta);
         });
     },
@@ -6825,7 +7718,6 @@ export default {
       if (resp == 200) {
         this.dialog = true;
         this.message = "Vendedor se tornou Indisponível!";
-
       }
     },
 
@@ -6833,15 +7725,17 @@ export default {
       const id = this.id_proposta;
       if (!this.modelo_proposta) {
         this.abrir_modal = true;
-        this.msg = "Para finalizar como venda perdida é necessário inserir um veículo!";
+        this.msg =
+          "Para finalizar como venda perdida é necessário inserir um veículo!";
         setTimeout(() => (this.abrir_modal = false), 4000);
-        return
+        return;
       }
       if (this.info_adicionais.length < 30) {
         this.abrir_modal = true;
-        this.msg = "Para finalizar como venda perdida é necessário preencher o campo informações Adicionais! Obrigatório o mínimo de 30 caracteres!";
+        this.msg =
+          "Para finalizar como venda perdida é necessário preencher o campo informações Adicionais! Obrigatório o mínimo de 30 caracteres!";
         setTimeout(() => (this.abrir_modal = false), 4000);
-        return
+        return;
       }
 
       await fetch(`${process.env.VUE_APP_API_URL}venda_perdida/${id}`, {
@@ -6853,7 +7747,7 @@ export default {
         body: JSON.stringify({
           id: id,
           status_proposta: "Venda Perdida",
-          obs: this.info_adicionais
+          obs: this.info_adicionais,
         }),
       })
         .then((data) => {
@@ -6864,12 +7758,13 @@ export default {
           return data.json();
         })
         .then((resposta) => {
-          router.push({ path: '/desk/index', query: { empresa_id: encodeURIComponent(this.empresaID) } });
+          router.push({
+            path: "/desk/index",
+            query: { empresa_id: encodeURIComponent(this.empresaID) },
+          });
           console.log(resposta);
         });
     },
-
-
 
     //Funções para fazer validações em inputs
     numberToReal(numb) {
@@ -6894,18 +7789,16 @@ export default {
 
       if (this.formata_cpf_cnpj(cpf_cnpj) == false) {
         this.abrir_modal = true;
-        this.msg = "CPF/CNPJ inválido"
+        this.msg = "CPF/CNPJ inválido";
         this.cpfCnpj = "";
         setTimeout(() => (this.abrir_modal = false), 4000);
       } else {
         this.cpfCnpj = this.formata_cpf_cnpj(cpf_cnpj);
       }
-
-
     },
     vTel() {
       var telefone = this.tel;
-      this.tel = this.tel.replace(/\D/g, '');
+      this.tel = this.tel.replace(/\D/g, "");
       if (this.tel.length >= 10 && this.tel.length <= 11) {
         this.tel = this.formata_tel(telefone);
       } else {
@@ -6922,7 +7815,7 @@ export default {
     },
     vTel2() {
       var telefone2 = this.cel;
-      this.cel = this.cel.replace(/\D/g, '');
+      this.cel = this.cel.replace(/\D/g, "");
       if (this.cel.length >= 10 && this.cel.length <= 11) {
         this.cel = this.formata_tel(telefone2);
       } else {
@@ -6938,12 +7831,12 @@ export default {
       // this.edit_telefone = this.formata_tel(edit_tel);
     },
     validateEmail(email) {
-      console.log("Testando email")
-      console.log(email)
+      console.log("Testando email");
+      console.log(email);
       var re = /\S+@\S+\.\S+/;
       if (re.test(email) == false) {
         this.abrir_modal = true;
-        this.email = ""
+        this.email = "";
         this.msg = "Digite um email válido, ex: email@email.com!";
         setTimeout(() => (this.abrir_modal = false), 4000);
       }
@@ -6953,11 +7846,9 @@ export default {
       valor = valor.replace(/[^0-9]/g, "");
       if (valor.length === 10) {
         return "TELEFONE";
-      }
-      else if (valor.length === 11) {
+      } else if (valor.length === 11) {
         return "CELULAR";
-      }
-      else {
+      } else {
         return false;
       }
     },
@@ -6970,8 +7861,7 @@ export default {
         formatado = valor.substr(0, 2) + " ";
         formatado += valor.substr(2, 4) + "-";
         formatado += valor.substr(6, 4) + "";
-      }
-      else if (valida === "CELULAR") {
+      } else if (valida === "CELULAR") {
         formatado = valor.substr(0, 2) + " ";
         formatado += valor.substr(2, 5) + "-";
         formatado += valor.substr(7, 4) + "";
@@ -6985,11 +7875,9 @@ export default {
       valor = valor.replace(/[^0-9]/g, "");
       if (valor.length === 11) {
         return "CPF";
-      }
-      else if (valor.length === 14) {
+      } else if (valor.length === 14) {
         return "CNPJ";
-      }
-      else {
+      } else {
         return false;
       }
     },
@@ -7045,11 +7933,9 @@ export default {
       valor = valor.replace(/[^0-9]/g, "");
       if (valida === "CPF") {
         return this.valida_cpf(valor);
-      }
-      else if (valida === "CNPJ") {
+      } else if (valida === "CNPJ") {
         return this.valida_cnpj(valor);
-      }
-      else {
+      } else {
         return false;
       }
     },
@@ -7065,8 +7951,7 @@ export default {
           formatado += valor.substr(6, 3) + "-";
           formatado += valor.substr(9, 2) + "";
         }
-      }
-      else if (valida === "CNPJ") {
+      } else if (valida === "CNPJ") {
         if (this.valida_cnpj(valor)) {
           formatado = valor.substr(0, 2) + ".";
           formatado += valor.substr(2, 3) + ".";
@@ -7080,13 +7965,13 @@ export default {
   },
   created() {
     // Adicione ouvintes de eventos para reiniciar o temporizador quando houver interação do usuário
-    window.addEventListener('mousemove', this.resetTimer);
-    window.addEventListener('keydown', this.resetTimer);
+    window.addEventListener("mousemove", this.resetTimer);
+    window.addEventListener("keydown", this.resetTimer);
   },
   beforeUnmount() {
     // Remova os ouvintes de eventos ao destruir o componente
-    window.removeEventListener('mousemove', this.resetTimer);
-    window.removeEventListener('keydown', this.resetTimer);
+    window.removeEventListener("mousemove", this.resetTimer);
+    window.removeEventListener("keydown", this.resetTimer);
   },
 };
 </script>

@@ -23,13 +23,23 @@
             <label class="rf_texto">Descrição</label>
           </div>
         </div>
-        <div class="col-2">
+        <div class="col-1">
           <div class="form-floating">
             <select class="form-select rf_bg_form rf_texto" v-model="vendaFutura" required>
               <option value="0">Não</option>
               <option value="1">Sim</option>
             </select>
             <label for="valid_status" class="rf_texto">Venda Futura</label>
+
+          </div>
+        </div>
+        <div class="col-1">
+          <div class="form-floating">
+            <select class="form-select rf_bg_form rf_texto" v-model="venda_fei" required>
+              <option value="0">Não</option>
+              <option value="1">Sim</option>
+            </select>
+            <label for="valid_status" class="rf_texto">Venda F&I</label>
 
           </div>
         </div>
@@ -130,7 +140,7 @@
           <th scope="col">Código</th>
           <th scope="col">Descrição</th>
           <th scope="col">Venda Futura</th>
-          <!-- <th scope="col">Marca</th> -->
+          <th scope="col">Venda F&I</th>
           <th scope="col">Status</th>
           <th scope="col">Actions</th>
         </tr>
@@ -140,7 +150,7 @@
           <td>{{ item.codigo }}</td>
           <td>{{ item.descricao }}</td>
           <td>{{ getVendaFut(item.vendaFutura) }}</td>
-          <!-- <td>{{ item.marca_veiculo.descricao }}</td> -->
+          <td>{{ getVendaFei(item.venda_fei) }}</td>
           <td>{{ getStatus(item.status) }}</td>
           <td>
             <button type="button" class="dropdown-toggle-icon" data-bs-toggle="modal" data-bs-target="#exampleModal"
@@ -185,7 +195,6 @@
             </div>
           </div>
           <div class="row g-2 p-2">
-
             <div class="col-3">
               <div class="form-floating">
                 <select class="form-select rf_bg_form rf_texto" v-model="edit_vendaFutura">
@@ -193,6 +202,15 @@
                   <option value="1">Sim</option>
                 </select>
                 <label class="rf_texto">Venda Futura</label>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-floating">
+                <select class="form-select rf_bg_form rf_texto" v-model="edit_venda_fei">
+                  <option value="0">Não</option>
+                  <option value="1">Sim</option>
+                </select>
+                <label class="rf_texto">Venda F&I</label>
               </div>
             </div>
             <div class="col-3">
@@ -221,6 +239,7 @@
               </div>
             </div>
           </div>
+          
         </div>
         <div class="modal-footer">      
           <button type="button" @click="update()" data-bs-dismiss="modal" class="btn btn-modal btn-lg p-1 mt-1">
@@ -265,6 +284,7 @@ export default {
       status: "",
       marcaId: null,
       marcaSelecionada: "",
+      venda_fei:"",
 
       //Campos modal editar
       edit_id: "",
@@ -273,6 +293,7 @@ export default {
       edit_vendaFutura: "",
       edit_status: "",
       edit_marcaId: null,
+      edit_venda_fei: "",
 
 
       //Params
@@ -320,6 +341,9 @@ export default {
     getVendaFut(vendaFutura) {
       return vendaFutura === 0 ? 'Não' : 'Sim';
     },
+    getVendaFei(venda_fei) {
+      return venda_fei === 0 ? 'Não' : 'Sim';
+    },
 
     async onSubmit() {
       try {
@@ -334,6 +358,7 @@ export default {
             codigo: this.codigo,
             descricao: this.descricao,
             vendaFutura: this.vendaFutura,
+            venda_fei: this.venda_fei,
             marcaId: this.marcaId,
             status: this.status,
           }),
@@ -454,6 +479,7 @@ export default {
         this.edit_descricao = item.descricao,
         this.edit_vendaFutura = item.vendaFutura,
         this.selectedOption.descricao = item.marca_veiculo.descricao
+        this.edit_venda_fei = item.venda_fei,
       this.edit_status = item.status;
     },
 
@@ -475,6 +501,7 @@ export default {
         codigo: this.edit_codigo,
         descricao: this.edit_descricao,
         vendaFutura: this.edit_vendaFutura,
+        venda_fei: this.edit_venda_fei,
         marcaVeiculoId: this.selectedOption.id,
         status: this.edit_status,
       };

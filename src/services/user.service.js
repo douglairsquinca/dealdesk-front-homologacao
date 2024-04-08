@@ -413,6 +413,11 @@ class UserService {
       params
     });
   }
+  getTaxasFEI(params) {
+    return api.get('/taxas/ranqueamento_fei', {
+      params
+    });
+  }
   getTaxasAll(params) {
     return api.get('/taxas', {
       params
@@ -447,6 +452,27 @@ class UserService {
   }
   getRanqueamento_3(params){
     return api.get('/taxas/ranqueamento_entrada_3',{
+      params
+    });
+  }
+
+  getRanqueamento_ouro(params){
+    return api.get('/taxas/ranqueamento_entrada_ouro',{
+      params
+    });
+  }
+  getRanqueamento_prata(params){
+    return api.get('/taxas/ranqueamento_entrada_prata',{
+      params
+    });
+  }
+  getRanqueamento_bronze(params){
+    return api.get('/taxas/ranqueamento_entrada_bronze',{
+      params
+    });
+  }
+  getRanqueamento_customizado(params){
+    return api.get('/taxas/ranqueamento_entrada_customizado',{
       params
     });
   }

@@ -87,6 +87,7 @@
               data-bs-toggle="dropdown" aria-expanded="true"> F&I </button>
             <ul class="dropdown-menu dropdown-menu-dark">
               <li class="nav-item"><a @click="setActive('f&i')" href="/f&i/index" class="nav-link p-2"> Dashboard </a></li>
+              <li class="nav-item"><a @click="setActive('f&i')" href="/f&i/modelos_fei" class="nav-link p-2"> Modelo F&I Estoque </a></li>
               <li class="nav-item"><a @click="setActive('f&i')" href="/f&i/estoque_acessorio" class="nav-link p-2"> Estoque Acessórios </a></li>
               <li class="nav-item"><a @click="setActive('f&i')" href="/f&i/cadastro_acessorio" class="nav-link p-2"> Cadastro Acessórios </a></li>
               <li class="nav-item"><a @click="setActive('f&i')" href="/f&i/cadastro_pacotes" class="nav-link p-2"> Cadastro Pacotes </a></li>

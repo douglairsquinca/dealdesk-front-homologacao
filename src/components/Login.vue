@@ -1,10 +1,10 @@
 <template>
   <div class="main-content">
-    <div class="mt--8 pb-5 container dd_login">
+    <div class="mt-2 pb-5 container dd_login">
       <div class="row justify-content-center">
         <div class="col-md-7 col-lg-5">
-          <div class="card  border-0 mb-0">
-            <div class="card-body px-lg-5 py-lg-5"><!----><!---->
+          <div class="card  border-0 mb-0" style="margin-top: 180px;">
+            <div class="card-body px-lg-5 py-lg-5 "><!----><!---->
               <div class="text-center text-muted mb-4">
                 <img id="profile-img" src="../assets/logo.png" class=" img-fluid" />
               </div>
