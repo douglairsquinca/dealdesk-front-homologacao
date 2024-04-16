@@ -5,8 +5,87 @@
     :barraTitulo="' F&I - Vendas'"
     :titulo="'vendas'"
   />
+
   <!--Bloco do Filtro-->
   <div class="card card-filtro">
+    <div
+      class="modal fade"
+      id="exampleModalToggle"
+      aria-hidden="true"
+      aria-labelledby="exampleModalToggleLabel"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalToggleLabel">
+              Modal 1
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Show a second modal and hide this one with the button below.
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-primary"
+              data-bs-target="#exampleModalToggle2"
+              data-bs-toggle="modal"
+            >
+              Open second modal
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      id="exampleModalToggle2"
+      aria-hidden="true"
+      aria-labelledby="exampleModalToggleLabel2"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
+              Modal 2
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Hide this modal and show the first with the button below.
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-primary"
+              data-bs-target="#exampleModalToggle"
+              data-bs-toggle="modal"
+            >
+              Back to first
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button
+      class="btn btn-primary"
+      data-bs-target="#exampleModalToggle"
+      data-bs-toggle="modal"
+    >
+      Open first modal
+    </button>
+
     <div class="row g-2 p-2">
       <div class="card-title gy-4">
         <i class="bi bi-funnel fs-5 icone_filtro"
@@ -68,12 +147,18 @@
           <td>
             <button
               class="dropdown-toggle-icon"
-              data-bs-toggle="modal"
-              data-bs-target="#ModalFI"
-              @click="habilitar_fi(item)"
-              :disabled="item.status == 'F&I Finalizado' || item.status == 'F&I Perdido'"
+         
+              :disabled="
+                item.status == 'F&I Finalizado' || item.status == 'F&I Perdido'
+              "
             >
+              
+              <router-link
+                class="nav-link active"
+                :to="`/f&i/vendas_fei_detalhe/${item.id}`"
+              >
               <i class="bi bi bi-basket"></i>
+              </router-link>
             </button>
           </td>
         </tr>
@@ -334,591 +419,1043 @@
           </div>
 
           <!--Quadro dos kits-->
-          <div class="row">
-            <!--Quadro Ouro-->
-            <div class="card card-ouro col">
-              <i class="bi bi-gem card-texto-vendas-ouro"> Pacote Ouro</i>
-              <!--Acessórios-->
-              <div class="row">
-                <div class="col mt-3"><strong>Acessórios</strong></div>
-                <div class="col-1">
-                  <ul class="nav nav-item justify-content-end">
-                    <li class="nav-item dropdown">
-                      <button
-                        class="btn-card-ouro"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="true"
-                      >
-                        <i class="bi bi-eye"></i>
-                      </button>
-                      <ul class="btn-kits-ouro dropdown-menu dropdown-menu-end">
-                        <!-- Conteúdo do dropdown -->
-                        <li
-                          class="nav-item"
-                          v-for="item in itens_kit_acessorios_ouro"
-                          :key="item.id"
+          <div v-if="desabilitar_customizacao">
+            <div class="row">
+              <!--Quadro Ouro-->
+              <div class="card card-ouro col">
+                <i class="bi bi-gem card-texto-vendas-ouro"> Pacote Ouro</i>
+                <!--Acessórios-->
+                <div class="row">
+                  <div class="col mt-3"><strong>Acessórios</strong></div>
+                  <div class="col-1">
+                    <ul class="nav nav-item justify-content-end">
+                      <li class="nav-item dropdown">
+                        <button
+                          class="btn-card-ouro"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="true"
                         >
-                          <strong
-                            ><i class="bi bi-check2-circle p-2">
-                              {{ item.descricao }}</i
-                            ></strong
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <ul
+                          class="btn-kits-ouro dropdown-menu dropdown-menu-end"
+                        >
+                          <!-- Conteúdo do dropdown -->
+                          <li
+                            class="nav-item"
+                            v-for="item in itens_kit_acessorios_ouro"
+                            :key="item.id"
                           >
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
+                            <strong
+                              ><i class="bi bi-check2-circle p-2">
+                                {{ item.descricao }}</i
+                              ></strong
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Revisão-->
+                <div class="row">
+                  <div class="col mt-3"><strong>Revisão pré-paga</strong></div>
+                  <div class="col-1">
+                    <ul class="nav nav-item justify-content-end">
+                      <li class="nav-item dropdown">
+                        <button
+                          class="btn-card-ouro"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="true"
+                        >
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <ul
+                          class="btn-kits-ouro dropdown-menu dropdown-menu-end"
+                        >
+                          <!-- Conteúdo do dropdown -->
+                          <li
+                            class="nav-item"
+                            v-for="item in itens_kit_revisoes_ouro"
+                            :key="item.id"
+                          >
+                            <strong
+                              ><i class="bi bi-check2-circle p-2">
+                                {{ item.descricao }}</i
+                              ></strong
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Seguros-->
+                <div class="row">
+                  <div class="col mt-3"><strong>Seguros</strong></div>
+                  <div class="col-1">
+                    <ul class="nav nav-item justify-content-end">
+                      <li class="nav-item dropdown">
+                        <button
+                          class="btn-card-ouro"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="true"
+                        >
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <ul
+                          class="btn-kits-ouro dropdown-menu dropdown-menu-end"
+                        >
+                          <!-- Conteúdo do dropdown -->
+                          <li
+                            class="nav-item"
+                            v-for="item in itens_kit_seguros_ouro"
+                            :key="item.id"
+                          >
+                            <strong
+                              ><i class="bi bi-check2-circle p-2">
+                                {{ item.descricao }}</i
+                              ></strong
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Valor-->
+                <div class="txt-card-valor"><strong>Valor</strong></div>
+                <div class="valor-card-ouro">
+                  <strong>{{ this.currency(this.valor_pacote_ouro) }}</strong>
                 </div>
               </div>
-              <!--Revisão-->
-              <div class="row">
-                <div class="col mt-3"><strong>Revisão pré-paga</strong></div>
-                <div class="col-1">
-                  <ul class="nav nav-item justify-content-end">
-                    <li class="nav-item dropdown">
-                      <button
-                        class="btn-card-ouro"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="true"
-                      >
-                        <i class="bi bi-eye"></i>
-                      </button>
-                      <ul class="btn-kits-ouro dropdown-menu dropdown-menu-end">
-                        <!-- Conteúdo do dropdown -->
-                        <li
-                          class="nav-item"
-                          v-for="item in itens_kit_revisoes_ouro"
-                          :key="item.id"
+              <!--Quadro Prata-->
+              <div class="card card-prata col">
+                <i class="bi bi-gem card-texto-vendas-prata"> Pacote Prata</i>
+                <!--Acessórios-->
+                <div class="row">
+                  <div class="col mt-3"><strong>Acessórios</strong></div>
+                  <div class="col-1">
+                    <ul class="nav nav-item justify-content-end">
+                      <li class="nav-item dropdown">
+                        <button
+                          class="btn-card-prata"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="true"
                         >
-                          <strong
-                            ><i class="bi bi-check2-circle p-2">
-                              {{ item.descricao }}</i
-                            ></strong
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <ul
+                          class="btn-kits-prata dropdown-menu dropdown-menu-end"
+                        >
+                          <li
+                            class="nav-item"
+                            v-for="item in itens_kit_acessorios_prata"
+                            :key="item.id"
                           >
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
+                            <strong
+                              ><i class="bi bi-check2-circle p-2">
+                                {{ item.descricao }}</i
+                              ></strong
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Revisão-->
+                <div class="row">
+                  <div class="col mt-3"><strong>Revisão pré-paga</strong></div>
+                  <div class="col-1">
+                    <ul class="nav nav-item justify-content-end">
+                      <li class="nav-item dropdown">
+                        <button
+                          class="btn-card-prata"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="true"
+                        >
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <ul
+                          class="btn-kits-prata dropdown-menu dropdown-menu-end"
+                        >
+                          <li
+                            class="nav-item"
+                            v-for="item in itens_kit_revisoes_prata"
+                            :key="item.id"
+                          >
+                            <strong
+                              ><i class="bi bi-check2-circle p-2">
+                                {{ item.descricao }}</i
+                              ></strong
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Seguros-->
+                <div class="row">
+                  <div class="col mt-3"><strong>Seguros</strong></div>
+                  <div class="col-1">
+                    <ul class="nav nav-item justify-content-end">
+                      <li class="nav-item dropdown">
+                        <button
+                          class="btn-card-prata"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="true"
+                        >
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <ul
+                          class="btn-kits-prata dropdown-menu dropdown-menu-end"
+                        >
+                          <!-- Conteúdo do dropdown -->
+                          <li
+                            class="nav-item"
+                            v-for="item in itens_kit_seguros_prata"
+                            :key="item.id"
+                          >
+                            <strong
+                              ><i class="bi bi-check2-circle p-2">
+                                {{ item.descricao }}</i
+                              ></strong
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Valor-->
+                <div class="txt-card-valor"><strong>Valor</strong></div>
+                <div class="valor-card-prata">
+                  <strong>{{ this.currency(this.valor_pacote_prata) }}</strong>
                 </div>
               </div>
-              <!--Seguros-->
-              <div class="row">
-                <div class="col mt-3"><strong>Seguros</strong></div>
-                <div class="col-1">
-                  <ul class="nav nav-item justify-content-end">
-                    <li class="nav-item dropdown">
-                      <button
-                        class="btn-card-ouro"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="true"
-                      >
-                        <i class="bi bi-eye"></i>
-                      </button>
-                      <ul class="btn-kits-ouro dropdown-menu dropdown-menu-end">
-                        <!-- Conteúdo do dropdown -->
-                        <li
-                          class="nav-item"
-                          v-for="item in itens_kit_seguros_ouro"
-                          :key="item.id"
+              <!--Quadro Bronze-->
+              <div class="card card-bronze col">
+                <i class="bi bi-gem card-texto-vendas-bronze"> Pacote Bronze</i>
+                <!--Acessórios-->
+                <div class="row">
+                  <div class="col mt-3"><strong>Acessórios</strong></div>
+                  <div class="col-1">
+                    <ul class="nav nav-item justify-content-end">
+                      <li class="nav-item dropdown">
+                        <button
+                          class="btn-card-bronze"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="true"
                         >
-                          <strong
-                            ><i class="bi bi-check2-circle p-2">
-                              {{ item.descricao }}</i
-                            ></strong
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <ul
+                          class="btn-kits-bronze dropdown-menu dropdown-menu-end"
+                        >
+                          <!-- Conteúdo do dropdown -->
+                          <li
+                            class="nav-item"
+                            v-for="item in itens_kit_acessorios_bronze"
+                            :key="item.id"
                           >
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
+                            <strong
+                              ><i class="bi bi-check2-circle p-2">
+                                {{ item.descricao }}</i
+                              ></strong
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Revisão-->
+                <div class="row">
+                  <div class="col mt-3"><strong>Revisão pré-paga</strong></div>
+                  <div class="col-1">
+                    <ul class="nav nav-item justify-content-end">
+                      <li class="nav-item dropdown">
+                        <button
+                          class="btn-card-bronze"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="true"
+                        >
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <ul
+                          class="btn-kits-bronze dropdown-menu dropdown-menu-end"
+                        >
+                          <!-- Conteúdo do dropdown -->
+                          <li
+                            class="nav-item"
+                            v-for="item in itens_kit_revisoes_bronze"
+                            :key="item.id"
+                          >
+                            <strong
+                              ><i class="bi bi-check2-circle p-2">
+                                {{ item.descricao }}</i
+                              ></strong
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Seguros-->
+                <div class="row">
+                  <div class="col mt-3"><strong>Seguros</strong></div>
+                  <div class="col-1">
+                    <ul class="nav nav-item justify-content-end">
+                      <li class="nav-item dropdown">
+                        <button
+                          class="btn-card-bronze"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="true"
+                        >
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <ul
+                          class="btn-kits-bronze dropdown-menu dropdown-menu-end"
+                        >
+                          <!-- Conteúdo do dropdown -->
+                          <li
+                            class="nav-item"
+                            v-for="item in itens_kit_seguros_bronze"
+                            :key="item.id"
+                          >
+                            <strong
+                              ><i class="bi bi-check2-circle p-2">
+                                {{ item.descricao }}</i
+                              ></strong
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Valor-->
+                <div class="txt-card-valor"><strong>Valor</strong></div>
+                <div class="valor-card-bronze">
+                  <strong>{{ this.currency(this.valor_pacote_bronze) }}</strong>
                 </div>
               </div>
-              <!--Valor-->
-              <div class="txt-card-valor"><strong>Valor</strong></div>
-              <div class="valor-card-ouro">
-                <strong>{{ this.currency(this.valor_pacote_ouro) }}</strong>
-              </div>
-            </div>
-            <!--Quadro Prata-->
-            <div class="card card-prata col">
-              <i class="bi bi-gem card-texto-vendas-prata"> Pacote Prata</i>
-              <!--Acessórios-->
-              <div class="row">
-                <div class="col mt-3"><strong>Acessórios</strong></div>
-                <div class="col-1">
-                  <ul class="nav nav-item justify-content-end">
-                    <li class="nav-item dropdown">
-                      <button
-                        class="btn-card-prata"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="true"
-                      >
-                        <i class="bi bi-eye"></i>
-                      </button>
-                      <ul
-                        class="btn-kits-prata dropdown-menu dropdown-menu-end"
-                      >
-                        <li
-                          class="nav-item"
-                          v-for="item in itens_kit_acessorios_prata"
-                          :key="item.id"
-                        >
-                          <strong
-                            ><i class="bi bi-check2-circle p-2">
-                              {{ item.descricao }}</i
-                            ></strong
-                          >
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
+              <!--Quadro Customizado-->
+              <div class="card card-customizado col">
+                <i class="bi bi-gem card-texto-vendas-customizado">
+                  Pacote Customizado</i
+                >
+                <div class="col">
+                  <button
+                    type="button"
+                    class="btn btn-lg btn-filtro btn-customizado"
+                    @click="customizado"
+                  >
+                    CRIAR PACOTE
+                  </button>
                 </div>
-              </div>
-              <!--Revisão-->
-              <div class="row">
-                <div class="col mt-3"><strong>Revisão pré-paga</strong></div>
-                <div class="col-1">
-                  <ul class="nav nav-item justify-content-end">
-                    <li class="nav-item dropdown">
-                      <button
-                        class="btn-card-prata"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="true"
-                      >
-                        <i class="bi bi-eye"></i>
-                      </button>
-                      <ul
-                        class="btn-kits-prata dropdown-menu dropdown-menu-end"
-                      >
-                        <li
-                          class="nav-item"
-                          v-for="item in itens_kit_revisoes_prata"
-                          :key="item.id"
-                        >
-                          <strong
-                            ><i class="bi bi-check2-circle p-2">
-                              {{ item.descricao }}</i
-                            ></strong
-                          >
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <!--Seguros-->
-              <div class="row">
-                <div class="col mt-3"><strong>Seguros</strong></div>
-                <div class="col-1">
-                  <ul class="nav nav-item justify-content-end">
-                    <li class="nav-item dropdown">
-                      <button
-                        class="btn-card-prata"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="true"
-                      >
-                        <i class="bi bi-eye"></i>
-                      </button>
-                      <ul
-                        class="btn-kits-prata dropdown-menu dropdown-menu-end"
-                      >
-                        <!-- Conteúdo do dropdown -->
-                        <li
-                          class="nav-item"
-                          v-for="item in itens_kit_seguros_prata"
-                          :key="item.id"
-                        >
-                          <strong
-                            ><i class="bi bi-check2-circle p-2">
-                              {{ item.descricao }}</i
-                            ></strong
-                          >
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <!--Valor-->
-              <div class="txt-card-valor"><strong>Valor</strong></div>
-              <div class="valor-card-prata">
-                <strong>{{ this.currency(this.valor_pacote_prata) }}</strong>
-              </div>
-            </div>
-            <!--Quadro Bronze-->
-            <div class="card card-bronze col">
-              <i class="bi bi-gem card-texto-vendas-bronze"> Pacote Bronze</i>
-              <!--Acessórios-->
-              <div class="row">
-                <div class="col mt-3"><strong>Acessórios</strong></div>
-                <div class="col-1">
-                  <ul class="nav nav-item justify-content-end">
-                    <li class="nav-item dropdown">
-                      <button
-                        class="btn-card-bronze"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="true"
-                      >
-                        <i class="bi bi-eye"></i>
-                      </button>
-                      <ul
-                        class="btn-kits-bronze dropdown-menu dropdown-menu-end"
-                      >
-                        <!-- Conteúdo do dropdown -->
-                        <li
-                          class="nav-item"
-                          v-for="item in itens_kit_acessorios_bronze"
-                          :key="item.id"
-                        >
-                          <strong
-                            ><i class="bi bi-check2-circle p-2">
-                              {{ item.descricao }}</i
-                            ></strong
-                          >
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <!--Revisão-->
-              <div class="row">
-                <div class="col mt-3"><strong>Revisão pré-paga</strong></div>
-                <div class="col-1">
-                  <ul class="nav nav-item justify-content-end">
-                    <li class="nav-item dropdown">
-                      <button
-                        class="btn-card-bronze"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="true"
-                      >
-                        <i class="bi bi-eye"></i>
-                      </button>
-                      <ul
-                        class="btn-kits-bronze dropdown-menu dropdown-menu-end"
-                      >
-                        <!-- Conteúdo do dropdown -->
-                        <li
-                          class="nav-item"
-                          v-for="item in itens_kit_revisoes_bronze"
-                          :key="item.id"
-                        >
-                          <strong
-                            ><i class="bi bi-check2-circle p-2">
-                              {{ item.descricao }}</i
-                            ></strong
-                          >
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <!--Seguros-->
-              <div class="row">
-                <div class="col mt-3"><strong>Seguros</strong></div>
-                <div class="col-1">
-                  <ul class="nav nav-item justify-content-end">
-                    <li class="nav-item dropdown">
-                      <button
-                        class="btn-card-bronze"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="true"
-                      >
-                        <i class="bi bi-eye"></i>
-                      </button>
-                      <ul
-                        class="btn-kits-bronze dropdown-menu dropdown-menu-end"
-                      >
-                        <!-- Conteúdo do dropdown -->
-                        <li
-                          class="nav-item"
-                          v-for="item in itens_kit_seguros_bronze"
-                          :key="item.id"
-                        >
-                          <strong
-                            ><i class="bi bi-check2-circle p-2">
-                              {{ item.descricao }}</i
-                            ></strong
-                          >
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <!--Valor-->
-              <div class="txt-card-valor"><strong>Valor</strong></div>
-              <div class="valor-card-bronze">
-                <strong>{{ this.currency(this.valor_pacote_bronze) }}</strong>
-              </div>
-            </div>
-            <!--Quadro Customizado-->
-            <div class="card card-customizado col">
-              <i class="bi bi-gem card-texto-vendas-customizado">
-                Pacote Customizado</i
-              >
-              <!--Acessórios-->
-              <div class="row">
-                <div class="col mt-3"><strong>Acessórios</strong></div>
-                <div class="col-1">
-                  <ul class="nav nav-item justify-content-end">
-                    <li class="nav-item dropdown">
-                      <button
-                        class="btn-card-customizado"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="true"
-                      >
-                        <i class="bi bi-eye"></i>
-                      </button>
-                      <ul
-                        class="btn-kits-customizado dropdown-menu dropdown-menu-end"
-                      >
-                        <!-- Conteúdo do dropdown -->
-                        <li
-                          class="nav-item"
-                          v-for="item in itens_kit_acessorios_customizado"
-                          :key="item.id"
-                        >
-                          <strong
-                            ><i class="bi bi-check2-circle p-2">
-                              {{ item.descricao }}</i
-                            ></strong
-                          >
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <!--Revisão-->
-              <div class="row">
-                <div class="col mt-3"><strong>Revisão pré-paga</strong></div>
-                <div class="col-1">
-                  <ul class="nav nav-item justify-content-end">
-                    <li class="nav-item dropdown">
-                      <button
-                        class="btn-card-customizado"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="true"
-                      >
-                        <i class="bi bi-eye"></i>
-                      </button>
-                      <ul
-                        class="btn-kits-customizado dropdown-menu dropdown-menu-end"
-                      >
-                        <!-- Conteúdo do dropdown -->
-                        <li
-                          class="nav-item"
-                          v-for="item in itens_kit_revisoes_customizado"
-                          :key="item.id"
-                        >
-                          <strong
-                            ><i class="bi bi-check2-circle p-2">
-                              {{ item.descricao }}</i
-                            ></strong
-                          >
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <!--Seguros-->
-              <div class="row">
-                <div class="col mt-3"><strong>Seguros</strong></div>
-                <div class="col-1">
-                  <ul class="nav nav-item justify-content-end">
-                    <li class="nav-item dropdown">
-                      <button
-                        class="btn-card-customizado"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="true"
-                      >
-                        <i class="bi bi-eye"></i>
-                      </button>
-                      <ul
-                        class="btn-kits-customizado dropdown-menu dropdown-menu-end"
-                      >
-                        <!-- Conteúdo do dropdown -->
-                        <li
-                          class="nav-item"
-                          v-for="item in itens_kit_seguros_customizado"
-                          :key="item.id"
-                        >
-                          <strong
-                            ><i class="bi bi-check2-circle p-2">
-                              {{ item.descricao }}</i
-                            ></strong
-                          >
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <!--Valor-->
-              <div class="txt-card-valor"><strong>Valor</strong></div>
-              <div class="valor-card-customizado">
-                <strong>{{
-                  this.currency(this.valor_pacote_customizado)
-                }}</strong>
               </div>
             </div>
           </div>
-          <!--Informação F&I-->
-          <div class="card card-vendas">
-            <div class="row g-2 p-2">
+          <!--Área  de Cadastro do Pacote Personalizado-->
+          <div v-if="cadastro">
+            <div class="card card-container">
+              <div class="row">
+                <div class="col-4 d-flex justify-content-center">
+                  <div class="card-kit">
+                    <div class="card-icon">
+                      <i class="bi bi-tools fs-5 icone_filtro"></i>
+                      <div class="input-group-append">
+                        <button
+                          class="btn btn-lg btn-filtro"
+                          data-bs-target="#ModalItensAcessorios"
+                          data-bs-toggle="modal"                          
+                          :disabled="this.habilitar_kits"
+                          @click="habilitar_itens_acessorio"
+                        >
+                          <span class="rf_texto_btn">Incluir</span><br />
+                          <span class="rf_texto_btn">Acessórios</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4 d-flex justify-content-center">
+                  <div class="card-kit">
+                    <div class="card-icon">
+                      <i class="bi bi-journal-text fs-5 icone_filtro"></i>
+                      <div class="input-group-append">
+                        <button
+                          class="btn btn-lg btn-filtro"
+                          data-bs-target="#ModalItensSeguros"
+                          data-bs-toggle="modal"
+                          type="button"
+                          :disabled="this.habilitar_kits"
+                          @click="habilitar_itens_seguros"
+                        >
+                          <span class="rf_texto_btn">Incluir</span><br />
+                          <span class="rf_texto_btn">Seguros</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4 d-flex justify-content-center">
+                  <div class="card-kit">
+                    <div class="card-icon">
+                      <i class="bi bi-speedometer2 fs-5 icone_filtro"></i>
+                      <div class="input-group-append">
+                        <button
+                          class="btn btn-lg btn-filtro"
+                          data-bs-target="#ModalItensRevisao"
+                          data-bs-toggle="modal"
+                          type="button"
+                          :disabled="this.habilitar_kits"
+                          @click="habilitar_itens_revisao"
+                        >
+                          <span class="rf_texto_btn">Incluir</span><br />
+                          <span class="rf_texto_btn">Revisão</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--Tabelas com os itens dos kits-->
+            <div class="card card-vendas g-2 p-2">
               <div class="card-title gy-4">
-                <i class="bi bi-journal-text fs-5 icone_filtro"
-                  ><span class="texto_filtro"
-                    ><strong>Informações F&I</strong></span
-                  ></i
+                <i class="bi bi-tools fs-5 icone_kit"
+                  ><span class="texto_kit">Acessórios</span></i
                 >
               </div>
+              <table class="table rf_texto">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 10%">Código</th>
+                    <th scope="col" style="width: 45%">Descrição</th>
+                    <th scope="col" style="width: 10%">Preço</th>
+
+                    <th scope="col" style="width: 5%">Ação</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="item in itens_kit_acessorios"
+                    :key="item.id"
+                    class="table-linha"
+                  >
+                    <td>{{ item.codigo }}</td>
+                    <td>{{ item.descricao }}</td>
+                    <td>{{ this.currency(item.preco) }}</td>
+                    <td style="display: flex">
+                      <button
+                        @click="exibirModalConfirmacao(item)"
+                        data-bs-target="#confirmModal"
+                        data-bs-toggle="modal"
+                        class="dropdown-toggle-icon p-1"
+                      >
+                        <i class="bi bi-pencil-square"></i>
+                      </button>
+                      <button
+                        class="dropdown-toggle-icon"
+                        data-bs-target="#excluiModal"
+                        data-bs-toggle="modal"
+                        @click="remover_item_acessorio(item)"
+                      >
+                        <i class="bi bi-trash3"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <div class="row g-2 p-2">
-              <div class="col">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    disabled
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="valor_financiar"
-                  />
-                  <label class="rf_texto">Valor a Financiar</label>
-                </div>
+            <div class="card card-vendas g-2 p-2 mt-2">
+              <div class="card-title gy-4">
+                <i class="bi bi-journal-text fs-5 icone_kit"
+                  ><span class="texto_kit">Seguros</span></i
+                >
               </div>
-              <div class="col">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    disabled
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="valor_pacote_selecionado"
-                  />
-                  <label class="rf_texto">Valor Pacote</label>
-                </div>
-              </div>
-              <div class="col">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    disabled
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="total_financiamento_selecionado"
-                  />
-                  <label class="rf_texto">Total Financiamento</label>
-                </div>
-              </div>
-              <div class="col">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    disabled
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="valor_parcela_selecionada"
-                  />
-                  <label class="rf_texto">Valor Parcela</label>
-                </div>
-              </div>
-             
+              <table class="table rf_texto">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 10%">Código</th>
+                    <th scope="col" style="width: 45%">Descrição</th>
+                    <th scope="col" style="width: 10%">Preço</th>
+                    <th scope="col" style="width: 5%">Ação</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="item in itens_kit_seguros"
+                    :key="item.id"
+                    class="table-linha"
+                  >
+                    <td>{{ item.codigo }}</td>
+                    <td>{{ item.descricao }}</td>
+                    <td>{{ this.currency(item.preco) }}</td>
+
+                    <td style="display: flex">
+                      <button
+                        @click="exibirModalConfirmacaoSeguro(item)"
+                        data-bs-target="#confirmModalSeguro"
+                        data-bs-toggle="modal"
+                        class="dropdown-toggle-icon p-1"
+                      >
+                        <i class="bi bi-pencil-square"></i>
+                      </button>
+                      <button
+                        class="dropdown-toggle-icon"
+                        data-bs-target="#excluiModalSeguro"
+                        data-bs-toggle="modal"
+                        @click="remover_item_seguro(item)"
+                      >
+                        <i class="bi bi-trash3"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <table class="table rf_texto">
-              <thead>
-                <tr>
-                  <th scope="col" style="width: 10%" class="rf_texto_tabela">
-                    Pacote Ouro
-                  </th>
-                  <th scope="col" style="width: 10%" class="rf_texto_tabela">
-                    Pacote Prata
-                  </th>
-                  <th scope="col" style="width: 10%" class="rf_texto_tabela">
-                    Pacote Bronze
-                  </th>
-           
-                  <!--Parcela 1-->
-                  <th scope="col" style="width: 5%" class="rf_texto_tabela">
-                    <div class="form-floating">
-                      <select
-                        class="form-select rf_bg_form rf_texto"
-                        v-model="parcela"
+            <div class="card card-vendas g-2 p-2 mt-2">
+              <div class="card-title gy-4">
+                <i class="bi bi-speedometer2 fs-5 icone_kit"
+                  ><span class="texto_kit">Revisão Programada</span></i
+                >
+              </div>
+              <table class="table rf_texto">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 10%">Código</th>
+                    <th scope="col" style="width: 45%">Descrição</th>
+                    <th scope="col" style="width: 10%">Preço</th>
+                    <th scope="col" style="width: 5%">Ação</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="item in itens_kit_revisoes"
+                    :key="item.id"
+                    class="table-linha"
+                  >
+                    <td>{{ item.codigo }}</td>
+                    <td>{{ item.descricao }}</td>
+                    <td>{{ this.currency(item.preco) }}</td>
+                    <td style="display: flex">
+                      <button
+                        @click="exibirModalConfirmacaoRevisao(item)"
+                        data-bs-target="#confirmModalRevisao"
+                        data-bs-toggle="modal"
+                        class="dropdown-toggle-icon p-1"
                       >
-                        <option
-                          v-for="item in itens_financiamento"
-                          :value="item.value"
-                          :key="item.value"
+                        <i class="bi bi-pencil-square"></i>
+                      </button>
+                      <button
+                        class="dropdown-toggle-icon"
+                        data-bs-target="#excluiModalRevisao"
+                        data-bs-toggle="modal"
+                        @click="remover_item_revisao(item)"
+                      >
+                        <i class="bi bi-trash3"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card card-vendas g-2 p-2 mt-2">
+              <table class="table rf_texto">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 10%" class="rf_texto_tabela">
+                      Total
+                    </th>
+                    <th
+                      scope="col"
+                      style="width: 45%"
+                      class="rf_texto_tabela"
+                    ></th>
+                    <th scope="col" style="width: 10%" class="rf_texto_tabela">
+                      {{ this.currency(this.total_preco) }}
+                    </th>
+                    <th
+                      scope="col"
+                      style="width: 5%"
+                      class="rf_texto_tabela"
+                    ></th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+
+          <div v-if="habilitar_customizacao">
+            <!--Informação F&I-->
+            <div class="card card-vendas">
+              <div class="row g-2 p-2">
+                <div class="col-6">
+                  <div class="card-title gy-4">
+                    <i class="bi bi-journal-text fs-5 icone_filtro"
+                      ><span class="texto_filtro"
+                        ><strong>Informações F&I</strong></span
+                      ></i
+                    >
+                  </div>
+                </div>
+                <div class="col-6" style="padding-left: 20px">
+                  <div class="card-title gy-4">
+                    <div class="form-check form-switch rf_texto mt-3">
+                      <input
+                        class="form-check-input g-5"
+                        type="checkbox"
+                        role="switch"
+                        v-model="cadastro"
+                      />
+                      <label class="form-check-label">Mostrar cadastro</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <div class="row g-2 p-2">
+                    <div class="col">
+                      <div class="form-floating">
+                        <input
+                          type="text"
+                          disabled
+                          class="form-control rf_bg_form rf_texto"
+                          v-model="valor_financiar"
+                        />
+                        <label class="rf_texto">Valor a Financiar</label>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-floating">
+                        <input
+                          type="text"
+                          disabled
+                          class="form-control rf_bg_form rf_texto"
+                          v-model="valor_pacote_selecionado"
+                        />
+                        <label class="rf_texto">Valor Pacote</label>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-floating">
+                        <input
+                          type="text"
+                          disabled
+                          class="form-control rf_bg_form rf_texto"
+                          v-model="total_financiamento_selecionado"
+                        />
+                        <label class="rf_texto">Total Financiamento</label>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-floating">
+                        <input
+                          type="text"
+                          disabled
+                          class="form-control rf_bg_form rf_texto"
+                          v-model="valor_parcela_selecionada"
+                        />
+                        <label class="rf_texto">Valor Parcela</label>
+                      </div>
+                    </div>
+                  </div>
+                  <table class="table rf_texto">
+                    <thead>
+                      <tr>
+                        <th
+                          scope="col"
+                          style="width: 10%"
+                          class="rf_texto_tabela"
                         >
-                          {{ item.value }}
-                        </option>
-                      </select>
-                      <label for="valid_empresa" class="rf_texto"
-                        >Parcela</label
-                      >
-                    </div>
-                  </th>
-                  <th scope="col" style="width: 5%" class="rf_texto_tabela">
-                    <div class="form-floating">
-                      <select
-                        class="form-select rf_bg_form rf_texto"
-                        v-model="metodo_pagamento"
-                      >
-                        <option
-                          v-for="item in metodo_pagamento_lista"
-                          :value="item.value"
-                          :key="item.value"
+                          Pacote Customizado
+                        </th>
+
+                        <!--Parcela 1-->
+                        <th
+                          scope="col"
+                          style="width: 5%"
+                          class="rf_texto_tabela"
                         >
-                          {{ item.descricao }}
-                        </option>
-                      </select>
-                      <label for="valid_empresa" class="rf_texto"
-                        >Pagamento
-                        </label
-                      >
+                          <div class="form-floating">
+                            <select
+                              class="form-select rf_bg_form rf_texto"
+                              v-model="parcela"
+                            >
+                              <option
+                                v-for="item in itens_financiamento"
+                                :value="item.value"
+                                :key="item.value"
+                              >
+                                {{ item.value }}
+                              </option>
+                            </select>
+                            <label for="valid_empresa" class="rf_texto"
+                              >Parcela</label
+                            >
+                          </div>
+                        </th>
+                        <th
+                          scope="col"
+                          style="width: 5%"
+                          class="rf_texto_tabela"
+                        >
+                          <div class="form-floating">
+                            <select
+                              class="form-select rf_bg_form rf_texto"
+                              v-model="metodo_pagamento"
+                            >
+                              <option
+                                v-for="item in metodo_pagamento_lista"
+                                :value="item.value"
+                                :key="item.value"
+                              >
+                                {{ item.descricao }}
+                              </option>
+                            </select>
+                            <label for="valid_empresa" class="rf_texto"
+                              >Pagamento
+                            </label>
+                          </div>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!--Primeira Linha-->
+                      <tr>
+                        <td>
+                          <div class="d-grid gap-2">
+                            <button
+                              type="button"
+                              class="btn btn-lg btn-desk-filtro rf_texto_btn"
+                              :class="{ active: pmtSelected === 4 }"
+                              @click="select_pmt(parcela_customizado, 4)"
+                            >
+                              {{ this.currency(parcela_customizado) }}
+                            </button>
+                          </div>
+                        </td>
+
+                        <td>
+                          <div class="d-grid gap-2">
+                            <button
+                              class="btn btn-lg btn-desk-filtro"
+                              type="button"
+                              @click="ranquear_customizado()"
+                            >
+                              <span class="rf_texto_btn">Ranquear</span>
+                            </button>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="d-grid gap-2">
+                            <button
+                              class="btn btn-lg btn-desk-filtro"
+                              data-bs-toggle="modal"
+                              data-bs-target="#ModalGerarMenu"
+                              :disabled="habilitar_gerar_menu"
+                              @click="limpar_financiamento"
+                            >
+                              <span class="rf_texto_btn">Gerar Menu</span>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="row g-2 p-2">
+                    <div class="col">
+                      <div class="form-floating">
+                        <textarea
+                          v-model="observacao"
+                          class="form-control rf_bg_form rf_texto"
+                          style="height: 110px"
+                        ></textarea>
+                        <label class="rf_texto">Observações</label>
+                      </div>
                     </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <!--Primeira Linha-->
-                <tr>
-                  <td>
-                    <div class="d-grid gap-2">
-                      <button
-                        type="button"
-                        class="btn btn-lg btn-desk-filtro rf_texto_btn"
-                        :class="{ active: pmtSelected === 1 }"
-                        @click="select_pmt(parcela_ouro, 1)"
-                      >
-                        {{ this.currency(parcela_ouro) }}
-                      </button>
+                  </div>
+                </div>
+                <!--Quadro Customizado-->
+                <div class="col-6">
+                  <div class="card card-customizado col">
+                    <i class="bi bi-gem card-texto-vendas-customizado">
+                      Pacote Customizado</i
+                    >
+                    <!--Acessórios-->
+                    <div class="row">
+                      <div class="col mt-3"><strong>Acessórios</strong></div>
+                      <div class="col-1">
+                        <ul class="nav nav-item justify-content-end">
+                          <li class="nav-item dropdown">
+                            <button
+                              class="btn-card-customizado"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="true"
+                            >
+                              <i class="bi bi-eye"></i>
+                            </button>
+                            <ul
+                              class="btn-kits-customizado dropdown-menu dropdown-menu-end"
+                            >
+                              <!-- Conteúdo do dropdown -->
+                              <li
+                                class="nav-item"
+                                v-for="item in itens_kit_acessorios_bronze"
+                                :key="item.id"
+                              >
+                                <strong
+                                  ><i class="bi bi-check2-circle p-2">
+                                    {{ item.descricao }}</i
+                                  ></strong
+                                >
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                  </td>
-                  <td>
-                    <div class="d-grid gap-2">
-                      <button
-                        type="button"
-                        class="btn btn-lg btn-desk-filtro rf_texto_btn"
-                        :class="{ active: pmtSelected === 2 }"
-                        @click="select_pmt(parcela_prata, 2)"
-                      >
-                        {{ this.currency(parcela_prata) }}
-                      </button>
+                    <!--Revisão-->
+                    <div class="row">
+                      <div class="col mt-3">
+                        <strong>Revisão pré-paga</strong>
+                      </div>
+                      <div class="col-1">
+                        <ul class="nav nav-item justify-content-end">
+                          <li class="nav-item dropdown">
+                            <button
+                              class="btn-card-customizado"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="true"
+                            >
+                              <i class="bi bi-eye"></i>
+                            </button>
+                            <ul
+                              class="btn-kits-customizado dropdown-menu dropdown-menu-end"
+                            >
+                              <!-- Conteúdo do dropdown -->
+                              <li
+                                class="nav-item"
+                                v-for="item in itens_kit_revisoes_bronze"
+                                :key="item.id"
+                              >
+                                <strong
+                                  ><i class="bi bi-check2-circle p-2">
+                                    {{ item.descricao }}</i
+                                  ></strong
+                                >
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                  </td>
-                  <td>
-                    <div class="d-grid gap-2">
-                      <button
-                        type="button"
-                        class="btn btn-lg btn-desk-filtro rf_texto_btn"
-                        :class="{ active: pmtSelected === 3 }"
-                        @click="select_pmt(parcela_bronze, 3)"
-                      >
-                        {{ this.currency(parcela_bronze) }}
-                      </button>
+                    <!--Seguros-->
+                    <div class="row">
+                      <div class="col mt-3"><strong>Seguros</strong></div>
+                      <div class="col-1">
+                        <ul class="nav nav-item justify-content-end">
+                          <li class="nav-item dropdown">
+                            <button
+                              class="btn-card-customizado"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="true"
+                            >
+                              <i class="bi bi-eye"></i>
+                            </button>
+                            <ul
+                              class="btn-kits-customizado dropdown-menu dropdown-menu-end"
+                            >
+                              <!-- Conteúdo do dropdown -->
+                              <li
+                                class="nav-item"
+                                v-for="item in itens_kit_seguros_bronze"
+                                :key="item.id"
+                              >
+                                <strong
+                                  ><i class="bi bi-check2-circle p-2">
+                                    {{ item.descricao }}</i
+                                  ></strong
+                                >
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                  </td>
-              
-                  <td>
-                    <div class="d-grid gap-2">          
+                    <!--Valor-->
+                    <div class="txt-card-valor"><strong>Valor</strong></div>
+                    <div class="valor-card-customizado">
+                      <strong>{{
+                        this.currency(this.valor_pacote_customizado)
+                      }}</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div v-if="desabilitar_customizacao">
+            <div class="card card-vendas">
+              <div class="row g-2 p-2">
+                <div class="card-title gy-4">
+                  <i class="bi bi-journal-text fs-5 icone_filtro"
+                    ><span class="texto_filtro"
+                      ><strong>Informações F&I</strong></span
+                    ></i
+                  >
+                </div>
+              </div>
+              <div class="row g-2 p-2">
+                <div class="col">
+                  <div class="form-floating">
+                    <input
+                      type="text"
+                      disabled
+                      class="form-control rf_bg_form rf_texto"
+                      v-model="valor_financiar"
+                    />
+                    <label class="rf_texto">Valor a Financiar</label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-floating">
+                    <input
+                      type="text"
+                      disabled
+                      class="form-control rf_bg_form rf_texto"
+                      v-model="valor_pacote_selecionado"
+                    />
+                    <label class="rf_texto">Valor Pacote</label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-floating">
+                    <input
+                      type="text"
+                      disabled
+                      class="form-control rf_bg_form rf_texto"
+                      v-model="total_financiamento_selecionado"
+                    />
+                    <label class="rf_texto">Total Financiamento</label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-floating">
+                    <input
+                      type="text"
+                      disabled
+                      class="form-control rf_bg_form rf_texto"
+                      v-model="valor_parcela_selecionada"
+                    />
+                    <label class="rf_texto">Valor Parcela</label>
+                  </div>
+                </div>
+              </div>
+              <table class="table rf_texto">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 10%" class="rf_texto_tabela">
+                      Pacote Ouro
+                    </th>
+                    <th scope="col" style="width: 10%" class="rf_texto_tabela">
+                      Pacote Prata
+                    </th>
+                    <th scope="col" style="width: 10%" class="rf_texto_tabela">
+                      Pacote Bronze
+                    </th>
+
+                    <!--Parcela 1-->
+                    <th scope="col" style="width: 5%" class="rf_texto_tabela">
+                      <div class="form-floating">
+                        <select
+                          class="form-select rf_bg_form rf_texto"
+                          v-model="parcela"
+                        >
+                          <option
+                            v-for="item in itens_financiamento"
+                            :value="item.value"
+                            :key="item.value"
+                          >
+                            {{ item.value }}
+                          </option>
+                        </select>
+                        <label for="valid_empresa" class="rf_texto"
+                          >Parcela</label
+                        >
+                      </div>
+                    </th>
+                    <th scope="col" style="width: 5%" class="rf_texto_tabela">
+                      <div class="form-floating">
+                        <select
+                          class="form-select rf_bg_form rf_texto"
+                          v-model="metodo_pagamento"
+                        >
+                          <option
+                            v-for="item in metodo_pagamento_lista"
+                            :value="item.value"
+                            :key="item.value"
+                          >
+                            {{ item.descricao }}
+                          </option>
+                        </select>
+                        <label for="valid_empresa" class="rf_texto"
+                          >Pagamento
+                        </label>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!--Primeira Linha-->
+                  <tr>
+                    <td>
+                      <div class="d-grid gap-2">
+                        <button
+                          type="button"
+                          class="btn btn-lg btn-desk-filtro rf_texto_btn"
+                          :class="{ active: pmtSelected === 1 }"
+                          @click="select_pmt(parcela_ouro, 1)"
+                        >
+                          {{ this.currency(parcela_ouro) }}
+                        </button>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-grid gap-2">
+                        <button
+                          type="button"
+                          class="btn btn-lg btn-desk-filtro rf_texto_btn"
+                          :class="{ active: pmtSelected === 2 }"
+                          @click="select_pmt(parcela_prata, 2)"
+                        >
+                          {{ this.currency(parcela_prata) }}
+                        </button>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-grid gap-2">
+                        <button
+                          type="button"
+                          class="btn btn-lg btn-desk-filtro rf_texto_btn"
+                          :class="{ active: pmtSelected === 3 }"
+                          @click="select_pmt(parcela_bronze, 3)"
+                        >
+                          {{ this.currency(parcela_bronze) }}
+                        </button>
+                      </div>
+                    </td>
+
+                    <td>
+                      <div class="d-grid gap-2">
                         <button
                           class="btn btn-lg btn-desk-filtro"
                           type="button"
@@ -926,26 +1463,27 @@
                         >
                           <span class="rf_texto_btn">Ranquear</span>
                         </button>
-                     
-                    </div>
-                  </td>
-                  <td>
-                    <div class="d-grid gap-2">
-                      <button
-                        class="btn btn-lg btn-desk-filtro"
-                        data-bs-toggle="modal"
-                        data-bs-target="#ModalGerarMenu"
-                        :disabled = "habilitar_gerar_menu"
-                        @click="limpar_financiamento"
-                      >
-                        <span class="rf_texto_btn">Gerar Menu</span>
-                      </button>
-                    </div>
-                  </td>              
-                </tr>
-              </tbody>
-            </table>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-grid gap-2">
+                        <button
+                          class="btn btn-lg btn-desk-filtro"
+                          data-bs-toggle="modal"
+                          data-bs-target="#ModalGerarMenu"
+                          :disabled="habilitar_gerar_menu"
+                          @click="limpar_financiamento"
+                        >
+                          <span class="rf_texto_btn">Gerar Menu</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
+
           <!--Ranqueamento F&I Pacote Ouro-->
           <div v-if="quadro_ouro" class="card card-vendas">
             <div class="row g-2 p-2">
@@ -1449,7 +1987,7 @@
             />
           </div>
           <!--Ranqueamento F&I Pacote Customizado-->
-          <!-- <div v-if="quadro_customizado" class="card card-vendas">
+          <div v-if="quadro_customizado" class="card card-vendas">
             <div class="row g-2 p-2">
               <div class="card-title gy-4">
                 <i class="bi bi-journal-text fs-5 icone_filtro"
@@ -1646,15 +2184,90 @@
               :limit="pageSize_customizado"
               @change-page="handlePageChangeEntradaCustomizado"
             />
-          </div> -->
+          </div>
+       
+          <!-- Modal de confirmação Acessório -->
+          <div
+            class="modal"
+            id="confirmModal"
+            tabindex="-1"
+            aria-labelledby="confirmModalLabel"
+            aria-hidden="true"
+            data-bs-dismiss="false"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content card-container rf_texto">
+                <div class="modal-header">
+                  <div class="card-title gy-4">
+                    <i class="bi bi-tools fs-5 icone_kit"
+                      ><span class="texto_kit">Ajustar Preço Acessório</span></i
+                    >
+                  </div>
+                </div>
+                <div class="modal-body">
+                  <div class="row g-2 p-2">
+                    <div class="col-2">
+                      <div class="form-floating">
+                        <input
+                          type="text"
+                          class="form-control rf_bg_form rf_texto_desk"
+                          v-model="id_kit_acessorio"
+                          disabled
+                        />
+                        <label class="rf_texto_desk">Id</label>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-floating">
+                        <input
+                          type="text"
+                          class="form-control rf_bg_form rf_texto_desk"
+                          v-model="precoAjustadoAcessorio"
+                          @input="
+                            precoAjustadoAcessorio = formatarValor(
+                              precoAjustadoAcessorio
+                            )
+                          "
+                          required
+                        />
+                        <label class="rf_texto_desk">Preço Ajustado</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <div class="row">
+                    <div class="col-6">
+                      <button
+                        type="button"
+                        class="btn btn-lg btn-filtro"
+                        data-bs-dismiss="modal"
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                    <div class="col-6">
+                      <button
+                        type="button"
+                        class="btn btn-lg btn-filtro"
+                        data-bs-dismiss="modal"
+                        @click="confirmarAlteracao"
+                      >
+                        Confirmar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <div class="col-1">
             <button
               type="button"
               class="btn btn-lg btn-filtro"
-              
-              :disabled= habilitar_finalizar_venda
+              :disabled="habilitar_finalizar_venda"
               @click="fecharModalFinalizar"
             >
               Finalizar Venda
@@ -1664,8 +2277,7 @@
             <button
               type="button"
               class="btn btn-lg btn-filtro"
-           
-              :disabled = "habilitar_venda_perdida"
+              :disabled="habilitar_venda_perdida"
               @click="fecharModalPerdido"
             >
               Venda Perdida
@@ -1684,10 +2296,308 @@
         </div>
       </div>
     </div>
+
+    <!--Modais Customizado-->
+
+    <!--Modal Exclusão Acessório-->
+    <div
+      class="modal"
+      id="excluiModal"
+      tabindex="-1"
+      aria-labelledby="confirmModalLabel"
+      aria-hidden="true"
+      data-bs-dismiss="false"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content card-container rf_texto">
+          <div class="modal-header">
+            <div class="card-title gy-4">
+              <i class="bi bi-tools fs-5 icone_kit"
+                ><span class="texto_kit">Exclusão</span></i
+              >
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="row g-2 p-2">
+              <span class="texto_kit">Deseja remover o acessório do Kit?</span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="row">
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-filtro"
+                  data-bs-dismiss="modal"
+                >
+                  Cancelar
+                </button>
+              </div>
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-filtro"
+                  data-bs-dismiss="modal"
+                  @click="confirmarAlteracao"
+                >
+                  Confirmar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal de confirmação Seguro -->
+    <div
+      class="modal"
+      id="confirmModalSeguro"
+      tabindex="-1"
+      aria-labelledby="confirmModalLabel"
+      aria-hidden="true"
+      data-bs-dismiss="false"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content card-container rf_texto">
+          <div class="modal-header">
+            <div class="card-title gy-4">
+              <i class="bi bi-tools fs-5 icone_kit"
+                ><span class="texto_kit">Ajustar Preço Seguro</span></i
+              >
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="row g-2 p-2">
+              <div class="col-2">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control rf_bg_form rf_texto_desk"
+                    v-model="id_kit_seguro"
+                    disabled
+                  />
+                  <label class="rf_texto_desk">Id</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control rf_bg_form rf_texto_desk"
+                    v-model="precoAjustadoSeguro"
+                    @input="
+                      precoAjustadoSeguro = formatarValor(precoAjustadoSeguro)
+                    "
+                    required
+                  />
+                  <label class="rf_texto_desk">Preço Ajustado</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="row">
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-filtro"
+                  data-bs-dismiss="modal"
+                >
+                  Cancelar
+                </button>
+              </div>
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-filtro"
+                  data-bs-dismiss="modal"
+                  @click="confirmarAlteracaoSeguro"
+                >
+                  Confirmar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Modal Exclusão Seguro-->
+    <div
+      class="modal"
+      id="excluiModalSeguro"
+      tabindex="-1"
+      aria-labelledby="confirmModalLabel"
+      aria-hidden="true"
+      data-bs-dismiss="false"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content card-container rf_texto">
+          <div class="modal-header">
+            <div class="card-title gy-4">
+              <i class="bi bi-tools fs-5 icone_kit"
+                ><span class="texto_kit">Exclusão</span></i
+              >
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="row g-2 p-2">
+              <span class="texto_kit">Deseja remover o seguro do Kit?</span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="row">
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-filtro"
+                  data-bs-dismiss="modal"
+                >
+                  Cancelar
+                </button>
+              </div>
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-filtro"
+                  data-bs-dismiss="modal"
+                  @click="confirmarAlteracaoSeguro"
+                >
+                  Confirmar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal de confirmação Revisao -->
+    <div
+      class="modal"
+      id="confirmModalRevisao"
+      tabindex="-1"
+      aria-labelledby="confirmModalLabel"
+      aria-hidden="true"
+      data-bs-dismiss="false"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content card-container rf_texto">
+          <div class="modal-header">
+            <div class="card-title gy-4">
+              <i class="bi bi-tools fs-5 icone_kit"
+                ><span class="texto_kit">Ajustar Preço Revisão</span></i
+              >
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="row g-2 p-2">
+              <div class="col-2">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control rf_bg_form rf_texto_desk"
+                    v-model="id_kit_seguro"
+                    disabled
+                  />
+                  <label class="rf_texto_desk">Id</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control rf_bg_form rf_texto_desk"
+                    v-model="precoAjustadoRevisao"
+                    @input="
+                      precoAjustadoRevisao = formatarValor(precoAjustadoRevisao)
+                    "
+                    required
+                  />
+                  <label class="rf_texto_desk">Preço Ajustado</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="row">
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-filtro"
+                  data-bs-dismiss="modal"
+                >
+                  Cancelar
+                </button>
+              </div>
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-filtro"
+                  data-bs-dismiss="modal"
+                  @click="confirmarAlteracaoRevisao"
+                >
+                  Confirmar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Modal Exclusão Revisão-->
+    <div
+      class="modal"
+      id="excluiModalRevisao"
+      tabindex="-1"
+      aria-labelledby="confirmModalLabel"
+      aria-hidden="true"
+      data-bs-dismiss="false"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content card-container rf_texto">
+          <div class="modal-header">
+            <div class="card-title gy-4">
+              <i class="bi bi-tools fs-5 icone_kit"
+                ><span class="texto_kit">Exclusão</span></i
+              >
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="row g-2 p-2">
+              <span class="texto_kit">Deseja remover a revisão do Kit?</span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="row">
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-filtro"
+                  data-bs-dismiss="modal"
+                >
+                  Cancelar
+                </button>
+              </div>
+              <div class="col-6">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-filtro"
+                  data-bs-dismiss="modal"
+                  @click="confirmarAlteracaoRevisao"
+                >
+                  Confirmar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
     <div v-if="abrir_modal">
       <Message :msg="msg" v-show="msg" />
     </div>
-  
   </div>
   <!--Modal Gerar Menu-->
   <div
@@ -1709,599 +2619,841 @@
         </div>
         <div class="modal-body">
           <div class="mt-3 rf_texto_pdf" ref="contentToPrint">
-      
-               <div class="row">
+            <div class="row">
+              <div class="col-6">
+                <a class="navbar-brand logo">
+                  <img
+                    src="../../assets/logo.png"
+                    alt="Bootstrap"
+                    width="100"
+                    height="30"
+                  />
+                </a>
+              </div>
+              <div class="col-6" style="text-align: right">
+                <a class="navbar-brand logo_cliente">
+                  <img
+                    src="../../assets/logo.png"
+                    alt="Bootstrap"
+                    height="30"
+                  />
+                </a>
+              </div>
+            </div>
+            <!--Dados do Veículo-->
+            <div class="card card-vendas">
+              <div class="row g-2 p-2">
+                <div class="col-12">
+                  <i class="bi bi-car-front fs-5 icone_filtro_menu"
+                    ><span class="texto_filtro_menu"
+                      ><strong>Dados do Veículo</strong></span
+                    ></i
+                  >
+                </div>
+                <div class="col-2">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu">Marca</label>
+                    <span class="rf_texto_menu">{{ marca }}</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu">Modelo</label>
+                    <span class="rf_texto_menu">{{ modelo }}</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu">Cor</label>
+                    <span class="rf_texto_menu">{{ cor }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu">Placa</label>
+                    <span class="rf_texto_menu">{{ placa }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu">Chassi</label>
+                    <span class="rf_texto_menu">{{ chassi }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu">Ano Fabricação</label>
+                    <span class="rf_texto_menu">{{ ano_fabricacao }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu">Ano Modelo</label>
+                    <span class="rf_texto_menu">{{ ano_modelo }}</span>
+                  </div>
+                </div>
+              </div>
+              <!--Dados do Financiamento-->
+
+              <div class="row g-2 p-2">
                 <div class="col-6">
-                  <a class="navbar-brand logo">
-                    <img
-                      src="../../assets/logo.png"
-                      alt="Bootstrap"
-                      width="100"
-                      height="30"
-                    />
-                  </a>
+                  <i class="bi bi-journal-bookmark-fill fs-5 icone_filtro_menu"
+                    ><span class="texto_filtro_menu"
+                      ><strong>Dados do Financiamento</strong></span
+                    ></i
+                  >
                 </div>
-                <div class="col-6" style="text-align: right;">
-                  <a class="navbar-brand logo_cliente ">
-                    <img
-                      src="../../assets/logo.png"
-                      alt="Bootstrap"
-                  
-                      height="30"
-                    
-                    />
-                  </a>
-                </div>          
-               </div> 
-               <!--Dados do Veículo-->    
-              <div class="card card-vendas">                
-                <div class="row g-2 p-2">
+                <div class="col-6">
+                  <i class="bi bi-journal-text fs-5 icone_filtro_menu"
+                    ><span class="texto_filtro_menu"
+                      ><strong>Dados do Atendimento</strong></span
+                    ></i
+                  >
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu">Total Entrada</label>
+                    <span class="rf_texto_menu">{{ total_entrada }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo">Total Financiamento</label>
+                    <span class="rf_texto_menu">{{
+                      total_financiamento_selecionado
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu">Valor Parcela</label>
+                    <span class="rf_texto_menu">{{
+                      valor_parcela_selecionada
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu">Qtd. Parcela</label>
+                    <span class="rf_texto_menu">{{
+                      qtd_parcela_selecionada
+                    }}</span>
+                  </div>
+                </div>
+
+                <div class="col-2">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu">Banco</label>
+                    <span class="rf_texto_menu">{{ banco_selecionado }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu">Nº Atendimento</label>
+                    <span class="rf_texto_menu">{{ n_atendimento }}</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu">Vendedor</label>
+                    <span class="rf_texto_menu">{{ vendedor }}</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu">Cliente</label>
+                    <span class="rf_texto_menu">{{ cliente }}</span>
+                  </div>
+                </div>
+              </div>
+              <!--Dados do Atendimento-->
+
+              <div class="row g-2 p-2">
+                <div class="col-7">
+                  <i class="bi bi-cash fs-5 icone_filtro_menu">
+                    <span class="texto_filtro_menu"
+                      ><strong>Forma de Pagamento - </strong
+                      >{{
+                        metodo_pagamento == "1"
+                          ? "Financiamento"
+                          : metodo_pagamento == "2"
+                          ? "À Vista"
+                          : ""
+                      }}</span
+                    >
+
+                    <span class="texto_filtro_menu"
+                      ><strong>Data - </strong
+                      >{{ new Date().toLocaleDateString("pt-BR") }}
+                      {{
+                        new Date().toLocaleTimeString("pt-BR", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })
+                      }}</span
+                    >
+                  </i>
+                </div>
+              </div>
+            </div>
+
+            <!--Quadro dos kits-->
+            <div class="row mt-2">
+              <!--Quadro Ouro-->
+              <div class="card card-ouro col">
+                <i class="bi bi-gem card-texto-vendas-ouro"> Pacote Ouro</i>
+                <!--Acessórios-->
+                <div class="row">
+                  <div class="col mt-3 barra_fei_menu_ouro">
+                    <span class="texto_centralizado"
+                      ><strong>Acessórios</strong></span
+                    >
+                  </div>
                   <div class="col-12">
-                    <i class="bi bi-car-front fs-5 icone_filtro_menu"
-                      ><span class="texto_filtro_menu"
-                        ><strong>Dados do Veículo</strong></span
-                      ></i
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
                     >
-                  </div>
-                  <div class="col-2">
-                    <div class="row rf_bg_form_menu"> 
-                        <label class="rf_texto_menu">Marca</label>                     
-                        <span class="rf_texto_menu">{{ marca }}</span>                  
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="row rf_bg_form_menu">                      
-                      <label class="rf_texto_menu">Modelo</label>
-                      <span class="rf_texto_menu">{{ modelo }}</span> 
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="row rf_bg_form_menu">                   
-                      <label class="rf_texto_menu">Cor</label>
-                      <span class="rf_texto_menu">{{ cor }}</span> 
-                    </div>
-                  </div>
-                  <div class="col-1">
-                    <div class="row rf_bg_form_menu">             
-                      <label class="rf_texto_menu">Placa</label>
-                      <span class="rf_texto_menu">{{ placa }}</span>
-                    </div>
-                  </div>
-                  <div class="col-1">
-                    <div class="row rf_bg_form_menu">                  
-                      <label class="rf_texto_menu">Chassi</label>
-                      <span class="rf_texto_menu">{{ chassi }}</span>
-                    </div>
-                  </div>
-                  <div class="col-1">
-                    <div class="row rf_bg_form_menu">              
-                      <label class="rf_texto_menu">Ano Fabricação</label>
-                      <span class="rf_texto_menu">{{ ano_fabricacao }}</span>
-                    </div>
-                  </div>
-                  <div class="col-1">
-                    <div class="row rf_bg_form_menu">               
-                      <label class="rf_texto_menu">Ano Modelo</label>
-                      <span class="rf_texto_menu">{{ ano_modelo }}</span>
-                    </div>
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_acessorios_ouro"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon">{{ item.descricao }}</span></i
+                          ></strong
+                        >
+                      </li>
+                    </ul>
                   </div>
                 </div>
-                 <!--Dados do Financiamento-->
-         
-                <div class="row g-2 p-2">
-                  <div class="col-6">
-                    <i class="bi bi-journal-bookmark-fill fs-5 icone_filtro_menu"
-                      ><span class="texto_filtro_menu"
-                        ><strong>Dados do Financiamento</strong></span
-                      ></i
+                <!--Revisão-->
+                <div class="row">
+                  <div class="col mt-3 barra_fei_menu_ouro">
+                    <span class="texto_centralizado"
+                      ><strong>Revisão pré-paga</strong></span
                     >
                   </div>
-                  <div class="col-6">
-                    <i class="bi bi-journal-text fs-5 icone_filtro_menu"
-                      ><span class="texto_filtro_menu"
-                        ><strong>Dados do Atendimento</strong></span
-                      ></i
+                  <div class="col-10">
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
                     >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_revisoes_ouro"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon">{{ item.descricao }}</span></i
+                          ></strong
+                        >
+                      </li>
+                    </ul>
                   </div>
-                  <div class="col-1">
-                    <div class="row rf_bg_form_menu">               
-                      <label class="rf_texto_menu">Total Entrada</label>
-                      <span class="rf_texto_menu">{{ total_entrada }}</span>
-                    </div>
-                  </div>
-                  <div class="col-1">
-                    <div class="row rf_bg_form_menu">                   
-                      <label class="rf_texto_menu">Total Financiamento</label>
-                      <span class="rf_texto_menu">{{ total_financiamento_selecionado }}</span>
-                    </div>
-                  </div>
-                  <div class="col-1">
-                    <div class="row rf_bg_form_menu">                 
-                      <label class="rf_texto_menu">Valor Parcela</label>
-                      <span class="rf_texto_menu">{{ valor_parcela_selecionada }}</span>
-                    </div>
-                  </div>
-                  <div class="col-1">
-                    <div class="row rf_bg_form_menu">                 
-                      <label class="rf_texto_menu">Qtd. Parcela</label>
-                      <span class="rf_texto_menu">{{ qtd_parcela_selecionada }}</span>
-                    </div>
-                  </div>
-            
-                  <div class="col-2">
-                    <div class="row rf_bg_form_menu">               
-                      <label class="rf_texto_menu">Banco</label>
-                      <span class="rf_texto_menu">{{ banco_selecionado }}</span>
-                    </div>
-                  </div>
-                  <div class="col-1">
-                      <div class="row rf_bg_form_menu">                     
-                        <label class="rf_texto_menu">Nº Atendimento</label>
-                        <span class="rf_texto_menu">{{ n_atendimento }}</span>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="row rf_bg_form_menu">                        
-                        <label class="rf_texto_menu">Vendedor</label>
-                        <span class="rf_texto_menu">{{ vendedor }}</span>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="row rf_bg_form_menu">               
-                        <label class="rf_texto_menu">Cliente</label>
-                        <span class="rf_texto_menu">{{ cliente }}</span>
-                      </div>
-                    </div>
                 </div>
-                 <!--Dados do Atendimento-->
-
-                 <div class="row g-2 p-2">
+                <!--Seguros-->
+                <div class="row">
+                  <div class="col mt-3 barra_fei_menu_ouro">
+                    <span class="texto_centralizado"
+                      ><strong>Seguros</strong></span
+                    >
+                  </div>
+                </div>
+                <div class="row">
                   <div class="col-7">
-                    <i class="bi bi-cash fs-5 icone_filtro_menu">
-                      <span class="texto_filtro_menu"><strong>Forma de Pagamento - </strong>{{ metodo_pagamento == '1' ? 'Financiamento' : metodo_pagamento == '2' ? 'À Vista' : '' }}</span>
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
+                    >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_seguros_ouro"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon">{{ item.descricao }}</span></i
+                          >
+                        </strong>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col position-relative">
+                    <img
+                      src="../../assets/economia_ouro.png"
+                      alt="Bootstrap"
+                      width="150"
+                      class="img-fluid"
+                    />
+                    <div class="texto-sobre-imagem">R$ 3.000,00</div>
+                  </div>
+                </div>
+                <!--Informações-->
+                <div class="row">
+                  <div class="col mt-3 barra_fei_menu_ouro texto_pacotes">
+                    <span class="esquerda"
+                      ><strong>Novo Valor da parcela:</strong></span
+                    >
+                    <span class="direita"><strong>R$ 1.500,00</strong></span>
+                  </div>
+                </div>
 
-                      <span class="texto_filtro_menu"><strong>Data - </strong>{{ new Date().toLocaleDateString('pt-BR') }} {{ new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) }}</span>
-
-                    </i>
+                <div class="col mt-3 rodape">
+                  <div class="col-4 esquerda">
+                    <span class="texto_tachado"
+                      ><strong class="tachado">De R$ 12.990,00</strong></span
+                    ><br />
+                    <span class="texto_oferta"
+                      ><strong> por R$ 9.990,00</strong></span
+                    >
                   </div>
-                </div>
-       
-              </div>
-              
-              <!--Quadro dos kits-->
-              <div class="row mt-2">
-                <!--Quadro Ouro-->
-                <div class="card card-ouro col">
-                  <i class="bi bi-gem card-texto-vendas-ouro"> Pacote Ouro</i>
-                  <!--Acessórios-->
-                  <div class="row">
-                    <div class="col mt-3 barra_fei_menu_ouro">
-                      <span class="texto_centralizado"><strong>Acessórios</strong></span>
-                    </div>
-                    <div class="col-12">
-                      <ul class="nav nav-item " style="display: block; clear: both;">
-                        <li
-                          class="nav-item " 
-                          v-for="item in itens_kit_acessorios_ouro"
-                          :key="item.id"
-                          
-                        >
-                          <strong
-                            ><i class="bi bi-check2-circle p-2">
-                              <span class="sp_icon">{{ item.descricao }}</span></i
-                            ></strong
-                          >
-                        </li>                
-                        </ul>
-                    </div>
+                  <div class="col-8 direita">
+                    <span class="texto_oferta"
+                      ><strong
+                        >Por apenas R$ 5,33 a mais na parcela por dia</strong
+                      ></span
+                    >
                   </div>
-                  <!--Revisão-->
-                  <div class="row">
-                    <div class="col mt-3 barra_fei_menu_ouro">
-                      <span class="texto_centralizado"><strong>Revisão pré-paga</strong></span>
-                    </div>
-                    <div class="col-10">
-                      <ul class="nav nav-item" style="display: block; clear: both;">
-                        <li
-                            class="nav-item"
-                            v-for="item in itens_kit_revisoes_ouro"
-                            :key="item.id"
-                          >
-                          <strong
-                            ><i class="bi bi-check2-circle p-2">
-                              <span class="sp_icon">{{ item.descricao }}</span></i
-                            ></strong
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <!--Seguros-->
-                  <div class="row">
-                    <div class="col mt-3 barra_fei_menu_ouro">
-                      <span class="texto_centralizado"><strong>Seguros</strong></span>
-                    </div>                   
-           
-                  </div>
-                  <div class="row">                    
-                    <div class="col-7">
-                      <ul class="nav nav-item" style="display: block; clear: both;">
-                        <li
-                          class="nav-item"
-                          v-for="item in itens_kit_seguros_ouro"
-                          :key="item.id"
-                        >
-                          <strong
-                            ><i class="bi bi-check2-circle p-2">
-                              <span class="sp_icon">{{ item.descricao }}</span></i>
-                           </strong
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="col position-relative">
-                      <img
-                        src="../../assets/economia_ouro.png"
-                        alt="Bootstrap"
-                        width="150"
-                        class="img-fluid"                       
-                      />
-                      <div class="texto-sobre-imagem">R$ 3.000,00</div>
-                    </div>
-                  </div>
-                    <!--Informações-->
-                  <div class="row">
-                    <div class="col mt-3 barra_fei_menu_ouro texto_pacotes">
-                      <span class="esquerda "><strong>Novo Valor da parcela:</strong></span>
-                      <span class="direita"><strong>R$ 1.500,00</strong></span>
-                    </div>                    
-                  </div>
-                  
-                    <div class="col mt-3 rodape">
-                      <div class="col-4 esquerda">
-                        <span class=" texto_tachado"><strong class="tachado">De R$ 12.990,00</strong></span><br>
-                        <span class="texto_oferta"><strong> por R$ 9.990,00</strong></span>
-                      </div>
-                      <div class="col-8 direita">
-                        <span class="texto_oferta"><strong>Por apenas R$ 5,33 a mais na parcela por dia</strong></span>
-                      </div>                      
-                    </div>   
-                      
-              
-
-            
-                </div>
-                <!--Quadro Prata-->
-                <div class="card card-prata col">
-                  <i class="bi bi-gem card-texto-vendas-prata"> Pacote Prata</i>
-                  <!--Acessórios-->
-                  <div class="row">
-                    <div class="col mt-3 barra_fei_menu_prata">
-                      <span class="texto_centralizado"><strong>Acessórios</strong></span>
-                    </div>
-                    <div class="col-12">
-                      <ul class="nav nav-item " style="display: block; clear: both;">
-                        <li
-                              class="nav-item"
-                              v-for="item in itens_kit_acessorios_prata"
-                              :key="item.id"
-                            >
-                              <strong
-                                ><i class="bi bi-check2-circle p-2">
-                                  <span class="sp_icon">{{ item.descricao }}</span></i
-                                ></strong
-                              >
-                            </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <!--Revisão-->
-                  <div class="row">
-                    <div class="col mt-3 barra_fei_menu_prata">
-                      <span class="texto_centralizado"><strong>Revisão pré-paga</strong></span>
-              
-                    </div>
-                    <div class="col-12">
-                      <ul class="nav nav-item " style="display: block; clear: both;">
-                        <li
-                              class="nav-item"
-                              v-for="item in itens_kit_revisoes_prata"
-                              :key="item.id"
-                            >
-                              <strong
-                                ><i class="bi bi-check2-circle p-2">
-                                  <span class="sp_icon">{{ item.descricao }}</span></i
-                                ></strong
-                              >
-                            </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <!--Seguros-->
-                  <div class="row">
-                    <div class="col mt-3 barra_fei_menu_prata">
-                      <span class="texto_centralizado"><strong>Seguros</strong></span>
-                    </div>                   
-           
-                  </div>
-                  <div class="row">                    
-                    <div class="col-7">
-                      <ul class="nav nav-item" style="display: block; clear: both;">
-                        <li
-                          class="nav-item"
-                          v-for="item in itens_kit_seguros_prata"
-                          :key="item.id"
-                        >
-                          <strong
-                            ><i class="bi bi-check2-circle p-2">
-                              <span class="sp_icon">{{ item.descricao }}</span></i>
-                           </strong
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="col position-relative">
-                      <img
-                        src="../../assets/economia_prata.png"
-                        alt="Bootstrap"
-                        width="150"
-                        class="img-fluid"                       
-                      />
-                      <div class="texto-sobre-imagem">R$ 2.000,00</div>
-                    </div>
-                  </div>
-                    <!--Informações-->
-                  <div class="row">
-                    <div class="col mt-3 barra_fei_menu_prata texto_pacotes">
-                      <span class="esquerda "><strong>Novo Valor da parcela:</strong></span>
-                      <span class="direita"><strong>R$ 1.500,00</strong></span>
-                    </div>                    
-                  </div>
-                  
-                    <div class="col mt-3 rodape">
-                      <div class="col-4 esquerda">
-                        <span class=" texto_tachado"><strong class="tachado">De R$ 12.990,00</strong></span><br>
-                        <span class="texto_oferta"><strong> por R$ 9.990,00</strong></span>
-                      </div>
-                      <div class="col-8 direita">
-                        <span class="texto_oferta"><strong>Por apenas R$ 5,33 a mais na parcela por dia</strong></span>
-                      </div>                      
-                    </div>  
-                </div>
-                <!--Quadro Bronze-->
-                <div class="card card-bronze col">
-                  <i class="bi bi-gem card-texto-vendas-bronze"> Pacote Bronze</i>
-                  <!--Acessórios-->
-                  <div class="row">
-                    <div class="col mt-3 barra_fei_menu_bronze">
-                      <span class="texto_centralizado"><strong>Acessórios</strong></span>
-                    </div>
-                    <div class="col-12">
-                      <ul class="nav nav-item " style="display: block; clear: both;">
-                        <li
-                              class="nav-item"
-                              v-for="item in itens_kit_acessorios_bronze"
-                              :key="item.id"
-                            >
-                              <strong
-                                ><i class="bi bi-check2-circle p-2">
-                                  <span class="sp_icon">{{ item.descricao }}</span></i
-                                ></strong
-                              >
-                            </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <!--Revisão-->
-                  <div class="row">
-                    <div class="col mt-3 barra_fei_menu_bronze">
-                      <span class="texto_centralizado"><strong>Revisão pré-paga</strong></span>
-              
-                    </div>
-                    <div class="col-12">
-                      <ul class="nav nav-item " style="display: block; clear: both;">
-                        <li
-                              class="nav-item"
-                              v-for="item in itens_kit_revisoes_bronze"
-                              :key="item.id"
-                            >
-                              <strong
-                                ><i class="bi bi-check2-circle p-2">
-                                  <span class="sp_icon">{{ item.descricao }}</span></i
-                                ></strong
-                              >
-                            </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <!--Seguros-->
-                  <div class="row">
-                    <div class="col mt-3 barra_fei_menu_bronze">
-                      <span class="texto_centralizado"><strong>Seguros</strong></span>
-                    </div>                   
-           
-                  </div>
-                  <div class="row">                    
-                    <div class="col-7">
-                      <ul class="nav nav-item" style="display: block; clear: both;">
-                        <li
-                          class="nav-item"
-                          v-for="item in itens_kit_seguros_bronze"
-                          :key="item.id"
-                        >
-                          <strong
-                            ><i class="bi bi-check2-circle p-2">
-                              <span class="sp_icon">{{ item.descricao }}</span></i>
-                           </strong
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="col position-relative">
-                      <img
-                        src="../../assets/economia_bronze.png"
-                        alt="Bootstrap"
-                        width="150"
-                        class="img-fluid"                       
-                      />
-                      <div class="texto-sobre-imagem">R$ 1.000,00</div>
-                    </div>
-                  </div>
-                    <!--Informações-->
-                  <div class="row">
-                    <div class="col mt-3 barra_fei_menu_bronze texto_pacotes">
-                      <span class="esquerda "><strong>Novo Valor da parcela:</strong></span>
-                      <span class="direita"><strong>R$ 1.500,00</strong></span>
-                    </div>                    
-                  </div>
-                  
-                    <div class="col mt-3 rodape">
-                      <div class="col-4 esquerda">
-                        <span class=" texto_tachado"><strong class="tachado">De R$ 12.990,00</strong></span><br>
-                        <span class="texto_oferta"><strong> por R$ 9.990,00</strong></span>
-                      </div>
-                      <div class="col-8 direita">
-                        <span class="texto_oferta"><strong>Por apenas R$ 5,33 a mais na parcela por dia</strong></span>
-                      </div>                      
-                    </div>  
-                </div>
-                <!--Quadro Customizado-->
-                <div class="card card-customizado col">
-                  <i class="bi bi-gem card-texto-vendas-customizado"> Pacote Customizado</i>
-                  <!--Acessórios-->
-                  <div class="row">
-                    <div class="col mt-3 barra_fei_menu_customizado">
-                      <span class="texto_centralizado"><strong>Acessórios</strong></span>
-                    </div>
-                    <div class="col-12">
-                      <ul class="nav nav-item " style="display: block; clear: both;">
-                        <li
-                              class="nav-item"
-                              v-for="item in itens_kit_acessorios_customizado"
-                              :key="item.id"
-                            >
-                              <strong
-                                ><i class="bi bi-check2-circle p-2">
-                                  <span class="sp_icon">{{ item.descricao }}</span></i
-                                ></strong
-                              >
-                            </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <!--Revisão-->
-                  <div class="row">
-                    <div class="col mt-3 barra_fei_menu_customizado">
-                      <span class="texto_centralizado"><strong>Revisão pré-paga</strong></span>
-              
-                    </div>
-                    <div class="col-12">
-                      <ul class="nav nav-item " style="display: block; clear: both;">
-                        <li
-                              class="nav-item"
-                              v-for="item in itens_kit_revisoes_customizado"
-                              :key="item.id"
-                            >
-                              <strong
-                                ><i class="bi bi-check2-circle p-2">
-                                  <span class="sp_icon">{{ item.descricao }}</span></i
-                                ></strong
-                              >
-                            </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <!--Seguros-->
-                  <div class="row">
-                    <div class="col mt-3 barra_fei_menu_customizado">
-                      <span class="texto_centralizado"><strong>Seguros</strong></span>
-                    </div>                   
-           
-                  </div>
-                  <div class="row">                    
-                    <div class="col-7">
-                      <ul class="nav nav-item" style="display: block; clear: both;">
-                        <li
-                          class="nav-item"
-                          v-for="item in itens_kit_seguros_customizado"
-                          :key="item.id"
-                        >
-                          <strong
-                            ><i class="bi bi-check2-circle p-2">
-                              <span class="sp_icon">{{ item.descricao }}</span></i>
-                           </strong
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="col position-relative">
-                      <img
-                        src="../../assets/economia_customizado.png"
-                        alt="Bootstrap"
-                        width="150"
-                        class="img-fluid"                       
-                      />
-                      <div class="texto-sobre-imagem"></div>
-                    </div>
-                  </div>
-                    <!--Informações-->
-                  <div class="row">
-                    <div class="col mt-3 barra_fei_menu_customizado texto_pacotes">
-                      <span class="esquerda "><strong></strong></span>
-                      <span class="direita"><strong></strong></span>
-                    </div>                    
-                  </div>
-                  
-                    <div class="col mt-3 rodape">
-                      <div class="col-4 esquerda">
-                        <span class=" texto_tachado"><strong class="tachado"></strong></span><br>
-                        <span class="texto_oferta"><strong> </strong></span>
-                      </div>
-                      <div class="col-8 direita">
-                        <span class="texto_oferta"><strong></strong></span>
-                      </div>                      
-                    </div>  
                 </div>
               </div>
-              <div class="row g-2 p-2 mt-4 ">
-                <div class="col-12 rodape">
-                 <span class="texto_cartao" ><strong>ou em até 6x no cartão</strong></span>
+              <!--Quadro Prata-->
+              <div class="card card-prata col">
+                <i class="bi bi-gem card-texto-vendas-prata"> Pacote Prata</i>
+                <!--Acessórios-->
+                <div class="row">
+                  <div class="col mt-3 barra_fei_menu_prata">
+                    <span class="texto_centralizado"
+                      ><strong>Acessórios</strong></span
+                    >
+                  </div>
+                  <div class="col-12">
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
+                    >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_acessorios_prata"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon">{{ item.descricao }}</span></i
+                          ></strong
+                        >
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-                <div class="col rf_assinatura">
-                  <span>Gerente: {{ vendedor }}</span>
+                <!--Revisão-->
+                <div class="row">
+                  <div class="col mt-3 barra_fei_menu_prata">
+                    <span class="texto_centralizado"
+                      ><strong>Revisão pré-paga</strong></span
+                    >
+                  </div>
+                  <div class="col-12">
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
+                    >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_revisoes_prata"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon">{{ item.descricao }}</span></i
+                          ></strong
+                        >
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-                <div class="col rf_assinatura">
-                  <span>Cliente: {{ cliente}}</span>
+                <!--Seguros-->
+                <div class="row">
+                  <div class="col mt-3 barra_fei_menu_prata">
+                    <span class="texto_centralizado"
+                      ><strong>Seguros</strong></span
+                    >
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-7">
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
+                    >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_seguros_prata"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon">{{ item.descricao }}</span></i
+                          >
+                        </strong>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col position-relative">
+                    <img
+                      src="../../assets/economia_prata.png"
+                      alt="Bootstrap"
+                      width="150"
+                      class="img-fluid"
+                    />
+                    <div class="texto-sobre-imagem">R$ 2.000,00</div>
+                  </div>
+                </div>
+                <!--Informações-->
+                <div class="row">
+                  <div class="col mt-3 barra_fei_menu_prata texto_pacotes">
+                    <span class="esquerda"
+                      ><strong>Novo Valor da parcela:</strong></span
+                    >
+                    <span class="direita"><strong>R$ 1.500,00</strong></span>
+                  </div>
+                </div>
+
+                <div class="col mt-3 rodape">
+                  <div class="col-4 esquerda">
+                    <span class="texto_tachado"
+                      ><strong class="tachado">De R$ 12.990,00</strong></span
+                    ><br />
+                    <span class="texto_oferta"
+                      ><strong> por R$ 9.990,00</strong></span
+                    >
+                  </div>
+                  <div class="col-8 direita">
+                    <span class="texto_oferta"
+                      ><strong
+                        >Por apenas R$ 5,33 a mais na parcela por dia</strong
+                      ></span
+                    >
+                  </div>
                 </div>
               </div>
-                    
+              <!--Quadro Bronze-->
+              <div class="card card-bronze col">
+                <i class="bi bi-gem card-texto-vendas-bronze"> Pacote Bronze</i>
+                <!--Acessórios-->
+                <div class="row">
+                  <div class="col mt-3 barra_fei_menu_bronze">
+                    <span class="texto_centralizado"
+                      ><strong>Acessórios</strong></span
+                    >
+                  </div>
+                  <div class="col-12">
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
+                    >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_acessorios_bronze"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon">{{ item.descricao }}</span></i
+                          ></strong
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Revisão-->
+                <div class="row">
+                  <div class="col mt-3 barra_fei_menu_bronze">
+                    <span class="texto_centralizado"
+                      ><strong>Revisão pré-paga</strong></span
+                    >
+                  </div>
+                  <div class="col-12">
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
+                    >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_revisoes_bronze"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon">{{ item.descricao }}</span></i
+                          ></strong
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Seguros-->
+                <div class="row">
+                  <div class="col mt-3 barra_fei_menu_bronze">
+                    <span class="texto_centralizado"
+                      ><strong>Seguros</strong></span
+                    >
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-7">
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
+                    >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_seguros_bronze"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon">{{ item.descricao }}</span></i
+                          >
+                        </strong>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col position-relative">
+                    <img
+                      src="../../assets/economia_bronze.png"
+                      alt="Bootstrap"
+                      width="150"
+                      class="img-fluid"
+                    />
+                    <div class="texto-sobre-imagem">R$ 1.000,00</div>
+                  </div>
+                </div>
+                <!--Informações-->
+                <div class="row">
+                  <div class="col mt-3 barra_fei_menu_bronze texto_pacotes">
+                    <span class="esquerda"
+                      ><strong>Novo Valor da parcela:</strong></span
+                    >
+                    <span class="direita"><strong>R$ 1.500,00</strong></span>
+                  </div>
+                </div>
+
+                <div class="col mt-3 rodape">
+                  <div class="col-4 esquerda">
+                    <span class="texto_tachado"
+                      ><strong class="tachado">De R$ 12.990,00</strong></span
+                    ><br />
+                    <span class="texto_oferta"
+                      ><strong> por R$ 9.990,00</strong></span
+                    >
+                  </div>
+                  <div class="col-8 direita">
+                    <span class="texto_oferta"
+                      ><strong
+                        >Por apenas R$ 5,33 a mais na parcela por dia</strong
+                      ></span
+                    >
+                  </div>
+                </div>
+              </div>
+              <!--Quadro Customizado-->
+              <div class="card card-customizado col">
+                <i class="bi bi-gem card-texto-vendas-customizado">
+                  Pacote Customizado</i
+                >
+                <!--Acessórios-->
+                <div class="row">
+                  <div class="col mt-3 barra_fei_menu_customizado">
+                    <span class="texto_centralizado"
+                      ><strong>Acessórios</strong></span
+                    >
+                  </div>
+                  <div class="col-12">
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
+                    >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_acessorios_customizado"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon">{{ item.descricao }}</span></i
+                          ></strong
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Revisão-->
+                <div class="row">
+                  <div class="col mt-3 barra_fei_menu_customizado">
+                    <span class="texto_centralizado"
+                      ><strong>Revisão pré-paga</strong></span
+                    >
+                  </div>
+                  <div class="col-12">
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
+                    >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_revisoes_customizado"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon">{{ item.descricao }}</span></i
+                          ></strong
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Seguros-->
+                <div class="row">
+                  <div class="col mt-3 barra_fei_menu_customizado">
+                    <span class="texto_centralizado"
+                      ><strong>Seguros</strong></span
+                    >
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-7">
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
+                    >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_seguros_customizado"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon">{{ item.descricao }}</span></i
+                          >
+                        </strong>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col position-relative">
+                    <img
+                      src="../../assets/economia_customizado.png"
+                      alt="Bootstrap"
+                      width="150"
+                      class="img-fluid"
+                    />
+                    <div class="texto-sobre-imagem"></div>
+                  </div>
+                </div>
+                <!--Informações-->
+                <div class="row">
+                  <div
+                    class="col mt-3 barra_fei_menu_customizado texto_pacotes"
+                  >
+                    <span class="esquerda"><strong></strong></span>
+                    <span class="direita"><strong></strong></span>
+                  </div>
+                </div>
+
+                <div class="col mt-3 rodape">
+                  <div class="col-4 esquerda">
+                    <span class="texto_tachado"
+                      ><strong class="tachado"></strong></span
+                    ><br />
+                    <span class="texto_oferta"><strong> </strong></span>
+                  </div>
+                  <div class="col-8 direita">
+                    <span class="texto_oferta"><strong></strong></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 p-2 mt-4">
+              <div class="col-12 rodape">
+                <span class="texto_cartao"
+                  ><strong>ou em até 6x no cartão</strong></span
+                >
+              </div>
+              <div class="col rf_assinatura">
+                <span>Gerente: {{ vendedor }}</span>
+              </div>
+              <div class="col rf_assinatura">
+                <span>Cliente: {{ cliente }}</span>
+              </div>
+            </div>
           </div>
         </div>
         <div class="modal-footer">
           <div class="col-1">
             <button
-            type="button"
-            class="btn btn-lg btn-filtro"
-            data-bs-target="#ModaProposta"
-            data-bs-toggle="modal"
-          >
-            Fechar
-          </button>
+              type="button"
+              class="btn btn-lg btn-filtro"
+              data-bs-target="#ModaProposta"
+              data-bs-toggle="modal"
+            >
+              Fechar
+            </button>
           </div>
           <div class="col-1">
-            <button
-            class="btn btn-lg btn-filtro"
-           
-            @click="generatePdf"
-          >
-            IMPRIMIR
-          </button>
+            <button class="btn btn-lg btn-filtro" @click="generatePdf">
+              IMPRIMIR
+            </button>
           </div>
-         
         </div>
       </div>
     </div>
   </div>
+     <!--Modal Acessórios-->
+     <div
+            class="modal fade"
+            id="ModalItensAcessorios"
+            aria-hidden="true"
+            aria-labelledby="exampleModalToggleLabel2"
+            tabindex="-1"
+            
+          >
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+              <div class="modal-content card-container rf_texto">
+                <div class="modal-header">
+                  <div class="card-title gy-4">
+                    <i class="bi bi-tools fs-5 icone_kit"
+                      ><span class="texto_kit">Itens Acessórios</span></i
+                    >
+                  </div>
+                  <button
+                    class="btn btn-modal btn-lg p-1 mt-1"
+                    type="button"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    Sair
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="">
+                    <div class="card">
+                      <div class="row g-2 p-2">
+                        <div class="card-title gy-4">
+                          <i class="bi bi-funnel fs-5 icone_filtro"
+                            ><span class="texto_filtro">Filtro</span></i
+                          >
+                        </div>
+                      </div>
+                      <div class="row g-2 p-2">
+                        <div class="col-2">
+                          <div class="form-floating">
+                            <input
+                              type="text"
+                              class="form-control rf_bg_form rf_texto_desk"
+                              v-model="filtroCodigo"
+                            />
+                            <label class="rf_texto_desk">Código</label>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="form-floating">
+                            <input
+                              type="text"
+                              class="form-control rf_bg_form rf_text-desk"
+                              v-model="filtroDescricao"
+                            />
+                            <label class="rf_texto_desk">Descrição</label>
+                          </div>
+                        </div>
+
+                        <div class="col-1">
+                          <div class="form-floating">
+                            <select
+                              class="form-select rf_bg_form rf_texto_desk"
+                              v-model="pageSize"
+                              @change="handlePageSizeChange(pageSize)"
+                            >
+                              <option
+                                v-for="size in pageSizes"
+                                :key="size"
+                                :value="size"
+                              >
+                                {{ size }}
+                              </option>
+                            </select>
+                            <label class="rf_texto_desk">Itens pág.</label>
+                          </div>
+                        </div>
+                        <div class="col-2">
+                          <div class="form-floating">
+                            <button
+                              type="submit"
+                              class="btn btn-lg btn-filtro"
+                              @click="retrieveAcessorios"
+                            >
+                              <span class="rf_texto_btn">Pesquisar</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--Tabelas-->
+                  <div class="card g-2 p-2 mt-2">
+                    <table class="table rf_texto_desk">
+                      <thead>
+                        <tr>
+                          <th scope="col">Código</th>
+                          <th scope="col">Descrição</th>
+                          <th scope="col">Preço Final</th>
+                          <th scope="col">Ação</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          v-for="item in estoque_pecas"
+                          :key="item.id"
+                          class="table-linha"
+                        >
+                          <td>{{ item.codigo_mercadoria }}</td>
+                          <td>{{ item.descricao_mercadoria }}</td>
+                          <td>{{ this.currency(item.preco_final) }}</td>
+                          <td>
+                            <button
+                              class="dropdown-toggle-icon"
+                              @click="inserir_acessorio(item)"
+                            >
+                              <i class="bi bi-pencil-square"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <!-- <pagination
+                        v-if="estoque_pecas.length"
+                        :offset="totalPages"
+                        :total="totalItems"
+                        :limit="pageSize"
+                        @change-page="handlePageChange"
+                      /> -->
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    class="btn btn-primary"
+                    data-bs-target="#ModalFI"
+                    data-bs-toggle="modal"
+                  >
+                    Voltar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
   <RodapeVue />
 </template>
 <script>
@@ -2328,13 +3480,12 @@ export default {
   data() {
     return {
       modal_fi: false,
-      selectedFilter: "",   
+      selectedFilter: "",
       metodo_pagamento_lista: [
         { descricao: "Financiamento", value: 1 },
         { descricao: "Cartão Crédito", value: 2 },
         { descricao: "Depósito Bancário", value: 3 },
         { descricao: "Pix", value: 4 },
-        
       ],
       metodo_pagamento: "",
       vendas: [],
@@ -2352,9 +3503,9 @@ export default {
       abrir_modal: false,
 
       //Campos tabela Pos Venda Detalhada
-      valor_parcela_financiamento:"",
+      valor_parcela_financiamento: "",
       //Dados do atendimento
-      id_pos_venda_detalhada:"",
+      id_pos_venda_detalhada: "",
       id_pos_venda: "",
       n_atendimento: "",
       vendedor: "",
@@ -2377,7 +3528,7 @@ export default {
       retorno: "",
       coeficiente: "",
       banco: "",
-  
+
       //Dados kit Acessorio
       itens_kit_acessorios_ouro: [],
       total_preco_acessorios_ouro: "",
@@ -2443,7 +3594,8 @@ export default {
       habilitar_finalizar_venda: true,
       habilitar_venda_perdida: true,
       habilitar_gerar_menu: true,
-
+      habilitar_customizacao: false,
+      desabilitar_customizacao: true,
       //buscando Modelo
       modelo_codigo: "",
       modelo_descricao: "",
@@ -2463,10 +3615,8 @@ export default {
       pacoteSelecionadoPrata: null,
       pacoteSelecionadoBronze: null,
       pacoteSelecionadoCustomizado: null,
-      qtd_parcela_selecionada:null,
-      banco_selecionado:null,
-
-
+      qtd_parcela_selecionada: null,
+      banco_selecionado: null,
 
       itens_financiamento: [
         { value: 12 },
@@ -2491,10 +3641,10 @@ export default {
       id_coluna: "",
       incluir_acessorios: "",
 
-      kit_id_ouro:"", 
-      kit_id_prata:"",
-      kit_id_bronze:"",
-      kit_id_customizado:"", 
+      kit_id_ouro: "",
+      kit_id_prata: "",
+      kit_id_bronze: "",
+      kit_id_customizado: "",
 
       //Ouro
       parcelamento_ouro: [],
@@ -2517,6 +3667,8 @@ export default {
       totalItems_bronze: 0,
       pageSizes_bronze: [5, 10, 15, 35, 50, 100],
       pageSize_bronze: 5,
+
+      cadastro: false,
     };
   },
   computed: {
@@ -2553,139 +3705,142 @@ export default {
       this.company_id = decodedToken.company;
       this.user_log = user_log.id;
     },
-    rowSelect_ouro(idx,id_taxa, pacote) {
-      if (pacote == 1) {       
-      console.log("Dados da parcela", pacote) 
+    rowSelect_ouro(idx, id_taxa, pacote) {
+      if (pacote == 1) {
+        console.log("Dados da parcela", pacote);
         this.pacoteSelecionadoOuro = id_taxa;
         this.select_parcela(id_taxa, pacote);
-      }     
+      }
     },
-    rowSelect_prata(idx,id_taxa, pacote) {
-      if (pacote == 2) {       
+    rowSelect_prata(idx, id_taxa, pacote) {
+      if (pacote == 2) {
         this.pacoteSelecionadoPrata = id_taxa;
         this.select_parcela(id_taxa, pacote);
       }
-
-    
     },
-    rowSelect_bronze(idx,id_taxa, pacote) {
-      if (pacote == 3) {     
-        this.pacoteSelecionadoBronze = id_taxa;  
+    rowSelect_bronze(idx, id_taxa, pacote) {
+      if (pacote == 3) {
+        this.pacoteSelecionadoBronze = id_taxa;
         this.select_parcela(id_taxa, pacote);
         this.habilitar();
       }
-     
     },
-    habilitar(){
-      if(this.parcela_ouro !=null || this.parcela_prata != null || this.parcela_bronze !=null) {
+    habilitar() {
+      if (
+        this.parcela_ouro != null ||
+        this.parcela_prata != null ||
+        this.parcela_bronze != null
+      ) {
         this.habilitar_gerar_menu = false;
       }
-      if(this.valor_financiar != 0 ){
+      if (this.valor_financiar != 0) {
         this.habilitar_finalizar_venda = false;
         this.habilitar_venda_perdida = false;
       }
     },
-    fecharModal(){
-     window.location.reload()
+    customizado() {
+      console.log("Iniciar pacote customizado", this.n_atendimento);
+      this.habilitar_customizacao = true;
+      this.desabilitar_customizacao = false;
+      this.cadastro = true;
     },
-    async fecharModalFinalizar(){
-      console.log("Entrei aqui teste")
+    fecharModal() {
+      window.location.reload();
+    },
+    async fecharModalFinalizar() {
+      console.log("Entrei aqui teste");
       const response = await fetch(
-          `${process.env.VUE_APP_API_URL}atualizar_pos_venda`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              n_atendimento: this.n_atendimento,
-              status: "F&I Finalizado",              
-            }),
-          }
-        );
-        console.log("resposta da atualização", response.statusText);
-        if(response.statusText == "OK") {
-          this.abrir_modal = true;
-          this.msg = "F&I finalizado com sucesso!";
-          setTimeout(() => {
-            this.abrir_modal = false;
-            setTimeout(() => window.location.reload(), 1000);
-          }, 4000);
+        `${process.env.VUE_APP_API_URL}atualizar_pos_venda`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            n_atendimento: this.n_atendimento,
+            status: "F&I Finalizado",
+          }),
         }
-
+      );
+      console.log("resposta da atualização", response.statusText);
+      if (response.statusText == "OK") {
+        this.abrir_modal = true;
+        this.msg = "F&I finalizado com sucesso!";
+        setTimeout(() => {
+          this.abrir_modal = false;
+          setTimeout(() => window.location.reload(), 1000);
+        }, 4000);
+      }
     },
-    async fecharModalPerdido(){
-      console.log("Entrei aqui perdida")
+    async fecharModalPerdido() {
+      console.log("Entrei aqui perdida");
       const response = await fetch(
-          `${process.env.VUE_APP_API_URL}atualizar_pos_venda`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              n_atendimento: this.n_atendimento,
-              status: "F&I Perdido",              
-            }),
-          }
-        );
-        console.log("resposta da atualização", response.statusText);
-        if(response.statusText == "OK") {
-          this.abrir_modal = true;
-          this.msg = "F&I finalizado como perdido!";
-          setTimeout(() => {
-            this.abrir_modal = false;
-            setTimeout(() => window.location.reload(), 1000);
-          }, 4000);
+        `${process.env.VUE_APP_API_URL}atualizar_pos_venda`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            n_atendimento: this.n_atendimento,
+            status: "F&I Perdido",
+          }),
         }
-
+      );
+      console.log("resposta da atualização", response.statusText);
+      if (response.statusText == "OK") {
+        this.abrir_modal = true;
+        this.msg = "F&I finalizado como perdido!";
+        setTimeout(() => {
+          this.abrir_modal = false;
+          setTimeout(() => window.location.reload(), 1000);
+        }, 4000);
+      }
     },
-    async buscar_parcelas_ranqueamento(id){
+    async buscar_parcelas_ranqueamento(id) {
       try {
-        console.log("Buscar parcelas")
+        console.log("Buscar parcelas");
         const pmts = await axios.get(
           `${process.env.VUE_APP_API_URL}pos_venda_detalhada_pmt`,
           {
             params: {
               id: id,
-            }
+            },
           }
         );
-        
+
         const id_menu_rank = pmts.data.rows[0].id;
         const parcelas = await axios.get(
           `${process.env.VUE_APP_API_URL}pos_venda_detalhada_rank`,
           {
             params: {
               id: id_menu_rank,
-            }
+            },
           }
         );
         console.log("Listando as parcelas ranqueada", parcelas);
-        for (var i = 0; i < parcelas.data.count; i++){
-          if(parcelas.data.rows[i].rankPacote == "Ouro"){
+        for (var i = 0; i < parcelas.data.count; i++) {
+          if (parcelas.data.rows[i].rankPacote == "Ouro") {
             this.parcela_ouro = parcelas.data.rows[i]["pmt"];
             console.log("Ouro", this.parcela_ouro);
           }
-          if(parcelas.data.rows[i]["rankPacote"] == "Prata"){
+          if (parcelas.data.rows[i]["rankPacote"] == "Prata") {
             this.parcela_prata = parcelas.data.rows[i]["pmt"];
           }
-          if(parcelas.data.rows[i]["rankPacote"] == "Bronze"){
+          if (parcelas.data.rows[i]["rankPacote"] == "Bronze") {
             this.parcela_bronze = parcelas.data.rows[i]["pmt"];
           }
-          if(parcelas.data.rows[i]["rankPacote"] == "Customizado"){
+          if (parcelas.data.rows[i]["rankPacote"] == "Customizado") {
             this.parcela_customizado = parcelas.data.rows[i]["pmt"];
           }
-          
         }
-        
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
     async select_parcela(id, pacote) {
       const id_taxa = id;
-      var pacoteSelecionado = pacote;   
+      var pacoteSelecionado = pacote;
 
       await fetch(`${process.env.VUE_APP_API_URL}taxas/menu_fei`, {
         method: "POST",
@@ -2698,7 +3853,6 @@ export default {
           entrada: this.total_entrada_fei,
           parcela: this.parcela,
           pacote: pacoteSelecionado,
-
         }),
       })
         .then((data) => {
@@ -2727,8 +3881,8 @@ export default {
             },
           }
         );
-        if (pos_venda.data == null || pos_venda.data == "") {         
-
+        console.log("Pos venda", pos_venda)
+        if (pos_venda.data == null || pos_venda.data == "") {
           const response = await fetch(
             `${process.env.VUE_APP_API_URL}pos_venda_detalhada`,
             {
@@ -2739,7 +3893,7 @@ export default {
               body: JSON.stringify({
                 pos_venda_id: id,
                 user_id: this.user_log,
-                status: 1
+                status: 1,
               }),
             }
           );
@@ -2749,28 +3903,38 @@ export default {
           }
 
           const data = await response.json();
-          if(data.success == true) {
+          this.id_pos_venda_detalhada = pos_venda.data.id;
+          if (data.success == true) {
             this.popular_formulario(item);
             this.descorbrir_modelo();
             this.buscar_parcelas_ranqueamento();
-           
-          }else{
+          } else {
             this.abrir_modal = true;
-            this.msg = "Houve um erro abrir esse atendimento, entre em contato  com o suporte.";
-            setTimeout(() => (this.abrir_modal = false), window.location.reload(), 4000);
+            this.msg =
+              "Houve um erro abrir esse atendimento, entre em contato  com o suporte.";
+            setTimeout(
+              () => (this.abrir_modal = false),
+              window.location.reload(),
+              4000
+            );
           }
           console.log(data);
         } else {
           console.log("Existem registros", pos_venda.data.id);
           this.popular_formulario(item);
-          this.descorbrir_modelo();       
-          this.id_pos_venda_detalhada = pos_venda.data.id;         
+          this.descorbrir_modelo();
+          this.id_pos_venda_detalhada = pos_venda.data.id;
         }
         this.buscar_parcelas_ranqueamento(this.id_pos_venda_detalhada);
       } catch (error) {
         this.abrir_modal = true;
-          this.msg = "Houve um erro abrir esse atendimento, entre em contato  com o suporte.";
-          setTimeout(() => (this.abrir_modal = false), window.location.reload(), 4000);
+        this.msg =
+          "Houve um erro abrir esse atendimento, entre em contato  com o suporte.";
+        // setTimeout(
+        //   () => (this.abrir_modal = false),
+        //   window.location.reload(),
+        //   4000
+        // );
       }
     },
     currency(number) {
@@ -2780,7 +3944,7 @@ export default {
         minimumFractionDigits: 2,
       }).format(number);
     },
-    async  descorbrir_modelo() {
+    async descorbrir_modelo() {
       try {
         const response = await axios.get(
           `${process.env.VUE_APP_API_URL}descobrir_kits_modelo`,
@@ -2895,7 +4059,7 @@ export default {
       );
       this.valor_parcela = this.currency(item.pos_venda_proposta.pmt_escolhido);
       this.qtd_parcela = item.pos_venda_proposta.qtd_meses;
-      if(this.qtd_parcela != null){
+      if (this.qtd_parcela != null) {
         this.metodo_pagamento = 1;
       }
       this.total_entrada_fei =
@@ -2948,7 +4112,6 @@ export default {
       this.pacote_ouro(this.kit_id_ouro);
       this.pacote_prata(this.kit_id_prata);
       this.pacote_bronze(this.kit_id_bronze);
-      
     },
     async pacote_ouro(kit_id_ouro) {
       //Acessórios Ouro ***************************************************************************
@@ -3276,10 +4439,14 @@ export default {
 
         console.log("Valor Pacotes");
 
-        this.valor_pacote_ouro_rank = this.valor_pacote_ouro + this.total_financiado_fei;
-        this.valor_pacote_prata_rank = this.valor_pacote_prata + this.total_financiado_fei;
-        this.valor_pacote_bronze_rank = this.valor_pacote_bronze + this.total_financiado_fei;
-        this.valor_pacote_customizado_rank = this.valor_pacote_customizado + this.total_financiado_fei;
+        this.valor_pacote_ouro_rank =
+          this.valor_pacote_ouro + this.total_financiado_fei;
+        this.valor_pacote_prata_rank =
+          this.valor_pacote_prata + this.total_financiado_fei;
+        this.valor_pacote_bronze_rank =
+          this.valor_pacote_bronze + this.total_financiado_fei;
+        this.valor_pacote_customizado_rank =
+          this.valor_pacote_customizado + this.total_financiado_fei;
 
         //Formatando os valores para o modal
         this.total_financiamento_ouro = this.currency(
@@ -3295,9 +4462,34 @@ export default {
           this.valor_pacote_customizado_rank
         );
 
-        console.log("ouro",this.valor_pacote_ouro_rank);
-        console.log("bronze",this.valor_pacote_bronze_rank);
+        console.log("ouro", this.valor_pacote_ouro_rank);
+        console.log("bronze", this.valor_pacote_bronze_rank);
 
+        this.retrieveRanqueamento();
+      }
+    },
+    async ranquear_customizado() {
+      //Verificar se existem pacotes para realizar o ranqueamento
+      if (this.valor_pacote_customizado) {
+        console.log("Existem pacotes Customizado");
+        //Pergar os dados para calcular as taxas
+
+        this.id_coluna = 1;
+        this.incluir_acessorios = 0;
+
+        //Calcular as taxas
+
+        //Habilitar os modais
+        this.quadro_customizado = true;
+
+        console.log("Valor Pacotes");
+        this.valor_pacote_customizado_rank =
+          this.valor_pacote_customizado + this.total_financiado_fei;
+
+        //Formatando os valores para o modal
+        this.total_financiamento_customizado = this.currency(
+          this.valor_pacote_customizado_rank
+        );
         this.retrieveRanqueamento();
       }
     },
@@ -3327,6 +4519,40 @@ export default {
       }
       if (valor_pacote_bronze_rank) {
         params["financiamento_bronze"] = valor_pacote_bronze_rank;
+      }
+      if (valor_pacote_customizado_rank) {
+        params["financiamento_customizado"] = valor_pacote_customizado_rank;
+      }
+      if (parcela) {
+        params["parcela"] = parcela;
+      }
+      if (page) {
+        params["page"] = page - 1;
+      }
+      if (pageSize) {
+        params["size"] = pageSize;
+      }
+      if (n_atendimento) {
+        params["n_atendimento"] = n_atendimento;
+      }
+
+      if (company_id) {
+        params["empresa_id"] = company_id;
+      }
+      return params;
+    },
+    getRequestParamsTaxasCustomizado(
+      total_entrada_fei,
+      valor_pacote_customizado_rank,
+      parcela,
+      page,
+      pageSize,
+      n_atendimento,
+      company_id
+    ) {
+      let params = {};
+      if (total_entrada_fei) {
+        params["entrada"] = total_entrada_fei;
       }
       if (valor_pacote_customizado_rank) {
         params["financiamento_customizado"] = valor_pacote_customizado_rank;
@@ -3421,6 +4647,27 @@ export default {
           this.ranqueamento_entrada_customizado();
           //this.ranqueamento_entrada_2();
           //this.ranqueamento_entrada_3();
+        }
+      });
+    },
+    async retrieveRanqueamentoCustomizado() {
+      const params = this.getRequestParamsTaxasCustomizado(
+        this.total_entrada_fei,
+        this.total_financiamento_customizado,
+        this.parcela,
+        this.page,
+        this.pageSize,
+        this.n_atendimento,
+        this.company_id
+      );
+      console.log("Dados do Paramentro para calcular taxas", params);
+      /**Chama o método ranqueamento que cria as taxas na tabela tempTaxas e retorna um ok  */
+      userService.getTaxasFEI(params).then((response) => {
+        const cod = response;
+        console.log("Taxas encontradas", response);
+
+        if (cod.status == 200) {
+          this.ranqueamento_entrada_customizado();
         }
       });
     },
@@ -3669,14 +4916,12 @@ export default {
       this.valor_parcela_financiamento = value;
       this.pmtSelected = pacote;
       const id = this.id_pos_venda_detalhada;
-    
-
 
       //Ouro
       if (pacote == 1) {
         const kit_id = this.kit_id_ouro;
         const valor_financiamento = this.total_financiado_fei;
-        const valor_pacote =  this.valor_pacote_ouro;
+        const valor_pacote = this.valor_pacote_ouro;
 
         const valor_total_financiamento = valor_financiamento + valor_pacote;
         const valor_parcela_financiamento = this.valor_parcela_financiamento;
@@ -3686,10 +4931,21 @@ export default {
         //Preencher informações do F&I
         this.valor_financiar = this.currency(valor_financiamento);
         this.valor_pacote_selecionado = this.currency(valor_pacote);
-        this.total_financiamento_selecionado = this.currency(valor_total_financiamento);
-        this.valor_parcela_selecionada = this.currency(valor_parcela_financiamento);
+        this.total_financiamento_selecionado = this.currency(
+          valor_total_financiamento
+        );
+        this.valor_parcela_selecionada = this.currency(
+          valor_parcela_financiamento
+        );
 
-        console.log("Selecionando uma parcela", valor_financiamento, valor_pacote, valor_total_financiamento, valor_parcela_financiamento, kit_id)
+        console.log(
+          "Selecionando uma parcela",
+          valor_financiamento,
+          valor_pacote,
+          valor_total_financiamento,
+          valor_parcela_financiamento,
+          kit_id
+        );
         const response = await fetch(
           `${process.env.VUE_APP_API_URL}pos_venda_detalhada/${id}`,
           {
@@ -3702,24 +4958,27 @@ export default {
               kit_id: kit_id,
               valor_financiamento: this.currency(valor_financiamento),
               valor_pacote: this.currency(valor_pacote),
-              valor_total_financiamento: this.currency(valor_total_financiamento),
-              valor_parcela_financiamento: this.currency(valor_parcela_financiamento),
+              valor_total_financiamento: this.currency(
+                valor_total_financiamento
+              ),
+              valor_parcela_financiamento: this.currency(
+                valor_parcela_financiamento
+              ),
               tipo_pagamento_pacote: tipo_pagamento_pacote,
-              observacao: observacao
+              observacao: observacao,
             }),
           }
         );
         console.log("resposta da atualização", response.statusText);
-        if(response.statusText == "OK"){
+        if (response.statusText == "OK") {
           this.habilitar();
         }
-      
       }
       //Prata
       if (pacote == 2) {
         const kit_id = this.kit_id_prata;
         const valor_financiamento = this.total_financiado_fei;
-        const valor_pacote =  this.valor_pacote_prata;
+        const valor_pacote = this.valor_pacote_prata;
 
         const valor_total_financiamento = valor_financiamento + valor_pacote;
         const valor_parcela_financiamento = this.valor_parcela_financiamento;
@@ -3729,10 +4988,21 @@ export default {
         //Preencher informações do F&I
         this.valor_financiar = this.currency(valor_financiamento);
         this.valor_pacote_selecionado = this.currency(valor_pacote);
-        this.total_financiamento_selecionado = this.currency(valor_total_financiamento);
-        this.valor_parcela_selecionada = this.currency(valor_parcela_financiamento);
+        this.total_financiamento_selecionado = this.currency(
+          valor_total_financiamento
+        );
+        this.valor_parcela_selecionada = this.currency(
+          valor_parcela_financiamento
+        );
 
-        console.log("Selecionando uma parcela", valor_financiamento, valor_pacote, valor_total_financiamento, valor_parcela_financiamento, kit_id)
+        console.log(
+          "Selecionando uma parcela",
+          valor_financiamento,
+          valor_pacote,
+          valor_total_financiamento,
+          valor_parcela_financiamento,
+          kit_id
+        );
         const response = await fetch(
           `${process.env.VUE_APP_API_URL}pos_venda_detalhada/${id}`,
           {
@@ -3745,24 +5015,27 @@ export default {
               kit_id: kit_id,
               valor_financiamento: this.currency(valor_financiamento),
               valor_pacote: this.currency(valor_pacote),
-              valor_total_financiamento: this.currency(valor_total_financiamento),
-              valor_parcela_financiamento: this.currency(valor_parcela_financiamento),
+              valor_total_financiamento: this.currency(
+                valor_total_financiamento
+              ),
+              valor_parcela_financiamento: this.currency(
+                valor_parcela_financiamento
+              ),
               tipo_pagamento_pacote: tipo_pagamento_pacote,
-              observacao: observacao
+              observacao: observacao,
             }),
           }
         );
         console.log("resposta da atualização", response.statusText);
-        if(response.statusText == "OK"){
+        if (response.statusText == "OK") {
           this.habilitar();
         }
-      
       }
-       //Bronze
-       if (pacote == 3) {
+      //Bronze
+      if (pacote == 3) {
         const kit_id = this.kit_id_bronze;
         const valor_financiamento = this.total_financiado_fei;
-        const valor_pacote =  this.valor_pacote_bronze;
+        const valor_pacote = this.valor_pacote_bronze;
 
         const valor_total_financiamento = valor_financiamento + valor_pacote;
         const valor_parcela_financiamento = this.valor_parcela_financiamento;
@@ -3772,10 +5045,21 @@ export default {
         //Preencher informações do F&I
         this.valor_financiar = this.currency(valor_financiamento);
         this.valor_pacote_selecionado = this.currency(valor_pacote);
-        this.total_financiamento_selecionado = this.currency(valor_total_financiamento);
-        this.valor_parcela_selecionada = this.currency(valor_parcela_financiamento);
+        this.total_financiamento_selecionado = this.currency(
+          valor_total_financiamento
+        );
+        this.valor_parcela_selecionada = this.currency(
+          valor_parcela_financiamento
+        );
 
-        console.log("Selecionando uma parcela", valor_financiamento, valor_pacote, valor_total_financiamento, valor_parcela_financiamento, kit_id)
+        console.log(
+          "Selecionando uma parcela",
+          valor_financiamento,
+          valor_pacote,
+          valor_total_financiamento,
+          valor_parcela_financiamento,
+          kit_id
+        );
         const response = await fetch(
           `${process.env.VUE_APP_API_URL}pos_venda_detalhada/${id}`,
           {
@@ -3788,24 +5072,23 @@ export default {
               kit_id: kit_id,
               valor_financiamento: this.currency(valor_financiamento),
               valor_pacote: this.currency(valor_pacote),
-              valor_total_financiamento: this.currency(valor_total_financiamento),
-              valor_parcela_financiamento: this.currency(valor_parcela_financiamento),
+              valor_total_financiamento: this.currency(
+                valor_total_financiamento
+              ),
+              valor_parcela_financiamento: this.currency(
+                valor_parcela_financiamento
+              ),
               tipo_pagamento_pacote: tipo_pagamento_pacote,
-              observacao: observacao
+              observacao: observacao,
             }),
           }
         );
         console.log("resposta da atualização", response.statusText);
-        if(response.statusText == "OK"){
+        if (response.statusText == "OK") {
           this.habilitar();
         }
-      
       }
-
     },
- 
-
-  
   },
 };
 </script>

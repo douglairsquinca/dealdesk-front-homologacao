@@ -538,7 +538,7 @@ export default {
             if (resposta.StatusOk === 200) {
               this.abrir_modal = true;
               this.msg = resposta.message;
-              setTimeout(() => (this.abrir_modal = false), 4000);
+              setTimeout(() => (this.abrir_modal = false), 1000);
               this.retrieveEstoqueAssociacao();
               
             }
@@ -549,7 +549,7 @@ export default {
         if (error.response && error.response.status === 500) {
           this.abrir_modal = true;
           this.msg = "Erro interno do servidor";
-          setTimeout(() => (this.abrir_modal = false), 4000);
+          setTimeout(() => (this.abrir_modal = false), 1000);
         } else {
           // Tratar outros erros
           this.abrir_modal = true;
@@ -557,7 +557,7 @@ export default {
           (this.msg = "Status:"), error.response.status;
           (this.msg = "Dados:"), error.response.data;
           (this.msg = "Cabeçalhos:"), error.response.headers;
-          setTimeout(() => (this.abrir_modal = false), 4000);
+          setTimeout(() => (this.abrir_modal = false), 1000);
         }
       }
     },
@@ -594,7 +594,7 @@ export default {
             this.checando_acessorio = false;
             this.abrir_modal = true;
             this.msg = response.data.message;
-            setTimeout(() => (this.abrir_modal = false), 4000);
+            setTimeout(() => (this.abrir_modal = false), 1000);
           }
           this.descricao_peca = response.data.descricao_mercadoria;
           console.log("Acessorio", response.data);
@@ -603,7 +603,7 @@ export default {
           if (error.response.status == 400) {
             this.abrir_modal = true;
             this.msg = error.response.data.message;
-            setTimeout(() => (this.abrir_modal = false), 4000);
+            setTimeout(() => (this.abrir_modal = false), 1000);
           }
         });
     },
@@ -625,7 +625,7 @@ export default {
             if (error.response.status == 400) {
               this.abrir_modal = true;
               this.msg = error.response.data.message;
-              setTimeout(() => (this.abrir_modal = false), 4000);
+              setTimeout(() => (this.abrir_modal = false), 1000);
             }
           });
       } else {
@@ -645,7 +645,7 @@ export default {
           if (error.response.status == 400) {
             this.abrir_modal = true;
             this.msg = error.response.data.message;
-            setTimeout(() => (this.abrir_modal = false), 4000);
+            setTimeout(() => (this.abrir_modal = false), 1000);
           }
         });
     },
@@ -673,7 +673,7 @@ export default {
           if (error.response.status == 400) {
             this.abrir_modal = true;
             this.msg = error.response.data.message;
-            setTimeout(() => (this.abrir_modal = false), 4000);
+            setTimeout(() => (this.abrir_modal = false), 1000);
           }
         });
     },
@@ -703,7 +703,7 @@ export default {
           if (error.response.status == 400) {
             this.abrir_modal = true;
             this.msg = error.response.data.message;
-            setTimeout(() => (this.abrir_modal = false), 4000);
+            setTimeout(() => (this.abrir_modal = false), 1000);
           }
         });
     },
@@ -732,13 +732,13 @@ export default {
           if (resposta.StatusOk == 200) {
             this.abrir_modal = true;
             this.msg = resposta.message;
-            setTimeout(() => (this.abrir_modal = false), 4000);
+            setTimeout(() => (this.abrir_modal = false), 1000);
             window.location.reload();
           }
           if (resposta.StatusOk == 204) {
             this.abrir_modal = true;
             this.msg = resposta.message;
-            setTimeout(() => (this.abrir_modal = false), 4000);
+            setTimeout(() => (this.abrir_modal = false), 1000);
             //this.resetForm();
             // this.retrieveCliente();
           }
@@ -755,7 +755,7 @@ export default {
             this.msg =
               "Houve um erro desconhecido. Por favor, contate o administrador.";
           }
-          setTimeout(() => (this.abrir_modal = false), 4000);
+          setTimeout(() => (this.abrir_modal = false), 1000);
         });
     },
   },

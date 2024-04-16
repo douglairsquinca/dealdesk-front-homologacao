@@ -49,7 +49,9 @@ import CadastroSeguros from "./views/f&i/cadastro_seguro.vue";
 import CadastroKits from "./views/f&i/cadastro_kits.vue";
 import KitsModelo from "./views/f&i/kits_modelo.vue";
 import VendasF$I from "./views/f&i/vendas_f&i.vue";
+import VendasFeiDetalhe from "./views/f&i/vendas_fei_detalhe.vue";
 import ModeloFeiEstoque from "./views/f&i/modelo_fei_estoque.vue";
+import VendasCustomizado from "./views/f&i/vendas_customizado.vue";
 
 // lazy-loaded
 const Profile = () => import("./components/Profile.vue")
@@ -462,6 +464,18 @@ const routes = [
     path:"/f&i/vendas_f&i",
     name:"vendas_f&i",
     component: VendasF$I,
+    beforeEnter: [vendedorFEI],
+  },
+  { 
+    path:"/f&i/vendas_customizado/:id",
+    name:"vendas_customizado",
+    component: VendasCustomizado,
+    beforeEnter: [vendedorFEI],
+  },
+  {
+    path:"/f&i/vendas_fei_detalhe/:id",
+    name:"vendas_detalhe",
+    component: VendasFeiDetalhe,
     beforeEnter: [vendedorFEI],
   },
 

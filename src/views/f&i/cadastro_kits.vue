@@ -1394,7 +1394,7 @@ export default {
             if (resposta.StatusOk === 200) {
               this.abrir_modal = true;
               this.msg = resposta.message;
-              setTimeout(() => (this.abrir_modal = false), 4000);
+              setTimeout(() => (this.abrir_modal = false), 1000);
               this.retrievekitsAcessoriosItens();
             }
           });
@@ -1404,7 +1404,7 @@ export default {
         if (error.response && error.response.status === 500) {
           this.abrir_modal = true;
           this.msg = "Erro interno do servidor";
-          setTimeout(() => (this.abrir_modal = false), 4000);
+          setTimeout(() => (this.abrir_modal = false), 1000);
         } else {
           // Tratar outros erros
           this.abrir_modal = true;
@@ -1412,7 +1412,7 @@ export default {
           (this.msg = "Status:"), error.response.status;
           (this.msg = "Dados:"), error.response.data;
           (this.msg = "Cabeçalhos:"), error.response.headers;
-          setTimeout(() => (this.abrir_modal = false), 4000);
+          setTimeout(() => (this.abrir_modal = false), 1000);
         }
       }
     },
@@ -1444,7 +1444,7 @@ export default {
             if (resposta.StatusOk === 200) {
               this.abrir_modal = true;
               this.msg = resposta.message;
-              setTimeout(() => (this.abrir_modal = false), 4000);
+              setTimeout(() => (this.abrir_modal = false), 1000);
               this.retrievekitsSegurosItens();
             }
           });
@@ -1454,7 +1454,7 @@ export default {
         if (error.response && error.response.status === 500) {
           this.abrir_modal = true;
           this.msg = "Erro interno do servidor";
-          setTimeout(() => (this.abrir_modal = false), 4000);
+          setTimeout(() => (this.abrir_modal = false), 1000);
         } else {
           // Tratar outros erros
           this.abrir_modal = true;
@@ -1462,7 +1462,7 @@ export default {
           (this.msg = "Status:"), error.response.status;
           (this.msg = "Dados:"), error.response.data;
           (this.msg = "Cabeçalhos:"), error.response.headers;
-          setTimeout(() => (this.abrir_modal = false), 4000);
+          setTimeout(() => (this.abrir_modal = false), 1000);
         }
       }
     },
@@ -1497,7 +1497,7 @@ export default {
             if (resposta.StatusOk === 200) {
               this.abrir_modal = true;
               this.msg = resposta.message;
-              setTimeout(() => (this.abrir_modal = false), 4000);
+              setTimeout(() => (this.abrir_modal = false), 1000);
               this.retrievekitsRevisoesItens();
             }
           });
@@ -1507,7 +1507,7 @@ export default {
         if (error.response && error.response.status === 500) {
           this.abrir_modal = true;
           this.msg = "Erro interno do servidor";
-          setTimeout(() => (this.abrir_modal = false), 4000);
+          setTimeout(() => (this.abrir_modal = false), 1000);
         } else {
           // Tratar outros erros
           this.abrir_modal = true;
@@ -1515,7 +1515,7 @@ export default {
           (this.msg = "Status:"), error.response.status;
           (this.msg = "Dados:"), error.response.data;
           (this.msg = "Cabeçalhos:"), error.response.headers;
-          setTimeout(() => (this.abrir_modal = false), 4000);
+          setTimeout(() => (this.abrir_modal = false), 1000);
         }
       }
     },
@@ -1577,13 +1577,13 @@ export default {
           if (resposta.StatusOk == 200) {
             this.abrir_modal = true;
             this.msg = resposta.message;
-            setTimeout(() => (this.abrir_modal = false), 4000);
+            setTimeout(() => (this.abrir_modal = false), 1000);
             this.retrievekitsAcessoriosItens();
           }
           if (resposta.StatusOk == 204) {
             this.abrir_modal = true;
             this.msg = resposta.message;
-            setTimeout(() => (this.abrir_modal = false), 4000);
+            setTimeout(() => (this.abrir_modal = false), 1000);
             //this.resetForm();
             // this.retrieveCliente();
           }
@@ -1600,7 +1600,7 @@ export default {
             this.msg =
               "Houve um erro desconhecido. Por favor, contate o administrador.";
           }
-          setTimeout(() => (this.abrir_modal = false), 4000);
+          setTimeout(() => (this.abrir_modal = false), 1000);
         });
     },
     async inserir_seguro(item) {
@@ -1635,14 +1635,14 @@ export default {
           if (resposta.StatusOk == 200) {
             this.abrir_modal = true;
             this.msg = resposta.message;
-            setTimeout(() => (this.abrir_modal = false), 4000);
+            setTimeout(() => (this.abrir_modal = false), 1000);
 
             this.retrievekitsSegurosItens();
           }
           if (resposta.StatusOk == 204) {
             this.abrir_modal = true;
             this.msg = resposta.message;
-            setTimeout(() => (this.abrir_modal = false), 4000);
+            setTimeout(() => (this.abrir_modal = false), 1000);
             //this.resetForm();
             // this.retrieveCliente();
           }
@@ -1659,7 +1659,7 @@ export default {
             this.msg =
               "Houve um erro desconhecido. Por favor, contate o administrador.";
           }
-          setTimeout(() => (this.abrir_modal = false), 4000);
+          setTimeout(() => (this.abrir_modal = false), 1000);
         });
     },
     async inserir_revisoes(item) {
@@ -1694,14 +1694,14 @@ export default {
           if (resposta.StatusOk == 200) {
             this.abrir_modal = true;
             this.msg = resposta.message;
-            setTimeout(() => (this.abrir_modal = false), 4000);
+            setTimeout(() => (this.abrir_modal = false), 1000);
 
             this.retrievekitsRevisoesItens();
           }
           if (resposta.StatusOk == 204) {
             this.abrir_modal = true;
             this.msg = resposta.message;
-            setTimeout(() => (this.abrir_modal = false), 4000);
+            setTimeout(() => (this.abrir_modal = false), 1000);
             //this.resetForm();
             // this.retrieveCliente();
           }
@@ -1718,7 +1718,7 @@ export default {
             this.msg =
               "Houve um erro desconhecido. Por favor, contate o administrador.";
           }
-          setTimeout(() => (this.abrir_modal = false), 4000);
+          setTimeout(() => (this.abrir_modal = false), 1000);
         });
     },
 
@@ -1747,7 +1747,7 @@ export default {
         if (error.response.status == 400) {
           this.abrir_modal = true;
           this.msg = error.response.data.message;
-          setTimeout(() => (this.abrir_modal = false), 4000);
+          setTimeout(() => (this.abrir_modal = false), 1000);
         }
       }
     },
@@ -1767,7 +1767,7 @@ export default {
           if (error.response.status == 400) {
             this.abrir_modal = true;
             this.msg = error.response.data.message;
-            setTimeout(() => (this.abrir_modal = false), 4000);
+            setTimeout(() => (this.abrir_modal = false), 1000);
           }
         });
     },
@@ -1790,7 +1790,7 @@ export default {
           if (error.response.status == 400) {
             this.abrir_modal = true;
             this.msg = error.response.data.message;
-            setTimeout(() => (this.abrir_modal = false), 4000);
+            setTimeout(() => (this.abrir_modal = false), 1000);
           }
         });
     },
@@ -1822,7 +1822,7 @@ export default {
         if (error.response.status == 400) {
           this.abrir_modal = true;
           this.msg = error.response.data.message;
-          setTimeout(() => (this.abrir_modal = false), 4000);
+          setTimeout(() => (this.abrir_modal = false), 1000);
         }
       }
     },
@@ -1853,7 +1853,7 @@ export default {
         if (error.response.status == 400) {
           this.abrir_modal = true;
           this.msg = error.response.data.message;
-          setTimeout(() => (this.abrir_modal = false), 4000);
+          setTimeout(() => (this.abrir_modal = false), 1000);
         }
       }
     },
@@ -1884,7 +1884,7 @@ export default {
         if (error.response.status == 400) {
           this.abrir_modal = true;
           this.msg = error.response.data.message;
-          setTimeout(() => (this.abrir_modal = false), 4000);
+          setTimeout(() => (this.abrir_modal = false), 1000);
         }
       }
     },
@@ -1918,7 +1918,7 @@ export default {
         if (error.response.status == 400) {
           this.abrir_modal = true;
           this.msg = error.response.data.message;
-          setTimeout(() => (this.abrir_modal = false), 4000);
+          setTimeout(() => (this.abrir_modal = false), 1000);
         }
       }
     },
@@ -1950,7 +1950,7 @@ export default {
         if (error.response.status == 400) {
           this.abrir_modal = true;
           this.msg = error.response.data.message;
-          setTimeout(() => (this.abrir_modal = false), 4000);
+          setTimeout(() => (this.abrir_modal = false), 1000);
         }
       }
     },
@@ -1982,7 +1982,7 @@ export default {
         if (error.response.status == 400) {
           this.abrir_modal = true;
           this.msg = error.response.data.message;
-          setTimeout(() => (this.abrir_modal = false), 4000);
+          setTimeout(() => (this.abrir_modal = false), 1000);
         }
       }
     },
@@ -2008,17 +2008,18 @@ export default {
           return data.json();
         })
         .then((resposta) => {
-          console.log("Resposta", resposta);
-          if (resposta.StatusOk == 200) {
+          console.log("Resposta", resposta.status);
+          if (resposta.status == 1) {
             this.abrir_modal = true;
-            this.msg = resposta.message;
-            setTimeout(() => (this.abrir_modal = false), 4000);
-            window.location.reload();
+            this.msg = "Kit cadastrado com sucesso!";
+            setTimeout(() => (this.abrir_modal = false), 1000);
+            this.retrieveKitsModelo();
+            //window.location.reload();
           }
           if (resposta.StatusOk == 204) {
             this.abrir_modal = true;
             this.msg = resposta.message;
-            setTimeout(() => (this.abrir_modal = false), 4000);
+            setTimeout(() => (this.abrir_modal = false), 1000);
             //this.resetForm();
             // this.retrieveCliente();
           }
@@ -2035,7 +2036,7 @@ export default {
             this.msg =
               "Houve um erro desconhecido. Por favor, contate o administrador.";
           }
-          setTimeout(() => (this.abrir_modal = false), 4000);
+          setTimeout(() => (this.abrir_modal = false), 1000);
         });
     },
   },

@@ -29,7 +29,7 @@
     --bs-btn-color: #B92E2E;
     --bs-btn-bg: #fff;
     --bs-btn-border-color: #212529;
-    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-color: #690909;
     --bs-btn-hover-bg: ;
     --bs-btn-hover-border-color: #e9116b;
     --bs-btn-focus-shadow-rgb: 66, 70, 73;
@@ -41,7 +41,7 @@
   }
 
   .btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active {
-    color: var(--bs-btn-active-color);
+    color: #fff;
     background-color: #440000;
     border-color: var(--bs-btn-active-border-color);
 }
@@ -327,6 +327,7 @@
 
   .btn-filtro:hover {
     background-color: #922020;
+    color: #fff;
     /* Cor de fundo quando o mouse passa sobre o botão */
   }
 
@@ -492,15 +493,18 @@
   .card-texto-vendas-ouro{
     font-size: 30px;
     color:  #DBB000;
+    margin-left: 10px;
    
   }
   .card-texto-vendas-prata{
     font-size: 30px;
     color: #2A2B3F;
+    margin-left: 10px;
   }
   .card-texto-vendas-bronze{
     font-size: 30px;
     color:  #CD7F32;
+    margin-left: 10px;
   }
   .card-texto-vendas-customizado{
     font-size: 30px;
@@ -508,11 +512,22 @@
   }
   .card-ouro {
     margin-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 10px;
+    /* border: solid; */
+    /* border-color: #DBB000; */
+    background-color: #ffffff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+
+  }
+  .card-ouro_index {
+    margin-top: 10px;
     margin-left: 10px;
-    padding-bottom: 20px;
+    margin-right: 10px;
+    padding-bottom: 10px;
     border-radius: 10px;
     border: solid;
-    border-color: #DBB000;
+    border-color: #DBB000; 
     background-color: #ffffff;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
 
@@ -520,11 +535,22 @@
 
   .card-prata {
     margin-top: 10px;
-    margin-left: 10px;
+
     padding-bottom: 20px;
     border-radius: 10px;
+    /* border: solid;
+    border-color: #9E9D99; */
+    background-color: #ffffff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+
+  }
+  .card-prata_index {
+    margin-top: 10px;   
+    margin-right: 10px;
+    padding-bottom: 10px;
+    border-radius: 10px;
     border: solid;
-    border-color: #9E9D99;
+    border-color: #9E9D99; 
     background-color: #ffffff;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
 
@@ -532,21 +558,44 @@
 
   .card-bronze {
     margin-top: 10px;
-    margin-left: 10px;
     padding-bottom: 20px;
     border-radius: 10px;
-    border: solid;
-    border-color: #CD7F32;
+    /* border: solid;
+    border-color: #CD7F32; */
     background-color: #ffffff;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
 
   }
+  .card-bronze_index {
+    margin-top: 10px;   
+    margin-right: 10px;
+    padding-bottom: 10px;
+    border-radius: 10px;
+    border: solid;
+    border-color: #CD7F32; 
+    background-color: #ffffff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
 
+  }
   .card-customizado {
     margin-top: 10px;
     margin-left: 10px;
     margin-right: 10px;
     padding-bottom: 20px;
+    padding-left: 10px;
+    border-radius: 10px;
+    border: solid;
+    border-color: #B92E2E;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+
+  }
+  .card-customizado_index {
+    margin-top: 10px;
+    
+    margin-right: 10px;
+    padding-bottom: 20px;
+    padding-left: 10px;
     border-radius: 10px;
     border: solid;
     border-color: #B92E2E;
@@ -855,8 +904,8 @@
   }
   /**Impressão Menu*/
   .barra_fei_menu_ouro{
-    background-color: #DBB000;
-    margin-bottom: 5px;
+    background-color: #DBB000; 
+      
     display: flex;
     justify-content: space-between;
   }
@@ -865,7 +914,7 @@
     margin: 0 auto;
     text-align: center;
     color: #fff;
-    font-size: 26px;
+    font-size: 18px;
   }
 
   .barra_fei_menu_prata{
@@ -879,7 +928,7 @@
     margin: 0 auto;
     text-align: center;
     color: #fff;
-    font-size: 26px;
+    font-size: 18px;
   }
 
   .barra_fei_menu_bronze{
@@ -893,7 +942,7 @@
     margin: 0 auto;
     text-align: center;
     color: #fff;
-    font-size: 26px;
+    font-size: 18px;
   }
   .barra_fei_menu_customizado{
     background-color: #B92E2E;
@@ -917,11 +966,13 @@
   .esquerda {
     text-align: left;
     padding-left: 10px;
+    font-size: 12px;
+    font-style: italic;
   }
 
   .direita {
       text-align: right;      
-      padding-right: 10px;
+      padding-right: 20px;
   }
   .rodape{
     display: flex;
@@ -931,19 +982,20 @@
     text-decoration: line-through;
   }
   .texto_tachado{
-    font-size: 10px;
+    font-size: 12px;
   }
   .texto_oferta{
-    font-size: 12px;
+    font-size: 14px;
+    font-style: italic;
   }
   .economia{
     border: solid 1px ;
   }
   .texto_pacotes{
     font-size: 18px;
-    color: #fff;
+
   }
-  .economia{
+  .economia{ 
     height: 150px;
     width: 150px;
     /* Impede que a imagem de fundo se repita */
@@ -951,7 +1003,7 @@
   .texto-sobre-imagem {
     position: absolute;
     top: 50%;
-    left: 50%;
+    left: 45%;
     transform: translate(-50%, -50%);
     color: #1b1b1b; /* Cor do texto */
     font-size: 15px; /* Tamanho da fonte */
@@ -988,10 +1040,115 @@
     font-size: 12px;
     text-transform: uppercase;
   }
+  .rf_texto_menu_titulo {
+    font-style: normal;
+    color: #2A2B3F !important;
+    font-size: 12px;
+    
+  }
   .rf_bg_form_menu {
     border: #2A2B3F solid 1px ;
     border-radius: 8px;
     margin-left: 2px;
     margin-right: 2px;
     height: 40px;
+  }
+  .btn-customizado{
+    margin-top: 15px;;
+    height: 250px;
+    font-size: 36px;
+  }
+  .divisoria_ouro_acessorio{
+    border: solid 3px #DBB000;
+    border-radius: 10px;
+    margin-left: 20px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .divisoria_ouro_revisao{
+    border: solid 3px #DBB000;
+    border-radius: 10px;
+    margin-left: 5px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .divisoria_ouro_seguros{
+    border: solid 3px #DBB000;
+    border-radius: 10px;
+    margin-left: 5px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .divisoria_ouro_info{
+    border: solid 3px #DBB000;
+    border-radius: 10px;
+    margin-left: 5px;
+    margin-right: 20px;
+    padding-right: 0;
+    padding-left: 0;
+    
+  }
+
+  .divisoria_prata_acessorio{
+    border: solid 3px #9E9D99;
+
+    border-radius: 10px;
+    margin-left: 20px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .divisoria_prata_revisao{
+    border: solid 3px #9E9D99;
+    border-radius: 10px;
+    margin-left: 5px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .divisoria_prata_seguros{
+    border: solid 3px #9E9D99;
+    border-radius: 10px;
+    margin-left: 5px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .divisoria_prata_info{
+    border: solid 3px  #9E9D99;
+    border-radius: 10px;
+    margin-left: 5px;
+    margin-right: 20px;
+    padding-right: 0;
+    padding-left: 0;
+    
+  }
+
+  .divisoria_bronze_acessorio{
+    border: solid 3px  #CD7F32;
+
+    border-radius: 10px;
+    margin-left: 20px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .divisoria_bronze_revisao{
+    border: solid 3px  #CD7F32;
+    border-radius: 10px;
+    margin-left: 5px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .divisoria_bronze_seguros{
+    border: solid 3px  #CD7F32;
+    border-radius: 10px;
+    margin-left: 5px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .divisoria_bronze_info{
+    border: solid 3px   #CD7F32;
+    border-radius: 10px;
+    margin-left: 5px;
+    margin-right: 20px;
+    padding-right: 0;
+    padding-left: 0;
+    
   }
