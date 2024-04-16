@@ -7,59 +7,7 @@
   />
 
   <!--Bloco do Filtro-->
-  <div class="card card-filtro">
-    <div
-      class="modal fade"
-      id="exampleModalToggle"
-      aria-hidden="true"
-      aria-labelledby="exampleModalToggleLabel"
-      tabindex="-1"
-    >
- 
-    </div>
-    <div
-      class="modal fade"
-      id="exampleModalToggle2"
-      aria-hidden="true"
-      aria-labelledby="exampleModalToggleLabel2"
-      tabindex="-1"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
-              Modal 2
-            </h1>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            Hide this modal and show the first with the button below.
-          </div>
-          <div class="modal-footer">
-            <button
-              class="btn btn-primary"
-              data-bs-target="#exampleModalToggle"
-              data-bs-toggle="modal"
-            >
-              Back to first
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <button
-      class="btn btn-primary"
-      data-bs-target="#exampleModalToggle"
-      data-bs-toggle="modal"
-    >
-      Open first modal
-    </button>
-
+  <div class="card card-filtro"> 
     <div class="row g-2 p-2">
       <div class="card-title gy-4">
         <i class="bi bi-funnel fs-5 icone_filtro"
