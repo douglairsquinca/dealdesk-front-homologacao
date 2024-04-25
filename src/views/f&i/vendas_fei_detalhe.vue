@@ -572,7 +572,6 @@
                   class="btn btn-lg btn-filtro"
                   data-bs-target="#ModalItensAcessorios"
                   data-bs-toggle="modal"
-                  :disabled="this.habilitar_kits"
                   @click="habilitar_itens_acessorio"
                 >
                   <span class="rf_texto_btn">Incluir</span><br />
@@ -592,7 +591,6 @@
                   data-bs-target="#ModalItensSeguros"
                   data-bs-toggle="modal"
                   type="button"
-                  :disabled="this.habilitar_kits"
                   @click="habilitar_itens_seguros"
                 >
                   <span class="rf_texto_btn">Incluir</span><br />
@@ -612,7 +610,6 @@
                   data-bs-target="#ModalItensRevisao"
                   data-bs-toggle="modal"
                   type="button"
-                  :disabled="this.habilitar_kits"
                   @click="habilitar_itens_revisao"
                 >
                   <span class="rf_texto_btn">Incluir</span><br />
@@ -634,10 +631,11 @@
       <table class="table rf_texto">
         <thead>
           <tr>
-            <th scope="col" style="width: 10%">Código</th>
             <th scope="col" style="width: 45%">Descrição</th>
-            <th scope="col" style="width: 10%">Preço</th>
-
+            <th scope="col" style="width: 10%">Preço Min.</th>
+            <th scope="col" style="width: 10%">Preço Sug.</th>
+            <th scope="col" style="width: 10%">Preço Desc.</th>
+            <th scope="col" style="width: 10%">% Desc</th>
             <th scope="col" style="width: 5%">Ação</th>
           </tr>
         </thead>
@@ -647,9 +645,16 @@
             :key="item.id"
             class="table-linha"
           >
-            <td>{{ item.codigo }}</td>
             <td>{{ item.descricao }}</td>
+            <td>{{ this.currency(item.preco_base) }}</td>
             <td>{{ this.currency(item.preco) }}</td>
+            <td>{{ this.currency(item.preco_desconto) }}</td>
+            <td>
+              {{
+                item.preco_desconto !== 0 ? this.calcular_percentagem(item) : 0
+              }}
+            </td>
+
             <td style="display: flex">
               <button
                 @click="exibirModalConfirmacao(item)"
@@ -663,7 +668,7 @@
                 class="dropdown-toggle-icon"
                 data-bs-target="#excluiModal"
                 data-bs-toggle="modal"
-                @click="remover_item_acessorio(item)"
+                @click="remover_item_customizado(item)"
               >
                 <i class="bi bi-trash3"></i>
               </button>
@@ -681,7 +686,6 @@
       <table class="table rf_texto">
         <thead>
           <tr>
-            <th scope="col" style="width: 10%">Código</th>
             <th scope="col" style="width: 45%">Descrição</th>
             <th scope="col" style="width: 10%">Preço</th>
             <th scope="col" style="width: 5%">Ação</th>
@@ -693,24 +697,15 @@
             :key="item.id"
             class="table-linha"
           >
-            <td>{{ item.codigo }}</td>
             <td>{{ item.descricao }}</td>
             <td>{{ this.currency(item.preco) }}</td>
 
             <td style="display: flex">
               <button
-                @click="exibirModalConfirmacaoSeguro(item)"
-                data-bs-target="#confirmModalSeguro"
-                data-bs-toggle="modal"
-                class="dropdown-toggle-icon p-1"
-              >
-                <i class="bi bi-pencil-square"></i>
-              </button>
-              <button
                 class="dropdown-toggle-icon"
                 data-bs-target="#excluiModalSeguro"
                 data-bs-toggle="modal"
-                @click="remover_item_seguro(item)"
+                @click="remover_item_customizado(item)"
               >
                 <i class="bi bi-trash3"></i>
               </button>
@@ -728,7 +723,6 @@
       <table class="table rf_texto">
         <thead>
           <tr>
-            <th scope="col" style="width: 10%">Código</th>
             <th scope="col" style="width: 45%">Descrição</th>
             <th scope="col" style="width: 10%">Preço</th>
             <th scope="col" style="width: 5%">Ação</th>
@@ -740,23 +734,14 @@
             :key="item.id"
             class="table-linha"
           >
-            <td>{{ item.codigo }}</td>
             <td>{{ item.descricao }}</td>
             <td>{{ this.currency(item.preco) }}</td>
             <td style="display: flex">
               <button
-                @click="exibirModalConfirmacaoRevisao(item)"
-                data-bs-target="#confirmModalRevisao"
-                data-bs-toggle="modal"
-                class="dropdown-toggle-icon p-1"
-              >
-                <i class="bi bi-pencil-square"></i>
-              </button>
-              <button
                 class="dropdown-toggle-icon"
                 data-bs-target="#excluiModalRevisao"
                 data-bs-toggle="modal"
-                @click="remover_item_revisao(item)"
+                @click="remover_item_customizado(item)"
               >
                 <i class="bi bi-trash3"></i>
               </button>
@@ -765,7 +750,7 @@
         </tbody>
       </table>
     </div>
-    <div class="card card-vendas g-2 p-2 mt-2">
+    <!-- <div class="card card-vendas g-2 p-2 mt-2">
       <table class="table rf_texto">
         <thead>
           <tr>
@@ -774,13 +759,13 @@
             </th>
             <th scope="col" style="width: 45%" class="rf_texto_tabela"></th>
             <th scope="col" style="width: 10%" class="rf_texto_tabela">
-              {{ this.currency(this.total_preco) }}
+              {{ this.currency(this.valor_pacote_customizado) }}
             </th>
             <th scope="col" style="width: 5%" class="rf_texto_tabela"></th>
           </tr>
         </thead>
       </table>
-    </div>
+    </div> -->
   </div>
   <div class="card-filtro" v-if="habilitar_customizacao">
     <!--Informação F&I-->
@@ -924,7 +909,10 @@
                     <button
                       class="btn btn-lg btn-desk-filtro"
                       type="button"
-                      @click="ranquear_customizado()"
+                      @click="verificar_ranqueamento_customizado()"
+                      :disabled="habilitar_ranquear_customizado"
+                      data-bs-target="#ModalRanqueamentoCustomizado"
+                      data-bs-toggle="modal"
                     >
                       <span class="rf_texto_btn">Ranquear</span>
                     </button>
@@ -935,9 +923,9 @@
                     <button
                       class="btn btn-lg btn-desk-filtro"
                       data-bs-toggle="modal"
-                      data-bs-target="#ModalGerarMenu"
+                      data-bs-target="#ModalGerarMenuCustomizado"
                       :disabled="habilitar_gerar_menu"
-                      @click="limpar_financiamento"
+                      @click="atualizarPacoteCustomizado"
                     >
                       <span class="rf_texto_btn">Gerar Menu</span>
                     </button>
@@ -984,7 +972,7 @@
                       <!-- Conteúdo do dropdown -->
                       <li
                         class="nav-item"
-                        v-for="item in itens_kit_acessorios_bronze"
+                        v-for="item in itens_kit_acessorios"
                         :key="item.id"
                       >
                         <strong
@@ -1019,7 +1007,7 @@
                       <!-- Conteúdo do dropdown -->
                       <li
                         class="nav-item"
-                        v-for="item in itens_kit_revisoes_bronze"
+                        v-for="item in itens_kit_revisoes"
                         :key="item.id"
                       >
                         <strong
@@ -1052,7 +1040,7 @@
                       <!-- Conteúdo do dropdown -->
                       <li
                         class="nav-item"
-                        v-for="item in itens_kit_seguros_bronze"
+                        v-for="item in itens_kit_seguros"
                         :key="item.id"
                       >
                         <strong
@@ -1078,7 +1066,7 @@
       </div>
     </div>
   </div>
-  <div v-if="quadro_customizado" class="card card-filtro card-vendas">
+  <!-- <div v-if="quadro_customizado" class="card card-filtro card-vendas">
     <div class="row g-2 p-2">
       <div class="card-title gy-4">
         <i class="bi bi-journal-text fs-5 icone_filtro"
@@ -1087,54 +1075,22 @@
           ></i
         >
       </div>
-    </div>
-    <div class="row g-2 p-2">
-      <div class="col">
-        <div class="form-floating">
-          <input
-            type="text"
-            class="form-control rf_bg_form rf_texto"
-            v-model="filtroPlaca"
-            @input="filtrarVeiculos"
-          />
-          <label class="rf_texto">Tabela Padrão</label>
-        </div>
-      </div>
-      <div class="col">
-        <div class="form-floating">
-          <input
-            type="text"
-            class="form-control rf_bg_form rf_texto"
-            v-model="filtroPlaca"
-            @input="filtrarVeiculos"
-          />
-          <label class="rf_texto">Utiliza SPF</label>
-        </div>
-      </div>
-      <div class="col">
-        <div class="form-floating">
-          <input
-            type="text"
-            class="form-control rf_bg_form rf_texto"
-            v-model="filtroPlaca"
-            @input="filtrarVeiculos"
-          />
-          <label class="rf_texto">Razão Social</label>
-        </div>
-      </div>
-      <div class="col">
-        <div class="form-floating">
-          <input
-            type="text"
-            class="form-control rf_bg_form rf_texto"
-            v-model="filtroPlaca"
-            @input="filtrarVeiculos"
-          />
-          <label class="rf_texto">Plano</label>
-        </div>
+      <div class="card-title gy-4">
+        <i class="bi bi-cash-coin fs-5 icone_filtro"
+          ><span class="texto_filtro"
+            >Valor de Entrada:
+            <strong>{{ total_entrada }}</strong>
+          </span></i
+        >
+        <i class="bi bi-cash-coin p-3 icone_filtro"
+          ><span class="texto_filtro"
+            >Valor Financiado:
+            <strong>{{ total_financiamento_customizado }}</strong>
+          </span></i
+        >
       </div>
     </div>
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center barra_fei">
       <div class="row">
         <div class="col">
           <button
@@ -1247,7 +1203,7 @@
                 : ''
             "
             @click="rowSelect_customizado(key, item.id, 4)"
-            v-for="(item, key) in parcelamento_customizado_custom"
+            v-for="(item, key) in parcelamento_customizado"
             :key="item.id"
           >
             <td>{{ item.financeira }}</td>
@@ -1268,13 +1224,418 @@
         </tbody>
       </table>
     </div>
-    <!-- <pagination
+    <pagination
       v-if="parcelamento_customizado.length"
-      :offset="totalPages_crustomizado"
+      :offset="totalPages_customizado"
       :total="totalItems_customizado"
       :limit="pageSize_customizado"
       @change-page="handlePageChangeEntradaCustomizado"
-    /> -->
+    />
+
+ 
+  </div> -->
+   <!-- Modal Ranqueamento Customizado-->
+  <div
+      class="modal fade"
+      id="ModalRanqueamentoCustomizado"
+      aria-hidden="true"
+      aria-labelledby="exampleModalToggleLabel2"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+        <div class="modal-content card-filtro rf_texto">
+          <div class="modal-header">
+            <div class="card-title gy-4">
+              <i class="bi bi-journal-text fs-5 icone_filtro"
+                ><span class="texto_filtro">
+                  <strong>Ranqueamento Pacote Customizado</strong></span
+                ></i
+              >
+            </div>
+            <button
+              class="btn btn-modal btn-lg p-1 mt-1"
+              type="button"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              Sair
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-2 p-2">
+              <div class="card-title gy-4">
+                <i class="bi bi-cash-coin fs-5 icone_filtro"
+                  ><span class="texto_filtro"
+                    >Valor de Entrada:
+                    <strong>{{ total_entrada }}</strong>
+                  </span></i
+                >
+                <i class="bi bi-cash-coin p-3 icone_filtro"
+                  ><span class="texto_filtro"
+                    >Valor Financiado:
+                    <strong>{{ total_financiamento_customizado }}</strong>
+                  </span></i
+                >
+              </div>
+            </div>
+            <div class="d-flex justify-content-center barra_fei">
+              <div class="row">
+                <div class="col">
+                  <button
+                    @click="sortTable('Financeira')"
+                    class="txt-table-vendas text-nowrap"
+                  >
+                    <strong>FINANCEIRA</strong>
+                  </button>
+                </div>
+                <div class="col">
+                  <button
+                    @click="sortTable('Plano')"
+                    class="txt-table-vendas text-nowrap"
+                  >
+                    <strong>PLANO</strong>
+                  </button>
+                </div>
+                <div class="col">
+                  <button
+                    @click="sortTable('Ret')"
+                    class="txt-table-vendas text-nowrap"
+                  >
+                    <strong>RET</strong>
+                  </button>
+                </div>
+                <div class="col">
+                  <button
+                    @click="sortTable('EntMin')"
+                    class="txt-table-vendas text-nowrap"
+                  >
+                    <strong>R$ ENT MIN</strong>
+                  </button>
+                </div>
+                <div class="col">
+                  <button
+                    @click="sortTable('EntPer')"
+                    class="txt-table-vendas text-nowrap"
+                  >
+                    <strong>% ENT MIN</strong>
+                  </button>
+                </div>
+                <div class="col">
+                  <button
+                    @click="sortTable('Pmt')"
+                    class="txt-table-vendas text-nowrap"
+                  >
+                    <strong>PMT</strong>
+                  </button>
+                </div>
+                <div class="col">
+                  <button
+                    @click="sortTable('Retorno')"
+                    class="txt-table-vendas text-nowrap"
+                  >
+                    <strong>RETORNO</strong>
+                  </button>
+                </div>
+                <div class="col">
+                  <button
+                    @click="sortTable('TacCob')"
+                    class="txt-table-vendas text-nowrap"
+                  >
+                    <strong>TAC COB</strong>
+                  </button>
+                </div>
+                <div class="col">
+                  <button
+                    @click="sortTable('TacDev')"
+                    class="txt-table-vendas text-nowrap"
+                  >
+                    <strong>TAC DEV</strong>
+                  </button>
+                </div>
+                <div class="col">
+                  <button
+                    @click="sortTable('Coef')"
+                    class="txt-table-vendas text-nowrap"
+                  >
+                    <strong>COEF</strong>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="g-2 p-2 mt-3 rf_margin">
+              <table class="table rf_texto">
+                <thead>
+                  <tr>
+                    <th scope="col">Financeira</th>
+                    <th scope="col">Plano</th>
+                    <th scope="col">Ret</th>
+                    <th scope="col">R$ Ent. Min.</th>
+                    <th scope="col">% Ent. Min.</th>
+                    <th scope="col">Rentabilidade</th>
+                    <th scope="col">Rebate</th>
+                    <th scope="col">Pmt</th>
+                    <th scope="col">Spf</th>
+                    <th scope="col">Retorno</th>
+                    <th scope="col">Tac. Cob.</th>
+                    <th scope="col">Tac. Dev.</th>
+                    <th scope="col">Coef.</th>
+                    <th scope="col">Parcela</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    :class="
+                      item.id === pacoteSelecionadoCustomizado
+                        ? 'custom-highlight-row'
+                        : ''
+                    "
+                    @click="rowSelect_customizado(key, item.id, 4)"
+                    v-for="(item, key) in parcelamento_customizado"
+                    :key="item.id"
+                  >
+                    <td>{{ item.financeira }}</td>
+                    <td>{{ item.plano }}</td>
+                    <td>{{ item.ret }}</td>
+                    <td>{{ item.entrada_min_valor }}</td>
+                    <td>{{ item.entrada_min_porcentagem }}</td>
+                    <td>{{ item.rentabilidade_customizado }}</td>
+                    <td>{{ item.Rebate }}</td>
+                    <td>{{ item.pmt_customizado }}</td>
+                    <td>{{ item.spf }}</td>
+                    <td>{{ item.retorno }}</td>
+                    <td>{{ item.tc_cob }}</td>
+                    <td>{{ item.tc_dev }}</td>
+                    <td>{{ item.coeficiente }}</td>
+                    <td>{{ item.qtd_parcelas }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <pagination
+              v-if="parcelamento_customizado.length"
+              :offset="totalPages_customizado"
+              :total="totalItems_customizado"
+              :limit="pageSize_customizado"
+              @change-page="handlePageChangeEntradaCustomizado"
+            />
+          </div>
+        </div>
+      </div>
+  </div>
+  <!-- Modal de confirmação Acessório -->
+  <div
+    class="modal fade"
+    id="confirmModal"
+    tabindex="-1"
+    aria-labelledby="confirmModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content card-container rf_texto">
+        <div class="modal-header">
+          <div class="card-title gy-4">
+            <i class="bi bi-tools fs-5 icone_kit"
+              ><span class="texto_kit">Inserir preço com desconto</span></i
+            >
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="row g-2 p-2">
+            <div class="col-2">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto_desk"
+                  v-model="id_acessorio"
+                  disabled
+                />
+                <label class="rf_texto_desk">Id</label>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto_desk"
+                  v-model="precoDesconto"
+                  @input="precoDesconto = formatarValor(precoDesconto)"
+                  required
+                />
+                <label class="rf_texto_desk">Preço com Desconto</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn btn-lg btn-filtro"
+                data-bs-dismiss="modal"
+              >
+                Cancelar
+              </button>
+            </div>
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn btn-lg btn-filtro"
+                data-bs-dismiss="modal"
+                @click="confirmarPrecoDesconto"
+              >
+                Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Modal Exclusão Acessório-->
+  <div
+    class="modal fade"
+    id="excluiModal"
+    tabindex="-1"
+    aria-labelledby="confirmModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content card-container rf_texto">
+        <div class="modal-header">
+          <div class="card-title gy-4">
+            <i class="bi bi-tools fs-5 icone_kit"
+              ><span class="texto_kit">Exclusão</span></i
+            >
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="row g-2 p-2">
+            <span class="texto_kit">Deseja remover o acessório do Kit?</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn btn-lg btn-filtro"
+                data-bs-dismiss="modal"
+              >
+                Cancelar
+              </button>
+            </div>
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn btn-lg btn-filtro"
+                data-bs-dismiss="modal"
+                @click="confirmarAlteracao"
+              >
+                Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Modal Exclusão Seguro-->
+  <div
+    class="modal fade"
+    id="excluiModalSeguro"
+    tabindex="-1"
+    aria-labelledby="confirmModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content card-container rf_texto">
+        <div class="modal-header">
+          <div class="card-title gy-4">
+            <i class="bi bi-tools fs-5 icone_kit"
+              ><span class="texto_kit">Exclusão</span></i
+            >
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="row g-2 p-2">
+            <span class="texto_kit">Deseja remover o seguro do Kit?</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn btn-lg btn-filtro"
+                data-bs-dismiss="modal"
+              >
+                Cancelar
+              </button>
+            </div>
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn btn-lg btn-filtro"
+                data-bs-dismiss="modal"
+                @click="confirmarAlteracaoSeguro"
+              >
+                Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Modal Exclusão Revisão-->
+  <div
+    class="modal fade"
+    id="excluiModalRevisao"
+    tabindex="-1"
+    aria-labelledby="confirmModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content card-container rf_texto">
+        <div class="modal-header">
+          <div class="card-title gy-4">
+            <i class="bi bi-tools fs-5 icone_kit"
+              ><span class="texto_kit">Exclusão</span></i
+            >
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="row g-2 p-2">
+            <span class="texto_kit">Deseja remover a revisão do Kit?</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn btn-lg btn-filtro"
+                data-bs-dismiss="modal"
+              >
+                Cancelar
+              </button>
+            </div>
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn btn-lg btn-filtro"
+                data-bs-dismiss="modal"
+                @click="confirmarAlteracaoRevisao"
+              >
+                Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!--Área Ranqueamento pacotes-->
@@ -1443,7 +1804,7 @@
                   data-bs-toggle="modal"
                   data-bs-target="#ModalGerarMenu"
                   :disabled="habilitar_gerar_menu"
-                  @click="limpar_financiamento"
+                  @click="atualizarPacote"
                 >
                   <span class="rf_texto_btn">Gerar Menu</span>
                 </button>
@@ -1942,13 +2303,13 @@
         </tbody>
       </table>
     </div>
-    <!-- <pagination
-              v-if="parcelamento_bronze.length"
-              :offset="totalPages_bronze"
-              :total="totalItems_bronze"
-              :limit="pageSize_bronze"
-              @change-page="handlePageChangeEntradaBronze"
-            /> -->
+    <pagination
+      v-if="parcelamento_bronze.length"
+      :offset="totalPages_bronze"
+      :total="totalItems_bronze"
+      :limit="pageSize_bronze"
+      @change-page="handlePageChangeEntradaBronze"
+    />
   </div>
 
   <!--Área dos Modais-->
@@ -2048,6 +2409,7 @@
                 <tr>
                   <th scope="col">Código</th>
                   <th scope="col">Descrição</th>
+                  <th scope="col">Preço Base</th>
                   <th scope="col">Preço Final</th>
                   <th scope="col">Ação</th>
                 </tr>
@@ -2060,6 +2422,7 @@
                 >
                   <td>{{ item.codigo_mercadoria }}</td>
                   <td>{{ item.descricao_mercadoria }}</td>
+                  <td>{{ this.currency(item.preco_base) }}</td>
                   <td>{{ this.currency(item.preco_final) }}</td>
                   <td>
                     <button
@@ -2295,6 +2658,686 @@
     class="modal fade"
     id="ModalGerarMenu"
     aria-hidden="true"
+    aria-labelledby="exampleModalToggleLabel1"
+    tabindex="-1"
+  >
+    <div class="modal-dialog modal-fullscreen rf_modal font-pdf-menu">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="mt-3 rf_texto_pdf" ref="contentToPrint1">
+            <div class="row">
+              <div class="col-6">
+                <a class="navbar-brand logo">
+                  <img
+                    src="../../assets/logo.png"
+                    alt="Bootstrap"
+                    width="100"
+                    height="30"
+                  />
+                </a>
+              </div>
+              <div class="col-6" style="text-align: right">
+                <a class="navbar-brand logo_cliente">
+                  <img
+                    src="../../assets/logo.png"
+                    alt="Bootstrap"
+                    height="30"
+                  />
+                </a>
+              </div>
+            </div>
+            <!--Dados do Veículo-->
+            <div class="card card-vendas">
+              <div class="row g-2 p-2">
+                <div class="col-12">
+                  <i class="bi bi-car-front fs-5 icone_filtro_menu"
+                    ><span class="texto_filtro_menu"
+                      ><strong class="rf_titulo_pdf">Dados do Veículo</strong></span
+                    ></i
+                  >
+                </div>
+                <div class="col-2">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Marca</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ marca }}</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Modelo</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ modelo }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Cor</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ cor }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Placa</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ placa }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Chassi</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ chassi }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Ano Fab.</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ ano_fabricacao }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Ano Mod.</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ ano_modelo }}</span>
+                  </div>
+                </div>
+              </div>
+              <!--Dados do Financiamento-->
+
+              <div class="row g-2 p-2">
+                <div class="col-6">
+                  <i class="bi bi-journal-bookmark-fill fs-5 icone_filtro_menu"
+                    ><span class="texto_filtro_menu"
+                      ><strong class="rf_titulo_pdf">Dados do Financiamento</strong></span
+                    ></i
+                  >
+                </div>
+                <div class="col-6">
+                  <i class="bi bi-journal-text fs-5 icone_filtro_menu"
+                    ><span class="texto_filtro_menu"
+                      ><strong class="rf_titulo_pdf">Dados do Atendimento</strong></span
+                    ></i
+                  >
+                </div>
+                <div class="col">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Total Entrada</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ total_entrada }}</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf"
+                      >Total Financiamento</label
+                    >
+                    <span class="rf_texto_menu rf_texto_pdf">{{
+                      total_financiamento_selecionado
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Valor Parcela</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{
+                      valor_parcela_selecionada
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Qtd. Parcela</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{
+                      qtd_parcela_selecionada
+                    }}</span>
+                  </div>
+                </div>
+
+                <div class="col-2">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Banco</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ banco_selecionado }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Nº Atend.</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ n_atendimento }}</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Vendedor</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ vendedor }}</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Cliente</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ cliente }}</span>
+                  </div>
+                </div>
+              </div>
+              <!--Dados do Atendimento-->
+
+              <div class="row g-2 p-2">
+                <div class="col-7">
+                  <i class="bi bi-cash fs-5 icone_filtro_menu">
+                    <span class="texto_filtro_menu rf_texto_pdf"
+                      ><strong class="rf_titulo_pdf">Forma de Pagamento - </strong
+                      >{{
+                        metodo_pagamento == "1"
+                          ? "Financiamento"
+                          : metodo_pagamento == "2"
+                          ? "À Vista"
+                          : ""
+                      }}</span
+                    >
+
+                    <span class="texto_filtro_menu rf_texto_pdf"
+                      ><strong class="rf_titulo_pdf">Data - </strong
+                      >{{ new Date().toLocaleDateString("pt-BR") }}
+                      {{
+                        new Date().toLocaleTimeString("pt-BR", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })
+                      }}</span
+                    >
+                  </i>
+                </div>
+              </div>
+            </div>
+
+            <!--Quadro Ouro-->
+            <div class="card card-ouro">
+              <i class="bi bi-gem card-texto-vendas-ouro rf_titulo_destaque_pdf"> Pacote Ouro</i>
+
+              <div class="row">
+                <!--Acessórios-->
+                <div class="col divisoria_ouro_acessorio">
+                  <div class="barra_fei_menu_ouro">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>Acessórios</strong></span
+                    >
+                  </div>
+                  <div class="col">
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
+                    >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_acessorios_ouro"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon rf_texto_pdf">{{ item.descricao }}</span></i
+                          ></strong
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Revisão-->
+                <div class="col divisoria_ouro_revisao">
+                  <div class="col barra_fei_menu_ouro">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>Revisão pré-paga</strong></span
+                    >
+                  </div>
+                  <div class="col divisoria_ouro">
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
+                    >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_revisoes_ouro"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon rf_texto_pdf">{{ item.descricao }}</span></i
+                          ></strong
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Seguros-->
+                <div class="col divisoria_ouro_seguros">
+                  <div class="col barra_fei_menu_ouro">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>Seguros</strong></span
+                    >
+                  </div>
+                  <div class="col">
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
+                    >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_seguros_ouro"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon rf_texto_pdf">{{ item.descricao }}</span></i
+                          >
+                        </strong>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Informações-->
+                <div class="col divisoria_ouro_info">
+                  <div class="col barra_fei_menu_ouro">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>Informações</strong></span
+                    >
+                  </div>
+                  <div class="col">
+                    <div class="row">
+                      <div class="col-6">
+                        <span class="esquerda rf_texto_pdf">
+                          <strong>NOVO VALOR PARCELA:</strong>
+                        </span>
+                      </div>
+                      <div class="col-6 direita rf_texto_pdf">
+                        <span
+                          ><strong class="rf_texto_pdf">{{
+                            this.currency(novo_valor_parcela_ouro)
+                          }}</strong></span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col mt-2">
+                    <div class="row">
+                      <div class="col-6">
+                        <div class="esquerda">
+                          <span class="texto_tachado">
+                            <strong class="tachado rf_texto_pdf"
+                              >de {{ this.currency(de_ouro) }}</strong
+                            >
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-6 direita">
+                        <span class="texto_oferta rf_texto_pdf"
+                          >por
+                          <strong> {{ this.currency(por_ouro) }}</strong>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 mt-2 position-relative">
+                      <img
+                        src="../../assets/economia_ouro.png"
+                        alt="Bootstrap"
+                        width="150"
+                        class="img-fluid"
+                      />
+                      <div class="texto-sobre-imagem rf_texto_pdf">
+                        {{ this.currency(economia_ouro) }}
+                      </div>
+                    </div>
+                    <div class="col-7 mt-5 direita">
+                      <span class="texto_oferta rf_texto_pdf"
+                        >por apenas
+                        <strong>{{ this.currency(apenas_ouro) }}</strong>
+                        a mais na parcela por dia
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--Quadro Prata-->
+            <div class="card card-prata">
+              <i class="bi bi-gem card-texto-vendas-prata rf_titulo_destaque_pdf"> Pacote Prata</i>
+
+              <div class="row">
+                <!--Acessórios-->
+                <div class="col divisoria_prata_acessorio">
+                  <div class="barra_fei_menu_prata">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>Acessórios</strong></span
+                    >
+                  </div>
+                  <div class="col">
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
+                    >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_acessorios_prata"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon rf_texto_pdf">{{ item.descricao }}</span></i
+                          ></strong
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Revisão-->
+                <div class="col divisoria_prata_revisao">
+                  <div class="col barra_fei_menu_prata">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>Revisão pré-paga</strong></span
+                    >
+                  </div>
+                  <div class="col divisoria_prata">
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
+                    >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_revisoes_prata"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon rf_texto_pdf">{{ item.descricao }}</span></i
+                          ></strong
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Seguros-->
+                <div class="col divisoria_prata_seguros">
+                  <div class="col barra_fei_menu_prata">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>Seguros</strong></span
+                    >
+                  </div>
+                  <div class="col">
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
+                    >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_seguros_prata"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon rf_texto_pdf">{{ item.descricao }}</span></i
+                          >
+                        </strong>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Informações-->
+                <div class="col divisoria_prata_info">
+                  <div class="col barra_fei_menu_prata">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>Informações</strong></span
+                    >
+                  </div>
+                  <div class="col">
+                    <div class="row">
+                      <div class="col-6">
+                        <span class="esquerda rf_texto_pdf">
+                          <strong>NOVO VALOR PARCELA:</strong>
+                        </span>
+                      </div>
+                      <div class="col-6 direita rf_texto_pdf">
+                        <span
+                          ><strong>{{
+                            this.currency(novo_valor_parcela_prata)
+                          }}</strong></span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col mt-2">
+                    <div class="row">
+                      <div class="col-6">
+                        <div class="esquerda">
+                          <span class="texto_tachado">
+                            <strong class="tachado rf_texto_pdf"
+                              >de {{ this.currency(de_prata) }}</strong
+                            >
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-6 direita">
+                        <span class="texto_oferta rf_texto_pdf"
+                          >por
+                          <strong> {{ this.currency(por_prata) }}</strong>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 mt-2 position-relative">
+                      <img
+                        src="../../assets/economia_prata.png"
+                        alt="Bootstrap"
+                        width="150"
+                        class="img-fluid"
+                      />
+                      <div class="texto-sobre-imagem rf_texto_pdf">
+                        {{ this.currency(economia_prata) }}
+                      </div>
+                    </div>
+                    <div class="col-7 mt-5 direita">
+                      <span class="texto_oferta rf_texto_pdf"
+                        >por apenas
+                        <strong>{{ this.currency(apenas_prata) }}</strong>
+                        a mais na parcela por dia
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--Quadro Bronze-->
+            <div class="card card-bronze">
+              <i class="bi bi-gem card-texto-vendas-bronze rf_titulo_destaque_pdf"> Pacote Bronze</i>
+
+              <div class="row">
+                <!--Acessórios-->
+                <div class="col divisoria_bronze_acessorio">
+                  <div class="barra_fei_menu_bronze">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>Acessórios</strong></span
+                    >
+                  </div>
+                  <div class="col">
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
+                    >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_acessorios_bronze"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon rf_texto_pdf">{{ item.descricao }}</span></i
+                          ></strong
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Revisão-->
+                <div class="col divisoria_bronze_revisao">
+                  <div class="col barra_fei_menu_bronze">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>Revisão pré-paga</strong></span
+                    >
+                  </div>
+                  <div class="col divisoria_bronze">
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
+                    >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_revisoes_bronze"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon rf_texto_pdf">{{ item.descricao }}</span></i
+                          ></strong
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Seguros-->
+                <div class="col divisoria_bronze_seguros">
+                  <div class="col barra_fei_menu_bronze">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>Seguros</strong></span
+                    >
+                  </div>
+                  <div class="col">
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
+                    >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_seguros_bronze"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon rf_texto_pdf">{{ item.descricao }}</span></i
+                          >
+                        </strong>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Informações-->
+                <div class="col divisoria_bronze_info">
+                  <div class="col barra_fei_menu_bronze">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>Informações</strong></span
+                    >
+                  </div>
+                  <div class="col">
+                    <div class="row">
+                      <div class="col-6">
+                        <span class="esquerda rf_texto_pdf">
+                          <strong>NOVO VALOR PARCELA:</strong>
+                        </span>
+                      </div>
+                      <div class="col-6 direita rf_texto_pdf">
+                        <span
+                          ><strong class="rf_texto_pdf">{{
+                            this.currency(novo_valor_parcela_bronze)
+                          }}</strong></span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col mt-2">
+                    <div class="row">
+                      <div class="col-6">
+                        <div class="esquerda">
+                          <span class="texto_tachado">
+                            <strong class="tachado rf_texto_pdf"
+                              >de {{ this.currency(de_bronze) }}</strong
+                            >
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-6 direita">
+                        <span class="texto_oferta rf_texto_pdf"
+                          >por
+                          <strong> {{ this.currency(por_bronze) }}</strong>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 mt-2 position-relative">
+                      <img
+                        src="../../assets/economia_bronze.png"
+                        alt="Bootstrap"
+                        width="150"
+                        class="img-fluid"
+                      />
+                      <div class="texto-sobre-imagem rf_texto_pdf">
+                        {{ this.currency(economia_bronze) }}
+                      </div>
+                    </div>
+                    <div class="col-7 mt-5 direita">
+                      <span class="texto_oferta rf_texto_pdf"
+                        >por apenas
+                        <strong>{{ this.currency(apenas_bronze) }}</strong>
+                        a mais na parcela por dia
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>          
+
+            <div class="row g-2 p-2 mt-4">
+              <div class="col-12 rodape">
+                <span class="texto_cartao rf_titulo_destaque_pdf"
+                  ><strong>ou em até 6x no cartão</strong></span
+                >
+              </div>
+              <div class="col rf_assinatura">
+                <span>Gerente: {{ vendedor }}</span>
+              </div>
+              <div class="col rf_assinatura">
+                <span>Cliente: {{ cliente }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="col-1">
+            <button
+              type="button"
+              class="btn btn-lg btn-filtro"              
+              data-bs-toggle="modal"
+            >
+              Fechar
+            </button>
+          </div>
+          <div class="col-1">
+            <button class="btn btn-lg btn-filtro" @click="generatePdfPacotes">
+              IMPRIMIR
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!--Modal Gerar Menu Pacote Customizado-->
+  <div
+    class="modal fade"
+    id="ModalGerarMenuCustomizado"
+    aria-hidden="true"
     aria-labelledby="exampleModalToggleLabel2"
     tabindex="-1"
   >
@@ -2335,52 +3378,52 @@
             <div class="card card-vendas">
               <div class="row g-2 p-2">
                 <div class="col-12">
-                  <i class="bi bi-car-front fs-5 icone_filtro_menu"
+                  <i class="bi bi-car-front fs-5 icone_filtro_menu "
                     ><span class="texto_filtro_menu"
-                      ><strong>Dados do Veículo</strong></span
+                      ><strong class="rf_titulo_pdf">Dados do Veículo</strong></span
                     ></i
                   >
                 </div>
                 <div class="col-2">
-                  <div class="row rf_bg_form_menu">
-                    <label class="rf_texto_menu_titulo">Marca</label>
-                    <span class="rf_texto_menu">{{ marca }}</span>
+                  <div class="row rf_bg_form_menu ">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Marca</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ marca }}</span>
                   </div>
                 </div>
                 <div class="col">
                   <div class="row rf_bg_form_menu">
-                    <label class="rf_texto_menu_titulo">Modelo</label>
-                    <span class="rf_texto_menu">{{ modelo }}</span>
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Modelo</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ modelo }}</span>
                   </div>
                 </div>
                 <div class="col-1">
                   <div class="row rf_bg_form_menu">
-                    <label class="rf_texto_menu_titulo">Cor</label>
-                    <span class="rf_texto_menu">{{ cor }}</span>
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Cor</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ cor }}</span>
                   </div>
                 </div>
                 <div class="col-1">
                   <div class="row rf_bg_form_menu">
-                    <label class="rf_texto_menu_titulo">Placa</label>
-                    <span class="rf_texto_menu">{{ placa }}</span>
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Placa</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ placa }}</span>
                   </div>
                 </div>
                 <div class="col-1">
                   <div class="row rf_bg_form_menu">
-                    <label class="rf_texto_menu_titulo">Chassi</label>
-                    <span class="rf_texto_menu">{{ chassi }}</span>
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Chassi</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ chassi }}</span>
                   </div>
                 </div>
                 <div class="col-1">
                   <div class="row rf_bg_form_menu">
-                    <label class="rf_texto_menu_titulo">Ano Fabricação</label>
-                    <span class="rf_texto_menu">{{ ano_fabricacao }}</span>
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Ano Fab.</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ ano_fabricacao }}</span>
                   </div>
                 </div>
                 <div class="col-1">
                   <div class="row rf_bg_form_menu">
-                    <label class="rf_texto_menu_titulo">Ano Modelo</label>
-                    <span class="rf_texto_menu">{{ ano_modelo }}</span>
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Ano Mod.</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ ano_modelo }}</span>
                   </div>
                 </div>
               </div>
@@ -2390,72 +3433,72 @@
                 <div class="col-6">
                   <i class="bi bi-journal-bookmark-fill fs-5 icone_filtro_menu"
                     ><span class="texto_filtro_menu"
-                      ><strong>Dados do Financiamento</strong></span
+                      ><strong class="rf_titulo_pdf">Dados do Financiamento</strong></span
                     ></i
                   >
                 </div>
                 <div class="col-6">
                   <i class="bi bi-journal-text fs-5 icone_filtro_menu"
                     ><span class="texto_filtro_menu"
-                      ><strong>Dados do Atendimento</strong></span
+                      ><strong class="rf_titulo_pdf">Dados do Atendimento</strong></span
                     ></i
                   >
                 </div>
-                <div class="col-1">
+                <div class="col">
                   <div class="row rf_bg_form_menu">
-                    <label class="rf_texto_menu_titulo">Total Entrada</label>
-                    <span class="rf_texto_menu">{{ total_entrada }}</span>
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Total Entrada</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ this.currency(total_entrada_customizado) }}</span>
                   </div>
                 </div>
-                <div class="col-1">
+                <div class="col">
                   <div class="row rf_bg_form_menu">
-                    <label class="rf_texto_menu_titulo"
+                    <label class="rf_texto_menu_titulo rf_texto_pdf"
                       >Total Financiamento</label
                     >
-                    <span class="rf_texto_menu">{{
-                      total_financiamento_selecionado
+                    <span class="rf_texto_menu rf_texto_pdf">{{
+                      this.currency(total_financiamento_selecionado_customizado)
                     }}</span>
                   </div>
                 </div>
                 <div class="col-1">
                   <div class="row rf_bg_form_menu">
-                    <label class="rf_texto_menu_titulo">Valor Parcela</label>
-                    <span class="rf_texto_menu">{{
-                      valor_parcela_selecionada
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Valor Parcela</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{
+                      this.currency(novo_valor_parcela_customizado)
                     }}</span>
                   </div>
                 </div>
                 <div class="col-1">
                   <div class="row rf_bg_form_menu">
-                    <label class="rf_texto_menu_titulo">Qtd. Parcela</label>
-                    <span class="rf_texto_menu">{{
-                      qtd_parcela_selecionada
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Qtd. Parcela</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{
+                      parcela
                     }}</span>
                   </div>
                 </div>
 
                 <div class="col-2">
                   <div class="row rf_bg_form_menu">
-                    <label class="rf_texto_menu_titulo">Banco</label>
-                    <span class="rf_texto_menu">{{ banco_selecionado }}</span>
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Banco</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ banco_selecionado_customizado }}</span>
                   </div>
                 </div>
                 <div class="col-1">
                   <div class="row rf_bg_form_menu">
-                    <label class="rf_texto_menu_titulo">Nº Atendimento</label>
-                    <span class="rf_texto_menu">{{ n_atendimento }}</span>
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Nº Atend.</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ n_atendimento }}</span>
                   </div>
                 </div>
                 <div class="col">
                   <div class="row rf_bg_form_menu">
-                    <label class="rf_texto_menu_titulo">Vendedor</label>
-                    <span class="rf_texto_menu">{{ vendedor }}</span>
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Vendedor</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ vendedor }}</span>
                   </div>
                 </div>
                 <div class="col">
                   <div class="row rf_bg_form_menu">
-                    <label class="rf_texto_menu_titulo">Cliente</label>
-                    <span class="rf_texto_menu">{{ cliente }}</span>
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Cliente</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ cliente }}</span>
                   </div>
                 </div>
               </div>
@@ -2464,8 +3507,8 @@
               <div class="row g-2 p-2">
                 <div class="col-7">
                   <i class="bi bi-cash fs-5 icone_filtro_menu">
-                    <span class="texto_filtro_menu"
-                      ><strong>Forma de Pagamento - </strong
+                    <span class="texto_filtro_menu rf_texto_pdf "
+                      ><strong class="rf_titulo_pdf">Forma de Pagamento - </strong
                       >{{
                         metodo_pagamento == "1"
                           ? "Financiamento"
@@ -2475,8 +3518,8 @@
                       }}</span
                     >
 
-                    <span class="texto_filtro_menu"
-                      ><strong>Data - </strong
+                    <span class="texto_filtro_menu rf_texto_pdf"
+                      ><strong class="rf_titulo_pdf">Data - </strong
                       >{{ new Date().toLocaleDateString("pt-BR") }}
                       {{
                         new Date().toLocaleTimeString("pt-BR", {
@@ -2490,540 +3533,160 @@
               </div>
             </div>
 
-            <!--Quadro Ouro-->
-            <div class="card card-ouro">
-              <i class="bi bi-gem card-texto-vendas-ouro"> Pacote Ouro</i>
-             
-              <div class="row">
-                 <!--Acessórios-->
-                <div class="col divisoria_ouro_acessorio ">
-                  <div class="barra_fei_menu_ouro ">
-                    <span class="texto_centralizado"
-                      ><strong>Acessórios</strong></span
-                    >
-                  </div>
-                  <div class="col ">
-                    <ul
-                      class="nav nav-item"
-                      style="display: block; clear: both"
-                    >
-                      <li
-                        class="nav-item"
-                        v-for="item in itens_kit_acessorios_ouro"
-                        :key="item.id"
-                      >
-                        <strong
-                          ><i class="bi bi-check2-circle p-2">
-                            <span class="sp_icon">{{ item.descricao }}</span></i
-                          ></strong
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <!--Revisão-->
-                <div class="col divisoria_ouro_revisao">
-                  <div class="col barra_fei_menu_ouro">
-                    <span class="texto_centralizado"
-                      ><strong>Revisão pré-paga</strong></span
-                    >
-                  </div>
-                  <div class="col divisoria_ouro">
-                    <ul
-                      class="nav nav-item"
-                      style="display: block; clear: both"
-                    >
-                      <li
-                        class="nav-item"
-                        v-for="item in itens_kit_revisoes_ouro"
-                        :key="item.id"
-                      >
-                        <strong
-                          ><i class="bi bi-check2-circle p-2">
-                            <span class="sp_icon">{{ item.descricao }}</span></i
-                          ></strong
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <!--Seguros-->
-                <div class="col divisoria_ouro_seguros">
-                  <div class="col barra_fei_menu_ouro">
-                    <span class="texto_centralizado"
-                      ><strong>Seguros</strong></span
-                    >
-                  </div>
-                  <div class="col">
-                    <ul class="nav nav-item" style="display: block; clear: both">
-                      <li
-                        class="nav-item"
-                        v-for="item in itens_kit_seguros_ouro"
-                        :key="item.id"
-                      >
-                        <strong
-                          ><i class="bi bi-check2-circle p-2">
-                            <span class="sp_icon">{{ item.descricao }}</span></i
-                          >
-                        </strong>
-                      </li>
-                    </ul>
-                  </div>                 
-                </div>
-               <!--Informações-->
-                <div class="col divisoria_ouro_info">
-                  <div class="col barra_fei_menu_ouro">
-                    <span class="texto_centralizado"
-                      ><strong>Informações</strong></span
-                    >
-                  </div>
-                  <div class="col">
-                    <div class="row">
-                      <div class="col-6">
-                        <span class="esquerda">
-                          <strong>NOVO VALOR PARCELA:</strong>
-                        </span>
-                      </div>
-                      <div class="col-6 direita"> <span><strong>{{ this.currency(novo_valor_parcela_ouro) }}</strong></span></div>
-                    </div>                     
-                  </div>
-                  <div class="col mt-2 ">
-                    <div class="row">
-                      <div class="col-6">
-                        <div class="esquerda">
-                        <span class="texto_tachado">
-                          <strong class="tachado">de {{this.currency(de_ouro) }}</strong>
-                        </span>  
-                    </div>
-                      </div>
-                      <div class="col-6 direita">                        
-                          <span class="texto_oferta">por
-                          <strong> {{ this.currency(por_ouro) }}</strong>
-                        </span>
-                      
-                      </div>
-
-                    </div>                  
-                  </div>
-                  <div class="row">
-                    <div class="col-5 mt-2 position-relative">
-                      <img
-                        src="../../assets/economia_ouro.png"
-                        alt="Bootstrap"
-                        width="150"
-                        class="img-fluid"
-                      />
-                      <div class="texto-sobre-imagem">{{this.currency(economia_ouro)}}</div>
-                    </div>
-                    <div class="col-7 mt-5 direita">
-                        <span class="texto_oferta">por apenas
-                          <strong>{{ this.currency(apenas_ouro) }}</strong>
-                          a mais na parcela por dia
-                        </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
- 
-
-             
-            </div>
-            <!--Quadro Prata-->
-            <div class="card card-prata">
-              <i class="bi bi-gem card-texto-vendas-prata"> Pacote Prata</i>
-             
-              <div class="row">
-                 <!--Acessórios-->
-                <div class="col divisoria_prata_acessorio ">
-                  <div class="barra_fei_menu_prata ">
-                    <span class="texto_centralizado"
-                      ><strong>Acessórios</strong></span
-                    >
-                  </div>
-                  <div class="col ">
-                    <ul
-                      class="nav nav-item"
-                      style="display: block; clear: both"
-                    >
-                      <li
-                        class="nav-item"
-                        v-for="item in itens_kit_acessorios_prata"
-                        :key="item.id"
-                      >
-                        <strong
-                          ><i class="bi bi-check2-circle p-2">
-                            <span class="sp_icon">{{ item.descricao }}</span></i
-                          ></strong
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <!--Revisão-->
-                <div class="col divisoria_prata_revisao">
-                  <div class="col barra_fei_menu_prata">
-                    <span class="texto_centralizado"
-                      ><strong>Revisão pré-paga</strong></span
-                    >
-                  </div>
-                  <div class="col divisoria_prata">
-                    <ul
-                      class="nav nav-item"
-                      style="display: block; clear: both"
-                    >
-                      <li
-                        class="nav-item"
-                        v-for="item in itens_kit_revisoes_prata"
-                        :key="item.id"
-                      >
-                        <strong
-                          ><i class="bi bi-check2-circle p-2">
-                            <span class="sp_icon">{{ item.descricao }}</span></i
-                          ></strong
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <!--Seguros-->
-                <div class="col divisoria_prata_seguros">
-                  <div class="col barra_fei_menu_prata">
-                    <span class="texto_centralizado"
-                      ><strong>Seguros</strong></span
-                    >
-                  </div>
-                  <div class="col">
-                    <ul class="nav nav-item" style="display: block; clear: both">
-                      <li
-                        class="nav-item"
-                        v-for="item in itens_kit_seguros_prata"
-                        :key="item.id"
-                      >
-                        <strong
-                          ><i class="bi bi-check2-circle p-2">
-                            <span class="sp_icon">{{ item.descricao }}</span></i
-                          >
-                        </strong>
-                      </li>
-                    </ul>
-                  </div>                 
-                </div>
-               <!--Informações-->
-                <div class="col divisoria_prata_info">
-                  <div class="col barra_fei_menu_prata">
-                    <span class="texto_centralizado"
-                      ><strong>Informações</strong></span
-                    >
-                  </div>
-                  <div class="col">
-                    <div class="row">
-                      <div class="col-6">
-                        <span class="esquerda">
-                          <strong>NOVO VALOR PARCELA:</strong>
-                        </span>
-                      </div>
-                      <div class="col-6 direita"> <span><strong>{{this.currency(novo_valor_parcela_prata)}}</strong></span></div>
-                    </div>                     
-                  </div>
-                  <div class="col mt-2 ">
-                    <div class="row">
-                      <div class="col-6">
-                        <div class="esquerda">
-                        <span class="texto_tachado">
-                          <strong class="tachado">de {{ this.currency(de_prata) }}</strong>
-                        </span>  
-                    </div>
-                      </div>
-                      <div class="col-6 direita">                        
-                          <span class="texto_oferta">por
-                          <strong> {{ this.currency(por_prata) }}</strong>
-                        </span>
-                      
-                      </div>
-
-                    </div>                  
-                  </div>
-                  <div class="row">
-                    <div class="col-5 mt-2 position-relative">
-                      <img
-                        src="../../assets/economia_prata.png"
-                        alt="Bootstrap"
-                        width="150"
-                        class="img-fluid"
-                      />
-                      <div class="texto-sobre-imagem">{{ this.currency(economia_prata) }}</div>
-                    </div>
-                    <div class="col-7 mt-5 direita">
-                        <span class="texto_oferta">por apenas
-                          <strong>{{ this.currency(apenas_prata) }}</strong>
-                          a mais na parcela por dia
-                        </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>   
-            <!--Quadro Bronze-->
-            <div class="card card-bronze">
-              <i class="bi bi-gem card-texto-vendas-bronze"> Pacote Bronze</i>
-             
-              <div class="row">
-                 <!--Acessórios-->
-                <div class="col divisoria_bronze_acessorio ">
-                  <div class="barra_fei_menu_bronze ">
-                    <span class="texto_centralizado"
-                      ><strong>Acessórios</strong></span
-                    >
-                  </div>
-                  <div class="col ">
-                    <ul
-                      class="nav nav-item"
-                      style="display: block; clear: both"
-                    >
-                      <li
-                        class="nav-item"
-                        v-for="item in itens_kit_acessorios_bronze"
-                        :key="item.id"
-                      >
-                        <strong
-                          ><i class="bi bi-check2-circle p-2">
-                            <span class="sp_icon">{{ item.descricao }}</span></i
-                          ></strong
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <!--Revisão-->
-                <div class="col divisoria_bronze_revisao">
-                  <div class="col barra_fei_menu_bronze">
-                    <span class="texto_centralizado"
-                      ><strong>Revisão pré-paga</strong></span
-                    >
-                  </div>
-                  <div class="col divisoria_bronze">
-                    <ul
-                      class="nav nav-item"
-                      style="display: block; clear: both"
-                    >
-                      <li
-                        class="nav-item"
-                        v-for="item in itens_kit_revisoes_bronze"
-                        :key="item.id"
-                      >
-                        <strong
-                          ><i class="bi bi-check2-circle p-2">
-                            <span class="sp_icon">{{ item.descricao }}</span></i
-                          ></strong
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <!--Seguros-->
-                <div class="col divisoria_bronze_seguros">
-                  <div class="col barra_fei_menu_bronze">
-                    <span class="texto_centralizado"
-                      ><strong>Seguros</strong></span
-                    >
-                  </div>
-                  <div class="col">
-                    <ul class="nav nav-item" style="display: block; clear: both">
-                      <li
-                        class="nav-item"
-                        v-for="item in itens_kit_seguros_bronze"
-                        :key="item.id"
-                      >
-                        <strong
-                          ><i class="bi bi-check2-circle p-2">
-                            <span class="sp_icon">{{ item.descricao }}</span></i
-                          >
-                        </strong>
-                      </li>
-                    </ul>
-                  </div>                 
-                </div>
-               <!--Informações-->
-                <div class="col divisoria_bronze_info">
-                  <div class="col barra_fei_menu_bronze">
-                    <span class="texto_centralizado"
-                      ><strong>Informações</strong></span
-                    >
-                  </div>
-                  <div class="col">
-                    <div class="row">
-                      <div class="col-6">
-                        <span class="esquerda">
-                          <strong>NOVO VALOR PARCELA:</strong>
-                        </span>
-                      </div>
-                      <div class="col-6 direita"> <span><strong>{{ this.currency(novo_valor_parcela_bronze) }}</strong></span></div>
-                    </div>                     
-                  </div>
-                  <div class="col mt-2 ">
-                    <div class="row">
-                      <div class="col-6">
-                        <div class="esquerda">
-                        <span class="texto_tachado">
-                          <strong class="tachado">de {{this.currency(de_bronze)}}</strong>
-                        </span>  
-                    </div>
-                      </div>
-                      <div class="col-6 direita">                        
-                          <span class="texto_oferta">por
-                          <strong> {{this.currency(por_bronze)}}</strong>
-                        </span>
-                      
-                      </div>
-
-                    </div>                  
-                  </div>
-                  <div class="row">
-                    <div class="col-5 mt-2 position-relative">
-                      <img
-                        src="../../assets/economia_bronze.png"
-                        alt="Bootstrap"
-                        width="150"
-                        class="img-fluid"
-                      />
-                      <div class="texto-sobre-imagem">{{this.currency(economia_bronze)}}</div>
-                    </div>
-                    <div class="col-7 mt-5 direita">
-                        <span class="texto_oferta">por apenas
-                          <strong>{{this.currency(apenas_bronze)}}</strong>
-                          a mais na parcela por dia
-                        </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
- 
-
-             
-            </div>
-        
             <!--Quadro Customizado-->
-            <!-- <div class="card card-customizado col">
-                <i class="bi bi-gem card-texto-vendas-customizado">
-                  Pacote Customizado</i
-                >
-            
-                <div class="row">
-                  <div class="col mt-3 barra_fei_menu_customizado">
-                    <span class="texto_centralizado"
+            <div class="card card-customizado">
+              <i class="bi bi-gem card-texto-vendas-customizado rf_titulo_destaque_pdf "> Pacote Customizado</i>
+
+              <div class="row">
+                <!--Acessórios-->
+                <div class="col divisoria_customizado_acessorio">
+                  <div class="barra_fei_menu_customizado">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
                       ><strong>Acessórios</strong></span
                     >
                   </div>
-                  <div class="col-12">
+                  <div class="col">
                     <ul
                       class="nav nav-item"
                       style="display: block; clear: both"
                     >
                       <li
                         class="nav-item"
-                        v-for="item in itens_kit_acessorios_customizado"
+                        v-for="item in itens_kit_acessorios"
                         :key="item.id"
                       >
                         <strong
                           ><i class="bi bi-check2-circle p-2">
-                            <span class="sp_icon">{{ item.descricao }}</span></i
+                            <span class="sp_icon rf_texto_pdf">{{ item.descricao }}</span></i
                           ></strong
                         >
                       </li>
                     </ul>
                   </div>
                 </div>
-         
-                <div class="row">
-                  <div class="col mt-3 barra_fei_menu_customizado">
-                    <span class="texto_centralizado"
+                <!--Revisão-->
+                <div class="col divisoria_customizado_revisao">
+                  <div class="col barra_fei_menu_customizado">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
                       ><strong>Revisão pré-paga</strong></span
                     >
                   </div>
-                  <div class="col-12">
+                  <div class="col divisoria_customizado">
                     <ul
                       class="nav nav-item"
                       style="display: block; clear: both"
                     >
                       <li
                         class="nav-item"
-                        v-for="item in itens_kit_revisoes_customizado"
+                        v-for="item in itens_kit_revisoes"
                         :key="item.id"
                       >
                         <strong
                           ><i class="bi bi-check2-circle p-2">
-                            <span class="sp_icon">{{ item.descricao }}</span></i
+                            <span class="sp_icon rf_texto_pdf">{{ item.descricao }}</span></i
                           ></strong
                         >
                       </li>
                     </ul>
                   </div>
                 </div>
-  
-                <div class="row">
-                  <div class="col mt-3 barra_fei_menu_customizado">
-                    <span class="texto_centralizado"
+                <!--Seguros-->
+                <div class="col divisoria_customizado_seguros">
+                  <div class="col barra_fei_menu_customizado">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
                       ><strong>Seguros</strong></span
                     >
                   </div>
-                </div>
-                <div class="row">
-                  <div class="col-7">
+                  <div class="col">
                     <ul
                       class="nav nav-item"
                       style="display: block; clear: both"
                     >
                       <li
                         class="nav-item"
-                        v-for="item in itens_kit_seguros_customizado"
+                        v-for="item in itens_kit_seguros"
                         :key="item.id"
                       >
                         <strong
                           ><i class="bi bi-check2-circle p-2">
-                            <span class="sp_icon">{{ item.descricao }}</span></i
+                            <span class="sp_icon rf_texto_pdf">{{ item.descricao }}</span></i
                           >
                         </strong>
                       </li>
                     </ul>
                   </div>
-                  <div class="col position-relative">
-                    <img
-                      src="../../assets/economia_customizado.png"
-                      alt="Bootstrap"
-                      width="150"
-                      class="img-fluid"
-                    />
-                    <div class="texto-sobre-imagem"></div>
+                </div>
+                <!--Informações-->
+                <div class="col divisoria_customizado_info">
+                  <div class="col barra_fei_menu_customizado">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>Informações</strong></span
+                    >
+                  </div>
+                  <div class="col">
+                    <div class="row">
+                      <div class="col-6">
+                        <span class="esquerda rf_texto_pdf">
+                          <strong>NOVO VALOR PARCELA:</strong>
+                        </span>
+                      </div>
+                      <div class="col-6 direita rf_texto_pdf">
+                        <span
+                          ><strong class="rf_texto_pdf">{{
+                            this.currency(novo_valor_parcela_customizado)
+                          }}</strong></span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col mt-2">
+                    <div class="row">
+                      <div class="col-6">
+                        <div class="esquerda">
+                          <span class="texto_tachado">
+                            <strong class="tachado rf_texto_pdf"
+                              >de {{ this.currency(de_customizado) }}</strong
+                            >
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-6 direita">
+                        <span class="texto_oferta rf_texto_pdf"
+                          >por
+                          <strong> {{ this.currency(por_customizado) }}</strong>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 mt-2 position-relative">
+                      <img
+                        src="../../assets/economia_customizado.png"
+                        alt="Bootstrap"
+                        width="150"
+                        class="img-fluid"
+                      />
+                      <div class="texto-sobre-imagem rf_texto_pdf">
+                        {{ this.currency(economia_customizado) }}
+                      </div>
+                    </div>
+                    <div class="col-7 mt-5 direita">
+                      <span class="texto_oferta rf_texto_pdf"
+                        >por apenas
+                        <strong>{{ this.currency(apenas_customizado) }}</strong>
+                        a mais na parcela por dia
+                      </span>
+                    </div>
                   </div>
                 </div>
-            
-                <div class="row">
-                  <div
-                    class="col mt-3 barra_fei_menu_customizado texto_pacotes"
-                  >
-                    <span class="esquerda"><strong></strong></span>
-                    <span class="direita"><strong></strong></span>
-                  </div>
-                </div>
+              </div>
+            </div>
 
-                <div class="col mt-3 rodape">
-                  <div class="col-4 esquerda">
-                    <span class="texto_tachado"
-                      ><strong class="tachado"></strong></span
-                    ><br />
-                    <span class="texto_oferta"><strong> </strong></span>
-                  </div>
-                  <div class="col-8 direita">
-                    <span class="texto_oferta"><strong></strong></span>
-                  </div>
-                </div>
-              </div> -->
+
 
             <div class="row g-2 p-2 mt-4">
               <div class="col-12 rodape">
-                <span class="texto_cartao"
+                <span class="texto_cartao rf_titulo_destaque_pdf"
                   ><strong>ou em até 6x no cartão</strong></span
                 >
               </div>
@@ -3055,7 +3718,40 @@
         </div>
       </div>
     </div>
+ 
   </div>
+  <!-- <div class="modal-footer">
+          <div class="col-1">
+            <button
+              type="button"
+              class="btn btn-lg btn-filtro"
+              :disabled="habilitar_finalizar_venda"
+              @click="fecharModalFinalizar"
+            >
+              Finalizar Venda
+            </button>
+          </div>
+          <div class="col-1">
+            <button
+              type="button"
+              class="btn btn-lg btn-filtro"
+              :disabled="habilitar_venda_perdida"
+              @click="fecharModalPerdido"
+            >
+              Venda Perdida
+            </button>
+          </div>
+          <div class="col-1">
+            <button
+              type="button"
+              class="btn btn-lg btn-filtro"
+              data-bs-dismiss="modal"
+              @click="fecharModal()"
+            >
+              Fechar
+            </button>
+          </div>
+  </div> -->
   <!--Mensagens do Sistema-->
   <div v-if="abrir_modal">
     <Message :msg="msg" v-show="msg" />
@@ -3071,8 +3767,9 @@ import RodapeVue from "../../components/menu/Rodape.vue";
 import axios from "axios";
 import TokenService from "../../services/token.service";
 import jwt_decode from "jwt-decode";
-//import Pagination from "../../components/Pagination.vue";
+import Pagination from "../../components/Pagination.vue";
 import Message from "../../components/modal/Message.vue";
+import html2pdf from "html2pdf.js";
 
 export default {
   name: "Vendas F&I",
@@ -3081,6 +3778,7 @@ export default {
     NavgatorFI,
     RodapeVue,
     Message,
+    Pagination,
   },
   data() {
     return {
@@ -3195,9 +3893,26 @@ export default {
       estoque_pecas: [],
 
       //Dados customizado
+      itens_kit_acessorios_customizado: [],
+      itens_kit_revisoes_customizado: [],
+      itens_kit_seguros_customizado: [],
+      valor_pacote_customizado: [],
+      quadro_customizado: false,
+      parcelamento_customizado: [],
+      page_customizado: 1,
+      totalPages_customizado: 0,
+      totalItems_customizado: 0,
+      pageSizes_customizado: [5, 10, 15, 35, 50, 100],
+      pageSize_customizado: 5,
+      pacoteSelecionadoCustomizado: null,
+      total_entrada_customizado:"",
+      total_financiamento_selecionado_customizado:"",
+      parcela_customizado:"",
+      banco_selecionado_customizado:"",
+
+
       habilitar_customizacao: false,
       cadastro: false,
-      quadro_customizado: false,
 
       //Dados da Mensagem
       abrir_modal: false,
@@ -3263,19 +3978,18 @@ export default {
 
       total_financiamento_bronze: "",
 
-      itens_kit_acessorios_customizado: [],
       total_preco_acessorios_customizado: "",
       total_preco_desconto_acessorios_customizado: "",
       total_preco_ajustado_acessorios_customizado: "",
-      itens_kit_revisoes_customizado: [],
+
       total_preco_revisoes_customizado: "",
       total_preco_desconto_revisoes_customizado: "",
       total_preco_ajustado_revisoes_customizado: "",
-      itens_kit_seguros_customizado: [],
+
       total_preco_seguros_customizado: "",
       total_preco_desconto_seguros_customizado: "",
       total_preco_ajustado_seguros_customizado: "",
-      valor_pacote_customizado: "",
+
       total_financiamento_customizado: "",
 
       //validação
@@ -3306,23 +4020,46 @@ export default {
 
       //Gerar Menu
       //ouro
-      novo_valor_parcela_ouro:0,
-      de_ouro:0,
-      por_ouro:0,
-      economia_ouro:0,
-      apenas_ouro:0,
+      novo_valor_parcela_ouro: 0,
+      de_ouro: 0,
+      por_ouro: 0,
+      economia_ouro: 0,
+      apenas_ouro: 0,
       //prata
-      novo_valor_parcela_prata:0,
-      de_prata:0,
-      por_prata:0,
-      economia_prata:0,
-      apenas_prata:0,
+      novo_valor_parcela_prata: 0,
+      de_prata: 0,
+      por_prata: 0,
+      economia_prata: 0,
+      apenas_prata: 0,
       //bronze
-      novo_valor_parcela_bronze:0,
-      de_bronze:0,
-      por_bronze:0,
-      economia_bronze:0,
-      apenas_bronze:0
+      novo_valor_parcela_bronze: 0,
+      de_bronze: 0,
+      por_bronze: 0,
+      economia_bronze: 0,
+      apenas_bronze: 0,
+
+      modelo_id: "",
+      observacao: "",
+
+      //customizado
+      novo_valor_parcela_customizado: 0,
+      de_customizado: 0,
+      por_customizado: 0,
+      economia_customizado: 0,
+      apenas_customizado: 0,
+
+
+      total_preco: "",
+      itens_kit_revisoes: [],
+      itens_kit_acessorios: [],
+      itens_kit_seguros: [],
+
+      id_acessorio_customizado: "",
+      id_seguro_customizado: "",
+      id_revisao_customizado: "",
+      precoDesconto: "",
+      id_acessorio: "",
+      habilitar_ranquear_customizado: false,
     };
   },
   mounted() {
@@ -3507,7 +4244,7 @@ export default {
             },
           }
         );
-
+        this.modelo_id = response.data.modelo.id;
         console.log("Lista de Modelos", response.data);
         // Faça algo com os dados aqui, como atribuir a uma variável de componente
         if (response.data.fonte == "VeiculoModelo") {
@@ -3539,29 +4276,32 @@ export default {
           params: { codigo: this.modelo_codigo },
         }
       );
-      console.log(id_modelo.data.rows[0].id);
+
+      console.log("Resultado da busca do modelo", id_modelo);
       //Ir tabela kit modelo e trazer os pacotes ref. ao ID
-      const kits_modelo = await axios.get(
-        `${process.env.VUE_APP_API_URL}listar_kits_modelo`,
-        {
-          params: {
-            modelo_id: id_modelo.data.rows[0].id,
-            page: this.page - 1,
-            size: this.pageSize,
-          },
-        }
-      );
+      if (id_modelo.data.count > 0) {
+        const kits_modelo = await axios.get(
+          `${process.env.VUE_APP_API_URL}listar_kits_modelo`,
+          {
+            params: {
+              modelo_id: id_modelo.data.rows[0].id,
+              page: this.page - 1,
+              size: this.pageSize,
+            },
+          }
+        );
 
-      this.ids_kits_modelo = kits_modelo.data.kits_modelo;
-      console.log("Modelos ---------------------", this.ids_kits_modelo[0]);
-      //Dados pacote Ouro
-      this.kit_id_ouro = this.ids_kits_modelo[0].id;
-      this.kit_id_prata = this.ids_kits_modelo[1].id;
-      this.kit_id_bronze = this.ids_kits_modelo[2].id;
+        this.ids_kits_modelo = kits_modelo.data.kits_modelo;
+        console.log("Modelos ---------------------", this.ids_kits_modelo[0]);
+        //Dados pacote Ouro
+        this.kit_id_ouro = this.ids_kits_modelo[0].id;
+        this.kit_id_prata = this.ids_kits_modelo[1].id;
+        this.kit_id_bronze = this.ids_kits_modelo[2].id;
 
-      this.pacote_ouro(this.kit_id_ouro);
-      this.pacote_prata(this.kit_id_prata);
-      this.pacote_bronze(this.kit_id_bronze);
+        this.pacote_ouro(this.kit_id_ouro);
+        this.pacote_prata(this.kit_id_prata);
+        this.pacote_bronze(this.kit_id_bronze);
+      }
     },
     async pacote_ouro(kit_id_ouro) {
       //Acessórios Ouro ***************************************************************************
@@ -3575,7 +4315,7 @@ export default {
           },
         }
       );
-      console.log("Valores do pacote ouro", pacote_ouro_acessorios)
+      console.log("Valores do pacote ouro", pacote_ouro_acessorios);
 
       this.itens_kit_acessorios_ouro =
         pacote_ouro_acessorios.data.kits_acessorios;
@@ -3584,7 +4324,7 @@ export default {
         pacote_ouro_acessorios.data.totalPrecoDesconto;
       this.total_preco_ajustado_acessorios_ouro =
         pacote_ouro_acessorios.data.totalPrecoAjustado;
-        
+
       //Revisões Ouro
       const pacote_ouro_revisoes = await axios.get(
         `${process.env.VUE_APP_API_URL}listar_kits_revisoes`,
@@ -3626,11 +4366,14 @@ export default {
         parseFloat(this.total_preco_ajustado_seguros_ouro);
       //Fim Pacote ouro ******************************************************************************
       console.log("Valor pacote ouro", this.valor_pacote_ouro);
-      this.de_ouro = (this.total_preco_acessorios_ouro + this.total_preco_revisoes_ouro + this.total_preco_seguros_ouro);
+      this.de_ouro =
+        this.total_preco_acessorios_ouro +
+        this.total_preco_revisoes_ouro +
+        this.total_preco_seguros_ouro;
       this.por_ouro = this.valor_pacote_ouro;
-      this.economia_ouro = (this.de_ouro - this.por_ouro)
-      this.novo_valor_parcela_ouro = this.parcela_ouro
-      this.apenas_ouro = (this.novo_valor_parcela_ouro / 30)
+      this.economia_ouro = this.de_ouro - this.por_ouro;
+      this.novo_valor_parcela_ouro = this.parcela_ouro;
+      this.apenas_ouro = this.novo_valor_parcela_ouro / 30;
     },
     async pacote_prata(kit_id_prata) {
       //Acessórios Prata ***************************************************************************
@@ -3692,13 +4435,16 @@ export default {
         parseFloat(this.total_preco_ajustado_revisoes_prata) +
         parseFloat(this.total_preco_ajustado_seguros_prata);
       //Fim Pacote ouro ******************************************************************************
-      
+
       console.log("Valor pacote prata", this.valor_pacote_prata);
-      this.de_prata = (this.total_preco_acessorios_prata + this.total_preco_revisoes_prata + this.total_preco_seguros_prata);
+      this.de_prata =
+        this.total_preco_acessorios_prata +
+        this.total_preco_revisoes_prata +
+        this.total_preco_seguros_prata;
       this.por_prata = this.valor_pacote_prata;
-      this.economia_prata = (this.de_prata - this.por_prata)
-      this.novo_valor_parcela_prata = this.parcela_prata
-      this.apenas_prata = (this.novo_valor_parcela_prata / 30)
+      this.economia_prata = this.de_prata - this.por_prata;
+      this.novo_valor_parcela_prata = this.parcela_prata;
+      this.apenas_prata = this.novo_valor_parcela_prata / 30;
     },
     async pacote_bronze(kit_id_bronze) {
       //Acessórios Prata ***************************************************************************
@@ -3763,11 +4509,14 @@ export default {
       //Fim Pacote ouro ******************************************************************************
       console.log("Valor pacote bronze", this.valor_pacote_bronze);
 
-      this.de_bronze = (this.total_preco_acessorios_bronze + this.total_preco_revisoes_bronze + this.total_preco_seguros_bronze);
+      this.de_bronze =
+        this.total_preco_acessorios_bronze +
+        this.total_preco_revisoes_bronze +
+        this.total_preco_seguros_bronze;
       this.por_bronze = this.valor_pacote_bronze;
-      this.economia_bronze = (this.de_bronze - this.por_bronze)
-      this.novo_valor_parcela_bronze = this.parcela_bronze
-      this.apenas_bronze = (this.novo_valor_parcela_bronze / 30)
+      this.economia_bronze = this.de_bronze - this.por_bronze;
+      this.novo_valor_parcela_bronze = this.parcela_bronze;
+      this.apenas_bronze = this.novo_valor_parcela_bronze / 30;
     },
 
     //Ranqueamento
@@ -3846,6 +4595,7 @@ export default {
           this.ranqueamento_entrada_ouro();
           this.ranqueamento_entrada_prata();
           this.ranqueamento_entrada_bronze();
+          //this.ranqueamento_entrada_customizado();
         }
       });
     },
@@ -4046,6 +4796,58 @@ export default {
         this.totalItems_bronze = totalItems;
       });
     },
+
+    //Bloco Customizado
+    handlePageChangeEntradaCustomizado(value) {
+      this.page_customizado = value;
+      this.ranqueamento_entrada_customizado();
+    },
+    getRequestParamsEntradaCustomizado(
+      page_customizado,
+      pageSize_customizado,
+      n_atendimento,
+      id_coluna,
+      parcela
+    ) {
+      let params = {};
+
+      if (page_customizado) {
+        params["page_customizado"] = page_customizado - 1;
+      }
+      if (pageSize_customizado) {
+        params["size_customizado"] = pageSize_customizado;
+      }
+      if (n_atendimento) {
+        params["n_atendimento"] = n_atendimento;
+      }
+      if (id_coluna) {
+        params["id_coluna"] = id_coluna;
+      }
+      if (parcela) {
+        params["parcela"] = parcela;
+      }
+      return params;
+    },
+    async ranqueamento_entrada_customizado() {
+      const params = this.getRequestParamsEntradaCustomizado(
+        this.page_customizado,
+        this.pageSize_customizado,
+        this.n_atendimento,
+        this.id_coluna,
+        this.parcela
+      );
+
+      /**faço uma consulta na tabela TempTaxas chamando a função ranqueamento_entrada_1 */
+      console.log("Parcelas do customizado");
+      userService.getRanqueamento_customizado(params).then((response) => {
+        const { parcelas, totalPages, totalItems } = response.data;
+        console.log("Parcelas do customizado", parcelas);
+        this.parcelamento_customizado = parcelas;
+        this.totalPages_customizado = totalPages;
+        this.totalItems_customizado = totalItems;
+      });
+    },
+
     rowSelect_ouro(idx, id_taxa, pacote) {
       if (pacote == 1) {
         console.log("Dados da parcela", pacote);
@@ -4062,6 +4864,13 @@ export default {
     rowSelect_bronze(idx, id_taxa, pacote) {
       if (pacote == 3) {
         this.pacoteSelecionadoBronze = id_taxa;
+        this.select_parcela(id_taxa, pacote);
+        this.habilitar();
+      }
+    },
+    rowSelect_customizado(idx, id_taxa, pacote) {
+      if (pacote == 4) {
+        this.pacoteSelecionadoCustomizado = id_taxa;
         this.select_parcela(id_taxa, pacote);
         this.habilitar();
       }
@@ -4311,6 +5120,63 @@ export default {
           this.habilitar();
         }
       }
+       //Customizado
+      if (pacote == 4) {        
+        const valor_financiamento = this.total_financiado_fei;
+        const valor_pacote = this.valor_pacote_customizado;
+
+        const valor_total_financiamento = valor_financiamento + valor_pacote;
+        const valor_parcela_financiamento = this.valor_parcela_financiamento;
+        const tipo_pagamento_pacote = this.metodo_pagamento;
+        const observacao = this.observacao;
+
+        //Preencher informações do F&I
+        this.valor_financiar = this.currency(valor_financiamento);
+        this.valor_pacote_selecionado = this.currency(valor_pacote);
+        this.total_financiamento_selecionado = this.currency(
+          valor_total_financiamento
+        );
+        this.valor_parcela_selecionada = this.currency(
+          valor_parcela_financiamento
+        );
+
+        console.log(
+          "Selecionando uma parcela",
+          valor_financiamento,
+          valor_pacote,
+          valor_total_financiamento,
+          valor_parcela_financiamento,
+
+        );
+        const response = await fetch(
+          `${process.env.VUE_APP_API_URL}pos_venda_detalhada/${id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: id,
+              kit_id: null,
+              user_id: this.user_log,
+              valor_financiamento: this.currency(valor_financiamento),
+              valor_pacote: this.currency(valor_pacote),
+              valor_total_financiamento: this.currency(
+                valor_total_financiamento
+              ),
+              valor_parcela_financiamento: this.currency(
+                valor_parcela_financiamento
+              ),
+              tipo_pagamento_pacote: tipo_pagamento_pacote,
+              observacao: observacao,
+            }),
+          }
+        );
+        console.log("resposta da atualização", response.statusText);
+        if (response.statusText == "OK") {
+          this.habilitar();
+        }
+      }
     },
 
     //funções customizado
@@ -4319,35 +5185,838 @@ export default {
       this.habilitar_customizacao = true;
       this.desabilitar_customizacao = false;
       this.cadastro = true;
+      this.retrieveAcessorios();
+      this.retrieveSeguros();
+      this.retrieveRevisoes();
+      this.retrievekitsAcessoriosItens();
+      this.retrievekitsSegurosItens();
+      this.retrievekitsRevisoesItens();
+      this.resumoRanqueamentoCustomizado(); 
+    },
+    async resumoRanqueamentoCustomizado() {
+      //Verificar se todos os acessórios foram preenchidos
+      try {
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_URL}verificar_ranqueamento_customizado`,
+          {
+            params: {
+              pos_venda_detalhada_id: this.id_pos_venda_detalhada,
+            },
+          }
+        );
+        let bancos = [];
+        bancos = response.data.menu_pos_venda_detalhada.menu_pos_venda[0].menu_rank_pos_venda;
+        const bancoCustomizado = bancos.find(banco => banco.rankPacote === 'Customizado');
+
+        if (bancoCustomizado) {
+          this.banco_selecionado_customizado = bancoCustomizado.bancos_rank_pos_venda.nome;
+        } 
+
+        console.log("Resumo do ranqueamento customizazdo", response.data);
+        console.log("Resumo do ranqueamento customizazdo Bancos", bancos);
+        this.total_entrada_customizado = response.data.menu_pos_venda_detalhada.menu_pos_venda[0].entradaCustomizado;
+        this.total_financiamento_selecionado_customizado = response.data.valor_total_financiamento;
+        this.parcela_customizado = response.data.valor_parcela_financiamento;
+        
+   
+      } catch (error) {
+        console.log(error);
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
+    },
+    async verificar_ranqueamento_customizado() {
+      //Verificar se todos os acessórios foram preenchidos
+      try {
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_URL}verificar_acessorios`,
+          {
+            params: {
+              pos_venda_detalhada_id: this.id_pos_venda_detalhada,
+            },
+          }
+        );
+
+        console.log("Itens kits acessorios", response.data.kits.count);
+        if (response.data.kits.count > 0) {
+          this.abrir_modal = true;
+          this.msg = "Não existem acessórios ou estão sem preço de venda!";
+          setTimeout(() => (this.abrir_modal = false), 2000);
+          this.habilitar_ranquear_customizado = true;
+        } else {
+          this.habilitar_ranquear_customizado = false;
+          this.ranquear_customizado();
+        }
+      } catch (error) {
+        console.log(error);
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
     },
     async ranquear_customizado() {
-      console.log("Existem pacotes Customizado");
-      //Pergar os dados para calcular as taxas
+      if (this.valor_pacote_customizado) {
+        console.log(
+          "Existe valor para o pacote",
+          this.valor_pacote_customizado
+        );
+        this.quadro_customizado = true;
 
-      this.id_coluna = 1;
-      this.incluir_acessorios = 0;
+        this.valor_pacote_customizado_rank =
+          this.valor_pacote_customizado + this.total_financiado_fei;
 
-      //Calcular as taxas
-
-      //Habilitar os modais
-      this.quadro_customizado = true;
-
-      console.log("Valor Pacotes");
-      this.valor_pacote_customizado_rank =
-        this.valor_pacote_customizado + this.total_financiado_fei;
-
-      //Formatando os valores para o modal
-      this.total_financiamento_customizado = this.currency(
-        this.valor_pacote_customizado_rank
-      );
-      //this.retrieveRanqueamento();
+        this.total_financiamento_customizado = this.currency(
+          this.valor_pacote_customizado_rank
+        );
+        this.retrieveRanqueamentoCustomizado();
+      }
     },
-    //Calculos Gerar Menu
-    calculos_menu(){
+    async retrieveRanqueamentoCustomizado() {
+      const params = this.getRequestParamsTaxasCustomizado(
+        this.total_entrada_fei,
+        this.total_financiamento_customizado,
+        this.parcela,
+        this.page,
+        this.pageSize,
+        this.n_atendimento,
+        this.company_id
+      );
+      console.log(
+        "Dados do Paramentro para calcular taxas do customizado",
+        params
+      );
+      /**Chama o método ranqueamento que cria as taxas na tabela tempTaxas e retorna um ok  */
+      userService.getTaxasFEI_customizado(params).then((response) => {
+        const cod = response;
+        console.log("Taxas encontradas", response);
 
+        if (cod.status == 200) {
+          /**Caso a resposta seja ok chamo os métodos abaixo */
+          this.ranqueamento_entrada_customizado();
+        }
+      });
+    },
+    getRequestParamsTaxasCustomizado(
+      total_entrada_fei,
+      valor_pacote_customizado_rank,
+      parcela,
+      page,
+      pageSize,
+      n_atendimento,
+      company_id
+    ) {
+      let params = {};
+      if (total_entrada_fei) {
+        params["entrada"] = total_entrada_fei;
+      }
+
+      if (valor_pacote_customizado_rank) {
+        params["financiamento_customizado"] = valor_pacote_customizado_rank;
+      }
+      if (parcela) {
+        params["parcela"] = parcela;
+      }
+      if (page) {
+        params["page"] = page - 1;
+      }
+      if (pageSize) {
+        params["size"] = pageSize;
+      }
+      if (n_atendimento) {
+        params["n_atendimento"] = n_atendimento;
+      }
+
+      if (company_id) {
+        params["empresa_id"] = company_id;
+      }
+      return params;
+    },
+
+    async inserir_acessorio(item) {
+      console.log("Inserindo acessorio");
+      console.log(item);
+      await fetch(`${process.env.VUE_APP_API_URL}venda_customizada`, {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          pos_venda_detalhada_id: this.id_pos_venda_detalhada,
+          codigo: "AC",
+          descricao: item.descricao_mercadoria,
+          preco_base: item.preco_base,
+          preco: item.preco_final,
+          preco_desconto: 0,
+          desconto_usuario: 0,
+          desconto_gerente: 0,
+          status: 1,
+        }),
+      })
+        .then((data) => {
+          if (!data.ok) {
+            throw Error(data.status);
+          }
+          return data.json();
+        })
+        .then((resposta) => {
+          console.log("Resposta", resposta);
+          if (resposta.StatusOk == 200) {
+            this.abrir_modal = true;
+            this.msg = resposta.message;
+            setTimeout(() => (this.abrir_modal = false), 1000);
+            this.retrievekitsAcessoriosItens();
+            this.atualizarPacoteCustomizado();
+          }
+          if (resposta.StatusOk == 204) {
+            this.abrir_modal = true;
+            this.msg = resposta.message;
+            setTimeout(() => (this.abrir_modal = false), 1000);
+            //this.resetForm();
+            // this.retrieveCliente();
+          }
+        })
+        .catch((error) => {
+          if (error.response && error.response.data) {
+            console.log("Erro do servidor:", error.response.data.message);
+            this.abrir_modal = true;
+            this.msg =
+              "Houve um erro no servidor: " + error.response.data.message;
+          } else {
+            console.log("Erro desconhecido:", error);
+            this.abrir_modal = true;
+            this.msg =
+              "Houve um erro desconhecido. Por favor, contate o administrador.";
+          }
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        });
+    },
+    async inserir_seguro(item) {
+      console.log("Inserindo seguro");
+      console.log(item);
+      await fetch(`${process.env.VUE_APP_API_URL}venda_customizada`, {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          pos_venda_detalhada_id: this.id_pos_venda_detalhada,
+          codigo: "SG",
+          descricao: item.descricao,
+          preco: item.valor,
+          preco_desconto: 0,
+          desconto_usuario: 0,
+          desconto_gerente: 0,
+          status: 1,
+        }),
+      })
+        .then((data) => {
+          if (!data.ok) {
+            throw Error(data.status);
+          }
+          return data.json();
+        })
+        .then((resposta) => {
+          console.log("Resposta", resposta);
+          if (resposta.StatusOk == 200) {
+            this.abrir_modal = true;
+            this.msg = resposta.message;
+            setTimeout(() => (this.abrir_modal = false), 1000);
+            this.retrievekitsSegurosItens();
+            this.atualizarPacoteCustomizado();
+          }
+          if (resposta.StatusOk == 204) {
+            this.abrir_modal = true;
+            this.msg = resposta.message;
+            setTimeout(() => (this.abrir_modal = false), 1000);
+            //this.resetForm();
+            // this.retrieveCliente();
+          }
+        })
+        .catch((error) => {
+          if (error.response && error.response.data) {
+            console.log("Erro do servidor:", error.response.data.message);
+            this.abrir_modal = true;
+            this.msg =
+              "Houve um erro no servidor: " + error.response.data.message;
+          } else {
+            console.log("Erro desconhecido:", error);
+            this.abrir_modal = true;
+            this.msg =
+              "Houve um erro desconhecido. Por favor, contate o administrador.";
+          }
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        });
+    },
+    async inserir_revisoes(item) {
+      console.log("Inserindo revisoes");
+      console.log(item);
+      await fetch(`${process.env.VUE_APP_API_URL}venda_customizada`, {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          pos_venda_detalhada_id: this.id_pos_venda_detalhada,
+          codigo: "RV",
+          descricao: item.descricao,
+          preco: item.valor,
+          preco_desconto: 0,
+          desconto_usuario: 0,
+          desconto_gerente: 0,
+          status: 1,
+        }),
+      })
+        .then((data) => {
+          if (!data.ok) {
+            throw Error(data.status);
+          }
+          return data.json();
+        })
+        .then((resposta) => {
+          console.log("Resposta", resposta);
+          if (resposta.StatusOk == 200) {
+            this.abrir_modal = true;
+            this.msg = resposta.message;
+            setTimeout(() => (this.abrir_modal = false), 1000);
+            this.retrievekitsRevisoesItens();
+            this.atualizarPacoteCustomizado();
+          }
+          if (resposta.StatusOk == 204) {
+            this.abrir_modal = true;
+            this.msg = resposta.message;
+            setTimeout(() => (this.abrir_modal = false), 1000);
+            //this.resetForm();
+            // this.retrieveCliente();
+          }
+        })
+        .catch((error) => {
+          if (error.response && error.response.data) {
+            console.log("Erro do servidor:", error.response.data.message);
+            this.abrir_modal = true;
+            this.msg =
+              "Houve um erro no servidor: " + error.response.data.message;
+          } else {
+            console.log("Erro desconhecido:", error);
+            this.abrir_modal = true;
+            this.msg =
+              "Houve um erro desconhecido. Por favor, contate o administrador.";
+          }
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        });
+    },
+
+    remover_item_customizado(item) {
+      this.id_acessorio_customizado = item.id;
+    },
+
+    async atualizarPacoteCustomizado() {
+      this.de_customizado =
+        this.total_preco_acessorios_customizado +
+        this.total_preco_seguros_customizado +
+        this.total_preco_revisoes_customizado;
+      this.por_customizado = this.valor_pacote_customizado;
+      this.economia_customizado = this.de_customizado - this.por_customizado;
+      this.novo_valor_parcela_customizado = this.parcela_customizado;
+      this.apenas_customizado = this.novo_valor_parcela_customizado / 30;
+    },
+    async atualizarPacote() {
+      console.log("Atualizando Pacotes")
+    },
+
+    async confirmarPrecoDesconto() {
+      const id = this.id_acessorio;
+
+      try {
+        await fetch(`${process.env.VUE_APP_API_URL}venda_customizada/${id}`, {
+          method: "PUT",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: id,
+            preco_desconto: this.precoDesconto,
+          }),
+        })
+          .then((data) => {
+            if (!data.ok) {
+              throw Error(data.status);
+            }
+            return data.json();
+          })
+          .then((resposta) => {
+            console.log("Resposta da atualização", resposta);
+            if (resposta.StatusOk === 200) {
+              this.abrir_modal = true;
+              this.msg = resposta.message;
+              setTimeout(() => (this.abrir_modal = false), 1000);
+              this.retrievekitsAcessoriosItens();
+              this.atualizarPacoteCustomizado();
+              this.verificar_ranqueamento_customizado();
+              this.precoDesconto = 0;
+            }
+            if (resposta.StatusOk === 204) {
+              this.abrir_modal = true;
+              this.msg = resposta.message;
+              setTimeout(() => (this.abrir_modal = false), 4000);
+            }
+          });
+      } catch (error) {
+        console.error("Verificando log", error.message);
+
+        if (error.response && error.response.status === 500) {
+          this.abrir_modal = true;
+          this.msg = "Erro interno do servidor";
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        } else {
+          // Tratar outros erros
+          this.abrir_modal = true;
+          (this.msg = "Erro:"), error.message;
+          (this.msg = "Status:"), error.response.status;
+          (this.msg = "Dados:"), error.response.data;
+          (this.msg = "Cabeçalhos:"), error.response.headers;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
+    },
+    async confirmarAlteracao() {
+      const id = this.id_acessorio_customizado;
+
+      try {
+        await fetch(`${process.env.VUE_APP_API_URL}venda_customizada/${id}`, {
+          method: "PUT",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: id,
+            status: 0,
+          }),
+        })
+          .then((data) => {
+            if (!data.ok) {
+              throw Error(data.status);
+            }
+            return data.json();
+          })
+          .then((resposta) => {
+            console.log("Resposta da atualização", resposta);
+            if (resposta.StatusOk === 200) {
+              this.abrir_modal = true;
+              this.msg = resposta.message;
+              setTimeout(() => (this.abrir_modal = false), 1000);
+              this.retrievekitsAcessoriosItens();
+              this.atualizarPacoteCustomizado();
+            }
+          });
+      } catch (error) {
+        console.error("Verificando log", error.message);
+
+        if (error.response && error.response.status === 500) {
+          this.abrir_modal = true;
+          this.msg = "Erro interno do servidor";
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        } else {
+          // Tratar outros erros
+          this.abrir_modal = true;
+          (this.msg = "Erro:"), error.message;
+          (this.msg = "Status:"), error.response.status;
+          (this.msg = "Dados:"), error.response.data;
+          (this.msg = "Cabeçalhos:"), error.response.headers;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
+    },
+    async confirmarAlteracaoSeguro() {
+      const id = this.id_acessorio_customizado;
+
+      try {
+        await fetch(`${process.env.VUE_APP_API_URL}venda_customizada/${id}`, {
+          method: "PUT",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: id,
+            status: 0,
+          }),
+        })
+          .then((data) => {
+            if (!data.ok) {
+              throw Error(data.status);
+            }
+            return data.json();
+          })
+          .then((resposta) => {
+            console.log("Resposta da atualização", resposta);
+            if (resposta.StatusOk === 200) {
+              this.abrir_modal = true;
+              this.msg = resposta.message;
+              setTimeout(() => (this.abrir_modal = false), 1000);
+              this.retrievekitsSegurosItens();
+              this.atualizarPacoteCustomizado();
+            }
+          });
+      } catch (error) {
+        console.error("Verificando log", error.message);
+
+        if (error.response && error.response.status === 500) {
+          this.abrir_modal = true;
+          this.msg = "Erro interno do servidor";
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        } else {
+          // Tratar outros erros
+          this.abrir_modal = true;
+          (this.msg = "Erro:"), error.message;
+          (this.msg = "Status:"), error.response.status;
+          (this.msg = "Dados:"), error.response.data;
+          (this.msg = "Cabeçalhos:"), error.response.headers;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
+    },
+    async confirmarAlteracaoRevisao() {
+      const id = this.id_acessorio_customizado;
+      try {
+        await fetch(`${process.env.VUE_APP_API_URL}venda_customizada/${id}`, {
+          method: "PUT",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: id,
+            status: 0,
+          }),
+        })
+          .then((data) => {
+            if (!data.ok) {
+              throw Error(data.status);
+            }
+            return data.json();
+          })
+          .then((resposta) => {
+            console.log("Resposta da atualização", resposta);
+            if (resposta.StatusOk === 200) {
+              this.abrir_modal = true;
+              this.msg = resposta.message;
+              setTimeout(() => (this.abrir_modal = false), 1000);
+              this.retrievekitsRevisoesItens();
+              this.atualizarPacoteCustomizado();
+            }
+          });
+      } catch (error) {
+        console.error("Verificando log", error.message);
+
+        if (error.response && error.response.status === 500) {
+          this.abrir_modal = true;
+          this.msg = "Erro interno do servidor";
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        } else {
+          // Tratar outros erros
+          this.abrir_modal = true;
+          (this.msg = "Erro:"), error.message;
+          (this.msg = "Status:"), error.response.status;
+          (this.msg = "Dados:"), error.response.data;
+          (this.msg = "Cabeçalhos:"), error.response.headers;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
+    },
+
+    //Carregar itens inseridos nos kits
+    async retrievekitsAcessoriosItens() {
+      console.log("Buscando itens no kit de acessórios");
+
+      try {
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_URL}venda_customizada`,
+          {
+            params: {
+              pos_venda_detalhada_id: this.id_pos_venda_detalhada,
+              codigo: "AC",
+              page: this.page - 1,
+              size: this.pageSize,
+            },
+          }
+        );
+
+        console.log("Itens kits acessorios", response.data);
+        this.itens_kit_acessorios = response.data.kits;
+        this.total_preco_acessorios_customizado = response.data.totalPreco;
+        this.total_preco_desconto_acessorios_customizado =
+          response.data.totalPrecoDesconto;
+        // this.total_precoAjustado_acessorios = response.data.totalPrecoAjustado;
+        // this.totalPages = response.data.totalPages;
+        // this.totalItems = response.data.totalItems;
+        this.total_kits();
+      } catch (error) {
+        console.log(error);
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
+    },
+
+    async retrievekitsSegurosItens() {
+      console.log("Buscando itens no kit de seguros");
+
+      try {
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_URL}venda_customizada`,
+          {
+            params: {
+              pos_venda_detalhada_id: this.id_pos_venda_detalhada,
+              codigo: "SG",
+              page: this.page - 1,
+              size: this.pageSize,
+            },
+          }
+        );
+
+        this.itens_kit_seguros = response.data.kits;
+        this.total_preco_seguros_customizado = response.data.totalPreco;
+        // this.total_precoDesconto_acessorios = response.data.totalPrecoDesconto;
+        // this.total_precoAjustado_acessorios = response.data.totalPrecoAjustado;
+        // this.totalPages = response.data.totalPages;
+        // this.totalItems = response.data.totalItems;
+        this.total_kits();
+      } catch (error) {
+        console.log(error);
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
+    },
+    async retrievekitsRevisoesItens() {
+      console.log("Buscando itens no kit de Revisões");
+
+      try {
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_URL}venda_customizada`,
+          {
+            params: {
+              pos_venda_detalhada_id: this.id_pos_venda_detalhada,
+              codigo: "RV",
+              page: this.page - 1,
+              size: this.pageSize,
+            },
+          }
+        );
+
+        this.itens_kit_revisoes = response.data.kits;
+        this.total_preco_revisoes_customizado = response.data.totalPreco;
+        // this.total_precoDesconto_acessorios = response.data.totalPrecoDesconto;
+        // this.total_precoAjustado_acessorios = response.data.totalPrecoAjustado;
+        // this.totalPages = response.data.totalPages;
+        // this.totalItems = response.data.totalItems;
+        this.total_kits();
+      } catch (error) {
+        console.log(error);
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
+    },
+
+    async retrieveAcessorios() {
+      console.log("Buscando lista de acessórios");
+
+      try {
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_URL}listar_acessorios_modelo`,
+          {
+            params: {
+              modelo_id: this.modelo_id,
+              codigo_mercadoria: this.filtroCodigo,
+              descricao_mercadoria: this.filtroDescricao,
+              page: this.page - 1,
+              size: this.pageSize,
+            },
+          }
+        );
+
+        console.log("Dados dos acessorios");
+        this.estoque_pecas = response.data.acessorio_modelo;
+        this.totalPages = response.data.totalPages;
+        this.totalItems = response.data.totalItems;
+      } catch (error) {
+        console.log(error);
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
+    },
+    async retrieveSeguros() {
+      console.log("Buscando lista de acessórios");
+
+      try {
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_URL}listar_seguros`,
+          {
+            params: {
+              modelo_id: this.modelo_id,
+              codigo: this.filtroCodigoSeguro,
+              descricao: this.filtroDescricaoSeguros,
+              page: this.page - 1,
+              size: this.pageSize,
+            },
+          }
+        );
+
+        console.log("Dados dos acessorios");
+        console.log(response.data.seguros);
+        this.seguros_modelo = response.data.seguros;
+        this.totalPages = response.data.totalPages;
+        this.totalItems = response.data.totalItems;
+      } catch (error) {
+        console.log(error);
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
+    },
+    async retrieveRevisoes() {
+      console.log("Buscando lista de Revisões");
+
+      try {
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_URL}listar_revisoes`,
+          {
+            params: {
+              modelo_id: this.modelo_id,
+              codigo: this.filtroCodigoSeguro,
+              descricao: this.filtroDescricaoSeguros,
+              page: this.page - 1,
+              size: this.pageSize,
+            },
+          }
+        );
+
+        console.log("Dados das Revisões");
+        console.log(response.data.revisoes);
+        this.revisoes_modelo = response.data.revisoes;
+        this.totalPages = response.data.totalPages;
+        this.totalItems = response.data.totalItems;
+      } catch (error) {
+        console.log(error);
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
+    },
+
+    exibirModalConfirmacao(item) {
+      // Exibir o modal
+      console.log("Exibir o modal", item);
+
+      // Salvar o item atual para confirmar a alteração posteriormente
+      this.id_acessorio = item.id;
+      this.status_acessorio = 1;
     },
 
     //funções de formatação
+    generatePdfPacotes() {
+      // console.log("Imprimir ----------------------------------------------------------------------------------------------------------------- 0001")
+      const options2 = {
+        margin: [5, 5],
+        filename: "menu_pos_venda.pdf",
+        image: { type: "pdf", quality: 2 },
+        html2canvas: { scale: 2 },
+        jsPDF: { format: "a4", orientation: "landscape" },
+        pagebreak: { mode: "avoid-all" },
+        enableLinks: true,
+      };
+      // Modificar o tamanho da fonte para impressão
+      document.querySelectorAll(".rf_texto_pdf").forEach((element) => {
+        element.style.fontSize = "9px"; // Tamanho de fonte para impressão
+      });
+      document.querySelectorAll(".rf_titulo_pdf").forEach((element) => {
+        element.style.fontSize = "12px"; // Tamanho de fonte para impressão
+      });
+      document.querySelectorAll(".rf_titulo_destaque_pdf").forEach((element) => {
+        element.style.fontSize = "14px"; // Tamanho de fonte para impressão
+      });
+
+
+   
+      setTimeout(() => {
+        html2pdf().from(this.$refs.contentToPrint1).set(options2).save();
+      }, 500);
+      //html2pdf().from(this.$refs.contentToPrint).set(options).save();
+    },
+    generatePdf() {
+      // console.log("Imprimir ----------------------------------------------------------------------------------------------------------------- 0001")
+      const options = {
+        margin: [5, 5],
+        filename: "menu_pos_venda_customizado.pdf",
+        image: { type: "pdf", quality: 2 },
+        html2canvas: { scale: 2 },
+        jsPDF: { format: "a4", orientation: "landscape" },
+        pagebreak: { mode: "avoid-all" },
+        enableLinks: true,
+      };
+      // Modificar o tamanho da fonte para impressão
+      document.querySelectorAll(".rf_texto_pdf").forEach((element) => {
+        element.style.fontSize = "9px"; // Tamanho de fonte para impressão
+      });
+      document.querySelectorAll(".rf_titulo_pdf").forEach((element) => {
+        element.style.fontSize = "12px"; // Tamanho de fonte para impressão
+      });
+      document.querySelectorAll(".rf_titulo_destaque_pdf").forEach((element) => {
+        element.style.fontSize = "14px"; // Tamanho de fonte para impressão
+      });
+
+
+   
+      setTimeout(() => {
+        html2pdf().from(this.$refs.contentToPrint).set(options).save();
+      }, 500);
+      //html2pdf().from(this.$refs.contentToPrint).set(options).save();
+    },
+    total_kits() {
+      console.log("Valor pacote Customozado");
+      this.valor_pacote_customizado =
+        this.total_preco_desconto_acessorios_customizado +
+        this.total_preco_seguros_customizado +
+        this.total_preco_revisoes_customizado;
+    },
+    calcular_percentagem(item) {
+      const valor_original = item.preco;
+      const valor_venda = item.preco_desconto;
+      const desconto = valor_original - valor_venda;
+      const per_desconto = (desconto / valor_original) * 100;
+      return per_desconto.toFixed(2);
+    },
+    formatarValor(valor) {
+      if (!valor) return "";
+      valor = valor.toString().replace(/\D/g, "");
+      valor = (valor / 100).toFixed(2).replace(".", ",");
+      valor = valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      return valor;
+    },
     currency(number) {
       return new Intl.NumberFormat("pt-BR", {
         style: "currency",
@@ -4359,6 +6028,4 @@ export default {
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

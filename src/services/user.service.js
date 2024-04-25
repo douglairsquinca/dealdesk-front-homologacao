@@ -418,6 +418,12 @@ class UserService {
       params
     });
   }
+
+  getTaxasFEI_customizado(params) {
+    return api.get('/taxas/ranqueamento_fei_customizado', {
+      params
+    });
+  }
   getTaxasAll(params) {
     return api.get('/taxas', {
       params
