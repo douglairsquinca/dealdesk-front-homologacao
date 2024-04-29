@@ -744,6 +744,15 @@
     padding-bottom: 13px;     
 
   }
+  .btn-desk-customizado{
+    background: #B92E2E;
+    border-color: transparent;
+    color: #fff;
+    width: 100%;
+    font-size: 10px;
+   
+
+  }
   .btn-desk-filtro-vendas{
     background: #B92E2E;
     border-color: transparent;

@@ -643,7 +643,7 @@ export default {
         const dados = {
           id: id,
           descricao: this.descricao_editar,          
-          modelo: this.modelo_id_editar,          
+          // modelo: this.modelo_id_editar,          
           valor: this.valor_editar,
           observacao: this.observacao_editar,
           status: this.status_editar,

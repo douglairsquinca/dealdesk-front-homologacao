@@ -4,6 +4,7 @@
     ref="navgator"
     :barraTitulo="' F&I - Vendas'"
     :titulo="'vendas'"
+    :id ="id_rota"
   />
   <!--Dados do Atendimento-->
   <div class="card card-filtro card-vendas">
@@ -563,7 +564,7 @@
   <div class="card-filtro" v-if="cadastro">
     <div class="card card-container">
       <div class="row">
-        <div class="col-4 d-flex justify-content-center">
+        <div class="col-3 d-flex justify-content-center">
           <div class="card-kit">
             <div class="card-icon">
               <i class="bi bi-tools fs-5 icone_filtro"></i>
@@ -581,7 +582,7 @@
             </div>
           </div>
         </div>
-        <div class="col-4 d-flex justify-content-center">
+        <div class="col-3 d-flex justify-content-center">
           <div class="card-kit">
             <div class="card-icon">
               <i class="bi bi-journal-text fs-5 icone_filtro"></i>
@@ -600,7 +601,7 @@
             </div>
           </div>
         </div>
-        <div class="col-4 d-flex justify-content-center">
+        <div class="col-3 d-flex justify-content-center">
           <div class="card-kit">
             <div class="card-icon">
               <i class="bi bi-speedometer2 fs-5 icone_filtro"></i>
@@ -614,6 +615,25 @@
                 >
                   <span class="rf_texto_btn">Incluir</span><br />
                   <span class="rf_texto_btn">Revisão</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-3 d-flex justify-content-center">
+          <div class="card-kit">
+            <div class="card-icon">
+              <i class="bi bi-pencil-square fs-5 icone_filtro"></i>
+              <div class="input-group-append">
+                <button
+                  class="btn btn-lg btn-filtro"
+                  data-bs-target="#ModalSolicitarAprovacao"
+                  data-bs-toggle="modal"
+                  type="button"
+                  @click="habilitar_itens_revisao"
+                >
+                  <span class="rf_texto_btn">Solicitar</span><br />
+                  <span class="rf_texto_btn">Aprovação</span>
                 </button>
               </div>
             </div>
@@ -781,17 +801,21 @@
           </div>
         </div>
         <div class="col-6" style="padding-left: 20px">
-          <div class="card-title gy-4">
-            <div class="form-check form-switch rf_texto mt-3">
-              <input
-                class="form-check-input g-5"
-                type="checkbox"
-                role="switch"
-                v-model="cadastro"
-              />
-              <label class="form-check-label">Mostrar cadastro</label>
+          <div class="row">
+            <div class="col-3 card-title gy-4">
+              <div class="form-check form-switch rf_texto mt-3">
+                <input
+                  class="form-check-input g-5"
+                  type="checkbox"
+                  role="switch"
+                  v-model="cadastro"
+                />
+                <label class="form-check-label">Mostrar cadastro</label>
+              </div>           
             </div>
+         
           </div>
+       
         </div>
       </div>
       <div class="row">
@@ -949,7 +973,7 @@
         </div>
         <!--Quadro Customizado-->
         <div class="col-6">
-          <div class="card card-customizado col">
+          <div class="card card-customizado_index col">
             <i class="bi bi-gem card-texto-vendas-customizado">
               Pacote Customizado</i
             >
@@ -1066,174 +1090,7 @@
       </div>
     </div>
   </div>
-  <!-- <div v-if="quadro_customizado" class="card card-filtro card-vendas">
-    <div class="row g-2 p-2">
-      <div class="card-title gy-4">
-        <i class="bi bi-journal-text fs-5 icone_filtro"
-          ><span class="texto_filtro">
-            <strong>Ranqueamento Pacote Customizado</strong></span
-          ></i
-        >
-      </div>
-      <div class="card-title gy-4">
-        <i class="bi bi-cash-coin fs-5 icone_filtro"
-          ><span class="texto_filtro"
-            >Valor de Entrada:
-            <strong>{{ total_entrada }}</strong>
-          </span></i
-        >
-        <i class="bi bi-cash-coin p-3 icone_filtro"
-          ><span class="texto_filtro"
-            >Valor Financiado:
-            <strong>{{ total_financiamento_customizado }}</strong>
-          </span></i
-        >
-      </div>
-    </div>
-    <div class="d-flex justify-content-center barra_fei">
-      <div class="row">
-        <div class="col">
-          <button
-            @click="sortTable('Financeira')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>FINANCEIRA</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('Plano')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>PLANO</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('Ret')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>RET</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('EntMin')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>R$ ENT MIN</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('EntPer')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>% ENT MIN</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('Pmt')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>PMT</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('Retorno')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>RETORNO</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('TacCob')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>TAC COB</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('TacDev')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>TAC DEV</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('Coef')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>COEF</strong>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="g-2 p-2 mt-3 rf_margin">
-      <table class="table rf_texto">
-        <thead>
-          <tr>
-            <th scope="col">Financeira</th>
-            <th scope="col">Plano</th>
-            <th scope="col">Ret</th>
-            <th scope="col">R$ Ent. Min.</th>
-            <th scope="col">% Ent. Min.</th>
-            <th scope="col">Rentabilidade</th>
-            <th scope="col">Rebate</th>
-            <th scope="col">Pmt</th>
-            <th scope="col">Spf</th>
-            <th scope="col">Retorno</th>
-            <th scope="col">Tac. Cob.</th>
-            <th scope="col">Tac. Dev.</th>
-            <th scope="col">Coef.</th>
-            <th scope="col">Parcela</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            :class="
-              item.id === pacoteSelecionadoCustomizado
-                ? 'custom-highlight-row'
-                : ''
-            "
-            @click="rowSelect_customizado(key, item.id, 4)"
-            v-for="(item, key) in parcelamento_customizado"
-            :key="item.id"
-          >
-            <td>{{ item.financeira }}</td>
-            <td>{{ item.plano }}</td>
-            <td>{{ item.ret }}</td>
-            <td>{{ item.entrada_min_valor }}</td>
-            <td>{{ item.entrada_min_porcentagem }}</td>
-            <td>{{ item.rentabilidade_customizado }}</td>
-            <td>{{ item.Rebate }}</td>
-            <td>{{ item.pmt_customizado }}</td>
-            <td>{{ item.spf }}</td>
-            <td>{{ item.retorno }}</td>
-            <td>{{ item.tc_cob }}</td>
-            <td>{{ item.tc_dev }}</td>
-            <td>{{ item.coeficiente }}</td>
-            <td>{{ item.qtd_parcelas }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <pagination
-      v-if="parcelamento_customizado.length"
-      :offset="totalPages_customizado"
-      :total="totalItems_customizado"
-      :limit="pageSize_customizado"
-      @change-page="handlePageChangeEntradaCustomizado"
-    />
-
  
-  </div> -->
    <!-- Modal Ranqueamento Customizado-->
   <div
       class="modal fade"
@@ -1243,7 +1100,7 @@
       tabindex="-1"
     >
       <div class="modal-dialog modal-dialog-centered modal-fullscreen">
-        <div class="modal-content card-filtro rf_texto">
+        <div class="modal-content  rf_texto">
           <div class="modal-header">
             <div class="card-title gy-4">
               <i class="bi bi-journal-text fs-5 icone_filtro"
@@ -1262,7 +1119,8 @@
             </button>
           </div>
           <div class="modal-body">
-            <div class="row g-2 p-2">
+            <div class="card card-filtro card-vendas">
+              <div class="row g-2 p-2">
               <div class="card-title gy-4">
                 <i class="bi bi-cash-coin fs-5 icone_filtro"
                   ><span class="texto_filtro"
@@ -1373,7 +1231,7 @@
                     <th scope="col">R$ Ent. Min.</th>
                     <th scope="col">% Ent. Min.</th>
                     <th scope="col">Rentabilidade</th>
-                    <th scope="col">Rebate</th>
+                    <!-- <th scope="col">Rebate</th> -->
                     <th scope="col">Pmt</th>
                     <th scope="col">Spf</th>
                     <th scope="col">Retorno</th>
@@ -1397,14 +1255,14 @@
                     <td>{{ item.financeira }}</td>
                     <td>{{ item.plano }}</td>
                     <td>{{ item.ret }}</td>
-                    <td>{{ item.entrada_min_valor }}</td>
+                    <td>{{ this.currency(item.entrada_min_valor) }}</td>
                     <td>{{ item.entrada_min_porcentagem }}</td>
-                    <td>{{ item.rentabilidade_customizado }}</td>
-                    <td>{{ item.Rebate }}</td>
-                    <td>{{ item.pmt_customizado }}</td>
+                    <td>{{ this.currency(item.rentabilidade_customizado) }}</td>
+                    <!-- <td>{{ item.Rebate }}</td> -->
+                    <td>{{ this.currency(item.pmt_customizado )}}</td>
                     <td>{{ item.spf }}</td>
                     <td>{{ item.retorno }}</td>
-                    <td>{{ item.tc_cob }}</td>
+                    <td>{{ this.currency(item.tc_cob) }}</td>
                     <td>{{ item.tc_dev }}</td>
                     <td>{{ item.coeficiente }}</td>
                     <td>{{ item.qtd_parcelas }}</td>
@@ -1419,6 +1277,8 @@
               :limit="pageSize_customizado"
               @change-page="handlePageChangeEntradaCustomizado"
             />
+            </div>
+        
           </div>
         </div>
       </div>
@@ -1792,6 +1652,8 @@
                   class="btn btn-lg btn-desk-filtro"
                   type="button"
                   @click="ranquear()"
+                  data-bs-target="#ModalRanqueamento"
+                  data-bs-toggle="modal"
                 >
                   <span class="rf_texto_btn">Ranquear</span>
                 </button>
@@ -1815,504 +1677,536 @@
       </table>
     </div>
   </div>
-  <!--Ranqueamento F&I Pacote Ouro-->
-  <div v-if="quadro_ouro" class="card card-filtro card-vendas">
-    <div class="row g-2 p-2">
-      <div class="card-title gy-4">
-        <i class="bi bi-journal-text fs-5 icone_filtro"
-          ><span class="texto_filtro">
-            <strong>Ranqueamento Pacote Ouro</strong></span
-          ></i
-        >
-      </div>
-      <div class="card-title gy-4">
-        <i class="bi bi-cash-coin fs-5 icone_filtro"
-          ><span class="texto_filtro"
-            >Valor de Entrada:
-            <strong>{{ total_entrada }}</strong>
-          </span></i
-        >
-        <i class="bi bi-cash-coin p-3 icone_filtro"
-          ><span class="texto_filtro"
-            >Valor Financiado:
-            <strong>{{ total_financiamento_ouro }}</strong>
-          </span></i
-        >
-      </div>
-    </div>
-    <div class="d-flex justify-content-center barra_fei">
-      <div class="row">
-        <div class="col">
-          <button
-            @click="sortTable('Financeira')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>FINANCEIRA</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('Plano')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>PLANO</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('Ret')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>RET</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('EntMin')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>R$ ENT MIN</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('EntPer')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>% ENT MIN</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('Pmt')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>PMT</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('Retorno')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>RETORNO</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('TacCob')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>TAC COB</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('TacDev')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>TAC DEV</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('Coef')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>COEF</strong>
-          </button>
-        </div>
-      </div>
-    </div>
 
-    <div class="g-2 p-2 mt-3 rf_margin">
-      <table class="table rf_texto">
-        <thead>
-          <tr>
-            <th scope="col">Financeira</th>
-            <th scope="col">Plano</th>
-            <th scope="col">Ret</th>
-            <th scope="col">R$ Ent. Min.</th>
-            <th scope="col">% Ent. Min.</th>
-            <th scope="col">Rentabilidade</th>
-            <th scope="col">Rebate</th>
-            <th scope="col">Pmt</th>
-            <th scope="col">Spf</th>
-            <th scope="col">Retorno</th>
-            <th scope="col">Tac. Cob.</th>
-            <th scope="col">Tac. Dev.</th>
-            <th scope="col">Coef.</th>
-            <th scope="col">Parcela</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            :class="
-              item.id === pacoteSelecionadoOuro ? 'custom-highlight-row' : ''
-            "
-            @click="rowSelect_ouro(key, item.id, 1)"
-            v-for="(item, key) in parcelamento_ouro"
-            :key="item.id"
-          >
-            <td>{{ item.financeira }}</td>
-            <td>{{ item.plano }}</td>
-            <td>{{ item.ret }}</td>
-            <td>{{ item.entrada_min_valor }}</td>
-            <td>{{ item.entrada_min_porcentagem }}</td>
-            <td>{{ item.rentabilidade_ouro }}</td>
-            <td>{{ item.Rebate }}</td>
-            <td>{{ item.pmt_ouro }}</td>
-            <td>{{ item.spf }}</td>
-            <td>{{ item.retorno }}</td>
-            <td>{{ item.tc_cob }}</td>
-            <td>{{ item.tc_dev }}</td>
-            <td>{{ item.coeficiente }}</td>
-            <td>{{ item.qtd_parcelas }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <!-- <pagination
-              v-if="parcelamento_ouro.length"
-              :offset="totalPages_ouro"
-              :total="totalItems_ouro"
-              :limit="pageSize_ouro"
-              @change-page="handlePageChangeEntradaOuro"
-            /> -->
+   <!-- Modal Ranqueamento -->
+  <div
+      class="modal fade"
+      id="ModalRanqueamento"
+      aria-hidden="true"
+      aria-labelledby="exampleModalToggleLabel2"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+        <div class="modal-content  rf_texto">
+          <div class="modal-header">
+            <div class="card-title gy-4">
+              <i class="bi bi-journal-text fs-5 icone_filtro"
+                ><span class="texto_filtro">
+                  <strong>Ranqueamento Pacotes</strong></span
+                ></i
+              >
+            </div>
+            <button
+              class="btn btn-modal btn-lg p-1 mt-1"
+              type="button"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              Sair
+            </button>
+          </div>
+          <div class="modal-body">
+            <!--Ouro-->
+            <div class="card card-filtro card-vendas">
+              <div class="row g-2 p-2">
+                <div class="card-title gy-4">
+                  <i class="bi bi-journal-text fs-5 icone_filtro"
+                    ><span class="texto_filtro">
+                      <strong>Ranqueamento Pacote Ouro</strong></span
+                    ></i
+                  >
+                </div>
+                <div class="card-title gy-4">
+                  <i class="bi bi-cash-coin fs-5 icone_filtro"
+                    ><span class="texto_filtro"
+                      >Valor de Entrada:
+                      <strong>{{ total_entrada }}</strong>
+                    </span></i
+                  >
+                  <i class="bi bi-cash-coin p-3 icone_filtro"
+                    ><span class="texto_filtro"
+                      >Valor Financiado:
+                      <strong>{{ total_financiamento_ouro }}</strong>
+                    </span></i
+                  >
+                </div>
+              </div>
+              <div class="d-flex justify-content-center barra_fei">
+                <div class="row">
+                  <div class="col">
+                    <button
+                      @click="sortTable('Financeira')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>FINANCEIRA</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('Plano')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>PLANO</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('Ret')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>RET</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('EntMin')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>R$ ENT MIN</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('EntPer')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>% ENT MIN</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('Pmt')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>PMT</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('Retorno')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>RETORNO</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('TacCob')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>TAC COB</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('TacDev')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>TAC DEV</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('Coef')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>COEF</strong>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="g-2 p-2 mt-3 rf_margin">
+                <table class="table rf_texto">
+                  <thead>
+                    <tr>
+                      <th scope="col">Financeira</th>
+                      <th scope="col">Plano</th>
+                      <th scope="col">Ret</th>
+                      <th scope="col">R$ Ent. Min.</th>
+                      <th scope="col">% Ent. Min.</th>
+                      <th scope="col">Rentabilidade</th>
+                      <!-- <th scope="col">Rebate</th> -->
+                      <th scope="col">Pmt</th>
+                      <th scope="col">Spf</th>
+                      <th scope="col">Retorno</th>
+                      <th scope="col">Tac. Cob.</th>
+                      <th scope="col">Tac. Dev.</th>
+                      <th scope="col">Coef.</th>
+                      <th scope="col">Parcela</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      :class="
+                        item.id === pacoteSelecionadoOuro ? 'custom-highlight-row' : ''
+                      "
+                      @click="rowSelect_ouro(key, item.id, 1)"
+                      v-for="(item, key) in parcelamento_ouro"
+                      :key="item.id"
+                    >
+                      <td>{{ item.financeira }}</td>
+                      <td>{{ item.plano }}</td>
+                      <td>{{ item.ret }}</td>
+                      <td>{{ this.currency(item.entrada_min_valor) }}</td>
+                      <td>{{ item.entrada_min_porcentagem }}</td>
+                      <td>{{ this.currency(item.rentabilidade_ouro) }}</td>
+                      <!-- <td>{{ item.Rebate }}</td> -->
+                      <td>{{ this.currency(item.pmt_ouro) }}</td>
+                      <td>{{ item.spf }}</td>
+                      <td>{{ item.retorno }}</td>
+                      <td>{{ this.currency(item.tc_cob) }}</td>
+                      <td>{{ item.tc_dev }}</td>
+                      <td>{{ item.coeficiente }}</td>
+                      <td>{{ item.qtd_parcelas }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <pagination
+                v-if="parcelamento_ouro.length"
+                :offset="totalPages_ouro"
+                :total="totalItems_ouro"
+                :limit="pageSize_ouro"
+                @change-page="handlePageChangeEntradaOuro"
+              />
+            </div>
+            <!--Prata-->
+            <div  class="card card-filtro card-vendas">
+              <div class="row g-2 p-2">
+                <div class="card-title gy-4">
+                  <i class="bi bi-journal-text fs-5 icone_filtro"
+                    ><span class="texto_filtro">
+                      <strong>Ranqueamento Pacote Prata</strong></span
+                    ></i
+                  >
+                </div>
+                <div class="card-title gy-4">
+                  <i class="bi bi-cash-coin fs-5 icone_filtro"
+                    ><span class="texto_filtro"
+                      >Valor de Entrada:
+                      <strong>{{ total_entrada }}</strong>
+                    </span></i
+                  >
+                  <i class="bi bi-cash-coin p-3 icone_filtro"
+                    ><span class="texto_filtro"
+                      >Valor Financiado:
+                      <strong>{{ total_financiamento_prata }}</strong>
+                    </span></i
+                  >
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-center barra_fei">
+                <div class="row">
+                  <div class="col">
+                    <button
+                      @click="sortTable('Financeira')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>FINANCEIRA</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('Plano')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>PLANO</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('Ret')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>RET</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('EntMin')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>R$ ENT MIN</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('EntPer')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>% ENT MIN</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('Pmt')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>PMT</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('Retorno')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>RETORNO</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('TacCob')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>TAC COB</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('TacDev')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>TAC DEV</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('Coef')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>COEF</strong>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="g-2 p-2 mt-3 rf_margin">
+                <table class="table rf_texto">
+                  <thead>
+                    <tr>
+                      <th scope="col">Financeira</th>
+                      <th scope="col">Plano</th>
+                      <th scope="col">Ret</th>
+                      <th scope="col">R$ Ent. Min.</th>
+                      <th scope="col">% Ent. Min.</th>
+                      <th scope="col">Rentabilidade</th>
+                      <!-- <th scope="col">Rebate</th> -->
+                      <th scope="col">Pmt</th>
+                      <th scope="col">Spf</th>
+                      <th scope="col">Retorno</th>
+                      <th scope="col">Tac. Cob.</th>
+                      <th scope="col">Tac. Dev.</th>
+                      <th scope="col">Coef.</th>
+                      <th scope="col">Parcela</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      :class="
+                        item.id === pacoteSelecionadoPrata ? 'custom-highlight-row' : ''
+                      "
+                      @click="rowSelect_prata(key, item.id, 2)"
+                      v-for="(item, key) in parcelamento_prata"
+                      :key="item.id"
+                    >
+                      <td>{{ item.financeira }}</td>
+                      <td>{{ item.plano }}</td>
+                      <td>{{ item.ret }}</td>
+                      <td>{{ this.currency(item.entrada_min_valor) }}</td>
+                      <td>{{ item.entrada_min_porcentagem }}</td>
+                      <td>{{ this.currency(item.rentabilidade_prata) }}</td>
+                      <!-- <td>{{ item.Rebate }}</td> -->
+                      <td>{{ this.currency(item.pmt_prata) }}</td>
+                      <td>{{ item.spf }}</td>
+                      <td>{{ item.retorno }}</td>
+                      <td>{{ this.currency(item.tc_cob) }}</td>
+                      <td>{{ item.tc_dev }}</td>
+                      <td>{{ item.coeficiente }}</td>
+                      <td>{{ item.qtd_parcelas }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <pagination
+                v-if="parcelamento_prata.length"
+                :offset="totalPages_prata"
+                :total="totalItems_prata"
+                :limit="pageSize_prata"
+                @change-page="handlePageChangeEntradaPrata"
+              />
+            </div>
+            <!--Bronze-->
+            <div class="card card-filtro card-vendas">
+              <div class="row g-2 p-2">
+                <div class="card-title gy-4">
+                  <i class="bi bi-journal-text fs-5 icone_filtro"
+                    ><span class="texto_filtro">
+                      <strong>Ranqueamento Pacote Bronze</strong></span
+                    ></i
+                  >
+                </div>
+                <div class="card-title gy-4">
+                  <i class="bi bi-cash-coin fs-5 icone_filtro"
+                    ><span class="texto_filtro"
+                      >Valor de Entrada:
+                      <strong>{{ total_entrada }}</strong>
+                    </span></i
+                  >
+                  <i class="bi bi-cash-coin p-3 icone_filtro"
+                    ><span class="texto_filtro"
+                      >Valor Financiado:
+                      <strong>{{ total_financiamento_bronze }}</strong>
+                    </span></i
+                  >
+                </div>
+              </div>
+              <div class="d-flex justify-content-center barra_fei">
+                <div class="row">
+                  <div class="col">
+                    <button
+                      @click="sortTable('Financeira')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>FINANCEIRA</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('Plano')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>PLANO</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('Ret')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>RET</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('EntMin')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>R$ ENT MIN</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('EntPer')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>% ENT MIN</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('Pmt')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>PMT</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('Retorno')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>RETORNO</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('TacCob')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>TAC COB</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('TacDev')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>TAC DEV</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTable('Coef')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>COEF</strong>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="g-2 p-2 mt-3 rf_margin">
+                <table class="table rf_texto">
+                  <thead>
+                    <tr>
+                      <th scope="col">Financeira</th>
+                      <th scope="col">Plano</th>
+                      <th scope="col">Ret</th>
+                      <th scope="col">R$ Ent. Min.</th>
+                      <th scope="col">% Ent. Min.</th>
+                      <th scope="col">Rentabilidade</th>
+                      <!-- <th scope="col">Rebate</th> -->
+                      <th scope="col">Pmt</th>
+                      <th scope="col">Spf</th>
+                      <th scope="col">Retorno</th>
+                      <th scope="col">Tac. Cob.</th>
+                      <th scope="col">Tac. Dev.</th>
+                      <th scope="col">Coef.</th>
+                      <th scope="col">Parcela</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      :class="
+                        item.id === pacoteSelecionadoBronze ? 'custom-highlight-row' : ''
+                      "
+                      @click="rowSelect_bronze(key, item.id, 3)"
+                      v-for="(item, key) in parcelamento_bronze"
+                      :key="item.id"
+                    >
+                      <td>{{ item.financeira }}</td>
+                      <td>{{ item.plano }}</td>
+                      <td>{{ item.ret }}</td>
+                      <td>{{ this.currency(item.entrada_min_valor) }}</td>
+                      <td>{{ item.entrada_min_porcentagem }}</td>
+                      <td>{{ this.currency(item.rentabilidade_bronze) }}</td>
+                      <!-- <td>{{ item.Rebate }}</td> -->
+                      <td>{{ this.currency(item.pmt_bronze) }}</td>
+                      <td>{{ item.spf }}</td>
+                      <td>{{ item.retorno }}</td>
+                      <td>{{ this.currency(item.tc_cob )}}</td>
+                      <td>{{ item.tc_dev }}</td>
+                      <td>{{ item.coeficiente }}</td>
+                      <td>{{ item.qtd_parcelas }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <pagination
+                v-if="parcelamento_bronze.length"
+                :offset="totalPages_bronze"
+                :total="totalItems_bronze"
+                :limit="pageSize_bronze"
+                @change-page="handlePageChangeEntradaBronze"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
   </div>
-  <!--Ranqueamento F&I Pacote Prata-->
-  <div v-if="quadro_prata" class="card card-filtro card-vendas">
-    <div class="row g-2 p-2">
-      <div class="card-title gy-4">
-        <i class="bi bi-journal-text fs-5 icone_filtro"
-          ><span class="texto_filtro">
-            <strong>Ranqueamento Pacote Prata</strong></span
-          ></i
-        >
-      </div>
-      <div class="card-title gy-4">
-        <i class="bi bi-cash-coin fs-5 icone_filtro"
-          ><span class="texto_filtro"
-            >Valor de Entrada:
-            <strong>{{ total_entrada }}</strong>
-          </span></i
-        >
-        <i class="bi bi-cash-coin p-3 icone_filtro"
-          ><span class="texto_filtro"
-            >Valor Financiado:
-            <strong>{{ total_financiamento_prata }}</strong>
-          </span></i
-        >
-      </div>
-    </div>
 
-    <div class="d-flex justify-content-center barra_fei">
-      <div class="row">
-        <div class="col">
-          <button
-            @click="sortTable('Financeira')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>FINANCEIRA</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('Plano')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>PLANO</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('Ret')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>RET</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('EntMin')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>R$ ENT MIN</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('EntPer')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>% ENT MIN</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('Pmt')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>PMT</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('Retorno')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>RETORNO</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('TacCob')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>TAC COB</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('TacDev')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>TAC DEV</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('Coef')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>COEF</strong>
-          </button>
-        </div>
-      </div>
-    </div>
 
-    <div class="g-2 p-2 mt-3 rf_margin">
-      <table class="table rf_texto">
-        <thead>
-          <tr>
-            <th scope="col">Financeira</th>
-            <th scope="col">Plano</th>
-            <th scope="col">Ret</th>
-            <th scope="col">R$ Ent. Min.</th>
-            <th scope="col">% Ent. Min.</th>
-            <th scope="col">Rentabilidade</th>
-            <th scope="col">Rebate</th>
-            <th scope="col">Pmt</th>
-            <th scope="col">Spf</th>
-            <th scope="col">Retorno</th>
-            <th scope="col">Tac. Cob.</th>
-            <th scope="col">Tac. Dev.</th>
-            <th scope="col">Coef.</th>
-            <th scope="col">Parcela</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            :class="
-              item.id === pacoteSelecionadoPrata ? 'custom-highlight-row' : ''
-            "
-            @click="rowSelect_prata(key, item.id, 2)"
-            v-for="(item, key) in parcelamento_prata"
-            :key="item.id"
-          >
-            <td>{{ item.financeira }}</td>
-            <td>{{ item.plano }}</td>
-            <td>{{ item.ret }}</td>
-            <td>{{ item.entrada_min_valor }}</td>
-            <td>{{ item.entrada_min_porcentagem }}</td>
-            <td>{{ item.rentabilidade_prata }}</td>
-            <td>{{ item.Rebate }}</td>
-            <td>{{ item.pmt_prata }}</td>
-            <td>{{ item.spf }}</td>
-            <td>{{ item.retorno }}</td>
-            <td>{{ item.tc_cob }}</td>
-            <td>{{ item.tc_dev }}</td>
-            <td>{{ item.coeficiente }}</td>
-            <td>{{ item.qtd_parcelas }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <!-- <pagination
-              v-if="parcelamento_prata.length"
-              :offset="totalPages_prata"
-              :total="totalItems_prata"
-              :limit="pageSize_prata"
-              @change-page="handlePageChangeEntradaPrata"
-            /> -->
-  </div>
-  <!--Ranqueamento F&I Pacote Bronze-->
-  <div v-if="quadro_bronze" class="card card-filtro card-vendas">
-    <div class="row g-2 p-2">
-      <div class="card-title gy-4">
-        <i class="bi bi-journal-text fs-5 icone_filtro"
-          ><span class="texto_filtro">
-            <strong>Ranqueamento Pacote Bronze</strong></span
-          ></i
-        >
-      </div>
-      <div class="card-title gy-4">
-        <i class="bi bi-cash-coin fs-5 icone_filtro"
-          ><span class="texto_filtro"
-            >Valor de Entrada:
-            <strong>{{ total_entrada }}</strong>
-          </span></i
-        >
-        <i class="bi bi-cash-coin p-3 icone_filtro"
-          ><span class="texto_filtro"
-            >Valor Financiado:
-            <strong>{{ total_financiamento_bronze }}</strong>
-          </span></i
-        >
-      </div>
-    </div>
-    <div class="d-flex justify-content-center barra_fei">
-      <div class="row">
-        <div class="col">
-          <button
-            @click="sortTable('Financeira')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>FINANCEIRA</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('Plano')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>PLANO</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('Ret')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>RET</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('EntMin')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>R$ ENT MIN</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('EntPer')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>% ENT MIN</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('Pmt')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>PMT</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('Retorno')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>RETORNO</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('TacCob')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>TAC COB</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('TacDev')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>TAC DEV</strong>
-          </button>
-        </div>
-        <div class="col">
-          <button
-            @click="sortTable('Coef')"
-            class="txt-table-vendas text-nowrap"
-          >
-            <strong>COEF</strong>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="g-2 p-2 mt-3 rf_margin">
-      <table class="table rf_texto">
-        <thead>
-          <tr>
-            <th scope="col">Financeira</th>
-            <th scope="col">Plano</th>
-            <th scope="col">Ret</th>
-            <th scope="col">R$ Ent. Min.</th>
-            <th scope="col">% Ent. Min.</th>
-            <th scope="col">Rentabilidade</th>
-            <th scope="col">Rebate</th>
-            <th scope="col">Pmt</th>
-            <th scope="col">Spf</th>
-            <th scope="col">Retorno</th>
-            <th scope="col">Tac. Cob.</th>
-            <th scope="col">Tac. Dev.</th>
-            <th scope="col">Coef.</th>
-            <th scope="col">Parcela</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            :class="
-              item.id === pacoteSelecionadoBronze ? 'custom-highlight-row' : ''
-            "
-            @click="rowSelect_bronze(key, item.id, 3)"
-            v-for="(item, key) in parcelamento_bronze"
-            :key="item.id"
-          >
-            <td>{{ item.financeira }}</td>
-            <td>{{ item.plano }}</td>
-            <td>{{ item.ret }}</td>
-            <td>{{ item.entrada_min_valor }}</td>
-            <td>{{ item.entrada_min_porcentagem }}</td>
-            <td>{{ item.rentabilidade_bronze }}</td>
-            <td>{{ item.Rebate }}</td>
-            <td>{{ item.pmt_bronze }}</td>
-            <td>{{ item.spf }}</td>
-            <td>{{ item.retorno }}</td>
-            <td>{{ item.tc_cob }}</td>
-            <td>{{ item.tc_dev }}</td>
-            <td>{{ item.coeficiente }}</td>
-            <td>{{ item.qtd_parcelas }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <pagination
-      v-if="parcelamento_bronze.length"
-      :offset="totalPages_bronze"
-      :total="totalItems_bronze"
-      :limit="pageSize_bronze"
-      @change-page="handlePageChangeEntradaBronze"
-    />
-  </div>
-
-  <!--Área dos Modais-->
   <!--Modal Acessórios-->
   <div
     class="modal fade"
@@ -2556,6 +2450,111 @@
       </div>
     </div>
   </div>
+    <!--Modal Solicitar Aprovação-->
+    <div
+    class="modal"
+    id="ModalSolicitarAprovacao"
+    aria-hidden="true"
+    aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1"
+    data-bs-dismiss="false"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content card-container rf_texto">
+        <div class="modal-header">
+          <div class="card-title gy-4">
+            <i class="bi bi-speedometer2 fs-5 icone_kit"
+              ><span class="texto_kit">Solicitar Aprovação</span></i
+            >
+          </div>
+          <button
+            class="btn btn-modal btn-lg p-1 mt-1"
+            type="button"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          >
+            Sair
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="">
+            <div class="card">
+              <div class="row g-2 p-2">
+                <div class="card-title gy-4">
+                  <i class="bi bi-funnel fs-5 icone_filtro"
+                    ><span class="texto_filtro">Filtro</span></i
+                  >
+                </div>
+              </div>
+              <div class="row g-2 p-2">
+                <div class="col">
+                  <div class="form-floating">
+                    <input
+                      type="text"
+                      class="form-control rf_bg_form rf_texto"
+                    />
+                    <label class="rf_texto">Descrição</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-2">
+              <div class="form-floating">
+                <!-- <button class="btn btn-secondary btn-lg mt-1" type="button" @click="
+                    page = 1;
+                  historico_cliente(id_historico_cliente);
+                  ">
+                              Pesquisar
+                            </button> -->
+              </div>
+            </div>
+          </div>
+          <!--Tabelas-->
+          <div class="card g-2 p-2 mt-2">
+            <table class="table rf_texto_desk">
+              <thead>
+                <tr>
+                  <th scope="col">Código</th>
+                  <th scope="col">Descrição</th>
+                  <th scope="col">Preço Base</th>
+                  <th scope="col">Preço Final</th>
+                  <th scope="col">Ação</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="item in estoque_pecas"
+                  :key="item.id"
+                  class="table-linha"
+                >
+                  <td>{{ item.codigo_mercadoria }}</td>
+                  <td>{{ item.descricao_mercadoria }}</td>
+                  <td>{{ this.currency(item.preco_base) }}</td>
+                  <td>{{ this.currency(item.preco_final) }}</td>
+                  <td>
+                    <button
+                      class="dropdown-toggle-icon"
+                      @click="inserir_acessorio(item)"
+                    >
+                      <i class="bi bi-pencil-square"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- <pagination
+                        v-if="estoque_pecas.length"
+                        :offset="totalPages"
+                        :total="totalItems"
+                        :limit="pageSize"
+                        @change-page="handlePageChange"
+                      /> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <!--Modal Revisão-->
   <div
     class="modal"
@@ -2792,7 +2791,7 @@
                   <div class="row rf_bg_form_menu">
                     <label class="rf_texto_menu_titulo rf_texto_pdf">Qtd. Parcela</label>
                     <span class="rf_texto_menu rf_texto_pdf">{{
-                      qtd_parcela_selecionada
+                        parcela
                     }}</span>
                   </div>
                 </div>
@@ -3720,8 +3719,9 @@
     </div>
  
   </div>
-  <!-- <div class="modal-footer">
-          <div class="col-1">
+  <div class="card card-filtro card-vendas">
+    <div class="row g-2 p-2 justify-content-end mt-2">
+      <div class="col-2">
             <button
               type="button"
               class="btn btn-lg btn-filtro"
@@ -3731,7 +3731,7 @@
               Finalizar Venda
             </button>
           </div>
-          <div class="col-1">
+          <div class="col-2">
             <button
               type="button"
               class="btn btn-lg btn-filtro"
@@ -3741,17 +3741,18 @@
               Venda Perdida
             </button>
           </div>
-          <div class="col-1">
+          <div class="col-2">
             <button
               type="button"
-              class="btn btn-lg btn-filtro"
-              data-bs-dismiss="modal"
-              @click="fecharModal()"
+              class="btn btn-lg btn-filtro"              
+              @click="atualizar_pagina"
             >
-              Fechar
+              Página Inicial
             </button>
           </div>
-  </div> -->
+    </div>
+  </div>
+
   <!--Mensagens do Sistema-->
   <div v-if="abrir_modal">
     <Message :msg="msg" v-show="msg" />
@@ -3761,7 +3762,7 @@
 
 <script>
 import SidebarVue from "../../components/menu/Sidebar.vue";
-import NavgatorFI from "../../components/menu/NavgatorFI.vue";
+import NavgatorFI from "../../components/menu/NavgatorFIDetalhes.vue";
 import userService from "../../services/user.service";
 import RodapeVue from "../../components/menu/Rodape.vue";
 import axios from "axios";
@@ -3909,6 +3910,10 @@ export default {
       total_financiamento_selecionado_customizado:"",
       parcela_customizado:"",
       banco_selecionado_customizado:"",
+
+      banco_selecionado_ouro:"",
+      banco_selecionado_prata:"",
+      banco_selecionado_bronze:"",
 
 
       habilitar_customizacao: false,
@@ -4060,6 +4065,7 @@ export default {
       precoDesconto: "",
       id_acessorio: "",
       habilitar_ranquear_customizado: false,
+      id_rota:''
     };
   },
   mounted() {
@@ -4076,18 +4082,20 @@ export default {
       const decodedToken = jwt_decode(accessToken);
       this.company_id = decodedToken.company;
       this.user_log = user_log.id;
+      this.id_rota = this.$route.params.id;
     },
     habilitar() {
-      if (
-        this.parcela_ouro != null ||
-        this.parcela_prata != null ||
-        this.parcela_bronze != null
-      ) {
-        this.habilitar_gerar_menu = false;
-      }
+      // if (
+      //   this.parcela_ouro != null ||
+      //   this.parcela_prata != null ||
+      //   this.parcela_bronze != null
+      // ) {
+      //   this.habilitar_gerar_menu = false;
+      // }
       if (this.valor_financiar != 0) {
         this.habilitar_finalizar_venda = false;
         this.habilitar_venda_perdida = false;
+        this.habilitar_gerar_menu = false;
       }
     },
     async retrievePropostas() {
@@ -4925,6 +4933,7 @@ export default {
           }
         );
         console.log("Listando as parcelas ranqueada", parcelas);
+
         for (var i = 0; i < parcelas.data.count; i++) {
           if (parcelas.data.rows[i].rankPacote == "Ouro") {
             this.parcela_ouro = parcelas.data.rows[i]["pmt"];
@@ -5004,6 +5013,8 @@ export default {
         console.log("resposta da atualização", response.statusText);
         if (response.statusText == "OK") {
           this.habilitar();
+          this.resumoRanqueamentoOuro();
+       
         }
       }
       //Prata
@@ -5061,6 +5072,7 @@ export default {
         console.log("resposta da atualização", response.statusText);
         if (response.statusText == "OK") {
           this.habilitar();
+          this.resumoRanqueamentoPrata();
         }
       }
       //Bronze
@@ -5118,6 +5130,7 @@ export default {
         console.log("resposta da atualização", response.statusText);
         if (response.statusText == "OK") {
           this.habilitar();
+          this.resumoRanqueamentoBronze();
         }
       }
        //Customizado
@@ -5218,6 +5231,94 @@ export default {
         this.total_financiamento_selecionado_customizado = response.data.valor_total_financiamento;
         this.parcela_customizado = response.data.valor_parcela_financiamento;
         
+   
+      } catch (error) {
+        console.log(error);
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
+    },
+    async resumoRanqueamentoOuro() {
+      //Verificar se todos os acessórios foram preenchidos
+      try {
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_URL}verificar_ranqueamento_ouro`,
+          {
+            params: {
+              pos_venda_detalhada_id: this.id_pos_venda_detalhada,
+            },
+          }
+        );
+        let bancos = [];
+        bancos = response.data.menu_pos_venda_detalhada.menu_pos_venda[0].menu_rank_pos_venda;
+        const bancoOuro = bancos.find(banco => banco.rankPacote === 'Ouro');
+
+        if (bancoOuro) {
+          this.banco_selecionado = bancoOuro.bancos_rank_pos_venda.nome;
+        }  
+        console.log("Resumo do ranqueamento Ouro", response.data);
+        console.log("Resumo do ranqueamento Ouro Bancos", this.banco_selecionado);
+   
+      } catch (error) {
+        console.log(error);
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
+    },
+    async resumoRanqueamentoPrata() {
+      //Verificar se todos os acessórios foram preenchidos
+      try {
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_URL}verificar_ranqueamento_prata`,
+          {
+            params: {
+              pos_venda_detalhada_id: this.id_pos_venda_detalhada,
+            },
+          }
+        );
+        let bancos = [];
+        bancos = response.data.menu_pos_venda_detalhada.menu_pos_venda[0].menu_rank_pos_venda;
+        const bancoPrata = bancos.find(banco => banco.rankPacote === 'Prata');
+
+        if (bancoPrata) {
+          this.banco_selecionado = bancoPrata.bancos_rank_pos_venda.nome;
+        }  
+    
+   
+      } catch (error) {
+        console.log(error);
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
+    },
+    async resumoRanqueamentoBronze() {
+      //Verificar se todos os acessórios foram preenchidos
+      try {
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_URL}verificar_ranqueamento_bronze`,
+          {
+            params: {
+              pos_venda_detalhada_id: this.id_pos_venda_detalhada,
+            },
+          }
+        );
+        let bancos = [];
+        bancos = response.data.menu_pos_venda_detalhada.menu_pos_venda[0].menu_rank_pos_venda;
+        const bancoBronze = bancos.find(banco => banco.rankPacote === 'Bronze');
+
+        if (bancoBronze) {
+          this.banco_selecionado = bancoBronze.bancos_rank_pos_venda.nome;
+        }  
+  
    
       } catch (error) {
         console.log(error);
@@ -5544,6 +5645,7 @@ export default {
           body: JSON.stringify({
             id: id,
             preco_desconto: this.precoDesconto,
+            tipo:  'desconto'
           }),
         })
           .then((data) => {
@@ -5600,6 +5702,7 @@ export default {
           body: JSON.stringify({
             id: id,
             status: 0,
+            tipo:  'excluir'
           }),
         })
           .then((data) => {
@@ -6024,6 +6127,9 @@ export default {
         minimumFractionDigits: 2,
       }).format(number);
     },
+    atualizar_pagina(){
+      window.location.reload();
+    }
   },
 };
 </script>

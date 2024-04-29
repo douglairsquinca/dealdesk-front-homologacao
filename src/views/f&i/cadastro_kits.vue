@@ -16,6 +16,8 @@
             <select
               class="form-select rf_bg_form rf_texto_desk"
               v-model="pacote_id"
+              @input="completar_pacote($event.target.value)"
+              required
             >
               <option v-for="item in pacotes" :key="item.id" :value="item.id">
                 {{ item.descricao }}
@@ -29,6 +31,8 @@
             <select
               class="form-select rf_bg_form rf_texto_desk"
               v-model="modelo_id"
+              @input="completar_modelo($event.target.value)"
+              required
             >
               <option v-for="item in modelos" :key="item.id" :value="item.id">
                 {{ item.descricao }}
@@ -43,6 +47,7 @@
               type="text"
               class="form-control rf_bg_form rf_texto"
               v-model="descricao"
+              required
             />
             <label class="rf_texto">Descrição</label>
           </div>
@@ -53,6 +58,7 @@
             <select
               class="form-select rf_bg_form rf_texto_desk"
               v-model="status"
+              required
             >
               <option
                 v-for="item in status_list"
@@ -1193,6 +1199,9 @@ export default {
       modal_itens_seguros: false,
       modal_itens_revisao: false,
 
+      modelo_descricao:"",
+      pacote_descricao:"",
+
       status_list: [
         { value: 0, type: "Desabilitado" },
         { value: 1, type: "Habilitado" },
@@ -1986,8 +1995,37 @@ export default {
         }
       }
     },
+    completar_modelo(item){    
+      this.modelo_descricao = this.modelos.find(modelo => modelo.id === parseInt(item))
+      console.log("Modelo", this.modelo_descricao)
+      this.completar_descricao()
+    },
+    completar_pacote(item){
+      this.pacote_descricao = this.pacotes.find(pacote => pacote.id === parseInt(item))
 
+    },
+    completar_descricao(){
+      this.descricao = this.pacote_descricao.descricao.toUpperCase() + this.modelo_descricao.descricao.toUpperCase();
+
+    },
     async onSubmit() {
+      //Consultar se existe o pacote cadastrado
+      const pacote = await axios.get(
+          `${process.env.VUE_APP_API_URL}checar_pacote`,
+          {
+            params: {
+              descricao: this.descricao,
+            },
+          }
+        );
+      console.log("Resultado do Pacote",pacote)
+      if (pacote.data.count > 0) {
+        this.abrir_modal = true;
+        this.msg = "Pacote já cadastrado";
+        setTimeout(() => (this.abrir_modal = false), 1000);
+        return;
+      }
+
       await fetch(`${process.env.VUE_APP_API_URL}kits_modelo`, {
         method: "POST",
 
