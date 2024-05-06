@@ -2765,334 +2765,302 @@
         </div>
         <div class="modal-body">
           <div class="mt-3 rf_texto_pdf" ref="contentToPrint">
-            <div class="col">
-              <a class="navbar-brand logo">
-                <img
-                  src="../../assets/logo_menu.png"
-                  alt="Bootstrap"
-                  width="100"
-                  height="30"
-                />
-              </a>
+            <div class="row">
+              <div class="col-6">
+                <a class="navbar-brand logo">
+                  <img
+                    src="../../assets/logo.png"
+                    alt="Bootstrap"
+                    width="100"
+                    height="30"
+                  />
+                </a>
+              </div>
+              <div class="col-6" style="text-align: right">
+                <a class="navbar-brand logo_cliente">
+                  <img
+                    src="../../assets/logo.png"
+                    alt="Bootstrap"
+                    height="30"
+                  />
+                </a>
+              </div>
+            </div>
+            <div class="card card-desk">
+              <!--Dados do Cliente-->
               <div class="row g-2 p-2">
-                <div class="col-4">
-                  <div class="card card-menu">
-                    <div class="card-header rf_card_header">
-                      Informações do Cliente
-                    </div>
-                    <div class="rf_card_pdf">
-                      <div>
-                        <div class="col"><strong>Cliente</strong></div>
-                        <div class="col">
-                          <span class="">{{ g_menu_cliente }}</span>
-                        </div>
-                      </div>
-                      <div>
-                        <div class="col"><strong>CPF/CNPJ</strong></div>
-                        <div class="col">
-                          <span class="">{{ g_menu_cpfCnpj }}</span>
-                        </div>
-                      </div>
-                      <div>
-                        <div class="col"><strong>Telefone</strong></div>
-                        <div class="col">
-                          <span class="">{{ g_menu_fone }}</span>
-                        </div>
-                      </div>
-                      <div>
-                        <div class="col"><strong>Telefone 2</strong></div>
-                        <div class="col">
-                          <span class="">{{ g_menu_fone2 }}</span>
-                        </div>
-                      </div>
-                      <div>
-                        <div class="col"><strong>Email</strong></div>
-                        <div class="col">
-                          <span class="">{{ g_menu_email }}</span>
-                        </div>
-                      </div>
-                    </div>
+                <div class="col-12">
+                  <i class="bi bi-person-badge fs-5 icone_filtro_desk "
+                    ><span class="texto_filtro_desk"
+                      ><strong class="rf_titulo_pdf">Informações do Cliente</strong></span
+                    ></i
+                  >
+                </div>
+                <div class="col">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Cliente</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_cliente }}</span>
                   </div>
                 </div>
-
-                <div class="col-4">
-                  <div class="card card-menu">
-                    <div class="card-header rf_card_header">
-                      Informações da Proposta
-                    </div>
-                    <div class="rf_card_pdf">
-                      <div>
-                        <div class="col"><strong>Gerente</strong></div>
-                        <div class="col">
-                          <span class="">{{ g_menu_gerente }}</span>
-                        </div>
-                      </div>
-                      <div>
-                        <div class="col"><strong>Vendedor</strong></div>
-                        <div class="col">
-                          <span class="">{{ g_menu_vendedor }}</span>
-                        </div>
-                      </div>
-                      <div>
-                        <div class="col"><strong>Negociação</strong></div>
-                        <div class="col">
-                          <span class="">{{ g_menu_negociacao }}</span>
-                        </div>
-                      </div>
-                      <div>
-                        <div class="col"><strong>Data</strong></div>
-                        <div class="col">
-                          <span class="">{{ g_menu_data_negociacao }}</span>
-                        </div>
-                      </div>
-                    </div>
+                <div class="col-2">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">CPF/CNPJ</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_cpfCnpj }}</span>
                   </div>
                 </div>
-
-                <div class="col-4">
-                  <div class="card card-menu">
-                    <div class="card-header rf_card_header">Acessórios</div>
-                    <div class="rf_container_menu">
-                      <ul
-                        class="list-group"
-                        v-for="item in itens_acessorios"
-                        :key="item.id"
-                      >
-                        <li
-                          class="list-group-item d-flex justify-content-between align-items-center"
-                        >
-                          {{ item.descricao }}
-                          <span class="">{{ item.valor }}</span>
-                        </li>
-                      </ul>
-                    </div>
-                    <ul class="list-group">
-                      <li
-                        class="list-group-item d-flex justify-content-between align-items-center"
-                      >
-                        <span class="badge text-bg-danger">{{ msg }}</span>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Telefone</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_fone }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Telefone 2</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_fone2 }}</span>
+                  </div>
+                </div>
+                <div class="col-2">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Email</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_email }}</span>
+                  </div>
+                </div>
+              </div>
+              <!--Informações da Proposta-->
+              <div class="row g-2 p-2">
+                <div class="col-12">
+                  <i class="bi bi-person-badge fs-5 icone_filtro_desk "
+                    ><span class="texto_filtro_desk"
+                      ><strong class="rf_titulo_pdf">Informações da Proposta</strong></span
+                    ></i
+                  >
+                </div>
+                <div class="col">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Gerente</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_gerente }}</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Vendedor</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_vendedor }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Negociação</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_negociacao }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Data</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_data_negociacao }}</span>
+                  </div>
+                </div>                
+              </div>
+              <!--Acessórios-->
+              <div class="row g-2 p-2">
+                <div class="col-12">
+                  <i class="bi bi-person-badge fs-5 icone_filtro_desk "
+                    ><span class="texto_filtro_desk"
+                      ><strong class="rf_titulo_pdf">Acessórios</strong></span
+                    ></i
+                  >
+                </div>
+                <div>
+                  <ul class="list-group list-group-horizontal">
+                      <li v-for="item in itens_acessorios" :key="item.id" class="list-group-item rf_texto_menu_desk">
+                          <div class="row">
+                              <div class="col rf_texto_pdf">
+                                  <span>{{ item.descricao }}</span>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col">
+                                  <span class="rf_texto_pdf rf_texto_menu_titulo_desk">{{ this.currency(item.valor) }}</span>
+                              </div>
+                          </div>
                       </li>
-                    </ul>
+                  </ul>
+                  <i class="fs-5 icone_filtro_desk "
+                    ><span
+                      ><strong class="rf_titulo_pdf">{{ msg }}</strong></span
+                    ></i
+                  >  
+                </div>                    
+              </div>
+               <!--Informações do Veículo-->
+               <div class="row g-2 p-2">
+                <div class="col-12">
+                  <i class="bi bi-person-badge fs-5 icone_filtro_desk "
+                    ><span class="texto_filtro_desk"
+                      ><strong class="rf_titulo_pdf">Informações do Veículo</strong></span
+                    ></i
+                  >
+                </div>
+                <div class="col-2">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Marca</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_marca }}</span>
                   </div>
                 </div>
+                <div class="col">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Modelo</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_modelo }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Cor</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_cor }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Placa</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_placa }}</span>
+                  </div>
+                </div>     
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Chassi</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_chassi }}</span>
+                  </div>
+                </div>   
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Ano Modelo</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_ano_modelo }}</span>
+                  </div>
+                </div>    
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Ano Fabricação</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_ano_fab }}</span>
+                  </div>
+                </div>          
               </div>
-            </div>
-            <div class="col">
+              <!--Resumos da compra-->
               <div class="row g-2 p-2">
-                <div class="col-4">
-                  <div class="card card-menu">
-                    <div class="card-header rf_card_header">Veículo</div>
-                    <div class="rf_card_pdf">
-                      <div class="row">
-                        <div class="col">
-                          <div class="col-4"><strong>Marca</strong></div>
-                          <div class="col-4">
-                            <span class="">{{ g_menu_marca }}</span>
-                          </div>
-                        </div>
-                        <div class="col">
-                          <div class="col"><strong>Modelo</strong></div>
-                          <div class="col">
-                            <span class="">{{ g_menu_modelo }}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col">
-                          <div class="col-4"><strong>Cor</strong></div>
-                          <div class="col">
-                            <span class="">{{ g_menu_cor }}</span>
-                          </div>
-                        </div>
-                        <div class="col">
-                          <div class="col"><strong>Placa</strong></div>
-                          <div class="col">
-                            <span class="">{{ g_menu_placa }}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div>
-                        <div class="col"><strong>Chassi</strong></div>
-                        <div class="col">
-                          <span class="">{{ g_menu_chassi }}</span>
-                        </div>
-                      </div>
-                      <div>
-                        <div class="row">
-                          <div class="col">
-                            <div class="col-6"><strong>Ano Modelo</strong></div>
-                            <div class="col-6">
-                              <span class="">{{ g_menu_ano_modelo }}</span>
-                            </div>
-                          </div>
-                          <div class="col">
-                            <div class="col-6"><strong>Ano Modelo</strong></div>
-                            <div class="col-6">
-                              <span class="">{{ g_menu_ano_fab }}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                <div class="col-12">
+                  <i class="bi bi-person-badge fs-5 icone_filtro_desk "
+                    ><span class="texto_filtro_desk"
+                      ><strong class="rf_titulo_pdf">Resumo da Compra</strong></span
+                    ></i
+                  >
+                </div>
+                <div class="col">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Sugerido</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_val_sugerido }}</span>
                   </div>
                 </div>
-
-                <div class="col-4">
-                  <div class="card card-menu">
-                    <div class="card-header rf_card_header">
-                      Resumo da Compra
-                    </div>
-                    <div class="rf_card_pdf">
-                      <div class="row">
-                        <div class="col">
-                          <div class="col-7">
-                            <strong>Valor Sugerido</strong>
-                          </div>
-                          <div class="col-6">
-                            <span class="">{{ g_menu_val_sugerido }}</span>
-                          </div>
-                        </div>
-                        <div class="col">
-                          <div class="col"><strong>Valor Desconto</strong></div>
-                          <div class="col-6">
-                            <span class="">{{ g_menu_val_desconto }}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col">
-                          <div class="col">
-                            <strong>Valor Total Acessórios</strong>
-                          </div>
-                          <div class="col">
-                            <span class="">{{ g_menu_total_acessorios }}</span>
-                          </div>
-                        </div>
-                        <div class="col">
-                          <div class="col">
-                            <strong>Tipo de Pagamento</strong>
-                          </div>
-                          <div class="col-6">
-                            <span class="">{{ tipoPagamento }}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div></div>
-                      <div>
-                        <div class="col">
-                          <strong>Valor Total Veículo</strong>
-                        </div>
-                        <div class="col">
-                          <span class="">{{ g_menu_val_veiculo }}</span>
-                        </div>
-                      </div>
-                      <div>
-                        <div class="col"><strong>Total Financiado</strong></div>
-                        <div class="col">
-                          <span class="">{{ Valor_Financiado }}</span>
-                        </div>
-                      </div>
-                    </div>
+                <div class="col">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Desconto</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_val_desconto }}</span>
                   </div>
                 </div>
-
-                <div class="col-4">
-                  <div class="card card-menu">
-                    <div class="card-header rf_card_header">
-                      Veículo de Troca
-                    </div>
-                    <div class="rf_card_pdf">
-                      <div>
-                        <div class="row">
-                          <div class="col-6">
-                            <div class="col"><strong>Marca</strong></div>
-                            <div class="col">
-                              <span class="">{{ g_menu_marca_avaliacao }}</span>
-                            </div>
-                          </div>
-                          <div class="col-6">
-                            <div class="col"><strong>Placa</strong></div>
-                            <div class="col">
-                              <span class="">{{ g_menu_placa_avaliacao }}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div>
-                        <div class="row">
-                          <div class="col-6">
-                            <div class="col"><strong>Modelo</strong></div>
-                            <div class="col">
-                              <span class="">{{ g_menu_modelo_avalicao }}</span>
-                            </div>
-                          </div>
-                          <div class="col-6">
-                            <div class="col"><strong>Ano</strong></div>
-                            <div class="col">
-                              <span class="">{{
-                                g_menu_ano_modelo_avaliacao
-                              }}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div>
-                        <div class="row">
-                          <div class="col-6">
-                            <div class="col">
-                              <strong>Valor itens Av. (-)</strong>
-                            </div>
-                            <div class="col">
-                              <span class="">{{
-                                g_menu_itens_avaliacao_db
-                              }}</span>
-                            </div>
-                          </div>
-                          <div class="col-6">
-                            <div class="col">
-                              <strong>Valor itens Av. (+)</strong>
-                            </div>
-                            <div class="col">
-                              <span class="">{{
-                                g_menu_itens_avaliacao_cr
-                              }}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div>
-                        <div class="row">
-                          <div class="col-6">
-                            <div class="col">
-                              <strong>Valor Avaliado</strong>
-                            </div>
-                            <div class="col">
-                              <span class="">{{ g_menu_valor_avaliado }}</span>
-                            </div>
-                          </div>
-                          <div class="col-6">
-                            <div class="col">
-                              <strong>Valor Final Av.</strong>
-                            </div>
-                            <div class="col">
-                              <span class="">{{
-                                g_menu_valor_avaliacao_final
-                              }}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                <div class="col">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Total Acessórios</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_total_acessorios }}</span>
                   </div>
                 </div>
+                <div class="col">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Tipo Pagamento</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ tipoPagamento }}</span>
+                  </div>
+                </div>     
+                <div class="col">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Total Veículo</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_val_veiculo }}</span>
+                  </div>
+                </div>   
+                <div class="col">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Total Financiado</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ Valor_Financiado }}</span>
+                  </div>
+                </div>    
+                         
+              </div>
+              <!--Veículo de Troca-->
+              <div class="row g-2 p-2">
+                <div class="col-12">
+                  <i class="bi bi-person-badge fs-5 icone_filtro_desk "
+                    ><span class="texto_filtro_desk"
+                      ><strong class="rf_titulo_pdf">Veículo de Troca</strong></span
+                    ></i
+                  >
+                </div>
+                <div class="col-2">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Marca</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_marca_avaliacao }}</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Modelo</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_modelo_avalicao }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Placa</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_placa_avaliacao }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Ano</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_ano_modelo_avaliacao }}</span>
+                  </div>
+                </div>     
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Itens(-)</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_itens_avaliacao_db }}</span>
+                  </div>
+                </div>   
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Itens(+)</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_itens_avaliacao_cr }}</span>
+                  </div>
+                </div>    
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Avaliado</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_valor_avaliado }}</span>
+                  </div>
+                </div>  
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu_desk ">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Final</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_valor_avaliacao_final }}</span>
+                  </div>
+                </div>  
+                         
               </div>
             </div>
-
-            <div class="row g-2 p-2">
-              <div class="col">
-                <div class="card">
-                  <div class="card-header rf_card_header">Entrada</div>
-                  <div class="rf_card_pdf">
+            <!--Quadro Entradas-->
+            <div class="row mt-4">
+              <!--Entradas-->
+              <div class="col divisoria_desk">
+                  <div class="barra_fei_menu_desk">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>Entradas</strong></span
+                    >
+                  </div>
+                  <div class="rf_texto_pdf texto_menu_ent_desk">
                     <div>
                       <div class="col">
                         <strong> {{ Valor_Entrada_1 }}</strong>
@@ -3109,12 +3077,15 @@
                       </div>
                     </div>
                   </div>
-                </div>
               </div>
-              <div class="col">
-                <div class="card">
-                  <div class="card-header rf_card_header">Total Financiado</div>
-                  <div class="rf_card_pdf">
+              <!--Total Financiado-->
+              <div class="col divisoria_desk">
+                  <div class="barra_fei_menu_desk">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>Total Financiado</strong></span
+                    >
+                  </div>
+                  <div class="rf_texto_pdf texto_menu_ent_desk">
                     <div>
                       <div class="col">
                         <strong> {{ Valor_Financiado_1 }}</strong>
@@ -3131,14 +3102,15 @@
                       </div>
                     </div>
                   </div>
-                </div>
               </div>
-              <div class="col">
-                <div class="card">
-                  <div class="card-header rf_card_header">
-                    {{ parcela_1 }} Meses
+              <!--Meses-->
+              <div class="col divisoria_desk">
+                  <div class="barra_fei_menu_desk">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>{{ parcela_1 }} Meses</strong></span
+                    >
                   </div>
-                  <div class="rf_card_pdf">
+                  <div class="rf_texto_pdf texto_menu_ent_desk">
                     <div>
                       <div class="col">
                         <strong> {{ parcela_1_1 }}</strong>
@@ -3155,14 +3127,14 @@
                       </div>
                     </div>
                   </div>
-                </div>
               </div>
-              <div class="col">
-                <div class="card">
-                  <div class="card-header rf_card_header">
-                    {{ parcela_2 }} Meses
+              <div class="col divisoria_desk">
+                  <div class="barra_fei_menu_desk">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>{{ parcela_2 }} Meses</strong></span
+                    >
                   </div>
-                  <div class="rf_card_pdf">
+                  <div class="rf_texto_pdf texto_menu_ent_desk">
                     <div>
                       <div class="col">
                         <strong> {{ parcela_1_2 }}</strong>
@@ -3179,14 +3151,14 @@
                       </div>
                     </div>
                   </div>
-                </div>
               </div>
-              <div class="col">
-                <div class="card">
-                  <div class="card-header rf_card_header">
-                    {{ parcela_3 }} Meses
+              <div class="col divisoria_desk2">
+                  <div class="barra_fei_menu_desk">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>{{ parcela_3 }} Meses</strong></span
+                    >
                   </div>
-                  <div class="rf_card_pdf">
+                  <div class="rf_texto_pdf texto_menu_ent_desk">
                     <div>
                       <div class="col">
                         <strong> {{ parcela_1_3 }}</strong>
@@ -3203,9 +3175,11 @@
                       </div>
                     </div>
                   </div>
-                </div>
               </div>
             </div>
+  
+
+       
             <div class="row g-2 p-2">
               <div class="col">
                 <span>
@@ -4624,7 +4598,7 @@ export default {
               "Não Somar Acessorios ---------------------------------------------------------------------------"
             );
           }
-          if (resposta["Valor_Resultado_Financiamento"] != "") {
+          if (resposta["Pmt"] != "") {
             this.btn_gerar_menu = false;
             this.btn_1 = false;
             this.btn_finalizar_venda = false;
@@ -4904,8 +4878,8 @@ export default {
       const options = {
         margin: [5, 5],
         filename: "meu-pdf.pdf",
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 1 },
+        image: { type: "pdf", quality: 2 },
+        html2canvas: { scale: 22 },
         jsPDF: { format: "a4", orientation: "landscape" },
         pagebreak: { mode: "avoid-all" },
         enableLinks: true,
@@ -4914,6 +4888,13 @@ export default {
       document.querySelectorAll(".rf_texto_pdf").forEach((element) => {
         element.style.fontSize = "9px"; // Tamanho de fonte para impressão
       });
+      document.querySelectorAll(".rf_titulo_pdf").forEach((element) => {
+        element.style.fontSize = "12px"; // Tamanho de fonte para impressão
+      });
+      document.querySelectorAll(".rf_titulo_destaque_pdf").forEach((element) => {
+        element.style.fontSize = "14px"; // Tamanho de fonte para impressão
+      });
+
       setTimeout(() => {
         html2pdf().from(this.$refs.contentToPrint).set(options).save();
       }, 500);

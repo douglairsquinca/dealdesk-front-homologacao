@@ -35,6 +35,16 @@
         </div>
         <div class="col-1">
           <div class="form-floating">
+            <select class="form-select rf_bg_form rf_texto" v-model="tipoEmpresa" required>
+              <option value="1">Quatro Rodas</option>
+              <option value="2">Duas Rodas</option>
+            </select>
+            <label for="valid_status" class="rf_texto">Tipo Empresa</label>
+
+          </div>
+        </div>
+        <div class="col-1">
+          <div class="form-floating">
             <select class="form-select rf_bg_form rf_texto" v-model="venda_fei" required>
               <option value="0">Não</option>
               <option value="1">Sim</option>

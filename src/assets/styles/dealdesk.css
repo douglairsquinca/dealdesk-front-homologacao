@@ -1193,3 +1193,101 @@
     padding-left: 0;
     
   }
+
+  /* Menu desk*/
+  .card-desk {
+    margin-top: 10px;    
+    padding-bottom: 20px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+
+  }
+  .icone_filtro_desk {
+    font-size: 20px  ;
+    color: #B92E2E ;
+  }
+  .texto_filtro_desk {
+    font-size: 18px ;
+    color: #2A2B3F !important;
+    padding-left: 10px;
+  } 
+  .rf_bg_form_menu_desk {
+    border: #2A2B3F solid 1px ;
+    border-radius: 8px;
+    margin-left: 2px;
+    margin-right: 2px;
+    height: 45px;
+  }
+  .rf_texto_menu_titulo_desk {
+    font-style: normal;
+    color: #2A2B3F !important;
+    font-size: 14px; 
+    font-weight: bold;   
+  }
+  .rf_texto_menu_desk {
+    font-style: normal;
+    color: #2A2B3F !important;
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+  .divisoria_desk{
+    border: solid 3px  #B92E2E;
+    border-radius: 10px;
+    margin-left: 10px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .divisoria_desk2{
+    border: solid 3px  #B92E2E;
+    border-radius: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .barra_fei_menu_desk{
+    background-color: #B92E2E;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .barra_fei_menu_desk .texto_centralizado {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    color: #fff;
+    font-size: 26px;
+  }
+  .texto_menu_ent_desk {
+    font-style: normal;
+    color: #2A2B3F !important;
+    font-size: 14px; 
+    font-weight: bold;  
+    padding-left: 10px; 
+  }
+
+  /* Dispositivos móveis */
+@media screen and (min-width: 320px) and (max-width: 480px) {
+  /* Seu estilo para dispositivos móveis */
+}
+
+/* iPads, tablets */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+  /* Seu estilo para iPads e tablets */
+}
+
+/* Telas pequenas, laptops */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  /* Seu estilo para telas pequenas e laptops */
+}
+
+/* Desktops, telas grandes */
+@media screen and (min-width: 1025px) and (max-width: 1200px) {
+  /* Seu estilo para desktops e telas grandes */
+}
+
+/* Telas muito grandes, TVs */
+@media screen and (min-width: 1201px) {
+  /* Seu estilo para telas muito grandes e TVs */
+}
