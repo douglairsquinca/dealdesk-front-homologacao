@@ -804,7 +804,7 @@
               type="text"
               class="form-control rf_bg_form rf_texto"
               v-model="desconto"
-              :disabled="true"
+         
             />
             <label for="valid_descricao" class="rf_texto">Desconto</label>
         </div>         
@@ -815,7 +815,7 @@
               type="text"
               class="form-control rf_bg_form rf_texto"
               v-model="acrescimo"
-              :disabled="true"
+          
             />
             <label for="valid_descricao" class="rf_texto">Acréscimo</label>
         </div>  
