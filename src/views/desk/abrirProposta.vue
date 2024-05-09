@@ -800,23 +800,15 @@
       </div>
       <div class="col col-md-4">
         <div class="form-floating">
-            <input
-              type="text"
-              class="form-control rf_bg_form rf_texto"
-              v-model="desconto"
-         
-            />
+          <input type="text" class="form-control rf_bg_form rf_texto" v-model="desconto"
+                              v-on:blur="inserir_desconto" @input="desconto = formatarValor(desconto)" />
             <label for="valid_descricao" class="rf_texto">Desconto</label>
         </div>         
       </div>
       <div class="col col-md-4">
         <div class="form-floating">
-            <input
-              type="text"
-              class="form-control rf_bg_form rf_texto"
-              v-model="acrescimo"
-          
-            />
+          <input type="text" class="form-control rf_bg_form rf_texto" v-model="adicional"
+                              v-on:blur="inserir_acrescimo" @input="adicional = formatarValor(adicional)" />
             <label for="valid_descricao" class="rf_texto">Acréscimo</label>
         </div>  
       </div>
