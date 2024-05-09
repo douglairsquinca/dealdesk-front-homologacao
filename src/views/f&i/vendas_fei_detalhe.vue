@@ -4064,7 +4064,7 @@ export default {
       id_revisao_customizado: "",
       precoDesconto: "",
       id_acessorio: "",
-      habilitar_ranquear_customizado: false,
+      habilitar_ranquear_customizado: true,
       id_rota:''
     };
   },
@@ -4073,6 +4073,7 @@ export default {
     this.habilitar();
     this.retrievePropostas();
     this.habilitar_fi();
+    
   },
   methods: {
     getToken() {
@@ -5205,6 +5206,7 @@ export default {
       this.retrievekitsSegurosItens();
       this.retrievekitsRevisoesItens();
       this.resumoRanqueamentoCustomizado(); 
+      this.verificar_ranqueamento_customizado();
     },
     async resumoRanqueamentoCustomizado() {
       //Verificar se todos os acessórios foram preenchidos
@@ -5348,6 +5350,7 @@ export default {
           setTimeout(() => (this.abrir_modal = false), 2000);
           this.habilitar_ranquear_customizado = true;
         } else {
+          console.log("Habilitando botão de ranquear")
           this.habilitar_ranquear_customizado = false;
           this.ranquear_customizado();
         }
@@ -6029,6 +6032,12 @@ export default {
           setTimeout(() => (this.abrir_modal = false), 1000);
         }
       }
+    },
+
+
+
+    tamiris(){
+      console.log("Descrevendo uma função !!!!!!!!!!!!!!!!!")
     },
 
     exibirModalConfirmacao(item) {

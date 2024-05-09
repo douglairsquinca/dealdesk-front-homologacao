@@ -13,7 +13,7 @@
     <form @submit.prevent="onSubmit">
       <div class="row g-2 p-2">
         <!--Item-->
-        <div class="col-1">
+        <div class="col-1 col-md-4">
           <div class="form-floating ">
             <select class="form-select rf_bg_form rf_texto " v-model="item" required>
               <option value="0">INTERNO</option>
@@ -24,7 +24,7 @@
           </div>
         </div>
         <!--Cortesia-->
-        <div class="col-1">
+        <div class="col-1 col-md-4">
           <div class="form-floating">
             <select class="form-select rf_bg_form rf_texto" v-model="cortesia" required>
               <option value="NAO">NAO</option>
@@ -35,14 +35,14 @@
           </div>
         </div>
         <!--Código-->
-        <div class="col-2">
+        <div class="col-2 col-md-4">
           <div class="form-floating">
             <input type="text" class="form-control rf_bg_form rf_texto" v-model="codigo" required />
             <label for="valid_descricao" class="rf_texto">Código</label>
           </div>
         </div>
         <!--Descrição-->
-        <div class="col">
+        <div class="col col-md-8">
           <div class="form-floating">
             <input type="text" class="form-control rf_bg_form rf_texto" v-model="descricao" required />
             <label for="valid_descricao" class="rf_texto">Descrição</label>
@@ -50,7 +50,7 @@
           </div>
         </div>
         <!--Preço Base-->
-        <div class="col-2">
+        <div class="col-2 col-md-4">
           <div class="form-floating">
             <input type="text" class="form-control rf_bg_form rf_texto" v-model="preco_base_peca"
               @input="preco_base_peca = formatarValor(preco_base_peca)" required />
@@ -61,7 +61,7 @@
       </div>
       <div class="row g-2 p-2">
         <!--Tmo Instalação-->
-        <div class="col-1">
+        <div class="col-1 col-md-3">
           <div class="form-floating">
             <input type="text" class="form-control rf_bg_form rf_texto" v-model="tmo_instalação" required />
             <label for="valid_descricao" class="rf_texto">Tmo. Instalação</label>
@@ -69,7 +69,7 @@
           </div>
         </div>
         <!--Tmo Pintura-->
-        <div class="col-1">
+        <div class="col-1 col-md-3">
           <div class="form-floating">
             <input type="text" class="form-control rf_bg_form rf_texto" v-model="tmo_pintura" required />
             <label for="valid_descricao" class="rf_texto">Tmo. Pintura</label>
@@ -77,7 +77,7 @@
           </div>
         </div>
         <!--Preco Final-->
-        <div class="col-2">
+        <div class="col-2 col-md-3">
           <div class="form-floating">
             <input type="text" class="form-control rf_bg_form rf_texto" v-model="preco_final_instalado"
               @input="preco_final_instalado = formatarValor(preco_final_instalado)" required />
@@ -86,7 +86,7 @@
           </div>
         </div>
         <!--Categoria-->
-        <div class="col-2">
+        <div class="col-2 col-md-3">
           <div class="form-floating">
             <select class="form-select rf_bg_form rf_texto" v-model="categoria_id" id="valid_status" required>
               <option value="1">Novos</option>
@@ -97,7 +97,7 @@
           </div>
         </div>
         <!--Modelo-->
-        <div class="col-2">
+        <div class="col-2 col-md-3">
           <div class="form-floating">
             <select class="form-select rf_bg_form rf_texto" v-model="modelo_id" required>
               <option v-for="item in modelo" :value="item.id" :key="item.id">
@@ -109,7 +109,7 @@
           </div>
         </div>
         <!--Mão de Obra-->
-        <div class="col-2">
+        <div class="col-2 col-md-3">
           <div class="form-floating">
             <select class="form-select rf_bg_form rf_texto" v-model="mao_obra_id" id="valid_status" required>
               <option value="4">Ambos</option>
@@ -120,7 +120,7 @@
 
           </div>
         </div>
-        <div class="col-1 d-flex ">
+        <div class="col-1 col-md-2 d-flex ">
           <div class="input-group-append">
             <button type="submit" :disabled="btn_cadastrar" class="btn btn-lg btn-filtro">
               <span class="rf_texto_btn">Cadastrar</span>

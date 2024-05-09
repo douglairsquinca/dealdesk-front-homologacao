@@ -1,0 +1,394 @@
+/*@import url('http://127.0.0.1/beni/light.css');*/
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
+* {
+	font-family: 'Ubuntu', sans-serif;
+}
+:root {
+	--escuro: #131313;
+	--cinza: #565656;
+	--vermelho: #d32f2f;
+	--pretoC: #2B2C40;
+	--branco: #fff;
+	--fundo: var(--branco);
+	--degrade: radial-gradient(circle, rgb(255 106 106) 36%, rgba(211,47,47,1) 100%);
+}
+.rf_texto, .nav-link {
+	color: var(--cinza)!important;
+}
+input, select {
+	box-shadow: 0 15px 10px -10px rgb(0 0 0 / 3%);
+    margin: 5px;
+    border: 1px solid #aaa!important;
+}
+body #app .rf_background {
+    overflow-x: hidden;	
+    background-color: var(--pretoC)!important;    
+}
+body.bg-dark {
+
+}
+body #app .bg-dark {
+
+}
+.rf_background[data-v-4c7f493a] {
+	background: unset!important;
+}
+body #app .navbar.bg-dark{
+	background-color: unset!important;
+}
+.rf_texto i {
+	font-style: normal;
+	color: var(--branco);
+}
+span[style="color: aliceblue;"] {
+	display: none;
+}
+.form-floating>label {
+	color: var(--branco)!important;
+}
+
+
+.table>:not(caption)>*>* {
+	font-size: 14px;
+}
+.table>tbody 
+
+
+.rf_background > div > .card.rf_bg_form {
+	background-color: none!important;
+    background-color: unset!important;
+    border: 0;	
+    padding-left: 12px;
+    padding-right: 12px;
+}
+.rf_bg_form .px-4.py-5 {
+	padding: 0!important;
+	max-width: unset;
+}
+.rf_bg_form .px-4.py-5 > .row {
+    padding: 0!important;
+    gap: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+.rf_bg_form .px-4.py-5 > .row > .col {
+	background-color: var(--pretoC);
+	width: unset;
+	border-radius: 8px;
+	padding: 0;
+	filter: drop-shadow(0px 10px 20px rgb(0 0 0 / 5%));
+    border: 0;	
+    transition: .3s;
+    margin-top: 20px;
+	box-shadow: 0 15px 10px -10px rgb(0 0 0 / 10%);        
+}
+.rf_bg_form .px-4.py-5 > .row > .col h3 a i:before {
+	font-size: 42px;
+	color: var(--branco);
+}
+.rf_bg_form .px-4.py-5 > .row > .col h3 a i {
+    display: flex;
+    align-items: center;
+    font-weight: 200;
+    font-size: 20px;
+    gap: 15px;
+	flex-direction: column; 
+}
+.rf_bg_form .px-4.py-5 > .row > .col div {
+	width: 100%;
+}
+.rf_bg_form .px-4.py-5 > .row > .col:hover {
+    background: var(--pretoC);
+}
+.rf_bg_form .px-4.py-5 > .row > .col h3 a i:before {
+	transition: .3s;
+}
+.rf_bg_form .px-4.py-5 > .row > .col div a {
+	padding: 15px!important;
+}
+footer ul.border-bottom.pb-3 {
+	border-color: var(--branco)!important;
+}
+
+nav.navbar.rf_texto div i {
+display: inline-flex;
+    align-items: center;
+    gap: 20px;
+    color: var(--branco);
+    font-weight: 400;
+}
+nav.navbar.rf_texto div i:before {
+	color: unset;
+}
+.btn-secondary {
+    background: var(--pretoC);
+    border-color: transparent;
+    color: var(--branco);
+}
+
+.form-floating input, .form-floating select, .form-select {
+    background-color: var(--pretoC)!important;
+    color: var(--branco)!important;
+    outline: 0;  
+}
+.form-floating input:focus, .form-floating select:focus {
+	box-shadow: none;
+	border: 0;
+	filter: brightness(1.8);
+}
+ul.pagination {
+	margin-top: 40px;
+	gap: 10px;
+}
+ul.pagination li a {
+	background: var(--pretoC);
+    color: var(--vermelho);
+    border: 0;
+}
+ul.pagination li a:hover {
+
+}
+ul.pagination li.disabled a {
+    background: var(--pretoC);
+    color: var(--branco);
+}
+.card.rf_bg_form {
+	background-color: var(--pretoC)!important;
+	padding: 8px;
+}
+.row.g-2.p-2 {
+	padding: 2px!important;
+}
+body:before {
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-image: url('https://beehavemarketing.com.br/oda/bg.png');
+    background-size: cover;
+    opacity: .4;
+    filter: grayscale(1) blur(5px);
+}
+.table>:not(caption)>*>* {
+	border-color: #ddd!important;
+}
+.rf_background .navbar.rf_bg_form.rf_texto.mt-4 {
+
+}
+body #app .card.bg-dark.rf_texto.text-center {
+	background: var(--branco)!important;
+}
+.card.rf_bg_form .card.bg-dark.rf_texto .card-body h5 {
+    font-size: 44px;
+    font-weight: 600;	
+}
+.card.rf_bg_form .card.bg-dark.rf_texto .card-body p {
+	margin-bottom: 0;
+}
+.card.rf_bg_form.mt-4.p-2 .card-title {
+    font-size: 44px;
+    font-weight: 600;
+}
+.card.shadow-sm.text-center.rf_texto.rf_border {
+	margin-top: 20px;
+}
+.navbar.navbar-expand-lg.rf_bg_form.rf_texto {
+    background-color: var(--pretoC)!important;
+    border-radius: 6px;
+    border: 1px solid #d2d2d2;
+}
+
+table .cor_atendimento_apos_45min {
+	background-color: #ffdf7e;
+}
+table .cor_venda_finalizada {
+	background-color: #8fd19e;
+}
+
+table td .btn-secondary, table td .btn:disabled {
+    border: 1px solid;
+    background-color: var(--pretoc);
+    color: var(--branco);
+}
+table td .btn:disabled {
+	opacity: .3;
+	border-color: var(--branco);
+}
+.table th {
+    color: var(--branco)!important;        
+}
+.table>:not(caption)>*>* {
+	border-color: var(--branco);
+    vertical-align: middle;	
+    background-color: transparent!important;
+}
+
+.bg-success {
+    background-color: #8fd19e!important;	
+}
+.bg-danger {
+	background-color: var(--pretoC)!important;
+}
+
+
+.d-flex.justify-content-between.mb-1 .p-2.rf_texto {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 12px 30px;	
+}
+#tabela_conversao button[data-bs-target="#ModalConversao"] {
+	margin-left: 10px;
+}
+
+.card.shadow-sm.text-center.rf_texto.rf_border .card-body {
+	color: var(--branco);
+}
+.nav.nav-item.justify-content-end.rf_texto {
+	justify-content: start!important;
+}
+
+
+nav.navbar ul.navbar-nav li {
+	margin-right: 10px;
+}
+nav.navbar ul.navbar-nav li button {
+    background: var(--pretoC);
+    border: 0;	
+}
+button[type=submit], button[type=button] {
+    background: var(--pretoC);
+    font-size: 18px;
+}
+.navbar-expand-lg .navbar-nav .dropdown-menu, button.btn.btn-secondary.btn-block.mt-2 {
+	background-color: var(--pretoC);
+}
+span.rf_texto {
+	color: var(--branco)!important;
+}
+.form-check .form-check-label, .card-header, .form-floating .form-control.rf_bg_form.rf_texto  {
+	color: var(--branco)!important;
+}
+.card-body.bg-success {
+	background-color: #28a745!important;
+}
+.card-body.bg-primary {
+	background-color: #007bff!important;
+}
+.card-body.bg-secondary {
+	background-color: #6c757d!important;
+}
+.card-body.bg-danger {
+	background-color: #dc3545!important;
+}
+.card.shadow-sm.text-center.rf_texto.rf_border {
+	box-shadow: unset!important;
+}
+.card.shadow-sm.text-center.rf_texto.rf_border .card-body {
+
+}
+#navbarNavDarkDropdown ul.navbar-nav li a {
+	color: #fff!important;
+}
+#rf_profile ul.nav li a {
+	color: var(--branco)!important;
+}
+label[data-v-c4247486] {
+	color: var(--branco)!important;
+}
+div label.text-info {
+	color: var(--branco)!important;
+}
+.card-container.card[data-v-c4247486] {
+	border: 1px solid #eee;
+}
+form[data-v-c4247486] button[data-v-c4247486] {
+	background-color: var(--pretoC);
+}
+div[data-v-f14c8d80].container-fluid.rf_background .rf_bg_form {
+    background-color: var(--pretoC)!important;
+}
+.rf_card_profile {
+	position: relative;
+}
+.rf_card_profile strong {
+	color: var(--branco);
+}
+.rf_card, .rf_card_profile {
+	background-color: unset!important;
+	border: 1px solid #d2d2d2;
+	border-radius: 8px;
+}
+select.form-select.rf_bg_form.rf_texto {
+	color: var(--branco)!important;	
+}
+select option {
+	color: var(--branco)!important;
+}
+div[data-v-f14c8d80].container-fluid.rf_background .modal-content.rf_bg_form {
+	padding: 20px;
+}
+h1.modal-title {
+    margin-top: 0;
+    color: #fff;	
+}
+.modal-header h1.rf_texto {
+	color: var(--pretoC)!important;
+	margin: 0;
+}
+.nav-link.rf_texto.active {
+	color: var(--branco)!important;
+}
+nav.rf_header {
+	background-color: var(--pretoC);
+}
+.modal-header .btn-close:before {
+    content: 'X';
+    color: #fff;
+    display: block;
+    margin-top: -5px;
+}
+.modal-header .btn-close {
+	position: relative;
+	opacity: 1;
+}
+#Modal_Mensagem {
+    background: rgb(0 0 0 / 50%);	
+}
+#Modal_Mensagem .modal-header.bg-dark.rf_border {
+	justify-content: center;	
+}
+#Modal_Mensagem .modal-body.bg-secondary.text-center {
+	background-color: #eee!important;	
+    border-radius: 8px;	
+}
+#Modal_Mensagem .modal-body.bg-secondary.text-center p.fs-6.fw-bold {
+	margin-bottom: 0;
+}
+.card.rf_bg_form .card-header.bg-dark.rf_texto.text-center.mt-2 {
+	color: var(--branco)!important;
+}
+
+.form-floating>.form-control-plaintext~label:after, .form-floating>.form-control:focus~label:after, 
+.form-floating>.form-control:not(:placeholder-shown)~label:after, .form-floating>.form-select~label:after {
+	background-color: var(--pretoC)!important;
+}
+.table > tr td {
+	color: var(--pretoC)!important;
+}
+table.table.rf_texto tbody tr td {
+	color: var(--branco)!important;
+}
+.table-success {
+	background-color: #2c4c3b!important;
+}
+.navbar.navbar-expand-lg.rf_bg_form.rf_texto {
+	border: 0;
+}
+.apexcharts-legend-text {
+	color: var(--branco)!important;
+}
+.cor_venda_perdida {
+    background-color: #ff4d4d!important;	
+}

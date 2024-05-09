@@ -12,14 +12,14 @@
       </div>
       <div class="row g-2 p-2">
         <!--Telefone-->
-        <div class="col-md-2">
+        <div class="col-2 col-md-2">
           <div class="form-floating">
             <input type="text" class="form-control " :disabled="habilitar_telefone" v-model="tel" v-on:blur="vTel" />
             <label for="valid_nome">Telefone</label>
           </div>
         </div>
         <!--Telefone 2 -->
-        <div class="col-md-2">
+        <div class="col-2 abnfcol-md-2">
           <div class="form-floating">
             <input type="text" class="form-control rf_bg_form rf_texto" v-model="cel"
               :style="{ 'border-color': nomeBorderColor }" v-on:blur="vCel" />
@@ -27,7 +27,7 @@
           </div>
         </div>
         <!--Cliente-->
-        <div class="col-md">
+        <div class="col col-md-5">
           <div class="form-floating">
             <input type="text" class="form-control rf_bg_form rf_texto" v-model="modal_nome"
               :style="{ 'border-color': nomeBorderColor }" v-on:blur="checkForm" required />
@@ -35,7 +35,7 @@
           </div>
         </div>
         <!--Email-->
-        <div class="col-md-3">
+        <div class="col-3 col-md-3">
           <div class="form-floating">
             <input type="email" class="form-control rf_bg_form rf_texto" v-model="email"
               :style="{ 'border-color': nomeBorderColor }" v-on:blur="validateEmail(email)" />
@@ -45,14 +45,14 @@
       </div>
     </form>
     <div class="row">
-      <div class="col-2 ">
+      <div class="col-2 col-md-3">
         <div class="input-group-append">
           <button type="submit" :disabled="habilitar_cadastro" @click="cadastrar_cliente" class="btn btn-lg btn-filtro m-2">
             <span class="rf_texto_btn">Cadastrar</span>
           </button>
         </div>
       </div>
-      <div class="col-1 ">
+      <div class="col-1 col-md-2 ">
         <div class="input-group-append">
           <button type="submit" :disabled="habilitar_proposta" @click="update_cliente" class="btn btn-lg btn-filtro m-2">
             <span class="rf_texto_btn">Editar</span>
@@ -131,7 +131,7 @@
       </div>
       <div class="row g-2 p-2">
         <!--Vendedor-->
-        <div class="col-2">
+        <div class="col-2 col-md-3">
           <div class="form-floating">
             <select class="form-select rf_bg_form rf_texto" :disabled="input_proposta" v-model="vendedor_inicial"
               v-on:blur="checar_vendedor">
@@ -143,7 +143,7 @@
           </div>
         </div>
         <!--Tipo Veiculo-->
-        <div class="col-1">
+        <div class="col-1 col-md-3">
           <div class="form-floating">
             <select class="form-select rf_bg_form rf_texto" :disabled="input_proposta" v-model="tipo_veiculo">
               <option value="0">Novo</option>
@@ -153,7 +153,7 @@
           </div>
         </div>
         <!--Midia-->
-        <div class="col-md-1">
+        <div class="col-1 col-md-3">
           <div class="form-floating">
             <select class="form-select rf_bg_form rf_texto " :disabled="input_proposta" required v-model="midia_id">
 
@@ -165,7 +165,7 @@
           </div>
         </div>
         <!--Veiculo troca-->
-        <div class="col-md-1">
+        <div class="col-1 col-md-3">
           <div class="form-floating">
             <select class="form-select rf_bg_form rf_texto" id="valid_funcao" :disabled="input_proposta" required
               v-model="searchTroca">
@@ -178,7 +178,7 @@
       </div>
       <div class="row g-2 p-2">
         <!--Observação-->
-        <div class="col-md">
+        <div class="col col-md-12">
           <div class="form-floating">
             <input type="text" class="form-control rf_bg_form rf_texto" :disabled="input_proposta" v-model="obs" />
             <label class="rf_texto">Observação</label>
@@ -186,7 +186,7 @@
         </div>
       </div>
       <div class="row g-2 p-2">
-        <div class="col-2 ">
+        <div class="col-2 col-md-4">
           <div class="form-floating">
             <button type="submit" :disabled="habilitar_proposta" class="btn btn-lg btn-filtro ">
               <span class="rf_texto_btn">Abrir Proposta</span>

@@ -19,7 +19,7 @@
 
       <!--Id da Proposta-->
       <div class="row g-2 p-2">
-        <div class="col-1">
+        <div class="col-1 col-md-2">
           <div class="form-floating">
             <input
               type="text"
@@ -30,7 +30,7 @@
             <label for="valid_descricao" class="rf_texto">Nº Proposta</label>
           </div>
         </div>
-        <div class="col">
+        <div class="col col-md-5">
           <div class="form-floating">
             <input
               type="text"
@@ -41,7 +41,7 @@
             <label for="valid_descricao" class="rf_texto">Atendente</label>
           </div>
         </div>
-        <div class="col">
+        <div class="col col-md-5">
           <div class="form-floating">
             <input
               type="text"
@@ -52,7 +52,7 @@
             <label for="valid_descricao" class="rf_texto">Vendedor</label>
           </div>
         </div>
-        <div class="col-2">
+        <div class="col-2 col-md-4">
           <div class="form-floating">
             <button
               type="button"
@@ -65,7 +65,7 @@
             </button>
           </div>
         </div>
-        <div class="col-2">
+        <div class="col-2 col-md-4">
           <div class="form-floating">
             <button
               type="button"
@@ -81,7 +81,7 @@
       <!-- Dados do Cliente-->
       <div class="row g-2 p-2">
         <!--Nome do Cliente-->
-        <div class="col-4">
+        <div class="col-4 col-md-6">
           <div class="form-floating">
             <input
               type="text"
@@ -97,7 +97,7 @@
           </div>
         </div>
         <!--CPF/CNPJ-->
-        <div class="col-md-2">
+        <div class="col-2 col-md-6">
           <div class="form-floating">
             <input
               type="text"
@@ -112,7 +112,7 @@
           </div>
         </div>
         <!--Data Nascimento-->
-        <div class="col-2">
+        <div class="col-2 col-md-6">
           <div class="form-floating">
             <input
               type="date"
@@ -126,7 +126,7 @@
           </div>
         </div>
         <!--Email-->
-        <div class="col">
+        <div class="col col-md-6">
           <div class="form-floating">
             <input
               type="text"
@@ -142,7 +142,7 @@
       </div>
       <div class="row g-2 p-2">
         <!--Endereço-->
-        <div class="col-4">
+        <div class="col-4 col-md-9">
           <div class="form-floating">
             <input
               type="text"
@@ -157,7 +157,7 @@
           </div>
         </div>
         <!--Complemento-->
-        <div class="col-2">
+        <div class="col-2 col-md-3">
           <div class="form-floating">
             <input
               type="text"
@@ -171,7 +171,7 @@
           </div>
         </div>
         <!--UF-->
-        <div class="col-1">
+        <div class="col-1 col-md-2">
           <div class="form-floating">
             <input
               v-model="uf"
@@ -196,7 +196,7 @@
           </div>
         </div>
         <!--Cidade-->
-        <div class="col-2">
+        <div class="col-2 col-md-3">
           <div class="form-floating">
             <input
               v-model="cidade"
@@ -221,7 +221,7 @@
           </div>
         </div>
         <!--Bairro-->
-        <div class="col-2">
+        <div class="col-2 col-md-4">
           <div class="form-floating">
             <input
               type="text"
@@ -236,7 +236,7 @@
           </div>
         </div>
         <!--CEP-->
-        <div class="col-1">
+        <div class="col-1 col-md-3">
           <div class="form-floating">
             <input
               type="text"
@@ -253,7 +253,7 @@
       </div>
       <div class="row g-2 p-2">
         <!--Telefone-->
-        <div class="col-2">
+        <div class="col-2 col-md-3">
           <div class="form-floating">
             <input
               type="text"
@@ -268,7 +268,7 @@
           </div>
         </div>
         <!--Telefone-->
-        <div class="col-2">
+        <div class="col-2 col-md-3">
           <div class="form-floating">
             <input
               type="text"
@@ -282,7 +282,7 @@
           </div>
         </div>
         <!--Histórico Cliente-->
-        <div class="col-2">
+        <div class="col-2 col-md-3">
           <div class="form-floating">
             <button
               class="btn btn-lg btn-filtro"
@@ -297,7 +297,7 @@
       </div>
       <!--Atualizar Cliente-->
       <div class="row g-2 p-2">
-        <div class="col-1">
+        <div class="col-1 col-md-3">
           <div class="form-floating">
             <button
               type="button"
@@ -312,7 +312,7 @@
       </div>
       <!--Venda Futura-->
       <div class="row g-2 p-2">
-        <div class="col-2" v-if="venda_Futura">
+        <div class="col-2 col-md-3" v-if="venda_Futura">
           <div class="form-floating">
             <select
               class="form-select rf_bg_form rf_texto"
@@ -330,7 +330,7 @@
             <label class="rf_texto">Família</label>
           </div>
         </div>
-        <div class="col-2" v-if="venda_Futura">
+        <div class="col-2 col-md-3" v-if="venda_Futura">
           <div class="form-floating">
             <select
               class="form-select rf_bg_form rf_texto"
@@ -348,7 +348,7 @@
             <label class="rf_texto">Modelo</label>
           </div>
         </div>
-        <div class="col-2">
+        <div class="col-2 col-md-3">
           <div class="form-floating">
             <div class="form-check form-switch rf_texto mt-3">
               <input
@@ -365,7 +365,7 @@
             </div>
           </div>
         </div>
-        <div class="col-2">
+        <div class="col-2 col-md-3">
           <div class="form-floating">
             <div class="form-check form-switch rf_texto mt-3">
               <input
@@ -565,7 +565,7 @@
               >
             </div>
             <!--Chassi-->
-            <div class="col-2">
+            <div class="col-2 col-md-2">
               <div class="form-floating">
                 <input
                   type="text"
@@ -577,7 +577,7 @@
               </div>
             </div>
             <!--Marca-->
-            <div class="col-2">
+            <div class="col-2 col-md-2">
               <div class="form-floating">
                 <input
                   type="text"
@@ -589,7 +589,7 @@
               </div>
             </div>
             <!--Modelo-->
-            <div class="col-6">
+            <div class="col-6 col-md-6">
               <div class="form-floating">
                 <input
                   type="text"
@@ -601,7 +601,7 @@
               </div>
             </div>
             <!--Cor-->
-            <div class="col-2">
+            <div class="col-2 col-md-2">
               <div class="form-floating">
                 <input
                   type="text"
@@ -615,7 +615,7 @@
           </div>
           <div class="row g-2 p-2">
             <!--Ano Fabricação-->
-            <div class="col-2">
+            <div class="col-2 col-md-2">
               <div class="form-floating">
                 <input
                   type="text"
@@ -627,7 +627,7 @@
               </div>
             </div>
             <!--Ano Modelo-->
-            <div class="col-2">
+            <div class="col-2 col-md-2">
               <div class="form-floating">
                 <input
                   type="text"
@@ -639,7 +639,7 @@
               </div>
             </div>
             <!--Combustivel-->
-            <div class="col-2">
+            <div class="col-2 col-md-2">
               <div class="form-floating">
                 <input
                   type="text"
@@ -650,7 +650,7 @@
                 <label class="rf_texto">Combustível</label>
               </div>
             </div>
-            <div class="col-2">
+            <div class="col-2 col-md-3">
               <div class="form-floating">
                 <button
                   type="submit"
@@ -711,7 +711,7 @@
           </table>
         </div>
         <div class="row g-2 p-2">
-          <div class="col-1">
+          <div class="col-1 col-md-3">
             <div class="form-floating">
               <button
                 type="button"
@@ -748,8 +748,8 @@
       </div>
     </div>
   </div>
-  <!--Bloco Resumo da Proposta-->
-  <div class="card card-filtro">
+    <!--Bloco Resumo da Proposta-->
+    <div class="card card-filtro">
     <div class="row g-2 p-2">
       <div class="card-title rf_texto gy-4">
         <i class="bi bi-car-front-fill fs-5 icone_filtro"
@@ -757,182 +757,234 @@
         >
       </div>
     </div>
-
+  </div>
+  <div class="card card-filtro">
     <div class="card-desk-menu">
       <span>Valores do Veículo</span>
     </div>
     <!--Valores do Veículo-->
     <div class="row g-2 p-2">
       <!--Descrição-->
-      <div class="col">
-        <span class="rf_texto">Valor Sugerido de Venda</span><br />
-        <span class="rf_texto"> {{ Valor_Sugerido }}</span>
+      <div class="col col-md-4">
+        <div class="form-floating">
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="Valor_Sugerido"
+              :disabled="true"
+            />
+            <label for="valid_descricao" class="rf_texto">Valor Sugerido de Venda</label>
+        </div>
       </div>
-      <div class="col">
-        <span class="rf_texto">Valor Custos Variáveis (+)</span><br />
-        <span class="rf_texto">{{ Valor_Custo_variaveis }}</span>
+      <div class="col col-md-4">
+        <div class="form-floating">
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="Valor_Custo_variaveis"
+              :disabled="true"
+            />
+            <label for="valid_descricao" class="rf_texto">Valor Custos Variáveis (+)</label>
+        </div>        
       </div>
-      <div class="col">
-        <span class="rf_texto">Valor dos Acessórios</span><br />
-        <span class="rf_texto">{{ Valor_Itens_Acessorios }}</span>
+      <div class="col col-md-4">
+        <div class="form-floating">
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="Valor_Itens_Acessorios"
+              :disabled="true"
+            />
+            <label for="valid_descricao" class="rf_texto">Valor dos Acessórios</label>
+        </div>         
       </div>
-      <div class="col">
-        <span class="rf_texto">Desconto</span><br />
-        <input
-          type="text"
-          class="form-control rf_bg_form rf_texto"
-          v-model="desconto"
-          v-on:blur="inserir_desconto"
-          @input="desconto = formatarValor(desconto)"
-        />
+      <div class="col col-md-4">
+        <div class="form-floating">
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="desconto"
+              :disabled="true"
+            />
+            <label for="valid_descricao" class="rf_texto">Desconto</label>
+        </div>         
       </div>
-      <div class="col">
-        <span class="rf_texto">Acréscimo</span><br />
-        <input
-          type="text"
-          class="form-control rf_bg_form rf_texto"
-          v-model="adicional"
-          v-on:blur="inserir_acrescimo"
-          @input="adicional = formatarValor(adicional)"
-        />
+      <div class="col col-md-4">
+        <div class="form-floating">
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="acrescimo"
+              :disabled="true"
+            />
+            <label for="valid_descricao" class="rf_texto">Acréscimo</label>
+        </div>  
       </div>
-      <div class="col">
-        <span class="rf_texto">Valor Total Veículo Venda</span><br />
-        <span class="rf_texto"> {{ Valor_Total_Venda }}</span
-        ><br />
+      <div class="col col-md-4">
+        <div class="form-floating">
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="Valor_Total_Venda"
+              :disabled="true"
+            />
+            <label for="valid_descricao" class="rf_texto">Valor Total Veículo Venda</label>
+        </div>       
       </div>
     </div>
-    <!--Layoute atual utilizando tabela-->
-    <!-- <div class="card card-tabela-desk">
-        <table class="table rf_texto ">
-            <tbody>
-              <tr>
-                <th scope="row">Valor Sugerido de Venda</th>
-                <th></th>
-                <th></th>
-                <td class="rf_titulo_fonte">
-                  {{ (Valor_Sugerido) }}
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" style="white-space: nowrap; overflow: hidden;">Valor Custos Variáveis (+)</th>
-                <th></th>
-                <th></th>
-                <td class="rf_titulo_fonte">
-                  {{ Valor_Custo_variaveis }}
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">Valor dos Acessórios</th>
-                <th></th>
-                <th></th>
-                <td class="rf_titulo_fonte">
-                  {{ Valor_Itens_Acessorios }}
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">Desconto</th>
-                <td>
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="desconto"
-                    v-on:blur="inserir_desconto" @input="desconto = formatarValor(desconto)" />
-
-                </td>
-                <th scop="row">Acréscimo</th>
-                <td>
-                  
-
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" class="rf_back rf_back_text">
-                  Valor Total Veículo Venda
-                </th>
-                <th class="rf_back "></th>
-                <th class="rf_back "></th>
-                <td class="rf_titulo_fonte rf_back">
-                  {{ Valor_Total_Venda }}
-                </td>
-              </tr>
-            </tbody>
-            <div v-if="abrir_modal_desconto">
-              <div class="alert bg-dark text-center" role="alert">{{ msg }}</div>
-            </div>
-            <div v-if="abrir_modal_acrescimo">
-              <div class="alert bg-dark text-center" role="alert">{{ msg }}</div>
-            </div>
-        </table>
-      </div> -->
-
+  </div>
+  <div class="card card-filtro">
     <div class="card-desk-menu">
       <span>Resultado Operacional / Gerencial</span>
     </div>
-    <div class="row g-2 p-2">
-      <!--Descrição-->
-      <div class="col-2">
-        <span class="rf_texto">Valor Resultado Bruto</span><br />
-        <span class="rf_texto"> {{ Lucro_Bruto }}</span>
+    <div class="row g-2 p-2">      
+      <div class="col col-md-3">
+        <div class="form-floating">
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="Lucro_Bruto"
+              :disabled="true"
+            />
+            <label for="valid_descricao" class="rf_texto">Valor Resultado Bruto</label>
+        </div> 
       </div>
-      <div class="col-2">
-        <span class="rf_texto">Valor Resultado Gerencial</span><br />
-        <span class="rf_texto">{{ Lucro_Operacional }}</span>
+      <div class="col col-md-3">       
+        <div class="form-floating">
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="Lucro_Operacional"
+              :disabled="true"
+            />
+            <label for="valid_descricao" class="rf_texto">Valor Resultado Gerencial</label>
+        </div> 
       </div>
-      <div class="col-2">
-        <span class="rf_texto">Valor Resultado Financiamento</span><br />
-        <span class="rf_texto">{{ Valor_Resultado_Financiamento }}</span>
+      <div class="col col-md-3">
+        <div class="form-floating">
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="Valor_Resultado_Financiamento"
+              :disabled="true"
+            />
+            <label for="valid_descricao" class="rf_texto">Valor Resultado Financiamento</label>
+        </div> 
       </div>
 
-      <div class="col-2">
-        <span class="rf_texto">Valor Resultado Liquído</span><br />
-        <span class="rf_texto"> {{ Lucro_liquido }}</span
-        ><br />
+      <div class="col col-md-3">
+        <div class="form-floating">
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="Lucro_liquido"
+              :disabled="true"
+            />
+            <label for="valid_descricao" class="rf_texto">Valor Resultado Liquído</label>
+        </div> 
       </div>
     </div>
-
+  </div>
+  <div class="card card-filtro">  
     <div class="card-desk-menu">
       <span>Avaliação do Veículo</span>
     </div>
     <div class="row g-2 p-2">
-      <div class="col-2">
-        <span class="rf_texto">Valor Avaliação</span><br />
-        <span class="rf_texto"> {{ Valor_Avaliado }}</span>
+      <div class="col col-md-3">        
+        <div class="form-floating">
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="Valor_Avaliado"
+              :disabled="true"
+            />
+            <label for="valid_descricao" class="rf_texto">Valor Avaliação</label>
+        </div> 
       </div>
-      <div class="col-2">
-        <span class="rf_texto">Valor itens Avaliados DB(-)</span><br />
-        <span class="rf_texto">{{ Valor_Itens_Avaliacao_db }}</span>
+      <div class="col col-md-3">        
+        <div class="form-floating">
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="Valor_Itens_Avaliacao_db"
+              :disabled="true"
+            />
+            <label for="valid_descricao" class="rf_texto">Valor itens Avaliados DB(-)</label>
+        </div> 
       </div>
-      <div class="col-2">
-        <span class="rf_texto">Valor itens Avaliados CR(2)</span><br />
-        <span class="rf_texto">{{ Valor_Itens_Avaliacao_cr }}</span>
+      <div class="col col-md-3">       
+        <div class="form-floating">
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="Valor_Itens_Avaliacao_cr"
+              :disabled="true"
+            />
+            <label for="valid_descricao" class="rf_texto">Valor itens Avaliados CR(2)</label>
+        </div> 
       </div>
-
-      <div class="col-2">
-        <span class="rf_texto">Valor Avaliação Final</span><br />
-        <span class="rf_texto"> {{ Valor_Avaliacao_Final }}</span
-        ><br />
+      <div class="col col-md-3">     
+        <div class="form-floating">
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="Valor_Avaliacao_Final"
+              :disabled="true"
+            />
+            <label for="valid_descricao" class="rf_texto">Valor Avaliação Final</label>
+        </div> 
       </div>
     </div>
-
+  </div>
+  <div class="card card-filtro">
     <div class="card-desk-menu">
       <span>Informações sobre o Financiamento</span>
     </div>
     <div class="row g-2 p-2">
-      <div class="col-2">
-        <span class="rf_texto">Valor Entrada</span><br />
-        <span class="rf_texto"> {{ Valor_Entrada }}</span>
+      <div class="col col-md-3">       
+        <div class="form-floating">
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="Valor_Entrada"
+              :disabled="true"
+            />
+            <label for="valid_descricao" class="rf_texto">Valor Entrada</label>
+        </div> 
       </div>
-      <div class="col-2">
-        <span class="rf_texto">Valor Financiado</span><br />
-        <span class="rf_texto">{{ Valor_Financiado }}</span>
+      <div class="col col-md-3">   
+        <div class="form-floating">
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="Valor_Financiado"
+              :disabled="true"
+            />
+            <label for="valid_descricao" class="rf_texto">Valor Financiado</label>
+        </div> 
       </div>
-      <div class="col-2">
-        <span class="rf_texto">Quantidade de Meses</span><br />
-        <span class="rf_texto">{{ Quantidade_Meses }}</span>
+      <div class="col col-md-3">      
+        <div class="form-floating">
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="Quantidade_Meses"
+              :disabled="true"
+            />
+            <label for="valid_descricao" class="rf_texto">Quantidade de Meses</label>
+        </div> 
       </div>
 
-      <div class="col-2">
-        <span class="rf_texto">Valor da Parcela</span><br />
-        <span class="rf_texto"> {{ Pmt }}</span
-        ><br />
+      <div class="col col-md-3">
+        <div class="form-floating">
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="Pmt"
+              :disabled="true"
+            />
+            <label for="valid_descricao" class="rf_texto">Valor da Parcela</label>
+        </div> 
       </div>
     </div>
   </div>
@@ -959,7 +1011,7 @@
                 <th class="col-1"></th>
                 <th class="col-1"></th>
                 <!--Parcela 1-->
-                <th>
+                <th class="col-md-2">
                   <div class="form-floating">
                     <select
                       class="form-select rf_bg_form rf_texto"
@@ -977,7 +1029,7 @@
                   </div>
                 </th>
                 <!--Parcela 2-->
-                <th>
+                <th class="col-md-2">
                   <div class="form-floating">
                     <select
                       class="form-select rf_bg_form rf_texto"
@@ -996,7 +1048,7 @@
                   </div>
                 </th>
                 <!--Parcela 3-->
-                <th>
+                <th class="col-md-2">
                   <div class="form-floating">
                     <select
                       class="form-select rf_bg_form rf_texto"
@@ -1232,7 +1284,7 @@
               </tr>
               <!--Quarta Linha-->
               <tr>
-                <td>
+                <td class="col-md-2">
                   <div class="d-grid gap-2">
                     <button
                       class="btn btn-lg btn-desk-filtro"
@@ -1290,7 +1342,7 @@
             </tbody>
           </table>
           <div class="row g-2">
-            <div class="col">
+            <div class="col col-md-8">
               <div class="form-floating">
                 <textarea
                   v-model="info_adicionais"
@@ -1299,7 +1351,7 @@
                 <label class="rf_texto">Informações Adicionais</label>
               </div>
             </div>
-            <div class="col-2">
+            <div class="col-2 col-md-4">
               <button
                 class="btn btn-lg btn-desk-filtro"
                 :disabled="info_adicionais === ''"
@@ -1319,7 +1371,7 @@
       <MessageAtualizar :msg="msg_atualizar" v-show="msg_atualizar" />
     </div>
     <div class="desk-footer">
-      <div class="col-1 p-1">
+      <div class="col-1 col-md-3 p-1">
         <button
           type="submit"
           class="btn btn-lg btn-desk-filtro"
@@ -1331,7 +1383,7 @@
           <span class="rf_texto_btn_desk"> GERAR MENU</span>
         </button>
       </div>
-      <div class="col-2 p-1">
+      <div class="col-2 col-md-3 p-1">
         <button
           class="btn btn-lg btn-desk-filtro"
           :disabled="btn_finalizar_venda"
@@ -1340,7 +1392,7 @@
           <span class="rf_texto_btn_desk">FINALIZAR VENDA</span>
         </button>
       </div>
-      <div class="col-1 p-1">
+      <div class="col-1 col-md-3 p-1">
         <button class="btn btn-lg btn-desk-filtro" @click="venda_perdida">
           <span class="rf_texto_btn_desk">VENDA PERDIDA</span>
         </button>
@@ -2967,8 +3019,8 @@
                 </div>
                 <div class="col">
                   <div class="row rf_bg_form_menu_desk ">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Total Acessórios</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_total_acessorios }}</span>
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Parcela Escolhida</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ Pmt }}</span>
                   </div>
                 </div>
                 <div class="col">
@@ -4597,18 +4649,31 @@ export default {
             console.log(
               "Não Somar Acessorios ---------------------------------------------------------------------------"
             );
-          }
+          }    
           if (resposta["Pmt"] != "") {
             this.btn_gerar_menu = false;
-            this.btn_1 = false;
-            this.btn_finalizar_venda = false;
+            this.btn_1 = false;           
           }
-
-          console.log(resposta);
+        this.checar_pmt_escolhido();
+          console.log("Checando Resposta agora---------------------",resposta);
         });
     },
 
     /**Função 0006 */
+    async checar_pmt_escolhido(){     
+      const pmt_escolhido = await axios.get(
+          `${process.env.VUE_APP_API_URL}pmt_escolhido`,
+          {
+            params: { id: this.id_proposta },
+          }
+        );
+      console.log("Resultado da consulta ----", pmt_escolhido.data.data.rows[0].pmt_escolhido);
+
+      if (pmt_escolhido.data.data.rows[0].pmt_escolhido != null) {       
+            this.btn_finalizar_venda = false;
+          }
+      
+    },
 
     /**Função 0007 */
     getRequestParamsTrocaVendedor(
@@ -4879,7 +4944,7 @@ export default {
         margin: [5, 5],
         filename: "meu-pdf.pdf",
         image: { type: "pdf", quality: 2 },
-        html2canvas: { scale: 22 },
+        html2canvas: { scale: 2 },
         jsPDF: { format: "a4", orientation: "landscape" },
         pagebreak: { mode: "avoid-all" },
         enableLinks: true,
@@ -7449,6 +7514,7 @@ export default {
       }
       //window.location.reload();
       //this.resumo()
+      this.checar_pmt_escolhido();
       this.habilitar_proposta();
     },
 

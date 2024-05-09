@@ -8,7 +8,7 @@
         <i class="bi bi-funnel fs-5 icone_filtro"><span class="texto_filtro">Parâmetros do Relatório</span></i>
       </div>
       <div class="row p-2">
-        <div class="col-2">
+        <div class="col-2 col-md-4">
           <div class="form-floating">
             <select class="form-select rf_bg_form rf_texto_desk" v-model="selectedRelatorio"
               @change="selecionarRelatorios()">
@@ -19,7 +19,7 @@
             <label class="rf_texto"><strong>Escolha o tipo de Relatório</strong></label>
           </div>
         </div>
-        <div class="col-2">
+        <div class="col-2 col-md-6">
           <div v-if="selectedRelatorio === 'venda_conversao' || selectedRelatorio === 'venda_modelo'"
             class="box-conversao">
             <label class="text-info "><strong>Conversão por:</strong></label>
@@ -35,7 +35,7 @@
             </div>
           </div>
         </div>
-        <div class="col-2">
+        <div class="col-2 col-md-2">
           <div class="form-floating">
             <select class="form-select rf_bg_form rf_texto_desk" v-model="selectedFilter" @change="filtarRelatorios()">
               <option value="hoje">Hoje</option>
@@ -102,7 +102,7 @@
       </div>
     </div>
     <div class="row g-2 p-2">
-      <div class="col-1">
+      <div class="col-1 col-md-3">
         <div class="form-floating">
           <button class="btn btn-lg btn-filtro" @click="selectedRelatorio === 'venda_conversao' ? relatorio_conversao_vendas() :
     selectedRelatorio === 'venda_perdida' ? relatorio_venda_perdida() :
@@ -118,13 +118,13 @@
       <div class="card-title rf_texto gy-4">
           <i class="bi bi-printer fs-5 icone_filtro"><span class="texto_filtro">Imprimir Relatórios</span></i>
         </div>
-      <div class="col-1">
+      <div class="col-1 col-md-2">
         <button class="btn btn-lg btn-filtro" v-if="selectedRelatorio === 'venda_conversao'"
           @click="exportToXLSX">          
           <i class="bi bi-filetype-xlsx dropdown-toggle-icon-desk"></i>         
         </button>
       </div>
-      <div class="col-1">
+      <div class="col-1 col-md-2">
         <button class="btn btn-lg btn-filtro" v-if="selectedRelatorio === 'venda_conversao'"
           data-bs-toggle="modal" data-bs-target="#ModalConversao">     
           <i class="bi bi-filetype-pdf dropdown-toggle-icon-desk"></i>  

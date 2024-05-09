@@ -1280,6 +1280,53 @@
 /* Telas pequenas, laptops */
 @media screen and (min-width: 769px) and (max-width: 1024px) {
   /* Seu estilo para telas pequenas e laptops */
+  .texto{
+    font-size: 14px !important;
+
+  }
+  .texto_filtro {
+    font-size: 18px !important;
+    color: #2A2B3F !important;
+    padding-left: 20px;
+  }
+  .rf_texto,
+  .nav-link {
+    color: var(--cinza) !important;
+  }
+
+  .rf_texto_a {
+    color: var(--branco) !important;
+  }
+
+  .rf_texto {
+    font-style: normal;
+    color: #2A2B3F !important;
+    font-size: 12px;
+  }
+
+  .rf_texto_desk {
+    font-style: normal;
+    color: #2A2B3F !important;
+    font-size: 12px;
+  }
+
+  .rf_texto_btn {
+    font-style: normal;
+    color: #fff !important;
+    font-size: 16px;
+  }
+  .rf_texto_btn_desk {
+    font-style: normal;
+    color: #fff !important;
+    font-size: 12px;
+  }
+
+  .rf_texto_tabela {
+    font-style: normal;
+    color: #B92E2E !important;
+    font-size: 18px;
+  }
+
 }
 
 /* Desktops, telas grandes */

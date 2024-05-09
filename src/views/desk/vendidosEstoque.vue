@@ -12,14 +12,14 @@
                 </div>
             </div>
             <div class="row g-2 p-2">
-                <div class="col-3">
+                <div class="col-3 col-md-4">
                     <div class="form-floating">
                         <input type="text" class="form-control rf_bg_form rf_texto" v-model="filtroPlaca"
                             @input="filtrarVeiculos" />
                         <label class="rf_texto">Placa</label>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-3 col-md-4">
                     <div class="form-floating">
                         <input type="text" class="form-control rf_bg_form rf_texto" v-model="filtroNumero"
                             @input="filtrarVeiculos" />
@@ -27,7 +27,7 @@
                     </div>
                 </div>
 
-                <div class="col-2">
+                <div class="col-2 col-md-4">
                     <div class="input-group-append">
                         <button class="btn btn-lg btn-filtro" type="button" @click="page = 1; retrievePropostas();">
                             <span class="rf_texto_btn">Atualizar Lista</span>
