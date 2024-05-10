@@ -4315,7 +4315,7 @@ export default {
 
         this.pacote_ouro(this.kit_id_ouro);
         this.pacote_prata(this.kit_id_prata);
-        this.pacote_bronze(this.kit_id_bronze);
+        //this.pacote_bronze(this.kit_id_bronze);
       }
     },
     async pacote_ouro(kit_id_ouro) {
@@ -5642,7 +5642,10 @@ export default {
       this.por_customizado = this.valor_pacote_customizado;
       this.economia_customizado = this.de_customizado - this.por_customizado;
       this.novo_valor_parcela_customizado = this.parcela_customizado;
-      this.apenas_customizado = this.novo_valor_parcela_customizado / 30;
+
+
+      const valor_desk = parseFloat(this.parcela_desk);
+      this.apenas_customizado = (this.novo_valor_parcela_customizado - valor_desk) / 30;
     },
     async atualizarPacote() {
       console.log("Atualizando Pacotes")
