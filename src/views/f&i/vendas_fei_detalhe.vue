@@ -3819,6 +3819,7 @@ export default {
       total_entrada: "",
       total_financiado: "",
       valor_parcela: "",
+      parcela_desk:"",
       qtd_parcela: "",
       retorno: "",
       coeficiente: "",
@@ -4219,6 +4220,7 @@ export default {
       this.total_financiado = this.currency(
         item.pos_venda_proposta.val_financiamento
       );
+      this.parcela_desk = item.pos_venda_proposta.pmt_escolhido;
       this.valor_parcela = this.currency(item.pos_venda_proposta.pmt_escolhido);
       this.qtd_parcela = item.pos_venda_proposta.qtd_meses;
       if (this.qtd_parcela != null) {
@@ -4301,11 +4303,15 @@ export default {
         );
 
         this.ids_kits_modelo = kits_modelo.data.kits_modelo;
-        console.log("Modelos ---------------------", this.ids_kits_modelo[0]);
+        console.log("Modelos Listados ---------------------", this.ids_kits_modelo);
+        const id_ouro = kits_modelo.data.kits_modelo.findIndex(item => item.pacote_id == 1);
+        const id_prata = kits_modelo.data.kits_modelo.findIndex(item => item.pacote_id == 2);
+        const id_bronze = kits_modelo.data.kits_modelo.findIndex(item => item.pacote_id == 3);
+        console.log("ID Ouro", id_ouro);
         //Dados pacote Ouro
-        this.kit_id_ouro = this.ids_kits_modelo[0].id;
-        this.kit_id_prata = this.ids_kits_modelo[1].id;
-        this.kit_id_bronze = this.ids_kits_modelo[2].id;
+        this.kit_id_ouro = this.ids_kits_modelo[id_ouro].id;
+        this.kit_id_prata = this.ids_kits_modelo[id_prata].id;
+        this.kit_id_bronze = this.ids_kits_modelo[id_bronze].id;
 
         this.pacote_ouro(this.kit_id_ouro);
         this.pacote_prata(this.kit_id_prata);
@@ -4382,7 +4388,10 @@ export default {
       this.por_ouro = this.valor_pacote_ouro;
       this.economia_ouro = this.de_ouro - this.por_ouro;
       this.novo_valor_parcela_ouro = this.parcela_ouro;
-      this.apenas_ouro = this.novo_valor_parcela_ouro / 30;
+     
+
+      const valor_desk = parseFloat(this.parcela_desk);
+      this.apenas_ouro = (this.novo_valor_parcela_ouro - valor_desk) / 30;
     },
     async pacote_prata(kit_id_prata) {
       //Acessórios Prata ***************************************************************************
@@ -4453,7 +4462,10 @@ export default {
       this.por_prata = this.valor_pacote_prata;
       this.economia_prata = this.de_prata - this.por_prata;
       this.novo_valor_parcela_prata = this.parcela_prata;
-      this.apenas_prata = this.novo_valor_parcela_prata / 30;
+
+      const valor_desk = parseFloat(this.parcela_desk);
+      this.apenas_prata = (this.novo_valor_parcela_prata - valor_desk) / 30;
+      
     },
     async pacote_bronze(kit_id_bronze) {
       //Acessórios Prata ***************************************************************************
@@ -4525,7 +4537,8 @@ export default {
       this.por_bronze = this.valor_pacote_bronze;
       this.economia_bronze = this.de_bronze - this.por_bronze;
       this.novo_valor_parcela_bronze = this.parcela_bronze;
-      this.apenas_bronze = this.novo_valor_parcela_bronze / 30;
+      const valor_desk = parseFloat(this.parcela_desk);
+      this.apenas_bronze = (this.novo_valor_parcela_bronze - valor_desk) / 30;
     },
 
     //Ranqueamento

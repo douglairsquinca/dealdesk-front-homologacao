@@ -1735,7 +1735,7 @@
         <div class="modal-header">
           <div class="card-title gy-4">
             <i class="bi bi-pencil-square fs-5 icone_kit"
-              ><span class="texto_kit">Histórioco do Cliente</span></i
+              ><span class="texto_kit">Histórico do Cliente</span></i
             >
           </div>
           <button
