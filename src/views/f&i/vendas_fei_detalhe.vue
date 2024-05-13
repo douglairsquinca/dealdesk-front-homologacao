@@ -4993,6 +4993,8 @@ export default {
           valor_parcela_financiamento
         );
 
+ 
+
         console.log(
           "Selecionando uma parcela",
           valor_financiamento,
@@ -5166,7 +5168,10 @@ export default {
         this.valor_parcela_selecionada = this.currency(
           valor_parcela_financiamento
         );
-
+        const valor_desk = parseFloat(this.parcela_desk);
+        this.apenas_customizado = (this. valor_parcela_financiamento - valor_desk) / 30;
+      console.log("Valor parcela antiga customizado", valor_desk)
+      console.log("Valor nova parcela customizado",this.apenas_customizado)
         console.log(
           "Selecionando uma parcela",
           valor_financiamento,
@@ -5644,8 +5649,9 @@ export default {
       this.novo_valor_parcela_customizado = this.parcela_customizado;
 
 
-      const valor_desk = parseFloat(this.parcela_desk);
-      this.apenas_customizado = (this.novo_valor_parcela_customizado - valor_desk) / 30;
+      // const valor_desk = parseFloat(this.parcela_desk);
+      // console.log("Valor parcela antiga customizado", valor_desk)
+      // this.apenas_customizado = (this.novo_valor_parcela_customizado - valor_desk) / 30;
     },
     async atualizarPacote() {
       console.log("Atualizando Pacotes")
