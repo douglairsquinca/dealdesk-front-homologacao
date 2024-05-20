@@ -2156,7 +2156,7 @@
                   >
                     <i :class="icon_2"><span> PLANO</span> </i>
                   </button>
-                  <button
+                  <!-- <button
                     type="button"
                     class="btn btn-desk-filtro p-1"
                     @click="
@@ -2237,7 +2237,7 @@
                     "
                   >
                     <i :class="icon_5"><span> R$ ENT. MIN</span> </i>
-                  </button>
+                  </button> -->
                   <button
                     type="button"
                     class="btn btn-desk-filtro p-1"
@@ -2317,7 +2317,7 @@
                   >
                     <i :class="icon_8"><span> RETORNO</span></i>
                   </button>
-                  <button
+                  <!-- <button
                     type="button"
                     class="btn btn-desk-filtro p-1"
                     @click="
@@ -2397,7 +2397,7 @@
                     "
                   >
                     <i :class="icon_11"><span> COEF</span> </i>
-                  </button>
+                  </button> -->
                 </div>
               </div>
             </div>
@@ -6590,7 +6590,9 @@ export default {
       id_coluna,
       sortBy,
       sortDesc,
-      parcela
+      parcela,
+      Valor_Total_Venda,
+      entrada
     ) {
       let params = {};
       if (filtro_tipo_veiculo) {
@@ -6629,6 +6631,12 @@ export default {
       if (parcela) {
         params["parcela"] = parcela;
       }
+      if (Valor_Total_Venda) {
+        params["valor_da_venda"] = Valor_Total_Venda;
+      }
+      if (entrada) {
+        params["entrada"] = entrada;
+      }
       return params;
     },
     async retrieveRanqueamentoEntrada1() {
@@ -6644,7 +6652,9 @@ export default {
         this.id_coluna,
         this.sortBy,
         this.sortDesc,
-        this.parcela
+        this.parcela,
+        this.Valor_Total_Venda,
+        this.entrada_1
       );
 
       userService.getFiltroTaxas_1(params).then((response) => {
@@ -6659,7 +6669,8 @@ export default {
       });
     },
     /**Após retorno positivo do ranqueamento essa função monta as taxas do primeiro bloco de entrada */
-    async ranqueamento_entrada_1() {
+    async ranqueamento_entrada_1() {     
+
       const params = this.getRequestParamsEntrada1(
         this.filtro_tipo_veiculo,
         this.filtro_tipo_tabela,
@@ -6672,7 +6683,9 @@ export default {
         this.id_coluna,
         this.sortBy,
         this.sortDesc,
-        this.parcela
+        this.parcela,
+        this.Valor_Total_Venda,
+        this.entrada_1
       );
 
       /**faço uma consulta na tabela TempTaxas chamando a função ranqueamento_entrada_1 */
@@ -6747,7 +6760,9 @@ export default {
       id_coluna,
       sortBy_2,
       sortDesc_2,
-      parcela
+      parcela,
+      Valor_Total_Venda,
+      entrada
     ) {
       let params = {};
       if (filtro_tipo_veiculo) {
@@ -6786,6 +6801,12 @@ export default {
       if (parcela) {
         params["parcela"] = parcela;
       }
+      if (Valor_Total_Venda) {
+        params["valor_da_venda"] = Valor_Total_Venda;
+      }
+      if (entrada) {
+        params["entrada"] = entrada;
+      }
       return params;
     },
     async retrieveRanqueamentoEntrada2() {
@@ -6801,7 +6822,9 @@ export default {
         this.id_coluna,
         this.sortBy_2,
         this.sortDesc_2,
-        this.parcela
+        this.parcela,
+        this.Valor_Total_Venda,
+        this.entrada_2
       );
       userService.getFiltroTaxas_2(params).then((response) => {
         const { parcelas, totalPages } = response.data;
@@ -6822,7 +6845,9 @@ export default {
         this.id_coluna,
         this.sortBy_2,
         this.sortDesc_2,
-        this.parcela
+        this.parcela,
+        this.Valor_Total_Venda,
+        this.entrada_2
       );
       userService.getRanqueamento_2(params).then((response) => {
         const { parcelas, totalPages, totalItems } = response.data;
@@ -6879,7 +6904,9 @@ export default {
       id_coluna,
       sortBy_3,
       sortDesc_3,
-      parcela
+      parcela,
+      Valor_Total_Venda,
+      entrada
     ) {
       let params = {};
       if (filtro_tipo_veiculo) {
@@ -6918,6 +6945,12 @@ export default {
       if (parcela) {
         params["parcela"] = parcela;
       }
+      if (Valor_Total_Venda) {
+        params["valor_da_venda"] = Valor_Total_Venda;
+      }
+      if (entrada) {
+        params["entrada"] = entrada;
+      }
       return params;
     },
     async retrieveRanqueamentoEntrada3() {
@@ -6933,7 +6966,9 @@ export default {
         this.id_coluna,
         this.sortBy_3,
         this.sortDesc_3,
-        this.parcela
+        this.parcela,
+        this.Valor_Total_Venda,
+        this.entrada_3
       );
 
       userService.getFiltroTaxas_3(params).then((response) => {
@@ -6957,7 +6992,9 @@ export default {
         this.id_coluna,
         this.sortBy_3,
         this.sortDesc_3,
-        this.parcela
+        this.parcela,
+        this.Valor_Total_Venda,
+        this.entrada_3
       );
 
       userService.getRanqueamento_3(params).then((response) => {

@@ -1748,29 +1748,13 @@
                     >
                       <strong>PLANO</strong>
                     </button>
-                  </div>
+                  </div>    
                   <div class="col">
                     <button
-                      @click="sortTable('Ret')"
+                      @click="sortTable('Rentabilidade')"
                       class="txt-table-vendas text-nowrap"
                     >
-                      <strong>RET</strong>
-                    </button>
-                  </div>
-                  <div class="col">
-                    <button
-                      @click="sortTable('EntMin')"
-                      class="txt-table-vendas text-nowrap"
-                    >
-                      <strong>R$ ENT MIN</strong>
-                    </button>
-                  </div>
-                  <div class="col">
-                    <button
-                      @click="sortTable('EntPer')"
-                      class="txt-table-vendas text-nowrap"
-                    >
-                      <strong>% ENT MIN</strong>
+                      <strong>RENTABILIDADE</strong>
                     </button>
                   </div>
                   <div class="col">
@@ -1788,31 +1772,7 @@
                     >
                       <strong>RETORNO</strong>
                     </button>
-                  </div>
-                  <div class="col">
-                    <button
-                      @click="sortTable('TacCob')"
-                      class="txt-table-vendas text-nowrap"
-                    >
-                      <strong>TAC COB</strong>
-                    </button>
-                  </div>
-                  <div class="col">
-                    <button
-                      @click="sortTable('TacDev')"
-                      class="txt-table-vendas text-nowrap"
-                    >
-                      <strong>TAC DEV</strong>
-                    </button>
-                  </div>
-                  <div class="col">
-                    <button
-                      @click="sortTable('Coef')"
-                      class="txt-table-vendas text-nowrap"
-                    >
-                      <strong>COEF</strong>
-                    </button>
-                  </div>
+                  </div>         
                 </div>
               </div>
 
@@ -1897,7 +1857,7 @@
                 </div>
               </div>
 
-              <div class="d-flex justify-content-center barra_fei">
+              <!-- <div class="d-flex justify-content-center barra_fei">
                 <div class="row">
                   <div class="col">
                     <button
@@ -1980,7 +1940,7 @@
                     </button>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
               <div class="g-2 p-2 mt-3 rf_margin">
                 <table class="table rf_texto">
@@ -2062,7 +2022,7 @@
                   >
                 </div>
               </div>
-              <div class="d-flex justify-content-center barra_fei">
+              <!-- <div class="d-flex justify-content-center barra_fei">
                 <div class="row">
                   <div class="col">
                     <button
@@ -2145,7 +2105,7 @@
                     </button>
                   </div>
                 </div>
-              </div>
+              </div> -->
               <div class="g-2 p-2 mt-3 rf_margin">
                 <table class="table rf_texto">
                   <thead>
@@ -3928,8 +3888,8 @@ export default {
       selectedFilter: "",
 
       kits_modelos: [],
-      sortColumn: "", // Coluna atualmente classificada
-      sortOrder: 1,
+      // sortColumn: "", // Coluna atualmente classificada
+      // sortOrder: 1,
       page: 1,
 
       company_id: "",
@@ -4066,7 +4026,11 @@ export default {
       precoDesconto: "",
       id_acessorio: "",
       habilitar_ranquear_customizado: true,
-      id_rota:''
+      id_rota:'',
+      filtro:'',
+      sortKey: '',
+      Ordenacao: 'DESC',
+      sortOrder:''
     };
   },
   mounted() {
@@ -4315,7 +4279,7 @@ export default {
 
         this.pacote_ouro(this.kit_id_ouro);
         this.pacote_prata(this.kit_id_prata);
-        //this.pacote_bronze(this.kit_id_bronze);
+        this.pacote_bronze(this.kit_id_bronze);
       }
     },
     async pacote_ouro(kit_id_ouro) {
@@ -4516,6 +4480,7 @@ export default {
           },
         }
       );
+      console.log("Resposta do pacote bronze", pacote_bronze_acessorios, pacote_bronze_revisoes, pacote_bronze_seguros);
       this.itens_kit_seguros_bronze = pacote_bronze_seguros.data.kits_seguro;
       this.total_preco_seguros_bronze = pacote_bronze_seguros.data.totalPreco;
       this.total_preco_desconto_seguros_bronze =
@@ -4604,7 +4569,8 @@ export default {
         this.page,
         this.pageSize,
         this.n_atendimento,
-        this.company_id
+        this.company_id,  
+        this.total_financiado
       );
       console.log("Dados do Paramentro para calcular taxas", params);
       /**Chama o método ranqueamento que cria as taxas na tabela tempTaxas e retorna um ok  */
@@ -4631,7 +4597,8 @@ export default {
       page,
       pageSize,
       n_atendimento,
-      company_id
+      company_id,
+      total_financiamento_selecionado
     ) {
       let params = {};
       if (total_entrada_fei) {
@@ -4665,9 +4632,37 @@ export default {
       if (company_id) {
         params["empresa_id"] = company_id;
       }
+      if (total_financiamento_selecionado) {
+        params["total_financiamento_selecionado"] = total_financiamento_selecionado;
+      }
       return params;
     },
     //Bloco Ouro
+    sortTable(value) {
+      if (this.Ordenacao === 'DESC') {
+        this.sortOrder = this.sortOrder === 'DESC' ? 'ASC' : 'DESC';
+      } else {
+        this.Ordenacao = 'ASC';
+        this.sortOrder = 'DESC';
+      }
+      this.filtro = value;
+
+      this.ranqueamento_entrada_ouro();
+      this.ranqueamento_entrada_prata();
+      this.ranqueamento_entrada_bronze();
+    },
+    sortTableCustomizado(value) {
+      if (this.Ordenacao === 'DESC') {
+        this.sortOrder = this.sortOrder === 'DESC' ? 'ASC' : 'DESC';
+      } else {
+        this.Ordenacao = 'ASC';
+        this.sortOrder = 'DESC';
+      }
+      this.filtro = value;
+
+      this.ranqueamento_entrada_customizado();
+ 
+    },
     handlePageChangeEntradaOuro(value) {
       this.page_ouro = value;
       this.ranqueamento_entrada_ouro();
@@ -4677,7 +4672,10 @@ export default {
       pageSize_ouro,
       n_atendimento,
       id_coluna,
-      parcela
+      parcela, 
+      filtro,
+      Ordem
+
     ) {
       let params = {};
 
@@ -4696,6 +4694,12 @@ export default {
       if (parcela) {
         params["parcela"] = parcela;
       }
+      if (filtro) {
+        params["filtro"] = filtro;
+      }
+      if (Ordem) {
+        params["Ordem"] = Ordem;
+      }
       return params;
     },
     async ranqueamento_entrada_ouro() {
@@ -4704,7 +4708,9 @@ export default {
         this.pageSize_ouro,
         this.n_atendimento,
         this.id_coluna,
-        this.parcela
+        this.parcela,
+        this.filtro,
+        this.sortOrder
       );
 
       /**faço uma consulta na tabela TempTaxas chamando a função ranqueamento_entrada_1 */
@@ -4729,7 +4735,9 @@ export default {
       pageSize_prata,
       n_atendimento,
       id_coluna,
-      parcela
+      parcela,
+      filtro,
+      Ordem
     ) {
       let params = {};
 
@@ -4748,6 +4756,12 @@ export default {
       if (parcela) {
         params["parcela"] = parcela;
       }
+      if (filtro) {
+        params["filtro"] = filtro;
+      }
+      if (Ordem) {
+        params["Ordem"] = Ordem;
+      }
       return params;
     },
     async ranqueamento_entrada_prata() {
@@ -4756,7 +4770,9 @@ export default {
         this.pageSize_prata,
         this.n_atendimento,
         this.id_coluna,
-        this.parcela
+        this.parcela,
+        this.filtro,
+        this.sortOrder
       );
 
       /**faço uma consulta na tabela TempTaxas chamando a função ranqueamento_entrada_1 */
@@ -4779,7 +4795,9 @@ export default {
       pageSize_bronze,
       n_atendimento,
       id_coluna,
-      parcela
+      parcela,
+      filtro,
+      Ordem
     ) {
       let params = {};
 
@@ -4798,6 +4816,12 @@ export default {
       if (parcela) {
         params["parcela"] = parcela;
       }
+      if (filtro) {
+        params["filtro"] = filtro;
+      }
+      if (Ordem) {
+        params["Ordem"] = Ordem;
+      }
       return params;
     },
     async ranqueamento_entrada_bronze() {
@@ -4806,7 +4830,9 @@ export default {
         this.pageSize_bronze,
         this.n_atendimento,
         this.id_coluna,
-        this.parcela
+        this.parcela,
+        this.filtro,
+        this.sortOrder
       );
 
       /**faço uma consulta na tabela TempTaxas chamando a função ranqueamento_entrada_1 */
