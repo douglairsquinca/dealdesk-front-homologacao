@@ -234,6 +234,30 @@
         </div>
       </div>
     </div>
+    <div class="row g-2 p-2">
+      <div class="col">
+        <div class="form-floating">
+          <input
+            type="text"
+            disabled
+            class="form-control rf_bg_form rf_texto"
+            v-model="obs_desk"
+          />
+          <label class="rf_texto">Observações do Desk</label>
+        </div>
+      </div>   
+      <div class="col-2">
+        <div class="form-floating">
+          <input
+            type="text"
+            disabled
+            class="form-control rf_bg_form rf_texto"
+            v-model="tipo_pagamento"
+          />
+          <label class="rf_texto">Tipo de Pagamento</label>
+        </div>
+      </div>
+    </div>
   </div>
   <!--Quadro dos kits-->
   <div class="card-filtro" v-if="desabilitar_customizacao">
@@ -3991,7 +4015,9 @@ export default {
       filtro:'',
       sortKey: '',
       Ordenacao: 'DESC',
-      sortOrder:''
+      sortOrder:'',
+      tipo_pagamento:"",
+      obs_desk:''
     };
   },
   mounted() {
@@ -4122,11 +4148,18 @@ export default {
       }
     },
     popular_formulario(item) {
-      console.log("Listando ", item);
+      console.log("Listando para popular formulário ", item);
       //Daddos do Atendimento
       this.n_atendimento = item.atendimento_id;
       this.vendedor = item.pos_venda_proposta.vendedores.username;
       this.cliente = item.pos_venda_proposta.clientes.nome;
+      if(item.pos_venda_proposta.tipo_pagamento == '1'){
+        this.tipo_pagamento = 'Pagamento à vista'
+      }
+      if(item.pos_venda_proposta.tipo_pagamento == '0'){
+        this.tipo_pagamento = 'Pagamento por financimento'
+      }
+      this.obs_desk = item.pos_venda_proposta.obs;
       //Daddos do Veículo
       this.marca = item.pos_venda_proposta.proposta_veiculo.marca;
       this.modelo = item.pos_venda_proposta.proposta_veiculo.modelo_veiculo;
