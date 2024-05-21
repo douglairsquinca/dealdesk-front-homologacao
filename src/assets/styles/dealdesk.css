@@ -1219,6 +1219,15 @@
     margin-right: 2px;
     height: 45px;
   }
+  @media print {
+    .rf_bg_form_menu_desk_imp {
+      border: 1px solid #2A2B3F; /* Define a borda */
+      border-radius: 4px; /* Define o raio da borda */
+      margin-left: 2px; /* Define a margem esquerda */
+      margin-right: 2px; /* Define a margem direita */
+      height: 30px; /* Define a altura */
+    }
+  }
   .rf_texto_menu_titulo_desk {
     font-style: normal;
     color: #2A2B3F !important;

@@ -2841,31 +2841,31 @@
                   >
                 </div>
                 <div class="col">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp ">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Cliente</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_cliente }}</span>
                   </div>
                 </div>
                 <div class="col-2">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">CPF/CNPJ</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_cpfCnpj }}</span>
                   </div>
                 </div>
-                <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk ">
+                <div class="col-2">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Telefone</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_fone }}</span>
                   </div>
                 </div>
-                <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk ">
+                <div class="col-2">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Telefone 2</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_fone2 }}</span>
                   </div>
                 </div>
                 <div class="col-2">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Email</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_email }}</span>
                   </div>
@@ -2881,25 +2881,25 @@
                   >
                 </div>
                 <div class="col">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Gerente</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_gerente }}</span>
                   </div>
                 </div>
                 <div class="col">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Vendedor</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_vendedor }}</span>
                   </div>
                 </div>
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Negociação</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_negociacao }}</span>
                   </div>
                 </div>
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Data</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_data_negociacao }}</span>
                   </div>
@@ -2946,44 +2946,44 @@
                   >
                 </div>
                 <div class="col-2">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Marca</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_marca }}</span>
                   </div>
                 </div>
                 <div class="col">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Modelo</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_modelo }}</span>
                   </div>
                 </div>
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Cor</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_cor }}</span>
                   </div>
                 </div>
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Placa</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_placa }}</span>
                   </div>
                 </div>     
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Chassi</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_chassi }}</span>
                   </div>
                 </div>   
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk ">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Ano Modelo</label>
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Ano Mod.</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_ano_modelo }}</span>
                   </div>
                 </div>    
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk ">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Ano Fabricação</label>
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Ano Fab.</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_ano_fab }}</span>
                   </div>
                 </div>          
@@ -2998,37 +2998,37 @@
                   >
                 </div>
                 <div class="col">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Sugerido</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_val_sugerido }}</span>
                   </div>
                 </div>
                 <div class="col">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Desconto</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_val_desconto }}</span>
                   </div>
                 </div>
                 <div class="col">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Parcela Escolhida</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ Pmt }}</span>
                   </div>
                 </div>
                 <div class="col">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Tipo Pagamento</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ tipoPagamento }}</span>
                   </div>
                 </div>     
                 <div class="col">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Total Veículo</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_val_veiculo }}</span>
                   </div>
                 </div>   
                 <div class="col">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Total Financiado</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ Valor_Financiado }}</span>
                   </div>
@@ -3045,49 +3045,49 @@
                   >
                 </div>
                 <div class="col-2">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Marca</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_marca_avaliacao }}</span>
                   </div>
                 </div>
                 <div class="col">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Modelo</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_modelo_avalicao }}</span>
                   </div>
                 </div>
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Placa</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_placa_avaliacao }}</span>
                   </div>
                 </div>
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Ano</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_ano_modelo_avaliacao }}</span>
                   </div>
                 </div>     
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Itens(-)</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_itens_avaliacao_db }}</span>
                   </div>
                 </div>   
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Itens(+)</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_itens_avaliacao_cr }}</span>
                   </div>
                 </div>    
-                <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk ">
+                <div class="col-2">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Avaliado</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_valor_avaliado }}</span>
                   </div>
                 </div>  
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk ">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
                     <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Final</label>
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_valor_avaliacao_final }}</span>
                   </div>
@@ -3096,7 +3096,7 @@
               </div>
             </div>
             <!--Quadro Entradas-->
-            <div class="row mt-4">
+            <div class="row mt-2">
               <!--Entradas-->
               <div class="col divisoria_desk">
                   <div class="barra_fei_menu_desk">
@@ -3221,30 +3221,28 @@
                   </div>
               </div>
             </div>
-  
-
        
             <div class="row g-2 p-2">
-              <div class="col">
+              <div class="col"><br>
                 <span>
                   * O preço sugerido é válido enquanto durarem os veículos em
                   estoque.</span
                 >
-                <br />
-                <span>** Despesa Operacional para preparação do veículo</span>
-                <br />
+          
+                <span> ** Despesa Operacional para preparação do veículo</span>
+           
                 <!-- <span>A contratação de seguros é opcional, sendo possível a desistência do
                     contrato em até 7 (sete) dias corridos com a devolução integral do
                     valor pago.</span> -->
-                <br />
+            
                 <span
-                  >É proibido condicionar desconto de bem à aquisição de
+                  > É proibido condicionar desconto de bem à aquisição de
                   seguro.</span
                 >
-                <br />
+            
               </div>
             </div>
-            <div class="row g-2 p-2 mt-4">
+            <div class="row g-2 p-2 mt-1">
               <div class="col rf_assinatura">
                 <span>Gerente: {{ g_menu_gerente }}</span>
               </div>
@@ -4943,13 +4941,20 @@ export default {
       };
       // Modificar o tamanho da fonte para impressão
       document.querySelectorAll(".rf_texto_pdf").forEach((element) => {
-        element.style.fontSize = "9px"; // Tamanho de fonte para impressão
+        element.style.fontSize = "8px"; // Tamanho de fonte para impressão
       });
       document.querySelectorAll(".rf_titulo_pdf").forEach((element) => {
         element.style.fontSize = "12px"; // Tamanho de fonte para impressão
       });
       document.querySelectorAll(".rf_titulo_destaque_pdf").forEach((element) => {
         element.style.fontSize = "14px"; // Tamanho de fonte para impressão
+      });
+      document.querySelectorAll(".rf_bg_form_menu_desk_imp").forEach((element) => {
+        element.style.border = "1px solid #2A2B3F"; // Define a borda
+        element.style.borderRadius = "4px"; // Define o raio da borda
+        element.style.marginLeft = "2px"; // Define a margem esquerda
+        element.style.marginRight = "2px"; // Define a margem direita
+        element.style.height = "30px"; // Define a altura
       });
 
       setTimeout(() => {
