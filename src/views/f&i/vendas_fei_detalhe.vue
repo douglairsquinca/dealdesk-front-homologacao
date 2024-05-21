@@ -1115,7 +1115,7 @@
               data-bs-dismiss="modal"
               aria-label="Close"
             >
-              Sair
+              Ranquear
             </button>
           </div>
           <div class="modal-body">
@@ -1137,89 +1137,49 @@
               </div>
             </div>
             <div class="d-flex justify-content-center barra_fei">
-              <div class="row">
-                <div class="col">
-                  <button
-                    @click="sortTable('Financeira')"
-                    class="txt-table-vendas text-nowrap"
-                  >
-                    <strong>FINANCEIRA</strong>
-                  </button>
-                </div>
-                <div class="col">
-                  <button
-                    @click="sortTable('Plano')"
-                    class="txt-table-vendas text-nowrap"
-                  >
-                    <strong>PLANO</strong>
-                  </button>
-                </div>
-                <div class="col">
-                  <button
-                    @click="sortTable('Ret')"
-                    class="txt-table-vendas text-nowrap"
-                  >
-                    <strong>RET</strong>
-                  </button>
-                </div>
-                <div class="col">
-                  <button
-                    @click="sortTable('EntMin')"
-                    class="txt-table-vendas text-nowrap"
-                  >
-                    <strong>R$ ENT MIN</strong>
-                  </button>
-                </div>
-                <div class="col">
-                  <button
-                    @click="sortTable('EntPer')"
-                    class="txt-table-vendas text-nowrap"
-                  >
-                    <strong>% ENT MIN</strong>
-                  </button>
-                </div>
-                <div class="col">
-                  <button
-                    @click="sortTable('Pmt')"
-                    class="txt-table-vendas text-nowrap"
-                  >
-                    <strong>PMT</strong>
-                  </button>
-                </div>
-                <div class="col">
-                  <button
-                    @click="sortTable('Retorno')"
-                    class="txt-table-vendas text-nowrap"
-                  >
-                    <strong>RETORNO</strong>
-                  </button>
-                </div>
-                <div class="col">
-                  <button
-                    @click="sortTable('TacCob')"
-                    class="txt-table-vendas text-nowrap"
-                  >
-                    <strong>TAC COB</strong>
-                  </button>
-                </div>
-                <div class="col">
-                  <button
-                    @click="sortTable('TacDev')"
-                    class="txt-table-vendas text-nowrap"
-                  >
-                    <strong>TAC DEV</strong>
-                  </button>
-                </div>
-                <div class="col">
-                  <button
-                    @click="sortTable('Coef')"
-                    class="txt-table-vendas text-nowrap"
-                  >
-                    <strong>COEF</strong>
-                  </button>
+                <div class="row">
+                  <div class="col">
+                    <button
+                      @click="sortTableCustomizado('Financeira')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>FINANCEIRA</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTableCustomizado('Plano')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>PLANO</strong>
+                    </button>
+                  </div>    
+                  <div class="col">
+                    <button
+                      @click="sortTableCustomizado('Rentabilidade')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>RENTABILIDADE</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTableCustomizado('Pmt')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>PMT</strong>
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      @click="sortTableCustomizado('Retorno')"
+                      class="txt-table-vendas text-nowrap"
+                    >
+                      <strong>RETORNO</strong>
+                    </button>
+                  </div>         
                 </div>
               </div>
-            </div>
 
             <div class="g-2 p-2 mt-3 rf_margin">
               <table class="table rf_texto">
@@ -1666,7 +1626,7 @@
                   data-bs-toggle="modal"
                   data-bs-target="#ModalGerarMenu"
                   :disabled="habilitar_gerar_menu"
-                  @click="atualizarPacote"
+                
                 >
                   <span class="rf_texto_btn">Gerar Menu</span>
                 </button>
@@ -1701,8 +1661,9 @@
               type="button"
               data-bs-dismiss="modal"
               aria-label="Close"
+              @click="atualizarPacote"
             >
-              Sair
+              Ranquear
             </button>
           </div>
           <div class="modal-body">
@@ -3686,7 +3647,7 @@
               type="button"
               class="btn btn-lg btn-filtro"
               :disabled="habilitar_finalizar_venda"
-              @click="fecharModalFinalizar"
+              @click="atualizar_status_pos_venda(1)"
             >
               Finalizar Venda
             </button>
@@ -3696,7 +3657,7 @@
               type="button"
               class="btn btn-lg btn-filtro"
               :disabled="habilitar_venda_perdida"
-              @click="fecharModalPerdido"
+              @click="atualizar_status_pos_venda(2)"
             >
               Venda Perdida
             </button>
@@ -4855,7 +4816,9 @@ export default {
       pageSize_customizado,
       n_atendimento,
       id_coluna,
-      parcela
+      parcela,
+      filtro,
+      Ordem
     ) {
       let params = {};
 
@@ -4874,6 +4837,12 @@ export default {
       if (parcela) {
         params["parcela"] = parcela;
       }
+      if (filtro) {
+        params["filtro"] = filtro;
+      }
+      if (Ordem) {
+        params["Ordem"] = Ordem;
+      }
       return params;
     },
     async ranqueamento_entrada_customizado() {
@@ -4882,7 +4851,9 @@ export default {
         this.pageSize_customizado,
         this.n_atendimento,
         this.id_coluna,
-        this.parcela
+        this.parcela,
+        this.filtro,
+        this.sortOrder
       );
 
       /**faço uma consulta na tabela TempTaxas chamando a função ranqueamento_entrada_1 */
@@ -4964,6 +4935,7 @@ export default {
         );
 
         const id_menu_rank = pmts.data.rows[0].id;
+       
         const parcelas = await axios.get(
           `${process.env.VUE_APP_API_URL}pos_venda_detalhada_rank`,
           {
@@ -4973,7 +4945,10 @@ export default {
           }
         );
         console.log("Listando as parcelas ranqueada", parcelas);
-
+        if(parcelas.data.rows[0].parcelas){
+          this.parcela = parcelas.data.rows[0].parcelas;
+        }
+       
         for (var i = 0; i < parcelas.data.count; i++) {
           if (parcelas.data.rows[i].rankPacote == "Ouro") {
             this.parcela_ouro = parcelas.data.rows[i]["pmt"];
@@ -5235,6 +5210,42 @@ export default {
           this.habilitar();
         }
       }
+    },
+
+    //Finalizar F&I
+    async atualizar_status_pos_venda(value){
+      const id = this.n_atendimento;
+      var status;
+      if(value == 1){
+        status = "Venda Finalizada"
+      }
+      if(value == 2){
+        status = "Venda Perdida"
+      }
+
+      const response = await fetch(
+          `${process.env.VUE_APP_API_URL}atualizar_status_pos_venda/${id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: id,
+              status: status
+            }),
+          }
+      );
+      console.log("resposta da atualização", response.statusText);
+      if (response.statusText == "OK") {
+        this.abrir_modal = true;
+          this.msg = "Atendimento finalizado!";
+          setTimeout(() => {
+            this.abrir_modal = false;
+            this.$router.push('/f&i/vendas_f&i'); // Redireciona após fechar o modal
+          }, 4000);
+        }
+        
     },
 
     //funções customizado
@@ -5680,7 +5691,7 @@ export default {
       // this.apenas_customizado = (this.novo_valor_parcela_customizado - valor_desk) / 30;
     },
     async atualizarPacote() {
-      console.log("Atualizando Pacotes")
+      window.location.reload()
     },
 
     async confirmarPrecoDesconto() {
