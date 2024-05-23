@@ -993,7 +993,7 @@
       <div class="row g-2 p-2">
         <div class="col">
           <div class="card-desk-menu">
-            <span>Avaliação do Veículo</span>
+            <span>Simulação do Parcelas</span>
           </div>
 
           <table class="table rf_texto">
@@ -1293,7 +1293,7 @@
                     <button
                       class="btn btn-lg btn-desk-filtro"
                       id="btn_1"
-                      :disabled="entrada_1 === ''"
+                      :disabled="entrada_1 === '' || entrada_2 === '' || entrada_3 === ''"
                       data-bs-target="#ModalRanqueamento"
                       data-bs-toggle="modal"
                       @click="ranqueamento_1()"
@@ -1307,7 +1307,7 @@
                     <button
                       class="btn btn-lg btn-desk-filtro"
                       id="btn_2"
-                      :disabled="entrada_1 === ''"
+                      :disabled="entrada_1 === '' || entrada_2 === '' || entrada_3 === ''"
                       data-bs-target="#ModalRanqueamento"
                       data-bs-toggle="modal"
                       @click="ranqueamento_2()"
@@ -1321,7 +1321,7 @@
                     <button
                       class="btn btn-lg btn-desk-filtro"
                       id="btn_3"
-                      :disabled="entrada_1 === ''"
+                      :disabled="entrada_1 === '' || entrada_2 === '' || entrada_3 === ''"
                       data-bs-target="#ModalRanqueamento"
                       data-bs-toggle="modal"
                       @click="ranqueamento_3()"
