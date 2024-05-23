@@ -4050,9 +4050,10 @@ export default {
         this.habilitar_venda_perdida = false;
         this.habilitar_gerar_menu = false;
       }
-      if (this.valor_pacote_ouro == 0 || this.valor_pacote_prata == 0 || this.valor_pacote_bronze == 0) {
-        this.customizado();
-      }
+      console.log("Testando valores", this.valor_pacote_ouro )
+      // if (this.valor_pacote_ouro == 0 || this.valor_pacote_prata == 0 || this.valor_pacote_bronze == 0) {
+      //   this.customizado();
+      // }
     },
     async retrievePropostas() {
       const posVendaId = this.$route.params.id;
@@ -4236,6 +4237,16 @@ export default {
           this.msg = error.response.data.message;
           setTimeout(() => (this.abrir_modal = false), 1000);
         }
+        if (error.response.status == 404) {
+            this.abrir_modal = true;
+            this.msg = "O modelo não possui nenhum pacote cadastrado, redirecionando para customização!";
+            setTimeout(() => {
+              this.abrir_modal = false;
+              this.customizado();
+              this.habilitar_venda_perdida = false;
+            }, 4000);
+          }
+
       }
     },
     //Buscar pacotes
