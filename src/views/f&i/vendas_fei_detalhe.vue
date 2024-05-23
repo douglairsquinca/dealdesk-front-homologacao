@@ -4050,6 +4050,9 @@ export default {
         this.habilitar_venda_perdida = false;
         this.habilitar_gerar_menu = false;
       }
+      if (this.valor_pacote_ouro == 0 || this.valor_pacote_prata == 0 || this.valor_pacote_bronze == 0) {
+        this.customizado();
+      }
     },
     async retrievePropostas() {
       const posVendaId = this.$route.params.id;
