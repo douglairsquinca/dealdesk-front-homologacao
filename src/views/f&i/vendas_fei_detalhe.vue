@@ -5260,40 +5260,101 @@ export default {
     },
 
     //Finalizar F&I
-    async atualizar_status_pos_venda(value){
-      const id = this.n_atendimento;
-      var status;
-      if(value == 1){
-        status = "Venda Finalizada"
-      }
-      if(value == 2){
-        status = "Venda Perdida"
-      }
+    // async atualizar_status_pos_venda(value){
+    //   const id = this.n_atendimento;
+    //   var status;
+    //   if(value == 1){
+    //     status = "Venda Finalizada"
+    //   }
+    //   if(value == 2){       
+    //     if (this.observacao.length < 30) {
+    //       this.abrir_modal = true;
+    //       this.msg = "O campo observação precisa conter mais de 30 caracteres de justificativa!";
+    //       setTimeout(() => {
+    //           this.abrir_modal = false;             
+    //           this.habilitar_venda_perdida = true;
+    //         }, 4000);
+    //       return;
+    //     } else {
+    //        status = "Venda Perdida"
+    //     }
+    //   }
 
-      const response = await fetch(
-          `${process.env.VUE_APP_API_URL}atualizar_status_pos_venda/${id}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              id: id,
-              status: status
-            }),
-          }
-      );
-      console.log("resposta da atualização", response.statusText);
-      if (response.statusText == "OK") {
-        this.abrir_modal = true;
-          this.msg = "Atendimento finalizado!";
-          setTimeout(() => {
-            this.abrir_modal = false;
-            this.$router.push('/f&i/vendas_f&i'); // Redireciona após fechar o modal
-          }, 4000);
-        }
+    //   const response = await fetch(
+    //       `${process.env.VUE_APP_API_URL}atualizar_status_pos_venda/${id}`,
+    //       {
+    //         method: "PUT",
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify({
+    //           id: id,
+    //           status: status
+    //         }),
+    //       }
+    //   );
+    //   console.log("resposta da atualização", response.statusText);
+    //   if (response.statusText == "OK") {
+    //     this.abrir_modal = true;
+    //       this.msg = "Atendimento finalizado!";
+    //       setTimeout(() => {
+    //         this.abrir_modal = false;
+    //         this.$router.push('/f&i/vendas_f&i'); // Redireciona após fechar o modal
+    //       }, 4000);
+    //     }
         
-    },
+    // },
+
+    async atualizar_status_pos_venda(value) {
+  const id = this.n_atendimento;
+  let status;
+
+  if (value === 1) {
+    status = "Venda Finalizada";
+  } else if (value === 2) {
+    if (this.observacao.length < 30) {
+      this.abrir_modal = true;
+      this.msg = "O campo observação precisa conter mais de 30 caracteres de justificativa!";
+      setTimeout(() => {
+        this.abrir_modal = false;        
+      }, 4000);
+      return; // Para a execução da função aqui
+    } else {
+      status = "Venda Perdida";
+    }
+  }
+
+  try {
+    const response = await fetch(
+      `${process.env.VUE_APP_API_URL}atualizar_status_pos_venda/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: id,
+          status: status
+        }),
+      }
+    );
+
+    console.log("resposta da atualização", response.statusText);
+
+    if (response.ok) {
+      this.abrir_modal = true;
+      this.msg = "Atendimento finalizado!";
+      setTimeout(() => {
+        this.abrir_modal = false;
+        this.$router.push('/f&i/vendas_f&i'); // Redireciona após fechar o modal
+      }, 4000);
+    }
+  } catch (error) {
+    console.error("Erro ao atualizar status:", error);
+    // Trate o erro de acordo, por exemplo, mostrando uma mensagem de erro ao usuário
+  }
+},
+
 
     //funções customizado
     customizado() {
