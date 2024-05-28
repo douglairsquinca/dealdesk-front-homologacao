@@ -4096,8 +4096,9 @@ export default {
             },
           }
         );
-        console.log("Resposta pos vendd", pos_venda);
-        if (pos_venda.data == null || pos_venda.data == "") {
+        console.log("Resposta pos venda ------------------------------------------------------------------------------------------------------------------------------", pos_venda);
+        console.log(pos_venda)
+        if (pos_venda.data.count == 0) {
           const response = await fetch(
             `${process.env.VUE_APP_API_URL}pos_venda_detalhada`,
             {
@@ -4131,12 +4132,10 @@ export default {
             );
           }
           console.log(data);
-        } else {
-          console.log("Existem registros", pos_venda.data.id);
-          //this.popular_formulario(id);
-          //this.descorbrir_modelo();
-          this.id_pos_venda_detalhada = pos_venda.data.id;
-          this.buscar_parcelas_ranqueamento(pos_venda.data.id);
+        } else {         
+          this.id_pos_venda_detalhada = pos_venda.data.rows[0].id;
+          console.log("ID Detalhado",  this.id_pos_venda_detalhada)
+          this.buscar_parcelas_ranqueamento(pos_venda.data.rows[0].id);
         }
         //this.buscar_parcelas_ranqueamento(this.id_pos_venda_detalhada);
       } catch (error) {
@@ -4980,37 +4979,40 @@ export default {
             },
           }
         );
-
-        const id_menu_rank = pmts.data.rows[0].id;
+        console.log("Listando as parcelas ranqueada", pmts);
+        if(pmts.data.count > 0){
+          const id_menu_rank = pmts.data.rows[0].id;
        
-        const parcelas = await axios.get(
-          `${process.env.VUE_APP_API_URL}pos_venda_detalhada_rank`,
-          {
-            params: {
-              id: id_menu_rank,
-            },
+          const parcelas = await axios.get(
+            `${process.env.VUE_APP_API_URL}pos_venda_detalhada_rank`,
+            {
+              params: {
+                id: id_menu_rank,
+              },
+            }
+          );
+          console.log("Listando as parcelas ranqueada", parcelas);
+          if(parcelas.data.rows[0].parcelas){
+            this.parcela = parcelas.data.rows[0].parcelas;
           }
-        );
-        console.log("Listando as parcelas ranqueada", parcelas);
-        if(parcelas.data.rows[0].parcelas){
-          this.parcela = parcelas.data.rows[0].parcelas;
-        }
-       
-        for (var i = 0; i < parcelas.data.count; i++) {
-          if (parcelas.data.rows[i].rankPacote == "Ouro") {
-            this.parcela_ouro = parcelas.data.rows[i]["pmt"];
-            console.log("Ouro", this.parcela_ouro);
+        
+          for (var i = 0; i < parcelas.data.count; i++) {
+            if (parcelas.data.rows[i].rankPacote == "Ouro") {
+              this.parcela_ouro = parcelas.data.rows[i]["pmt"];
+              console.log("Ouro", this.parcela_ouro);
+            }
+            if (parcelas.data.rows[i]["rankPacote"] == "Prata") {
+              this.parcela_prata = parcelas.data.rows[i]["pmt"];
+            }
+            if (parcelas.data.rows[i]["rankPacote"] == "Bronze") {
+              this.parcela_bronze = parcelas.data.rows[i]["pmt"];
+            }
+            if (parcelas.data.rows[i]["rankPacote"] == "Customizado") {
+              this.parcela_customizado = parcelas.data.rows[i]["pmt"];
+            }
           }
-          if (parcelas.data.rows[i]["rankPacote"] == "Prata") {
-            this.parcela_prata = parcelas.data.rows[i]["pmt"];
-          }
-          if (parcelas.data.rows[i]["rankPacote"] == "Bronze") {
-            this.parcela_bronze = parcelas.data.rows[i]["pmt"];
-          }
-          if (parcelas.data.rows[i]["rankPacote"] == "Customizado") {
-            this.parcela_customizado = parcelas.data.rows[i]["pmt"];
-          }
-        }
+        } 
+      
       } catch (error) {
         console.log(error);
       }
@@ -5382,19 +5384,21 @@ export default {
             },
           }
         );
-        let bancos = [];
-        bancos = response.data.menu_pos_venda_detalhada.menu_pos_venda[0].menu_rank_pos_venda;
-        const bancoCustomizado = bancos.find(banco => banco.rankPacote === 'Customizado');
+        console.log("Resumo do ranqueamento customizazdo", response.data.menu_pos_venda_detalhada.menu_pos_venda.length);
+        if(response.data.menu_pos_venda_detalhada.menu_pos_venda.length > 0){
+          let bancos = [];
+          bancos = response.data.menu_pos_venda_detalhada.menu_pos_venda[0].menu_rank_pos_venda;
+          const bancoCustomizado = bancos.find(banco => banco.rankPacote === 'Customizado');
 
-        if (bancoCustomizado) {
-          this.banco_selecionado_customizado = bancoCustomizado.bancos_rank_pos_venda.nome;
-        } 
-
-        console.log("Resumo do ranqueamento customizazdo", response.data);
-        console.log("Resumo do ranqueamento customizazdo Bancos", bancos);
-        this.total_entrada_customizado = response.data.menu_pos_venda_detalhada.menu_pos_venda[0].entradaCustomizado;
-        this.total_financiamento_selecionado_customizado = response.data.valor_total_financiamento;
-        this.parcela_customizado = response.data.valor_parcela_financiamento;
+          if (bancoCustomizado) {
+            this.banco_selecionado_customizado = bancoCustomizado.bancos_rank_pos_venda.nome;
+          }         
+          console.log("Resumo do ranqueamento customizazdo Bancos", bancos);
+          this.total_entrada_customizado = response.data.menu_pos_venda_detalhada.menu_pos_venda[0].entradaCustomizado;
+          this.total_financiamento_selecionado_customizado = response.data.valor_total_financiamento;
+          this.parcela_customizado = response.data.valor_parcela_financiamento;
+        }
+    
         
    
       } catch (error) {
@@ -5606,7 +5610,7 @@ export default {
 
     async inserir_acessorio(item) {
       console.log("Inserindo acessorio");
-      console.log(item);
+      console.log(this.id_pos_venda_detalhada)
       await fetch(`${process.env.VUE_APP_API_URL}venda_customizada`, {
         method: "POST",
 
