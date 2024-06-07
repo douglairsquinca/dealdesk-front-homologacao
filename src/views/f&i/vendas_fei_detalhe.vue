@@ -843,8 +843,20 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-6">
+        <div class="col">
           <div class="row g-2 p-2">
+            <div class="col">
+              <div class="form-floating">
+                <input
+                  type="text"                 
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="valor_entrada_customizado"
+                  v-on:blur="validar_ranqueamento_customizado"
+                  @input="valor_entrada_customizado = formatarValor(valor_entrada_customizado)"
+                />
+                <label class="rf_texto">Entrada Customizado</label>
+              </div>
+            </div>
             <div class="col">
               <div class="form-floating">
                 <input
@@ -853,7 +865,7 @@
                   class="form-control rf_bg_form rf_texto"
                   v-model="valor_financiar"
                 />
-                <label class="rf_texto">Valor a Financiar</label>
+                <label class="rf_texto">Valor Proposta</label>
               </div>
             </div>
             <div class="col">
@@ -889,6 +901,17 @@
                 <label class="rf_texto">Valor Parcela</label>
               </div>
             </div>
+            <div class="col">
+          <div class="form-floating">
+            <input
+              type="text"
+              disabled
+              class="form-control rf_bg_form rf_texto"
+              v-model="valor_entrada_selecionada"
+            />
+            <label class="rf_texto">Entrada Simulada</label>
+          </div>
+        </div>
           </div>
           <table class="table rf_texto">
             <thead>
@@ -944,6 +967,7 @@
                     <button
                       type="button"
                       class="btn btn-lg btn-desk-filtro rf_texto_btn"
+                      :disabled="habilitar_select_pmt_customizado"
                       :class="{ active: pmtSelected === 4 }"
                       @click="select_pmt(parcela_customizado, 4)"
                     >
@@ -954,13 +978,22 @@
 
                 <td>
                   <div class="d-grid gap-2">
-                    <button
+                    <!-- <button
                       class="btn btn-lg btn-desk-filtro"
                       type="button"
                       @click="verificar_ranqueamento_customizado()"
                       :disabled="habilitar_ranquear_customizado"
                       data-bs-target="#ModalRanqueamentoCustomizado"
                       data-bs-toggle="modal"
+                    >
+                      <span class="rf_texto_btn">Ranquear</span>
+                    </button> -->
+                    <button
+                      class="btn btn-lg btn-desk-filtro"
+                      type="button"
+                      @click="verificar_ranqueamento_customizado()"
+                      :disabled="habilitar_ranquear_customizado"
+                 
                     >
                       <span class="rf_texto_btn">Ranquear</span>
                     </button>
@@ -981,22 +1014,10 @@
                 </td>
               </tr>
             </tbody>
-          </table>
-          <div class="row g-2 p-2">
-            <div class="col">
-              <div class="form-floating">
-                <textarea
-                  v-model="observacao"
-                  class="form-control rf_bg_form rf_texto"
-                  style="height: 110px"
-                ></textarea>
-                <label class="rf_texto">Observações</label>
-              </div>
-            </div>
-          </div>
+          </table>       
         </div>
         <!--Quadro Customizado-->
-        <div class="col-6">
+        <div class="col-4">
           <div class="card card-customizado_index col">
             <i class="bi bi-gem card-texto-vendas-customizado">
               Pacote Customizado</i
@@ -1149,13 +1170,13 @@
                 <i class="bi bi-cash-coin fs-5 icone_filtro"
                   ><span class="texto_filtro"
                     >Valor de Entrada:
-                    <strong>{{ total_entrada }}</strong>
+                    <strong>{{ this.currency(valor_entrada_customizado) }}</strong>
                   </span></i
                 >
                 <i class="bi bi-cash-coin p-3 icone_filtro"
                   ><span class="texto_filtro"
                     >Valor Financiado:
-                    <strong>{{ total_financiamento_customizado }}</strong>
+                    <strong>{{ this.currency(total_financiamento_customizado) }}</strong>
                   </span></i
                 >
               </div>
@@ -1498,12 +1519,24 @@
         <div class="col">
           <div class="form-floating">
             <input
+              type="text"              
+              class="form-control rf_bg_form rf_texto"
+              v-model="entrada_fei"
+              v-on:blur="validar_ranqueamento_pacotes"
+              @input="entrada_fei = formatarValor(entrada_fei)"
+            />
+            <label class="rf_texto">Entrada F&I</label>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-floating">
+            <input
               type="text"
               disabled
               class="form-control rf_bg_form rf_texto"
               v-model="valor_financiar"
             />
-            <label class="rf_texto">Valor a Financiar</label>
+            <label class="rf_texto">Valor Proposta</label>
           </div>
         </div>
         <div class="col">
@@ -1537,6 +1570,17 @@
               v-model="valor_parcela_selecionada"
             />
             <label class="rf_texto">Valor Parcela</label>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-floating">
+            <input
+              type="text"
+              disabled
+              class="form-control rf_bg_form rf_texto"
+              v-model="valor_entrada_selecionada"
+            />
+            <label class="rf_texto">Entrada Simulada</label>
           </div>
         </div>
       </div>
@@ -1635,9 +1679,8 @@
                 <button
                   class="btn btn-lg btn-desk-filtro"
                   type="button"
-                  @click="ranquear()"
-                  data-bs-target="#ModalRanqueamento"
-                  data-bs-toggle="modal"
+                  @click="ranquear()"            
+                  :disabled="habilitar_ranquear_pacotes"
                 >
                   <span class="rf_texto_btn">Ranquear</span>
                 </button>
@@ -2395,8 +2438,8 @@
       </div>
     </div>
   </div>
-    <!--Modal Solicitar Aprovação-->
-    <div
+  <!--Modal Solicitar Aprovação-->
+  <div
     class="modal"
     id="ModalSolicitarAprovacao"
     aria-hidden="true"
@@ -2711,7 +2754,7 @@
                 <div class="col">
                   <div class="row rf_bg_form_menu">
                     <label class="rf_texto_menu_titulo rf_texto_pdf">Total Entrada</label>
-                    <span class="rf_texto_menu rf_texto_pdf">{{ total_entrada }}</span>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ valor_entrada_selecionada }}</span>
                   </div>
                 </div>
                 <div class="col">
@@ -3391,7 +3434,7 @@
                 <div class="col">
                   <div class="row rf_bg_form_menu">
                     <label class="rf_texto_menu_titulo rf_texto_pdf">Total Entrada</label>
-                    <span class="rf_texto_menu rf_texto_pdf">{{ this.currency(total_entrada_customizado) }}</span>
+                    <span class="rf_texto_menu rf_texto_pdf">{{valor_entrada_selecionada }}</span>
                   </div>
                 </div>
                 <div class="col">
@@ -3400,7 +3443,7 @@
                       >Total Financiamento</label
                     >
                     <span class="rf_texto_menu rf_texto_pdf">{{
-                      this.currency(total_financiamento_selecionado_customizado)
+                      total_financiamento_selecionado
                     }}</span>
                   </div>
                 </div>
@@ -3666,7 +3709,17 @@
   </div>
   <div class="card card-filtro card-vendas">
     <div class="row g-2 p-2 justify-content-end mt-2">
-      <div class="col-2">
+      <div class="col">
+              <div class="form-floating">
+                <textarea
+                  v-model="observacao"
+                  class="form-control rf_bg_form rf_texto"
+                  style="height: 150px"
+                ></textarea>
+                <label class="rf_texto">Observações</label>
+              </div>
+            </div>   
+          <div class="col-2">
             <button
               type="button"
               class="btn btn-lg btn-filtro"
@@ -3675,26 +3728,22 @@
             >
               Finalizar Venda
             </button>
-          </div>
-          <div class="col-2">
             <button
               type="button"
-              class="btn btn-lg btn-filtro"
+              class="btn btn-lg btn-filtro mt-1"
               :disabled="habilitar_venda_perdida"
               @click="atualizar_status_pos_venda(2)"
             >
               Venda Perdida
             </button>
-          </div>
-          <div class="col-2">
             <button
               type="button"
-              class="btn btn-lg btn-filtro"              
+              class="btn btn-lg btn-filtro mt-1"              
               @click="atualizar_pagina"
             >
               Página Inicial
             </button>
-          </div>
+          </div>     
     </div>
   </div>
 
@@ -3716,6 +3765,7 @@ import jwt_decode from "jwt-decode";
 import Pagination from "../../components/Pagination.vue";
 import Message from "../../components/modal/Message.vue";
 import html2pdf from "html2pdf.js";
+import { Modal } from 'bootstrap';
 
 export default {
   name: "Vendas F&I",
@@ -3942,10 +3992,11 @@ export default {
       total_preco_ajustado_seguros_customizado: "",
 
       total_financiamento_customizado: "",
+      entrada_fei:"",
 
       //validação
       habilitar_finalizar_venda: true,
-      habilitar_venda_perdida: true,
+      habilitar_venda_perdida: false,
 
       //buscando Modelo
       modelo_codigo: "",
@@ -4011,13 +4062,18 @@ export default {
       precoDesconto: "",
       id_acessorio: "",
       habilitar_ranquear_customizado: true,
+      habilitar_select_pmt_customizado:false,
       id_rota:'',
       filtro:'',
       sortKey: '',
       Ordenacao: 'DESC',
       sortOrder:'',
       tipo_pagamento:"",
-      obs_desk:''
+      obs_desk:'',
+      valor_entrada_customizado:"",
+      habilitar_ranquear_pacotes: true,
+      valor_entrada_selecionada:"",
+      valor_entrada_selecionada_customizado:"",
     };
   },
   mounted() {
@@ -4046,8 +4102,7 @@ export default {
       //   this.habilitar_gerar_menu = false;
       // }
       if (this.valor_financiar != 0) {
-        this.habilitar_finalizar_venda = false;
-        this.habilitar_venda_perdida = false;
+        this.habilitar_finalizar_venda = false;       
         this.habilitar_gerar_menu = false;
       }
       console.log("Testando valores", this.valor_pacote_ouro )
@@ -4189,7 +4244,7 @@ export default {
       }
       this.total_entrada_fei =
         item.pos_venda_proposta.val_entrada_financiamento;
-      this.total_financiado_fei = item.pos_venda_proposta.val_financiamento;
+      this.total_financiado_fei = (item.pos_venda_proposta.val_financiamento + item.pos_venda_proposta.val_entrada_financiamento);
       for (let i = 0; i < item.pos_venda_proposta.menu_proposta.length; i++) {
         var rank = item.pos_venda_proposta.menu_proposta[i].menu_rank;
         for (let j = 0; j < rank.length; j++) {
@@ -4201,9 +4256,57 @@ export default {
           }
         }
       }
+      this.valor_financiar = this.currency(item.pos_venda_proposta.val_entrada_financiamento + item.pos_venda_proposta.val_financiamento )
+  
       //Dados do Ranqueamento
       this.parcela = item.pos_venda_proposta.qtd_meses;
       this.descobrir_modelo();
+    },
+    validar_ranqueamento_customizado(){
+      const entrada_customizado = this.valor_entrada_customizado;
+      const valor_pacote = this.valor_pacote_customizado;
+      
+      if(valor_pacote){
+        console.log("Um pacote foi criado");
+        if(entrada_customizado){
+          console.log("Entrada válida");
+          
+          this.habilitar_ranquear_customizado = false;
+        }else{
+          this.abrir_modal = true;
+          this.msg = "Para ranquear é necessário inserir uma entrada!";
+          setTimeout(() => (this.abrir_modal = false), 4000);
+        }
+      }else{
+        this.abrir_modal = true;
+          this.msg = "Para ranquear é necessário inserir itens no pacote!";
+          setTimeout(() => (this.abrir_modal = false), 4000);
+      }
+
+    },
+    validar_ranqueamento_pacotes(){
+      const entrada_pacotes = this.entrada_fei;
+      const valor_pacote_ouro = this.valor_pacote_ouro;
+      const valor_pacote_prata = this.valor_pacote_prata;
+      const valor_pacote_bronze = this.valor_pacote_bronze;
+      
+      if(valor_pacote_ouro && valor_pacote_prata && valor_pacote_bronze){
+        console.log("Um pacote foi criado");
+        if(entrada_pacotes){
+          console.log("Entrada válida");
+          
+          this.habilitar_ranquear_pacotes = false;
+        }else{
+          this.abrir_modal = true;
+          this.msg = "Para ranquear é necessário inserir uma entrada!";
+          setTimeout(() => (this.abrir_modal = false), 4000);
+        }
+      }else{
+        this.abrir_modal = true;
+          this.msg = "Para ranquear é necessário inserir itens no pacote!";
+          setTimeout(() => (this.abrir_modal = false), 4000);
+      }
+
     },
     //Descobrir Modelo
     async descobrir_modelo() {
@@ -4517,67 +4620,53 @@ export default {
     async ranquear() {
       //Verificar se existem pacotes para realizar o ranqueamento
       if (
-        this.valor_pacote_ouro ||
-        this.valor_pacote_prata ||
-        this.valor_pacote_bronze
-      ) {
-        console.log("Existem pacotes selecionado");
+        this.valor_pacote_ouro  && this.valor_pacote_prata &&  this.valor_pacote_bronze) {
+        console.log("Todos os pacotes tem valores");
         //Pergar os dados para calcular as taxas
 
         this.id_coluna = 1;
         this.incluir_acessorios = 0;
+        const entrada_fei = this.formatarDecimal(this.entrada_fei);
+        const total_financiado_fei = this.total_financiado_fei;
+        const pacote_ouro = this.valor_pacote_ouro;
+        const pacote_prata = this.valor_pacote_prata;
+        const pacote_bronze = this.valor_pacote_bronze;
 
-        //Calcular as taxas
-
-        //Habilitar os modais
         this.quadro_ouro = true;
         this.quadro_prata = true;
         this.quadro_bronze = true;
 
-        console.log("Valor Pacotes");
-
-        this.valor_pacote_ouro_rank =
-          this.valor_pacote_ouro + this.total_financiado_fei;
-        this.valor_pacote_prata_rank =
-          this.valor_pacote_prata + this.total_financiado_fei;
-        this.valor_pacote_bronze_rank =
-          this.valor_pacote_bronze + this.total_financiado_fei;
-        this.valor_pacote_customizado_rank =
-          this.valor_pacote_customizado + this.total_financiado_fei;
-
+        this.valor_pacote_ouro_rank = parseFloat(total_financiado_fei) + parseFloat(pacote_ouro) - parseFloat(entrada_fei);       
+        this.valor_pacote_prata_rank =  parseFloat(total_financiado_fei) + parseFloat(pacote_prata) - parseFloat(entrada_fei);
+        this.valor_pacote_bronze_rank = parseFloat(total_financiado_fei) + parseFloat(pacote_bronze) - parseFloat(entrada_fei);
+        
+        // this.valor_pacote_customizado_rank =
+        //   this.valor_pacote_customizado + this.total_financiado_fei - this.valor_entrada_customizado;
+      
         //Formatando os valores para o modal
-        this.total_financiamento_ouro = this.currency(
-          this.valor_pacote_ouro_rank
-        );
-        this.total_financiamento_prata = this.currency(
-          this.valor_pacote_prata_rank
-        );
-        this.total_financiamento_bronze = this.currency(
-          this.valor_pacote_bronze_rank
-        );
-        this.total_financiamento_customizado = this.currency(
-          this.valor_pacote_customizado_rank
-        );
+        this.total_entrada = this.currency(entrada_fei);
+        this.total_financiamento_ouro = this.currency(this.valor_pacote_ouro_rank);
+        this.total_financiamento_prata = this.currency(this.valor_pacote_prata_rank);
+        this.total_financiamento_bronze = this.currency(this.valor_pacote_bronze_rank);
 
-        console.log("ouro", this.valor_pacote_ouro_rank);
-        console.log("bronze", this.valor_pacote_bronze_rank);
-
+        const modal = new Modal(document.getElementById('ModalRanqueamento'));
+        modal.show();
         this.retrieveRanqueamento();
       }
     },
     async retrieveRanqueamento() {
       const params = this.getRequestParamsTaxas(
-        this.total_entrada_fei,
+        this.total_entrada,
         this.total_financiamento_ouro,
         this.total_financiamento_prata,
         this.total_financiamento_bronze,
-        this.total_financiamento_customizado,
+        //this.total_financiamento_customizado,
         this.parcela,
         this.page,
         this.pageSize,
         this.n_atendimento,
         this.company_id,  
-        this.total_financiado
+        //this.total_financiado
       );
       console.log("Dados do Paramentro para calcular taxas", params);
       /**Chama o método ranqueamento que cria as taxas na tabela tempTaxas e retorna um ok  */
@@ -4599,13 +4688,13 @@ export default {
       valor_pacote_ouro_rank,
       valor_pacote_prata_rank,
       valor_pacote_bronze_rank,
-      valor_pacote_customizado_rank,
+      // valor_pacote_customizado_rank,
       parcela,
       page,
       pageSize,
       n_atendimento,
       company_id,
-      total_financiamento_selecionado
+      // total_financiamento_selecionado
     ) {
       let params = {};
       if (total_entrada_fei) {
@@ -4620,9 +4709,9 @@ export default {
       if (valor_pacote_bronze_rank) {
         params["financiamento_bronze"] = valor_pacote_bronze_rank;
       }
-      if (valor_pacote_customizado_rank) {
-        params["financiamento_customizado"] = valor_pacote_customizado_rank;
-      }
+      // if (valor_pacote_customizado_rank) {
+      //   params["financiamento_customizado"] = valor_pacote_customizado_rank;
+      // }
       if (parcela) {
         params["parcela"] = parcela;
       }
@@ -4639,9 +4728,9 @@ export default {
       if (company_id) {
         params["empresa_id"] = company_id;
       }
-      if (total_financiamento_selecionado) {
-        params["total_financiamento_selecionado"] = total_financiamento_selecionado;
-      }
+      // if (total_financiamento_selecionado) {
+      //   params["total_financiamento_selecionado"] = total_financiamento_selecionado;
+      // }
       return params;
     },
     //Bloco Ouro
@@ -4952,7 +5041,7 @@ export default {
         body: JSON.stringify({
           id: id_taxa,
           proposta_id: this.id_pos_venda_detalhada,
-          entrada: this.total_entrada_fei,
+          entrada: this.entrada_fei,
           parcela: this.parcela,
           pacote: pacoteSelecionado,
         }),
@@ -4979,10 +5068,14 @@ export default {
             },
           }
         );
-        console.log("Listando as parcelas ranqueada", pmts);
-        if(pmts.data.count > 0){
-          const id_menu_rank = pmts.data.rows[0].id;
-       
+        console.log("Listando as parcelas ranqueada pmts", pmts.data);
+        if(pmts.data.length == 1){
+          const id_menu_rank = pmts.data[0].id;
+          this.habilitar_finalizar_venda =  false;
+          this.valor_entrada_selecionada = this.currency(pmts.data[0].entradaOuro);
+          this.total_financiamento_selecionado = this.currency(pmts.data[0].pos_venda_detalhada_menu.valor_total_financiamento);
+          this.valor_parcela_selecionada = this.currency(pmts.data[0].pos_venda_detalhada_menu.valor_parcela_financiamento);
+          this.valor_pacote_selecionado = this.currency(pmts.data[0].pos_venda_detalhada_menu.valor_pacote);
           const parcelas = await axios.get(
             `${process.env.VUE_APP_API_URL}pos_venda_detalhada_rank`,
             {
@@ -5017,6 +5110,31 @@ export default {
         console.log(error);
       }
     },
+    async resetar_pacote(){
+      const id = this.id_pos_venda_detalhada;
+      const response = await fetch(
+          `${process.env.VUE_APP_API_URL}pos_venda_detalhada/${id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: id,
+              kit_id: null,             
+              valor_pacote: 0.00,
+              valor_total_financiamento: 0.00,
+              valor_parcela_financiamento: 0.00,            
+             
+            }),
+          }
+        );
+        this.valor_pacote_selecionado = this.currency(0);
+        this.total_financiamento_selecionado = this.currency(0);
+        this.valor_parcela_selecionada = this.currency(0);
+
+        console.log("Ao clicar em customizar deve ser zerado o ultimo pacote", response);
+    },
     async select_pmt(value, pacote) {
       this.valor_parcela_financiamento = value;
       this.pmtSelected = pacote;
@@ -5027,8 +5145,9 @@ export default {
         const kit_id = this.kit_id_ouro;
         const valor_financiamento = this.total_financiado_fei;
         const valor_pacote = this.valor_pacote_ouro;
-
-        const valor_total_financiamento = valor_financiamento + valor_pacote;
+        const total_entrada = this.formatarDecimal(this.valor_entrada_selecionada);
+     
+        const valor_total_financiamento = valor_financiamento + valor_pacote - total_entrada;
         const valor_parcela_financiamento = this.valor_parcela_financiamento;
         const tipo_pagamento_pacote = this.metodo_pagamento;
         const observacao = this.observacao;
@@ -5088,8 +5207,9 @@ export default {
         const kit_id = this.kit_id_prata;
         const valor_financiamento = this.total_financiado_fei;
         const valor_pacote = this.valor_pacote_prata;
+        const total_entrada = this.formatarDecimal(this.valor_entrada_selecionada);
 
-        const valor_total_financiamento = valor_financiamento + valor_pacote;
+        const valor_total_financiamento = valor_financiamento + valor_pacote - total_entrada;
         const valor_parcela_financiamento = this.valor_parcela_financiamento;
         const tipo_pagamento_pacote = this.metodo_pagamento;
         const observacao = this.observacao;
@@ -5146,8 +5266,9 @@ export default {
         const kit_id = this.kit_id_bronze;
         const valor_financiamento = this.total_financiado_fei;
         const valor_pacote = this.valor_pacote_bronze;
+        const total_entrada = this.formatarDecimal(this.valor_entrada_selecionada);
 
-        const valor_total_financiamento = valor_financiamento + valor_pacote;
+        const valor_total_financiamento = valor_financiamento + valor_pacote - total_entrada;
         const valor_parcela_financiamento = this.valor_parcela_financiamento;
         const tipo_pagamento_pacote = this.metodo_pagamento;
         const observacao = this.observacao;
@@ -5209,7 +5330,17 @@ export default {
         const tipo_pagamento_pacote = this.metodo_pagamento;
         const observacao = this.observacao;
 
-        //Preencher informações do F&I
+        console.log("Validnado ", valor_parcela_financiamento)
+         if (valor_parcela_financiamento == 0){
+          this.abrir_modal = true;
+          this.msg = "O valor da parcela não pode ser R$ 0,00";
+          setTimeout(() => {
+              this.abrir_modal = false;
+              this.habilitar_gerar_menu = true;
+            }, 4000);
+          return;
+         }
+             //Preencher informações do F&I
         this.valor_financiar = this.currency(valor_financiamento);
         this.valor_pacote_selecionado = this.currency(valor_pacote);
         this.total_financiamento_selecionado = this.currency(
@@ -5220,16 +5351,7 @@ export default {
         );
         const valor_desk = parseFloat(this.parcela_desk);
         this.apenas_customizado = (this. valor_parcela_financiamento - valor_desk) / 30;
-      console.log("Valor parcela antiga customizado", valor_desk)
-      console.log("Valor nova parcela customizado",this.apenas_customizado)
-        console.log(
-          "Selecionando uma parcela",
-          valor_financiamento,
-          valor_pacote,
-          valor_total_financiamento,
-          valor_parcela_financiamento,
-
-        );
+      
         const response = await fetch(
           `${process.env.VUE_APP_API_URL}pos_venda_detalhada/${id}`,
           {
@@ -5258,6 +5380,8 @@ export default {
         if (response.statusText == "OK") {
           this.habilitar();
         }
+
+    
       }
     },
 
@@ -5307,12 +5431,28 @@ export default {
         
     // },
 
-    async atualizar_status_pos_venda(value) {
+async atualizar_status_pos_venda(value) {
   const id = this.n_atendimento;
   let status;
 
   if (value === 1) {
-    status = "Venda Finalizada";
+    const valor_pacote = this.formatarDecimal(this.valor_pacote_selecionado);
+    const total_financiado = this.formatarDecimal(this.total_financiamento_selecionado);
+    const valor_parcela = this.formatarDecimal(this.valor_parcela_selecionada);
+
+    console.log("Verificando finalizar", valor_pacote, total_financiado, valor_parcela)
+    if (valor_pacote == 0 || total_financiado == 0 || valor_parcela == 0) {
+      this.abrir_modal = true;
+      this.msg = "O valor da parcela não pode ser R$ 0,00!";
+      setTimeout(() => {
+        this.abrir_modal = false;        
+      }, 4000);
+      return; // Para a execução da função aqui
+    }else{      
+      status = "Venda Finalizada";
+     
+    }
+
   } else if (value === 2) {
     if (this.observacao.length < 30) {
       this.abrir_modal = true;
@@ -5336,7 +5476,8 @@ export default {
         },
         body: JSON.stringify({
           id: id,
-          status: status
+          status: status,
+          observacao: this.observacao,
         }),
       }
     );
@@ -5364,6 +5505,7 @@ export default {
       this.habilitar_customizacao = true;
       this.desabilitar_customizacao = false;
       this.cadastro = true;
+      this.resetar_pacote();
       this.retrieveAcessorios();
       this.retrieveSeguros();
       this.retrieveRevisoes();
@@ -5514,12 +5656,29 @@ export default {
         if (response.data.kits.count > 0) {
           this.abrir_modal = true;
           this.msg = "Não existem acessórios ou estão sem preço de venda!";
-          setTimeout(() => (this.abrir_modal = false), 2000);
-          this.habilitar_ranquear_customizado = true;
+          setTimeout(() => (this.abrir_modal = false), 4000);
+          //this.habilitar_ranquear_customizado = true;
         } else {
           console.log("Habilitando botão de ranquear")
-          this.habilitar_ranquear_customizado = false;
-          this.ranquear_customizado();
+          //this.habilitar_ranquear_customizado = false;
+    
+          if(this.valor_entrada_customizado){
+            const modal = new Modal(document.getElementById('ModalRanqueamentoCustomizado'));
+            modal.show();
+            console.log("Valores da Entrada e do total financiado");
+            const val1 = this.formatarDecimal(this.valor_financiar);
+            const val2 = this.formatarDecimal(this.valor_entrada_customizado);
+            const val3 = (this.valor_pacote_customizado);
+            this.total_financiamento_customizado = parseFloat(val1) + parseFloat(val3) - parseFloat(val2);
+            this.valor_entrada_customizado = parseFloat(val2)
+            this.ranquear_customizado();
+          }else{
+            this.abrir_modal = true;
+            this.msg = "É obrigatório informar a entrada para ranquear!";
+            setTimeout(() => (this.abrir_modal = false), 4000);
+          }
+
+   
         }
       } catch (error) {
         console.log(error);
@@ -5541,15 +5700,16 @@ export default {
         this.valor_pacote_customizado_rank =
           this.valor_pacote_customizado + this.total_financiado_fei;
 
-        this.total_financiamento_customizado = this.currency(
-          this.valor_pacote_customizado_rank
-        );
+        // this.total_financiamento_customizado = this.currency(
+        //   this.valor_pacote_customizado_rank
+        // );
         this.retrieveRanqueamentoCustomizado();
       }
     },
     async retrieveRanqueamentoCustomizado() {
+
       const params = this.getRequestParamsTaxasCustomizado(
-        this.total_entrada_fei,
+        this.valor_entrada_customizado,
         this.total_financiamento_customizado,
         this.parcela,
         this.page,
@@ -6299,6 +6459,13 @@ export default {
       valor = (valor / 100).toFixed(2).replace(".", ",");
       valor = valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
       return valor;
+    },
+    formatarDecimal(valor){
+      valor = valor.replace("R$", "").trim();
+      valor = valor.replace(/\./g, "");
+      valor = valor.replace(",", ".");
+
+      return parseFloat(valor);
     },
     currency(number) {
       return new Intl.NumberFormat("pt-BR", {
