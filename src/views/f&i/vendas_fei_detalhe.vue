@@ -4260,7 +4260,36 @@ export default {
   
       //Dados do Ranqueamento
       this.parcela = item.pos_venda_proposta.qtd_meses;
+      this.buscar_obs();
       this.descobrir_modelo();
+    },
+    async buscar_obs(){
+      const posVendaId = this.$route.params.id;
+        try {
+          const response = await axios.get(
+            `${process.env.VUE_APP_API_URL}reimpressao/${posVendaId}`,
+            {
+              params: {
+                id: posVendaId,
+                empresa_id: this.company_id,
+              },
+            }
+          );
+  
+          console.log("Listassssssssssssssssssssssssss de propostas", response.data);
+          // Faça algo com os dados aqui, como atribuir a uma variável de componente
+          this.observacao = response.data.menu_pos_venda_detalhada[0].observacao; // exemplo de atribuição
+
+          //this.habilitar_fi(posVendaId);
+          //this.habilitar_fi(posVendaId);
+        } catch (error) {
+          console.log(error);
+          if (error.response.status == 400) {
+            this.abrir_modal = true;
+            this.msg = error.response.data.message;
+            setTimeout(() => (this.abrir_modal = false), 1000);
+          }
+        }
     },
     validar_ranqueamento_customizado(){
       const entrada_customizado = this.valor_entrada_customizado;

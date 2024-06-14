@@ -52,6 +52,8 @@ import VendasF$I from "./views/f&i/vendas_f&i.vue";
 import VendasFeiDetalhe from "./views/f&i/vendas_fei_detalhe.vue";
 import ModeloFeiEstoque from "./views/f&i/modelo_fei_estoque.vue";
 import VendasCustomizado from "./views/f&i/vendas_customizado.vue";
+import ReimprimirMenu from "./views/f&i/reimprimirMenu.vue";
+import ReabrirAtendimento from "./views/f&i/reabrir_atendimento";
 
 // lazy-loaded
 const Profile = () => import("./components/Profile.vue")
@@ -478,6 +480,19 @@ const routes = [
     component: VendasFeiDetalhe,
     beforeEnter: [vendedorFEI],
   },
+  {
+    path:"/f&i/reimprimirMenu/:id",
+    name:"reimprimirMenu",
+    component: ReimprimirMenu,
+    beforeEnter: [vendedorFEI],
+  },
+  {
+    path:"/f&i/reabrir_atendimento",
+    name:"reabrir_atendimento",
+    component: ReabrirAtendimento,
+    beforeEnter: [vendedorFEI],
+  },
+
 
 ];
 

@@ -96,6 +96,7 @@
               <li class="nav-item"><a @click="setActive('f&i')" href="/f&i/cadastro_kits" class="nav-link p-2"> Cadastro Kits </a></li>
               <li class="nav-item"><a @click="setActive('f&i')" href="/f&i/kits_modelo" class="nav-link p-2"> Kits Modelo </a></li>
               <li class="nav-item"><a @click="setActive('f&i')" href="/f&i/vendas_f&i" class="nav-link p-2"> Vendas F&I </a></li>
+              <li class="nav-item"><a @click="setActive('f&i')" href="/f&i/reabrir_atendimento" class="nav-link p-2"> Reabrir Atendimento </a></li>
             </ul>
           </li>
         </ul>

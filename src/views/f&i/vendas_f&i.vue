@@ -59,7 +59,20 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in vendas" :key="item.id" class="table-linha">
+        <tr v-for="item in vendas" :key="item.id" class="table-linha"
+        :class="
+          item.status === 'Atendimento'
+              ? css
+              : item.status === 'Atendimento Excedido'
+              ? css1
+              : item.status === 'Aguardando Atendimento'
+              ? css2
+              : item.status === 'Venda Finalizada'
+              ? css3
+              : item.status === 'Venda Perdida'
+              ? css4
+              : ''
+          ">
           <td>{{ item.atendimento_id }}</td>
           <td>{{ item.pos_venda_proposta.vendedores.username }}</td>
           <td>{{ item.pos_venda_proposta.clientes.nome }}</td>
@@ -67,11 +80,11 @@
           <td>{{ item.createdAt }}</td>
           <td>{{ item.status }}</td>
           <td>
-            <button
+            <!-- <button
+              type="button"
               class="dropdown-toggle-icon"
-         
-              :disabled="
-                item.status == 'Venda Finalizada' || item.status == 'Venda Perdida'
+              v-bind:disabled="
+                item.status === 'Venda Finalizada' || item.status === 'Venda Perdida'
               "
             >
               
@@ -80,6 +93,37 @@
                 :to="`/f&i/vendas_fei_detalhe/${item.id}`"
               >
               <i class="bi bi bi-basket"></i>
+              </router-link>
+            </button> -->
+            <button
+              type="button"
+              class="btn-desk p-1"
+              v-bind:disabled="
+                item.status === 'Venda Finalizada' ||
+                item.status === 'Venda Perdida'
+              "
+            >
+              <router-link
+                class="nav-link active"
+                 :to="`/f&i/vendas_fei_detalhe/${item.id}`"
+              >
+              <i class="bi bi bi-basket"></i>
+              </router-link>
+            </button>
+            <button
+              type="button"
+              class="btn-desk"
+              v-bind:disabled="
+                item.status === 'Aguardando' ||
+                item.status === 'Em Atendimento' 
+                
+              "
+            >
+              <router-link
+                class="nav-link active"
+                :to="`/f&i/reimprimirMenu/${item.id}`"
+              >
+                <i class="bi bi-printer"></i>
               </router-link>
             </button>
           </td>
@@ -135,6 +179,11 @@ export default {
       user_log: "",
       msg: "",
       abrir_modal: false,
+      css: null,
+      css1: null,
+      css2: null,
+      css3: null,
+      css4: null,
 
      
     };

@@ -344,6 +344,12 @@ class UserService {
     });
   }
 
+  getReabrirPropostaFei(params) {
+    return api.get('/reabrir_proposta_fei',{
+    params
+    });
+  }
+
   getPropostaMenu(params) {
     return api.get('/proposta_menu',{
     params
