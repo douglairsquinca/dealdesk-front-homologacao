@@ -1359,6 +1359,16 @@
     <div v-if="abrir_modal">
       <Message :msg="msg" v-show="msg" />
     </div>
+    <div>
+      <button @click="openModal('Sua mensagem aqui')">Abrir Modal</button>
+      <Aviso 
+      :msg="modalMessage"
+      :visible="showModal"
+      @close="closeModal"
+      />
+    </div>
+
+
     <div v-if="abrir_modal_atualizar">
       <MessageAtualizar :msg="msg_atualizar" v-show="msg_atualizar" />
     </div>
@@ -3325,6 +3335,7 @@ import TokenService from "../../services/token.service";
 import jwt_decode from "jwt-decode";
 import RodapeVue from "../../components/menu/Rodape.vue";
 import NavgatorDk from "../../components/menu/NavgatorDk.vue";
+import Aviso from "../../components/modal/Modal.vue";
 
 export default {
   name: "Usuários",
@@ -3335,6 +3346,7 @@ export default {
     Pagination,
     Message,
     MessageAtualizar,
+    Aviso,
     RodapeVue,
   },
   directives: {
@@ -3883,6 +3895,8 @@ export default {
       nome_historico_cliente: "",
       hist_cliente: [],
       modal_historico_cliente: false,
+      showModal: false,
+      modalMessage: '',
     };
   },
   watch: {
@@ -4329,6 +4343,14 @@ export default {
         setTimeout(() => (this.abrir_modal = false), 4000);
       }
     },
+    openModal(message) {
+      this.modalMessage = message;
+      this.showModal = true;
+    },
+    closeModal() {
+      this.showModal = false;
+      window.location.reload();
+    },
     async carregarVeiculo(item) {
       try {
         if (item.estadoveiculo == "NOVO") {
@@ -4373,8 +4395,24 @@ export default {
           }
         );
 
-        if (verificar_veiculo.data.statusOk == 1) {
-          console.log(verificar_veiculo.data.message);
+        if (verificar_veiculo.data.statusOk == 1) { 
+          console.log(verificar_veiculo.data.data)
+          const Filial = verificar_veiculo.data.data[0].empresa_proposta.nome;
+          const Gerente = verificar_veiculo.data.data[0].gerentes.username;
+          const Data_Venda = verificar_veiculo.data.data[0].horario_termino_atendimento;
+          const date = new Date(Data_Venda);
+
+          const day = String(date.getDate()).padStart(2, '0');
+          const month = String(date.getMonth() + 1).padStart(2, '0'); // Os meses são baseados em zero
+          const year = date.getFullYear();
+
+          const formattedDate = `${day}/${month}/${year}`;
+
+          const Mensagem = `Veículo encontra-se finalizado!
+                            Empresa: ${Filial} 
+                            Gerente: ${Gerente}
+                            Data: ${formattedDate}`;
+          this.openModal(Mensagem);          
           return;
         }
 

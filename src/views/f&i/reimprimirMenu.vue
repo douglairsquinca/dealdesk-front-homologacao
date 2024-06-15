@@ -1366,7 +1366,14 @@
         this.parcela = item.pos_venda_proposta.qtd_meses;
         const kit_id = item.menu_pos_venda_detalhada[0].kit_id; 
         this.observacao = item.menu_pos_venda_detalhada[0].observacao;
-        this.buscar_pacote_selecionado(kit_id);
+
+        if(kit_id){
+          this.buscar_pacote_selecionado(kit_id);
+        }else{
+          this.customizado();
+        }
+      
+        
         this.resumoRanqueamentoOuro();
       },
       async buscar_pacote_selecionado(kit_modelo_id){
@@ -2688,18 +2695,15 @@
       //funções customizado
       customizado() {
         console.log("Iniciar pacote customizado", this.n_atendimento);
-        this.habilitar_customizacao = true;
-        this.desabilitar_customizacao = false;
-        this.cadastro = true;
-        this.resetar_pacote();
         this.retrieveAcessorios();
-        this.retrieveSeguros();
-        this.retrieveRevisoes();
-        this.retrievekitsAcessoriosItens();
-        this.retrievekitsSegurosItens();
-        this.retrievekitsRevisoesItens();
-        this.resumoRanqueamentoCustomizado(); 
-        this.verificar_ranqueamento_customizado();
+      this.retrieveSeguros();
+      this.retrieveRevisoes();
+      this.retrievekitsAcessoriosItens();
+      this.retrievekitsSegurosItens();
+      this.retrievekitsRevisoesItens();
+      this.resumoRanqueamentoCustomizado(); 
+      this.retrieveRanqueamentoCustomizado();
+
       },
       async resumoRanqueamentoCustomizado() {
         //Verificar se todos os acessórios foram preenchidos
@@ -3551,12 +3555,7 @@
         }
       },
   
-  
-  
-      tamiris(){
-        console.log("Descrevendo uma função !!!!!!!!!!!!!!!!!")
-      },
-  
+ 
       exibirModalConfirmacao(item) {
         // Exibir o modal
         console.log("Exibir o modal", item);
