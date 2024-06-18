@@ -6759,6 +6759,7 @@ export default {
       this.id_coluna = 1;
       console.log(
         "Botão ranquear 1, armazeno o valor da coluna e quantidade de parcelas escolhida! ------- 0038"
+        ,this.entrada_1
       );
       console.log(
         "Quantidade de parcelas ---- " + this.parcela + " ------------- 0039"

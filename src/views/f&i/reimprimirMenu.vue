@@ -2263,9 +2263,17 @@
           );
           console.log("Listando as parcelas ranqueada pmts", pmts.data);
           if(pmts.data.length == 1){
+            const entrada_selecionada_pacote = pmts.data[0].entradaOuro;
+            const entrada_selecionada_customizado = pmts.data[0].entradaCustomizado;
+            console.log("Listando entradas", pmts.data[0].entradaCustomizado);
+            if(entrada_selecionada_customizado){
+              this.valor_entrada_selecionada = this.currency(pmts.data[0].entradaCustomizado);
+            }
+            if(entrada_selecionada_pacote){
+              this.valor_entrada_selecionada = this.currency(pmts.data[0].entradaOuro);
+            }
             const id_menu_rank = pmts.data[0].id;
-            this.habilitar_finalizar_venda =  false;
-            this.valor_entrada_selecionada = this.currency(pmts.data[0].entradaOuro);
+            this.habilitar_finalizar_venda =  false;           
             this.total_financiamento_selecionado = this.currency(pmts.data[0].pos_venda_detalhada_menu.valor_total_financiamento);
             this.valor_parcela_selecionada = this.currency(pmts.data[0].pos_venda_detalhada_menu.valor_parcela_financiamento);
             this.valor_pacote_selecionado = this.currency(pmts.data[0].pos_venda_detalhada_menu.valor_pacote);
