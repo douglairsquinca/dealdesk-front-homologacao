@@ -850,9 +850,9 @@
                 <input
                   type="text"                 
                   class="form-control rf_bg_form rf_texto"
-                  v-model="valor_entrada_customizado"
+                  v-model="entrada_fei"
                   v-on:blur="validar_ranqueamento_customizado"
-                  @input="valor_entrada_customizado = formatarValor(valor_entrada_customizado)"
+                  @input="entrada_fei = formatarValor(entrada_fei)"
                 />
                 <label class="rf_texto">Entrada Customizado</label>
               </div>
@@ -4292,7 +4292,7 @@ export default {
         }
     },
     validar_ranqueamento_customizado(){
-      const entrada_customizado = this.valor_entrada_customizado;
+      const entrada_customizado = this.entrada_fei;
       const valor_pacote = this.valor_pacote_customizado;
       
       if(valor_pacote){
@@ -5048,14 +5048,14 @@ export default {
       if (pacote == 3) {
         this.pacoteSelecionadoBronze = id_taxa;
         this.select_parcela(id_taxa, pacote);
-        this.habilitar();
+        //this.habilitar();
       }
     },
     rowSelect_customizado(idx, id_taxa, pacote) {
       if (pacote == 4) {
         this.pacoteSelecionadoCustomizado = id_taxa;
         this.select_parcela(id_taxa, pacote);
-        this.habilitar();
+        //this.habilitar();
       }
     },
     async select_parcela(id, pacote) {
@@ -5083,7 +5083,12 @@ export default {
         })
         .then((resposta) => {
           console.log("Parcela inserida com sucesso ------ " + resposta);
-          this.buscar_parcelas_ranqueamento(this.id_pos_venda_detalhada);
+          if(pacote == 4){
+            this.buscar_parcelas_ranqueamento_customizado(this.id_pos_venda_detalhada);
+          }else{
+            this.buscar_parcelas_ranqueamento(this.id_pos_venda_detalhada);
+          }
+         
         });
     },
     async buscar_parcelas_ranqueamento(id) {
@@ -5102,6 +5107,59 @@ export default {
           const id_menu_rank = pmts.data[0].id;
           this.habilitar_finalizar_venda =  false;
           this.valor_entrada_selecionada = this.currency(pmts.data[0].entradaOuro);
+          this.total_financiamento_selecionado = this.currency(pmts.data[0].pos_venda_detalhada_menu.valor_total_financiamento);
+          this.valor_parcela_selecionada = this.currency(pmts.data[0].pos_venda_detalhada_menu.valor_parcela_financiamento);
+          this.valor_pacote_selecionado = this.currency(pmts.data[0].pos_venda_detalhada_menu.valor_pacote);
+          const parcelas = await axios.get(
+            `${process.env.VUE_APP_API_URL}pos_venda_detalhada_rank`,
+            {
+              params: {
+                id: id_menu_rank,
+              },
+            }
+          );
+          console.log("Listando as parcelas ranqueada", parcelas);
+          if(parcelas.data.rows[0].parcelas){
+            this.parcela = parcelas.data.rows[0].parcelas;
+          }
+        
+          for (var i = 0; i < parcelas.data.count; i++) {
+            if (parcelas.data.rows[i].rankPacote == "Ouro") {
+              this.parcela_ouro = parcelas.data.rows[i]["pmt"];
+              console.log("Ouro", this.parcela_ouro);
+            }
+            if (parcelas.data.rows[i]["rankPacote"] == "Prata") {
+              this.parcela_prata = parcelas.data.rows[i]["pmt"];
+            }
+            if (parcelas.data.rows[i]["rankPacote"] == "Bronze") {
+              this.parcela_bronze = parcelas.data.rows[i]["pmt"];
+            }
+            if (parcelas.data.rows[i]["rankPacote"] == "Customizado") {
+              this.parcela_customizado = parcelas.data.rows[i]["pmt"];
+            }
+          }
+        } 
+      
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async buscar_parcelas_ranqueamento_customizado(id) {
+      try {
+        console.log("Buscar parcelas");
+        const pmts = await axios.get(
+          `${process.env.VUE_APP_API_URL}pos_venda_detalhada_pmt`,
+          {
+            params: {
+              id: id,
+            },
+          }
+        );
+        console.log("Listando as parcelas ranqueada pmts", pmts.data);
+        if(pmts.data.length == 1){
+          const id_menu_rank = pmts.data[0].id;
+          this.habilitar_finalizar_venda =  false;
+          this.valor_entrada_selecionada = this.currency(pmts.data[0].entradaCustomizado);
           this.total_financiamento_selecionado = this.currency(pmts.data[0].pos_venda_detalhada_menu.valor_total_financiamento);
           this.valor_parcela_selecionada = this.currency(pmts.data[0].pos_venda_detalhada_menu.valor_parcela_financiamento);
           this.valor_pacote_selecionado = this.currency(pmts.data[0].pos_venda_detalhada_menu.valor_pacote);
@@ -5167,8 +5225,8 @@ export default {
     async select_pmt(value, pacote) {
       this.valor_parcela_financiamento = value;
       this.pmtSelected = pacote;
-      const id = this.id_pos_venda_detalhada;
-
+      const id = this.id_rota;
+      console.log("Id da venda detalhada", id);
       //Ouro
       if (pacote == 1) {
         const kit_id = this.kit_id_ouro;
@@ -5224,7 +5282,7 @@ export default {
             }),
           }
         );
-        console.log("resposta da atualização", response.statusText);
+        console.log("resposta da atualização", response);
         if (response.statusText == "OK") {
           this.habilitar();
           this.resumoRanqueamentoOuro();
@@ -5353,11 +5411,21 @@ export default {
       if (pacote == 4) {        
         const valor_financiamento = this.total_financiado_fei;
         const valor_pacote = this.valor_pacote_customizado;
+        const total_entrada = this.formatarDecimal(this.valor_entrada_selecionada);
 
-        const valor_total_financiamento = valor_financiamento + valor_pacote;
+        const valor_total_financiamento = valor_financiamento + valor_pacote - total_entrada;
         const valor_parcela_financiamento = this.valor_parcela_financiamento;
         const tipo_pagamento_pacote = this.metodo_pagamento;
         const observacao = this.observacao;
+
+        this.valor_financiar = this.currency(valor_financiamento);
+        this.valor_pacote_selecionado = this.currency(valor_pacote);
+        this.total_financiamento_selecionado = this.currency(
+          valor_total_financiamento
+        );
+        this.valor_parcela_selecionada = this.currency(
+          valor_parcela_financiamento
+        );
 
         console.log("Validnado ", valor_parcela_financiamento)
          if (valor_parcela_financiamento == 0){
@@ -5369,15 +5437,7 @@ export default {
             }, 4000);
           return;
          }
-             //Preencher informações do F&I
-        this.valor_financiar = this.currency(valor_financiamento);
-        this.valor_pacote_selecionado = this.currency(valor_pacote);
-        this.total_financiamento_selecionado = this.currency(
-          valor_total_financiamento
-        );
-        this.valor_parcela_selecionada = this.currency(
-          valor_parcela_financiamento
-        );
+
         const valor_desk = parseFloat(this.parcela_desk);
         this.apenas_customizado = (this. valor_parcela_financiamento - valor_desk) / 30;
       
@@ -5543,6 +5603,7 @@ async atualizar_status_pos_venda(value) {
       this.retrievekitsRevisoesItens();
       this.resumoRanqueamentoCustomizado(); 
       this.verificar_ranqueamento_customizado();
+      this.buscar_parcelas_ranqueamento(this.$route.params.id)
     },
     async resumoRanqueamentoCustomizado() {
       //Verificar se todos os acessórios foram preenchidos
@@ -5691,12 +5752,12 @@ async atualizar_status_pos_venda(value) {
           console.log("Habilitando botão de ranquear")
           //this.habilitar_ranquear_customizado = false;
     
-          if(this.valor_entrada_customizado){
+          if(this.entrada_fei){
             const modal = new Modal(document.getElementById('ModalRanqueamentoCustomizado'));
             modal.show();
             console.log("Valores da Entrada e do total financiado");
             const val1 = this.formatarDecimal(this.valor_financiar);
-            const val2 = this.formatarDecimal(this.valor_entrada_customizado);
+            const val2 = this.formatarDecimal(this.entrada_fei);
             const val3 = (this.valor_pacote_customizado);
             this.total_financiamento_customizado = parseFloat(val1) + parseFloat(val3) - parseFloat(val2);
             this.valor_entrada_customizado = parseFloat(val2)
