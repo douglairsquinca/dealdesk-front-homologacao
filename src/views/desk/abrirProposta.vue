@@ -19,7 +19,7 @@
 
       <!--Id da Proposta-->
       <div class="row g-2 p-2">
-        <div class="col-1 col-md-2">
+        <div class="col-1 col-md-1">
           <div class="form-floating">
             <input
               type="text"
@@ -30,7 +30,7 @@
             <label for="valid_descricao" class="rf_texto">Nº Proposta</label>
           </div>
         </div>
-        <div class="col col-md-5">
+        <div class="col-2 col-md-5">
           <div class="form-floating">
             <input
               type="text"
@@ -41,7 +41,7 @@
             <label for="valid_descricao" class="rf_texto">Atendente</label>
           </div>
         </div>
-        <div class="col col-md-5">
+        <div class="col-4 col-md-5">
           <div class="form-floating">
             <input
               type="text"
@@ -52,7 +52,18 @@
             <label for="valid_descricao" class="rf_texto">Vendedor</label>
           </div>
         </div>
-        <div class="col-2 col-md-4">
+        <div class="col-1 col-md-1">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="midia_informada"
+              :disabled="true"
+            />
+            <label for="valid_descricao" class="rf_texto">Mídia</label>
+          </div>
+        </div>
+        <div class="col-2 col-md-2">
           <div class="form-floating">
             <button
               type="button"
@@ -65,7 +76,20 @@
             </button>
           </div>
         </div>
-        <div class="col-2 col-md-4">
+        <div class="col-2 col-md-2">
+          <div class="form-floating">
+            <button
+              type="button"
+              class="btn btn-lg btn-filtro"
+              data-bs-toggle="modal"
+              data-bs-target="#ModalTrocarMidia"
+              @click="retrieveMidia"
+            >
+              <span class="rf_texto_btn">Alterar Mídia</span>
+            </button>
+          </div>
+        </div>
+        <div class="col-2 col-md-2">
           <div class="form-floating">
             <button
               type="button"
@@ -1360,7 +1384,7 @@
       <Message :msg="msg" v-show="msg" />
     </div>
     <div>
-      <button @click="openModal('Sua mensagem aqui')">Abrir Modal</button>
+      <!-- <button @click="openModal('Sua mensagem aqui')">Abrir Modal</button> -->
       <Aviso 
       :msg="modalMessage"
       :visible="showModal"
@@ -1676,7 +1700,7 @@
           <form @submit.prevent="onSubmitTrocaVendedor">
             <div class="row g-2 p-2">
               <div v-if="abrir_modal">
-                <div class="alert bg-dark text-center" role="alert">
+                <div class="alert  text-center" role="alert">
                   {{ msg }}
                 </div>
               </div>
@@ -1726,6 +1750,84 @@
                   </button>
                 </div>
               </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!--Modal Trocar Mídia-->
+    <div
+    class="modal fade"
+    id="ModalTrocarMidia"
+    aria-hidden="true"
+    aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content card-container-desk rf_texto">
+        <div class="modal-header">
+          <div class="card-title gy-4">
+            <i class="bi bi-pencil-square fs-5 icone_kit"
+              ><span class="texto_kit">Alterar Mídia</span></i
+            >
+          </div>
+          <button
+            class="btn btn-modal btn-lg p-1 mt-1"
+            type="button"
+            data-bs-target="#ModalProposta"
+            data-bs-toggle="modal"
+            aria-label="Close"
+          >
+            Sair
+          </button>
+        </div>
+        <div class="modal-body">
+          <form @submit.prevent="onSubmitTrocaMidia">
+            <div class="row g-2 p-2">
+              <div v-if="abrir_modal">
+                <div class="alert  text-center" role="alert">
+                  {{ msg }}
+                </div>
+              </div>
+              <div class="row g-2 p-2">
+              <!-- <div class="col">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control rf_bg_form rf_texto"
+                    v-model="justificativa_midia"
+                    v-on:blur="validar_midia"
+                  />
+                  <label class="rf_texto">Justificativa</label>
+                </div>
+              </div> -->
+              <div class="row g-2 p-2">
+                <div class="col-6 col-md-3">
+                <div class="form-floating">
+                  <select class="form-select rf_bg_form rf_texto "  required v-model="midia_id">
+
+                    <option v-for="item in midia" :value="item.id" :key="item.id">
+                      {{ item.descricao }}
+                    </option>
+                  </select>
+                  <label class="rf_texto">Midia</label>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-floating">
+                  <button
+                    class="btn btn-lg btn-desk-filtro"
+                    data-bs-dismiss="modal"
+                    :disabled="check_midia"
+                    type="submit"
+                  >
+                    <span class="rf_texto_btn">Alterar</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            </div>
             </div>
           </form>
         </div>
@@ -3562,6 +3664,15 @@ export default {
       isLoading2: false,
       search2: null,
       totalItems2: null,
+      midia:[],
+      midia_informada:"",
+      midia_alterada:"",
+      midia_id:"",
+      page_midia: 1,
+      totalPages_midia: 0,
+      totalItems_midia: 0,
+      pageSizes_midia: 1000,
+      pageSize_midia: 1000,
 
       //Campos Veículo para troca
       marca_avaliacao: "",
@@ -3921,45 +4032,49 @@ export default {
     /**Ao abrir a tela de proposta chamar o método habilitar_proposta ele é responsável por startar o atendimento */
     this.getToken();
     this.habilitar_proposta();
-    // this.startTimer();
+    this.retrieveMidia();
   },
   methods: {
-    // startTimer(){
-    //   this.timer = setTimeout(()=>{
-    //     //Ação para voltar a tela de propostas
-    //     //this.$router.push('/desk/index')
-    //     window.location.reload();
-    //   }, 30000);
+    getRequestParamsMidias(searchTitle, page_midia, pageSize_midia) {
+      let params = {};
+      if (searchTitle) {
+        params["nome"] = searchTitle;
+      }
+      if (page_midia) {
+        params["page"] = page_midia - 1;
+      }
+      if (pageSize_midia) {
+        params["size"] = pageSize_midia;
+      }
+      return params;
+    },
+    async retrieveMidia() {
+      try {
+        const params = this.getRequestParamsMidias(
+          this.searchTitle,
+          this.page_midia,
+          this.pageSize_midia
+        );
+        userService.getMidia(params).then((response) => {
+          const { midias } = response.data;
 
-    // },
-    // startTimer() {
-    //   let idleTime = 0;
+          this.midia = midias;
 
-    //   const resetTimer = () => {
-    //     idleTime = 0;
-    //   };
-
-    //   const incrementIdleTime = () => {
-    //     idleTime += 1;
-    //     if (idleTime >= 30) { // 30 segundos de inatividade
-    //       // Ação para voltar à tela de propostas
-    //       // this.$router.push('/desk/index');
-    //       window.location.reload();
-    //     }
-    //   };
-
-    //   // Adiciona os eventos para detectar interações de mouse e teclado
-    //   document.addEventListener('mousemove', resetTimer);
-    //   document.addEventListener('keydown', resetTimer);
-
-    //   // Define um intervalo para verificar a inatividade a cada segundo
-    //   setInterval(incrementIdleTime, 1000);
-    // },
-    // resetTimer() {
-    //   //Reinicar o temporizador toda vez que houver uma interação
-    //   clearTimeout(this.timer);
-    //   // this.startTimer();
-    // },
+          console.log(response.data);
+        }).catch((error) => {
+          if (error.response.status == 400) {
+            this.abrir_modal = true;
+            this.msg = error.response.data.message;
+          }
+        })
+      } catch (error) {
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+        }
+      }
+    },
+  
     /**Função 0001 */
     getToken() {
       const accessToken = TokenService.getLocalAccessToken();
@@ -3975,22 +4090,12 @@ export default {
     /**Função 0002 */
     async habilitar_proposta() {
       const propostaId = this.$route.params.id;
-
-      //Limpar campos veiculo de compra
-      // this.chassi_proposta = "",
-      //   this.marca_proposta = "",
-      //   this.modelo_proposta = "",
-      //   this.cor_proposta = "",
-      //   this.anoModelo_proposta = "",
-      //   this.anoFabricacao_proposta = "",
-      //   this.combustivel_proposta = ""
-
       //Buscar dados da proposta
       try {
         await userService.getPropostaId(propostaId).then((response) => {
           this.dados_proposta = response.data;
 
-          console.log(response.data);
+          console.log("Dados obitido da proposta", response.data);
           /**Bloco de dados com informações do cliente */
           const dados_cliente = {
             id_cliente: this.dados_proposta["cliente_id"],
@@ -4008,6 +4113,7 @@ export default {
             cep: this.dados_proposta.clientes["cep"],
             tel: this.dados_proposta.clientes["tel"],
             cel: this.dados_proposta.clientes["cel"],
+            midia: this.dados_proposta.midias["descricao"],
           };
           this.id_cliente = dados_cliente.id_cliente;
           //Alterações Histórico do cliente
@@ -4026,6 +4132,7 @@ export default {
           this.cep = dados_cliente.cep;
           this.tel = dados_cliente.tel;
           this.cel = dados_cliente.cel;
+          this.midia_informada = dados_cliente.midia;
           /** */
 
           /**Bloco de dados com informações da proposta */
@@ -4805,6 +4912,21 @@ export default {
         this.check_vend = false;
       }
     },
+    async validar_midia() {
+      if (!this.justificativa_midia) {
+        this.check_midia = true;
+        this.abrir_modal = true;
+        this.msg = "O campo justificativa é obrigatório";
+        setTimeout(() => (this.abrir_modal = false), 4000);
+      } else if (this.justificativa_midia.length < 10) {
+        this.check_midia = true;
+        this.abrir_modal = true;
+        this.msg = "A justificativa de ter mais que 10 caracteres!";
+        setTimeout(() => (this.abrir_modal = false), 4000);
+      } else {
+        this.check_midia = false;
+      }
+    },
     async onSubmitTrocaVendedor() {
       const id = this.id_proposta;
       const justificativa = this.justificativa_vendedor;
@@ -4833,6 +4955,39 @@ export default {
         })
         .then((resposta) => {
           this.justificativa_vendedor = "";
+          this.abrir_modal = true;
+          this.msg = resposta.message;
+          setTimeout(() => (this.abrir_modal = false), 4000);
+          window.location.reload();
+        });
+    },
+    async onSubmitTrocaMidia() {
+      const id = this.id_proposta;
+      //const justificativa = this.justificativa_midia;
+      const id_midia_trocada = this.midia_id;
+
+      await fetch(
+        `${process.env.VUE_APP_API_URL}proposta_troca_midia/${id}`,
+        {
+          method: "PUT",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: id,
+            // just_troca_vendedor: justificativa,
+            midia_id: id_midia_trocada,
+          }),
+        }
+      )
+        .then((data) => {
+          if (!data.ok) {
+            throw Error(data.status);
+          }
+          return data.json();
+        })
+        .then((resposta) => {        
           this.abrir_modal = true;
           this.msg = resposta.message;
           setTimeout(() => (this.abrir_modal = false), 4000);
