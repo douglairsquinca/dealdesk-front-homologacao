@@ -12,6 +12,7 @@
           <div class="form-floating">
             <select class="form-select rf_bg_form rf_texto_desk" v-model="selectedRelatorio"
               @change="selecionarRelatorios()">
+              <option value="atendimentos">Atendimentos</option>
               <option value="venda_conversao">Conversão de Vendas</option>
               <option value="venda_perdida">Vendas Perdidas</option>
               <option value="venda_modelo">Vendas por Modelo</option>
@@ -107,6 +108,7 @@
           <button class="btn btn-lg btn-filtro" @click="selectedRelatorio === 'venda_conversao' ? relatorio_conversao_vendas() :
     selectedRelatorio === 'venda_perdida' ? relatorio_venda_perdida() :
       selectedRelatorio === 'venda_modelo' ? relatorio_venda_modelo() :
+      selectedRelatorio === 'atendimentos' ? relatorio_atendimentos() :
         null">
             <span class="rf_texto_btn">Pesquisar</span>
           </button>
@@ -906,7 +908,14 @@ export default {
           { nome: 'Loja', value: 1 },
           { nome: 'Vendedor', value: 2 }
         ]
+      } else if (this.selectedRelatorio === "atendimentos") {
+        this.tipo_relatorio = this.selectedRelatorio;
+        this.tipo_conversao = [
+          { nome: 'Loja', value: 1 },
+          { nome: 'Vendedor', value: 2 }
+        ]
       }
+
     },
     filtarRelatorios() {
       if (this.selectedFilter === "hoje") {
@@ -1247,6 +1256,65 @@ export default {
             this.msg = error.response.data.message;
           }
         })
+    },
+    async relatorio_atendimentos() {
+      console.log("chamar relatório de atendimentos")
+
+      // Limpa o array antes de adicionar novos elementos
+      this.vendas_perdidas.splice(0);
+
+      const params = this.getRequestParams(
+        this.selectedEmpresas,
+        this.page,
+        this.pageSize,
+        this.company_id,
+        this.user_id,
+        this.startDate,
+        this.endDate,
+        this.selectedTipoVeiculo,
+        this.selectedTipoConversao,
+        this.selectedFilter,
+
+      );
+      console.log("Parametros", params)
+      try {
+        const response = await axios.get(`${process.env.VUE_APP_API_URL}relatorio_atendimentos`, { params });
+        const qtd = response.data.count;
+        const { rows } = response.data;
+        console.log(rows)
+        for (let i = 0; i < qtd; i++) {
+          const modelo_veiculo = rows[i].proposta_veiculo?.modelo_veiculo || ''; // Verifica se é null
+          const categoria = rows[i].proposta_veiculo?.categoria || '';
+          const valor_veiculo = rows[i].proposta_veiculo?.valor_veiculo || 0.00;
+          const arr = {
+            loja: rows[i].empresa_proposta.nome,
+            atendente: rows[i].usuarios.username,
+            vendedor: rows[i].vendedores.username,
+            cliente: rows[i].clientes.nome,
+            telefone: rows[i].clientes.tel,
+            telefone2: rows[i].clientes.cel,
+            data: rows[i].createdAt,
+            inicio_atendimento: rows[i].horario_inicio_atendimento,
+            motivo_perda: rows[i].obs,
+            veiculo: modelo_veiculo,
+            valor: this.currency(valor_veiculo),
+            tipo_veiculo: categoria
+          };
+
+          this.vendas_perdidas.push(arr); // Adiciona o novo objeto ao array
+        }
+
+        console.log(this.vendas_perdidas);
+
+
+      } catch (error) {
+        console.log(error)
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+        }
+      }
+
     },
     async getEmpresas() {
       console.log("Buscando Empresas")

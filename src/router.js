@@ -402,8 +402,8 @@ const routes = [
     beforeEnter: [gerenteAuth],
   },
   {
-    path:"/desk/menu/reimprimirMenu/:id",
-    name:"reimprimirMenu",
+    path:"/desk/menu/reimprimir/:id",
+    name:"reimprimir",
     component: ReimprimirProposta,
     beforeEnter: [gerenteAuth],
   },
