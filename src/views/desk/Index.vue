@@ -309,7 +309,7 @@
             >
               <router-link
                 class="nav-link active"
-                :to="`/desk/menu/reimprimirMenu/${item.id}`"
+                :to="`/desk/menu/reimprimir/${item.id}`"
               >
                 <i class="bi bi-printer"></i>
               </router-link>

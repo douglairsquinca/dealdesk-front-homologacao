@@ -674,6 +674,7 @@ export default {
       tipo_conversao: [],
       selectedTipoConversao: 1,
       selectedTipoVeiculo: [],
+      atendimentos: [],
       marcarNovo: false,
       marcarUsado: false,
       referencia: "",
@@ -1281,30 +1282,34 @@ export default {
         const response = await axios.get(`${process.env.VUE_APP_API_URL}relatorio_atendimentos`, { params });
         const qtd = response.data.count;
         const { rows } = response.data;
-        console.log(rows)
+        console.log("Relatorio de Atendimentos", rows)
         for (let i = 0; i < qtd; i++) {
-          const modelo_veiculo = rows[i].proposta_veiculo?.modelo_veiculo || ''; // Verifica se é null
-          const categoria = rows[i].proposta_veiculo?.categoria || '';
-          const valor_veiculo = rows[i].proposta_veiculo?.valor_veiculo || 0.00;
+          // const modelo_veiculo = rows[i].proposta_veiculo?.modelo_veiculo || ''; // Verifica se é null
+          // const categoria = rows[i].proposta_veiculo?.categoria || '';
+          // const valor_veiculo = rows[i].proposta_veiculo?.valor_veiculo || 0.00;
           const arr = {
             loja: rows[i].empresa_proposta.nome,
+            atendimento: rows[i].id,
+            data: rows[i].createdAt,
             atendente: rows[i].usuarios.username,
             vendedor: rows[i].vendedores.username,
             cliente: rows[i].clientes.nome,
             telefone: rows[i].clientes.tel,
             telefone2: rows[i].clientes.cel,
-            data: rows[i].createdAt,
-            inicio_atendimento: rows[i].horario_inicio_atendimento,
-            motivo_perda: rows[i].obs,
-            veiculo: modelo_veiculo,
-            valor: this.currency(valor_veiculo),
-            tipo_veiculo: categoria
+            email: rows[i].clientes.email,
+            midia: rows[i].midias.descricao,
+            retorno: rows[i].retorno,
+            tipo_fechamento: rows[i].status_proposta,
+            gerente: rows[i].gerentes.username,
+            tempo_de_atendimento: rows[i].total_tempo_atendimento,
+            observacao: rows[i].obs,
+        
           };
 
-          this.vendas_perdidas.push(arr); // Adiciona o novo objeto ao array
+          this.atendimentos.push(arr); // Adiciona o novo objeto ao array
         }
 
-        console.log(this.vendas_perdidas);
+        console.log(this.atendimentos);
 
 
       } catch (error) {
