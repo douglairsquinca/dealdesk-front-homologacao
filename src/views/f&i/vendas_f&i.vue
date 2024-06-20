@@ -61,24 +61,22 @@
       <tbody>
         <tr v-for="item in vendas" :key="item.id" class="table-linha"
         :class="
-          item.status === 'Atendimento'
+          item.status === 'Em Atendimento'
               ? css
-              : item.status === 'Atendimento Excedido'
-              ? css1
               : item.status === 'Aguardando Atendimento'
-              ? css2
+              ? css1
               : item.status === 'Venda Finalizada'
-              ? css3
+              ? css2
               : item.status === 'Venda Perdida'
-              ? css4
+              ? css3              
               : ''
           ">
-          <td>{{ item.atendimento_id }}</td>
-          <td>{{ item.pos_venda_proposta.vendedores.username }}</td>
-          <td>{{ item.pos_venda_proposta.clientes.nome }}</td>
-          <td>{{ item.pos_venda_proposta.proposta_veiculo.modelo_veiculo }}</td>
-          <td>{{ item.createdAt }}</td>
-          <td>{{ item.status }}</td>
+          <td class="rf_header_table">{{ item.atendimento_id }}</td>
+          <td class="rf_header_table">{{ item.pos_venda_proposta.vendedores.username }}</td>
+          <td class="rf_header_table">{{ item.pos_venda_proposta.clientes.nome }}</td>
+          <td class="rf_header_table">{{ item.pos_venda_proposta.proposta_veiculo.modelo_veiculo }}</td>
+          <td class="rf_header_table">{{ this.formatarData(item.createdAt) }}</td>
+          <td class="rf_header_table">{{ item.status }}</td>
           <td>
             <!-- <button
               type="button"
@@ -192,9 +190,22 @@ export default {
   mounted() {
     this.getToken();
     this.retrievePropostas();
-    //this.habilitar();
+    this.status();
   },
   methods: {
+    status(){
+      this.css = "cor_fei_em_atendimento";
+      this.css1 = "cor_fei_aguardando_atendimento";
+      this.css2 = "cor_fei_venda_finalizada";
+      this.css3 = "cor_fei_venda_perdida";
+    },
+    formatarData(item){
+      const createdAtDate = new Date(item);
+      const formattedCreatedAt = `${createdAtDate.getDate()}/${
+        createdAtDate.getMonth() + 1
+      }/${createdAtDate.getFullYear()}`;
+      return formattedCreatedAt;
+    },
     getToken() {
       const accessToken = TokenService.getLocalAccessToken();
       TokenService.getLocalRefreshToken();

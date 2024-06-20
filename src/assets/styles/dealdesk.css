@@ -814,6 +814,20 @@
   table tr.cor_venda_perdida {
     --bs-table-bg: #ff5f5f !important;
   }
+
+  table  tr.cor_fei_aguardando_atendimento {
+    --bs-table-bg: #ffdf7e !important;    
+  }
+  table  tr.cor_fei_em_atendimento {
+    --bs-table-bg: #7ec5ff !important;    
+  }
+  table tr.cor_fei_venda_perdida {
+    --bs-table-bg: #ff5f5f !important;
+  }
+  table tr.cor_fei_venda_finalizada {
+    --bs-table-bg: #8fd19e !important;
+  }
+
   .desk-footer{
     display: flex;
     flex-shrink: 0;
