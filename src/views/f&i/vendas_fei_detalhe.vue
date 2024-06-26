@@ -5861,6 +5861,12 @@ async atualizar_status_pos_venda(value) {
     async inserir_acessorio(item) {
       console.log("Inserindo acessorio");
       console.log(this.id_pos_venda_detalhada)
+      if(!this.id_pos_venda_detalhada){
+        this.abrir_modal = true;
+        this.msg = "ID da proposta não foi encontrado! ---linha 5866----";      
+          setTimeout(() => (this.abrir_modal = false), 1000);
+          return;
+      }
       await fetch(`${process.env.VUE_APP_API_URL}venda_customizada`, {
         method: "POST",
 
