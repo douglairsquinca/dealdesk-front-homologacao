@@ -23,6 +23,7 @@ import Midia from "./views/admin/Midia.vue";
 import ModeloVeiculo from "./views/admin/ModeloVeiculo.vue";
 import Usuario from "./views/admin/Usuario.vue";
 import Estoque from "./views/admin/estoque_veiculos.vue";
+
 //Rotas Atendimento
 //import Atendimento from "./views/atendimento/Dashboard.vue";
 import DashboardProposta from "./views/atendimento/Dashboard.vue";
@@ -36,8 +37,10 @@ import Proposta from "./views/desk/abrirProposta.vue";
 import ReimprimirProposta from "./views/desk/reimprimirMenu.vue";
 import SituacaoGeral from "./views/desk/situacaoGeral.vue";
 import VendidosEstoque from "./views/desk/vendidosEstoque.vue";
+import VeiculosReserva from "./views/admin/reservados.vue";
 import VeiculosVendidoEstoque from "./views/admin/VeiculosVendidoEstoque.vue";
 import SituacaoVeiculo from "./views/admin/SituacaoVeiculo.vue";
+
 
 //Rotas F&I
 import Dashboard from "./views/f&i/index.vue";
@@ -329,6 +332,12 @@ const routes = [
     path:"/admin/veiculos_vendido_estoque",
     name:"veiculos_vendido_estoque",
     component: VeiculosVendidoEstoque ,
+    beforeEnter: [adminAuth],
+  },
+  {
+    path:"/admin/veiculos_reserva",
+    name:"veiculos_reserva",
+    component: VeiculosReserva,
     beforeEnter: [adminAuth],
   },
   {

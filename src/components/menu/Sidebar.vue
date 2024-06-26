@@ -50,7 +50,12 @@
               </li>
               <li class="nav-item"><a @click="setActive('parametros')" href="/admin/veiculos_vendido_estoque"
                   class="nav-link p-2"> Aguardando Faturamento
-                </a></li>
+                </a>
+              </li>
+              <li class="nav-item"><a @click="setActive('parametros')" href="/admin/veiculos_reserva"
+                  class="nav-link p-2"> Veículos com Reserva
+                </a>
+              </li>
               <!-- <li class="nav-item"><a href="/admin/situacao_veiculo" class="nav-link p-2"> Situação Veículo </a></li> -->
             </ul>
           </li>
