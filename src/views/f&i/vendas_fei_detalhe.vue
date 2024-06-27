@@ -943,6 +943,7 @@
                     <select
                       class="form-select rf_bg_form rf_texto"
                       v-model="metodo_pagamento"
+                      @change="verificarMetodoPagamento"
                     >
                       <option
                         v-for="item in metodo_pagamento_lista"
@@ -1620,6 +1621,7 @@
                 <select
                   class="form-select rf_bg_form rf_texto"
                   v-model="metodo_pagamento"
+                  @change="verificarMetodoPagamento"
                 >
                   <option
                     v-for="item in metodo_pagamento_lista"
@@ -3780,9 +3782,14 @@ export default {
     return {
       metodo_pagamento_lista: [
         { descricao: "Financiamento", value: 1 },
-        { descricao: "Cartão Crédito", value: 2 },
-        { descricao: "Depósito Bancário", value: 3 },
-        { descricao: "Pix", value: 4 },
+        { descricao: "Pix", value: 2 },
+        { descricao: "Débito", value: 3 },
+        { descricao: "Crédito", value: 4 },
+        { descricao: "Crédito 2x", value: 5 },
+        { descricao: "Crédito 3x", value: 6 },
+        { descricao: "Crédito 4x", value: 7 },
+        { descricao: "Crédito 5x", value: 8 },
+        { descricao: "Crédito 6x", value: 9 },
       ],
       itens_financiamento: [
         { value: 12 },
@@ -4092,6 +4099,15 @@ export default {
       this.company_id = decodedToken.company;
       this.user_log = user_log.id;
       this.id_rota = this.$route.params.id;
+    },
+    verificarMetodoPagamento() {
+      
+      if(this.metodo_pagamento === 1){
+        this.habilitar_finalizar_venda = true;
+      }else{
+        console.log("Metodo Pagamento", this.metodo_pagamento);
+        this.habilitar_finalizar_venda = false;
+      }
     },
     async dados_detalhada(){
       const id = this.$route.params.id;
