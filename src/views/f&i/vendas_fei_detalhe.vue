@@ -4093,6 +4093,21 @@ export default {
       this.user_log = user_log.id;
       this.id_rota = this.$route.params.id;
     },
+    async dados_detalhada(){
+      const id = this.$route.params.id;
+        this.id_pos_venda = this.$route.params.id;
+        //Verificar se já foi criado a pos venda
+        const id_detalhada = await axios.get(
+          `${process.env.VUE_APP_API_URL}pos_venda_detalhada`,
+          {
+            params: {
+              id: id,
+            },
+          }
+        );
+        console.log("ID da VENDA DETALHaADA", id_detalhada.data.rows[0].id);
+        this.id_pos_venda_detalhada = id_detalhada.data.rows[0].id;
+    },
     habilitar() {
       // if (
       //   this.parcela_ouro != null ||
@@ -5594,6 +5609,7 @@ async atualizar_status_pos_venda(value) {
       this.habilitar_customizacao = true;
       this.desabilitar_customizacao = false;
       this.cadastro = true;
+      this.dados_detalhada();
       this.resetar_pacote();
       this.retrieveAcessorios();
       this.retrieveSeguros();
