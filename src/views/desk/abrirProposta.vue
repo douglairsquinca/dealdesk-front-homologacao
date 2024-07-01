@@ -4091,10 +4091,11 @@ export default {
     async habilitar_proposta() {
       const propostaId = this.$route.params.id;
       //Buscar dados da proposta
+      console.log("Dados obitido da proposta");
       try {
         await userService.getPropostaId(propostaId).then((response) => {
           this.dados_proposta = response.data;
-
+         
           console.log("Dados obitido da proposta", response.data);
           /**Bloco de dados com informações do cliente */
           const dados_cliente = {
@@ -4305,7 +4306,7 @@ export default {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            gerente_id: gerente_id,
+            gerente_id_alteracao: gerente_id,
           }),
         }
       ).then((data) => {
