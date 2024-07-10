@@ -48,6 +48,9 @@
               <li class="nav-item m-1"><a @click="setActive('parametros')" href="/admin/estoque_veiculos"
                   class="nav-link p-2"> Sincronizar Estoque </a>
               </li>
+              <li class="nav-item m-1"><a @click="setActive('parametros')" href="/admin/tipo_pagamento"
+                  class="nav-link p-2"> Tipo Pagamento</a>
+              </li>
               <li class="nav-item"><a @click="setActive('parametros')" href="/admin/veiculos_vendido_estoque"
                   class="nav-link p-2"> Aguardando Faturamento
                 </a>

@@ -826,7 +826,31 @@
         </div>
         <div class="col-6" style="padding-left: 20px">
           <div class="row">
-            <div class="col-3 card-title gy-4">
+            <div class="col card-title gy-4">
+              <div class="form-check form-switch rf_texto mt-3">
+                <input
+                  class="form-check-input g-5"
+                  type="checkbox"
+                  role="switch"
+                  v-model="pagamento_vista"
+                  @click="checar_pagamento"
+                />
+                <label class="form-check-label">Formas de Pagamento</label>
+              </div>           
+            </div>
+            <div class="col card-title gy-4">
+              <div class="form-check form-switch rf_texto mt-3">
+                <input
+                  class="form-check-input g-5"
+                  type="checkbox"
+                  role="switch"
+                  v-model="pagamento_financiamento"
+                  @click="checar_pag_financiamento"
+                />
+                <label class="form-check-label">Financiamento</label>
+              </div>           
+            </div>
+            <div class="col card-title gy-4">
               <div class="form-check form-switch rf_texto mt-3">
                 <input
                   class="form-check-input g-5"
@@ -836,186 +860,326 @@
                 />
                 <label class="form-check-label">Mostrar cadastro</label>
               </div>           
-            </div>
-         
-          </div>
-       
+            </div>         
+          </div>          
         </div>
       </div>
-      <div class="row">
+      
+      <div class="row">   
         <div class="col">
-          <div class="row g-2 p-2">
-            <div class="col">
-              <div class="form-floating">
-                <input
-                  type="text"                 
-                  class="form-control rf_bg_form rf_texto"
-                  v-model="entrada_fei"
-                  v-on:blur="validar_ranqueamento_customizado"
-                  @input="entrada_fei = formatarValor(entrada_fei)"
-                />
-                <label class="rf_texto">Entrada Customizado</label>
+          <!--Dados para a vista-->
+          <div v-if="pagamento_vista">
+            <div class="row g-2 p-2">
+              <div class="col">
+                <div class="form-floating">
+                  <input
+                    type="text"                 
+                    class="form-control rf_bg_form rf_texto"
+                    disabled
+                    v-model="valor_pacote_vista"              
+                  />
+                  <label class="rf_texto">Valor do Pacote</label>
+                </div>
               </div>
-            </div>
-            <div class="col">
-              <div class="form-floating">
-                <input
-                  type="text"
-                  disabled
-                  class="form-control rf_bg_form rf_texto"
-                  v-model="valor_financiar"
-                />
-                <label class="rf_texto">Valor Proposta</label>
-              </div>
-            </div>
-            <div class="col">
-              <div class="form-floating">
-                <input
-                  type="text"
-                  disabled
-                  class="form-control rf_bg_form rf_texto"
-                  v-model="valor_pacote_selecionado"
-                />
-                <label class="rf_texto">Valor Pacote</label>
-              </div>
-            </div>
-            <div class="col">
-              <div class="form-floating">
-                <input
-                  type="text"
-                  disabled
-                  class="form-control rf_bg_form rf_texto"
-                  v-model="total_financiamento_selecionado"
-                />
-                <label class="rf_texto">Total Financiamento</label>
-              </div>
-            </div>
-            <div class="col">
-              <div class="form-floating">
-                <input
-                  type="text"
-                  disabled
-                  class="form-control rf_bg_form rf_texto"
-                  v-model="valor_parcela_selecionada"
-                />
-                <label class="rf_texto">Valor Parcela</label>
-              </div>
-            </div>
-            <div class="col">
-          <div class="form-floating">
-            <input
-              type="text"
-              disabled
-              class="form-control rf_bg_form rf_texto"
-              v-model="valor_entrada_selecionada"
-            />
-            <label class="rf_texto">Entrada Simulada</label>
-          </div>
-        </div>
-          </div>
-          <table class="table rf_texto">
-            <thead>
-              <tr>
-                <th scope="col" style="width: 10%" class="rf_texto_tabela">
-                  Pacote Customizado
-                </th>
-
-                <!--Parcela 1-->
-                <th scope="col" style="width: 5%" class="rf_texto_tabela">
-                  <div class="form-floating">
-                    <select
-                      class="form-select rf_bg_form rf_texto"
-                      v-model="parcela"
-                    >
-                      <option
-                        v-for="item in itens_financiamento"
-                        :value="item.value"
-                        :key="item.value"
+              <div class="col">
+                <div class="form-floating">
+                      <select
+                        class="form-select rf_bg_form rf_texto"
+                        v-model="met_pagamento_vista"
+                        @change="verificarMetodoPagamento"
                       >
-                        {{ item.value }}
-                      </option>
-                    </select>
-                    <label for="valid_empresa" class="rf_texto">Parcela</label>
-                  </div>
-                </th>
-                <th scope="col" style="width: 5%" class="rf_texto_tabela">
-                  <div class="form-floating">
-                    <select
-                      class="form-select rf_bg_form rf_texto"
-                      v-model="metodo_pagamento"
-                      @change="verificarMetodoPagamento"
+                        <option
+                          v-for="item in metodo_pagamento_vista"
+                          :value="item.id"
+                          :key="item.id"
+                        >
+                          {{ item.descricao }}
+                        </option>
+                      </select>
+                      <label for="valid_empresa" class="rf_texto"
+                        >Tipo de Pagamento
+                      </label>
+                </div>
+              </div>   
+              <div class="col">
+                <div class="form-floating">
+                  <input
+                    type="text"                    
+                    class="form-control rf_bg_form rf_texto"                    
+                    v-model="valor_parcela_vista"
+                     @input="valor_parcela_vista = formatarValor(valor_parcela_vista)"
+                  />
+                  <label class="rf_texto">Valor</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-floating">
+                  <select
+                    class="form-select rf_bg_form rf_texto"
+                    v-model="qtd_parcela_vista"                    
+                  >
+                    <option
+                      v-for="item in qtd_parcelamento"
+                      :value="item.value"
+                      :key="item.value"
                     >
-                      <option
-                        v-for="item in metodo_pagamento_lista"
-                        :value="item.value"
-                        :key="item.value"
-                      >
-                        {{ item.descricao }}
-                      </option>
-                    </select>
-                    <label for="valid_empresa" class="rf_texto"
-                      >Pagamento
-                    </label>
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <!--Primeira Linha-->
-              <tr>
-                <td>
-                  <div class="d-grid gap-2">
-                    <button
-                      type="button"
-                      class="btn btn-lg btn-desk-filtro rf_texto_btn"
-                      :disabled="habilitar_select_pmt_customizado"
-                      :class="{ active: pmtSelected === 4 }"
-                      @click="select_pmt(parcela_customizado, 4)"
-                    >
-                      {{ this.currency(parcela_customizado) }}
-                    </button>
-                  </div>
-                </td>
+                      {{ item.value }}
+                    </option>
+                  </select>
+                  <label for="valid_empresa" class="rf_texto"
+                    >Parcela
+                  </label>
+                </div>
+              </div>      
+              <div class="col">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-desk-filtro rf_texto_btn"  
+                  :disabled="habilitar_inserir_pagamento"             
+                  @click="inserir_pagamento()"
+                >
+                  Inserir
+                </button>
+              </div>
+              <div class="col">
+                <button
+                  class="btn btn-lg btn-desk-filtro"
+                  data-bs-toggle="modal"
+                  data-bs-target="#ModalGerarMenuPagamento"
+                  :disabled="habilitar_gerar_menu_avista"
+                  @click="gerar_menu_avista"
+                >
+                  <span class="rf_texto_btn">Gerar Menu</span>
+                </button>
+              </div>    
+            </div>
+            <div class="row g-2 p-2">
+          
+            </div>     
+            <div class="g-2 p-2">
+              <div class="card-title gy-4">
+                <i class="bi bi-tools fs-5 icone_kit"
+                  ><span class="texto_kit">Composição do Pagamento</span></i
+                >
+              </div>
+              <table class="table rf_texto">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 15%">Valor Informado</th>
+                    <th scope="col" style="width: 15%">Pagamento</th>
+                    <th scope="col" style="width: 10%">Qtd.</th> 
+                         
+                    <th scope="col" style="width: 5%">Ação</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="item in itens_pagamentos"
+                    :key="item.id"
+                    class="table-linha"
+                  >
+                    <td>{{ this.currency(item.valor_parcela) }}</td>
+                    <td>{{ item.tipo_pagamento_fei.descricao }}</td>
+                    <td>{{ item.qtd_parcela }}</td>            
 
-                <td>
-                  <div class="d-grid gap-2">
-                    <!-- <button
-                      class="btn btn-lg btn-desk-filtro"
-                      type="button"
-                      @click="verificar_ranqueamento_customizado()"
-                      :disabled="habilitar_ranquear_customizado"
-                      data-bs-target="#ModalRanqueamentoCustomizado"
-                      data-bs-toggle="modal"
-                    >
-                      <span class="rf_texto_btn">Ranquear</span>
-                    </button> -->
-                    <button
-                      class="btn btn-lg btn-desk-filtro"
-                      type="button"
-                      @click="verificar_ranqueamento_customizado()"
-                      :disabled="habilitar_ranquear_customizado"
-                 
-                    >
-                      <span class="rf_texto_btn">Ranquear</span>
-                    </button>
-                  </div>
-                </td>
-                <td>
-                  <div class="d-grid gap-2">
-                    <button
-                      class="btn btn-lg btn-desk-filtro"
-                      data-bs-toggle="modal"
-                      data-bs-target="#ModalGerarMenuCustomizado"
-                      :disabled="habilitar_gerar_menu"
-                      @click="atualizarPacoteCustomizado"
-                    >
-                      <span class="rf_texto_btn">Gerar Menu</span>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>       
+                    <td style="display: flex">
+                      <!-- <button
+                        @click="exibirModalPagamento(item)"
+                        data-bs-target="#ModalEditarPagamento"
+                        data-bs-toggle="modal"
+                        class="dropdown-toggle-icon p-1"
+                      >
+                        <i class="bi bi-pencil-square"></i>
+                      </button> -->
+                      <button
+                        class="dropdown-toggle-icon"
+                        data-bs-target="#excluiModalPagamento"
+                        data-bs-toggle="modal"
+                        @click="remover_item_pagamento(item)"
+                      >
+                        <i class="bi bi-trash3"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>    
+          </div>          
+          <!--Dados para financiamento-->
+          <div v-if="pagamento_financiamento">
+            <div class="row g-2 p-2">
+              <div class="col">
+                <div class="form-floating">
+                  <input
+                    type="text"                 
+                    class="form-control rf_bg_form rf_texto"
+                    v-model="entrada_fei"
+                    v-on:blur="validar_ranqueamento_customizado"
+                    @input="entrada_fei = formatarValor(entrada_fei)"
+                  />
+                  <label class="rf_texto">Entrada Customizado</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    disabled
+                    class="form-control rf_bg_form rf_texto"
+                    v-model="valor_financiar"
+                  />
+                  <label class="rf_texto">Valor Proposta</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    disabled
+                    class="form-control rf_bg_form rf_texto"
+                    v-model="valor_pacote_selecionado"
+                  />
+                  <label class="rf_texto">Valor Pacote</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    disabled
+                    class="form-control rf_bg_form rf_texto"
+                    v-model="total_financiamento_selecionado"
+                  />
+                  <label class="rf_texto">Total Financiamento</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    disabled
+                    class="form-control rf_bg_form rf_texto"
+                    v-model="valor_parcela_selecionada"
+                  />
+                  <label class="rf_texto">Valor Parcela</label>
+                </div>
+              </div>
+              <div class="col">
+            <div class="form-floating">
+              <input
+                type="text"
+                disabled
+                class="form-control rf_bg_form rf_texto"
+                v-model="valor_entrada_selecionada"
+              />
+              <label class="rf_texto">Entrada Simulada</label>
+            </div>
+          </div>
+            </div>
+            <table class="table rf_texto">
+              <thead>
+                <tr>
+                  <th scope="col" style="width: 10%" class="rf_texto_tabela">
+                    Pacote Customizado
+                  </th>
+
+                  <!--Parcela 1-->
+                  <th scope="col" style="width: 5%" class="rf_texto_tabela">
+                    <div class="form-floating">
+                      <select
+                        class="form-select rf_bg_form rf_texto"
+                        v-model="parcela"
+                      >
+                        <option
+                          v-for="item in itens_financiamento"
+                          :value="item.value"
+                          :key="item.value"
+                        >
+                          {{ item.value }}
+                        </option>
+                      </select>
+                      <label for="valid_empresa" class="rf_texto">Parcela</label>
+                    </div>
+                  </th>
+                  <th scope="col" style="width: 5%" class="rf_texto_tabela">
+                    <div class="form-floating">
+                      <select
+                        class="form-select rf_bg_form rf_texto"
+                        v-model="metodo_pagamento"
+                        @change="verificarMetodoPagamento"
+                      >
+                        <option
+                          v-for="item in metodo_pagamento_lista"
+                          :value="item.value"
+                          :key="item.value"
+                        >
+                          {{ item.descricao }}
+                        </option>
+                      </select>
+                      <label for="valid_empresa" class="rf_texto"
+                        >Pagamento
+                      </label>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <!--Primeira Linha-->
+                <tr>
+                  <td>
+                    <div class="d-grid gap-2">
+                      <button
+                        type="button"
+                        class="btn btn-lg btn-desk-filtro rf_texto_btn"
+                        :disabled="habilitar_select_pmt_customizado"
+                        :class="{ active: pmtSelected === 4 }"
+                        @click="select_pmt(parcela_customizado, 4)"
+                      >
+                        {{ this.currency(parcela_customizado) }}
+                      </button>
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="d-grid gap-2">
+                      <!-- <button
+                        class="btn btn-lg btn-desk-filtro"
+                        type="button"
+                        @click="verificar_ranqueamento_customizado()"
+                        :disabled="habilitar_ranquear_customizado"
+                        data-bs-target="#ModalRanqueamentoCustomizado"
+                        data-bs-toggle="modal"
+                      >
+                        <span class="rf_texto_btn">Ranquear</span>
+                      </button> -->
+                      <button
+                        class="btn btn-lg btn-desk-filtro"
+                        type="button"
+                        @click="verificar_ranqueamento_customizado()"
+                        :disabled="habilitar_ranquear_customizado"
+                  
+                      >
+                        <span class="rf_texto_btn">Ranquear</span>
+                      </button>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-grid gap-2">
+                      <button
+                        class="btn btn-lg btn-desk-filtro"
+                        data-bs-toggle="modal"
+                        data-bs-target="#ModalGerarMenuCustomizado"
+                        :disabled="habilitar_gerar_menu"
+                        @click="atualizarPacoteCustomizado"
+                      >
+                        <span class="rf_texto_btn">Gerar Menu</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table> 
+          </div>      
         </div>
         <!--Quadro Customizado-->
         <div class="col-4">
@@ -1134,6 +1298,7 @@
           </div>
         </div>
       </div>
+      
     </div>
   </div>
  
@@ -1494,6 +1659,166 @@
                 class="btn btn-lg btn-filtro"
                 data-bs-dismiss="modal"
                 @click="confirmarAlteracaoRevisao"
+              >
+                Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal editar pagamento -->
+  <div
+    class="modal fade"
+    id="ModalEditarPagamento"
+    tabindex="-1"
+    aria-labelledby="confirmModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content card-container rf_texto">
+        <div class="modal-header">
+          <div class="card-title gy-4">
+            <i class="bi bi-tools fs-5 icone_kit"
+              ><span class="texto_kit">Alterar valor do Pagamento</span></i
+            >
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="row g-2 p-2">
+            <div class="col-2">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto_desk"
+                  v-model="id_pagamento_fei"
+                  disabled
+                />
+                <label class="rf_texto_desk">Id</label>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto_desk"
+                  v-model="edit_valor_pagamento"
+                  @input="edit_valor_pagamento = formatarValor(edit_valor_pagamento)"
+                  required
+                />
+                <label class="rf_texto_desk">Valor</label>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-floating">
+                  <select
+                    class="form-select rf_bg_form rf_texto_desk"
+                    v-model="edit_qtd_parcela"                    
+                  >
+                    <option
+                      v-for="item in qtd_parcelamento"
+                      :value="item.value"
+                      :key="item.value"
+                    >
+                      {{ item.value }}
+                    </option>
+                  </select>
+                  <label for="valid_empresa" class="rf_texto_desk"
+                    >Parcela
+                  </label>
+                </div>
+            </div>
+            <div class="col">
+              <div class="form-floating">
+                      <select
+                        class="form-select rf_bg_form rf_texto_desk"
+                        v-model="edit_tipo_pagamento"
+                        @change="verificarMetodoPagamento"
+                      >
+                        <option
+                          v-for="item in metodo_pagamento_vista"
+                          :value="item.id"
+                          :key="item.id"
+                        >
+                          {{ item.descricao }}
+                        </option>
+                      </select>
+                      <label for="valid_empresa" class="rf_texto_desk"
+                        >Tipo de Pagamento
+                      </label>
+                </div>
+            </div>
+          </div>
+   
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn btn-lg btn-filtro"
+                data-bs-dismiss="modal"
+              >
+                Cancelar
+              </button>
+            </div>
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn btn-lg btn-filtro"
+                data-bs-dismiss="modal"
+                @click="confirmarAlteracaoPagamento(1)"
+              >
+                Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!--Modal Exclusão pagamento-->
+    <div
+    class="modal fade"
+    id="excluiModalPagamento"
+    tabindex="-1"
+    aria-labelledby="confirmModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content card-container rf_texto">
+        <div class="modal-header">
+          <div class="card-title gy-4">
+            <i class="bi bi-tools fs-5 icone_kit"
+              ><span class="texto_kit">Exclusão</span></i
+            >
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="row g-2 p-2">
+            <span class="texto_kit">Deseja remover o pagamento?</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn btn-lg btn-filtro"
+                data-bs-dismiss="modal"
+              >
+                Cancelar
+              </button>
+            </div>
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn btn-lg btn-filtro"
+                data-bs-dismiss="modal"
+                @click="confirmarAlteracaoPagamento(2)"
               >
                 Confirmar
               </button>
@@ -3709,6 +4034,316 @@
     </div>
  
   </div>
+
+  <!--Modal Gerar Menu Pagamento a Vista-->
+  <div
+    class="modal fade"
+    id="ModalGerarMenuPagamento"
+    aria-hidden="true"
+    aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1"
+  >
+    <div class="modal-dialog modal-fullscreen rf_modal font-pdf-menu">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="mt-3 rf_texto_pdf" ref="contentToPrint3">
+            <div class="row">
+              <div class="col-6">
+                <a class="navbar-brand logo">
+                  <img
+                    src="../../assets/logo.png"
+                    alt="Bootstrap"
+                    width="100"
+                    height="30"
+                  />
+                </a>
+              </div>
+              <div class="col-6" style="text-align: right">
+                <a class="navbar-brand logo_cliente">
+                  <img
+                    src="../../assets/logo.png"
+                    alt="Bootstrap"
+                    height="30"
+                  />
+                </a>
+              </div>
+            </div>
+            <!--Dados do Veículo-->
+            <div class="card card-vendas">
+              <div class="row g-2 p-2">
+                <div class="col-12">
+                  <i class="bi bi-car-front fs-5 icone_filtro_menu "
+                    ><span class="texto_filtro_menu"
+                      ><strong class="rf_titulo_pdf">Dados do Veículo</strong></span
+                    ></i
+                  >
+                </div>
+                <div class="col-2">
+                  <div class="row rf_bg_form_menu ">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Marca</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ marca }}</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Modelo</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ modelo }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Cor</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ cor }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Placa</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ placa }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Chassi</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ chassi }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Ano Fab.</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ ano_fabricacao }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Ano Mod.</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ ano_modelo }}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row g-2 p-2">                
+                <div class="col-12">
+                  <i class="bi bi-journal-text fs-5 icone_filtro_menu"
+                    ><span class="texto_filtro_menu"
+                      ><strong class="rf_titulo_pdf">Dados do Atendimento</strong></span
+                    ></i
+                  >
+                </div>
+        
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Nº Atend.</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ n_atendimento }}</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Vendedor</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ vendedor }}</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="row rf_bg_form_menu">
+                    <label class="rf_texto_menu_titulo rf_texto_pdf">Cliente</label>
+                    <span class="rf_texto_menu rf_texto_pdf">{{ cliente }}</span>
+                  </div>
+                </div>
+              </div>
+
+             
+              <!--Dados do Atendimento-->
+
+              <div class="row g-2 p-2">
+                <div class="col-7">
+                  <i class="bi bi-cash fs-5 icone_filtro_menu">
+                    <span class="texto_filtro_menu rf_texto_pdf "
+                      ><strong class="rf_titulo_pdf">Forma de Pagamento - </strong
+                      >Customizada</span
+                    >
+
+                    <span class="texto_filtro_menu rf_texto_pdf"
+                      ><strong class="rf_titulo_pdf">Data - </strong
+                      >{{ new Date().toLocaleDateString("pt-BR") }}
+                      {{
+                        new Date().toLocaleTimeString("pt-BR", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })
+                      }}</span
+                    >
+                  </i>
+                </div>
+              </div>
+            </div>
+
+            
+            <!--Quadro Customizado-->
+            <div class="card card-customizado">
+              <i class="bi bi-gem card-texto-vendas-customizado rf_titulo_destaque_pdf "> Pacote Customizado</i>
+
+              <div class="row">
+                <!--Acessórios-->
+                <div class="col divisoria_customizado_acessorio">
+                  <div class="barra_fei_menu_customizado">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>Acessórios</strong></span
+                    >
+                  </div>
+                  <div class="col">
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
+                    >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_acessorios"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon rf_texto_pdf">{{ item.descricao }}</span></i
+                          ></strong
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Revisão-->
+                <div class="col divisoria_customizado_revisao">
+                  <div class="col barra_fei_menu_customizado">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>Revisão pré-paga</strong></span
+                    >
+                  </div>
+                  <div class="col divisoria_customizado">
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
+                    >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_revisoes"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon rf_texto_pdf">{{ item.descricao }}</span></i
+                          ></strong
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Seguros-->
+                <div class="col divisoria_customizado_seguros">
+                  <div class="col barra_fei_menu_customizado">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>Seguros</strong></span
+                    >
+                  </div>
+                  <div class="col">
+                    <ul
+                      class="nav nav-item"
+                      style="display: block; clear: both"
+                    >
+                      <li
+                        class="nav-item"
+                        v-for="item in itens_kit_seguros"
+                        :key="item.id"
+                      >
+                        <strong
+                          ><i class="bi bi-check2-circle p-2">
+                            <span class="sp_icon rf_texto_pdf">{{ item.descricao }}</span></i
+                          >
+                        </strong>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!--Informações-->
+                <div class="col divisoria_customizado_info">
+                  <div class="col barra_fei_menu_customizado">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>Formas de Pagamento</strong></span
+                    >
+                  </div>
+                  <div class="col">
+                    <table class="table rf_texto_pdf">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 15%">Valor Informado</th>
+                    <th scope="col" style="width: 15%">Pagamento</th>
+                    <th scope="col" style="width: 10%">Qtd.</th> 
+                         
+                   
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="item in itens_pagamentos"
+                    :key="item.id"
+                    class="table-linha"
+                  >
+                    <td>{{ this.currency(item.valor_parcela) }}</td>
+                    <td>{{ item.tipo_pagamento_fei.descricao }}</td>
+                    <td>{{ item.qtd_parcela }}</td>           
+
+                 
+                  </tr>
+                </tbody>
+              </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+            <div class="row g-2 p-2 mt-4">
+              <br>         
+              <div class="col rf_assinatura">
+                <span>Gerente: {{ vendedor }}</span>
+              </div>
+              <div class="col rf_assinatura">
+                <span>Cliente: {{ cliente }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="col-1">
+            <button
+              type="button"
+              class="btn btn-lg btn-filtro"
+              data-bs-target="#ModaProposta"
+              data-bs-toggle="modal"
+            >
+              Fechar
+            </button>
+          </div>
+          <div class="col-1">
+            <button class="btn btn-lg btn-filtro" @click="generatePdfPagamento">
+              IMPRIMIR
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+  </div>
+
+
+
+
   <div class="card card-filtro card-vendas">
     <div class="row g-2 p-2 justify-content-end mt-2">
       <div class="col">
@@ -3782,15 +4417,8 @@ export default {
     return {
       metodo_pagamento_lista: [
         { descricao: "Financiamento", value: 1 },
-        { descricao: "Pix", value: 2 },
-        { descricao: "Débito", value: 3 },
-        { descricao: "Crédito", value: 4 },
-        { descricao: "Crédito 2x", value: 5 },
-        { descricao: "Crédito 3x", value: 6 },
-        { descricao: "Crédito 4x", value: 7 },
-        { descricao: "Crédito 5x", value: 8 },
-        { descricao: "Crédito 6x", value: 9 },
       ],
+      metodo_pagamento_vista: [],
       itens_financiamento: [
         { value: 12 },
         { value: 18 },
@@ -3804,6 +4432,7 @@ export default {
       valor_pacote_selecionado: "",
       valor_financiar: "",
       metodo_pagamento: "",
+      met_pagamento_vista: 2,
       parcela: "",
       //Daddos do atendimento
       n_atendimento: "",
@@ -3913,7 +4542,20 @@ export default {
       total_financiamento_selecionado_customizado:"",
       parcela_customizado:"",
       banco_selecionado_customizado:"",
-
+      qtd_parcelamento: [ 
+        { value: 1 },
+        { value: 2 },
+        { value: 3 },
+        { value: 4 },
+        { value: 5 },
+        { value: 6 },
+        { value: 7 },
+        { value: 8 },
+        { value: 9 },
+        { value: 10 },
+        { value: 11 },
+        { value: 12 },
+        ],
       banco_selecionado_ouro:"",
       banco_selecionado_prata:"",
       banco_selecionado_bronze:"",
@@ -4061,6 +4703,7 @@ export default {
       total_preco: "",
       itens_kit_revisoes: [],
       itens_kit_acessorios: [],
+      itens_pagamentos: [],
       itens_kit_seguros: [],
 
       id_acessorio_customizado: "",
@@ -4081,6 +4724,19 @@ export default {
       habilitar_ranquear_pacotes: true,
       valor_entrada_selecionada:"",
       valor_entrada_selecionada_customizado:"",
+      pagamento_financiamento:false,
+      pagamento_vista:false,
+      valor_pacote_vista:"",
+      valor_parcela_vista:"",
+      qtd_parcela_vista:1,
+      id_pagamento_fei:"",
+      edit_valor_pagamento:"",
+      edit_tipo_pagamento:"", 
+      edit_qtd_parcela:"",
+      habilitar_inserir_pagamento:false,
+      habilitar_gerar_menu_avista:true
+      
+
     };
   },
   mounted() {
@@ -4100,13 +4756,155 @@ export default {
       this.user_log = user_log.id;
       this.id_rota = this.$route.params.id;
     },
+    async inserir_pagamento(){
+      const valor_pacote = this.valor_pacote_vista ? parseFloat(this.valor_pacote_vista.replace(/[^\d,]+/g, '').replace(",", ".")) : 0;
+      const valor_parcela = this.valor_parcela_vista ? parseFloat(this.valor_parcela_vista.replace(/[^\d,]+/g, '').replace(",", ".")) : 0;
+
+
+
+      if(valor_parcela){   
+        try {
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_URL}checar_valor`,
+          {
+            params: {
+              pos_venda_detalhada_id: this.id_pos_venda_detalhada,
+            },
+          }
+        );
+
+        const somatorio_parcelas = response.data.data;
+        const total_pagamento = valor_parcela + somatorio_parcelas;
+
+        if(valor_pacote < total_pagamento){
+          this.abrir_modal = true;
+          this.msg = "Valor do pagamento ultrapassa o valor do pacote";
+          setTimeout(() => (this.abrir_modal = false), 3000);
+          return;
+        }
+  
+        
+      } catch (error) {
+        console.log(error);
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+          setTimeout(() => (this.abrir_modal = false), 3000);
+        }
+      }
+      }
+
+
+
+
+      //Validando antes de enviar para a api
+      if(valor_pacote < valor_parcela || valor_parcela == 0){
+        this.abrir_modal = true;
+        this.msg = "O valor do pacote não pode ser menor que o valor da parcela ou a parcela não pode ser R$ 0,00";
+        setTimeout(() => (this.abrir_modal = false), 4000);
+        return;
+      }
+      await fetch(`${process.env.VUE_APP_API_URL}pagamento_fei`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          pos_venda_detalhada_id: this.id_pos_venda_detalhada,
+          tipo_pagamento_id: this.met_pagamento_vista,
+          valor_pacote: valor_pacote,
+          valor_parcela: valor_parcela,
+          qtd_parcela: this.qtd_parcela_vista,
+          status: 1
+        }),
+      })
+        .then((data) => {
+          if (!data.ok) {
+            throw Error(data.status);
+          }
+          return data.json();
+        })
+        .then((resposta) => {
+          console.log("Pagamento inserido com sucesso ------ " + resposta);
+          if(resposta.StatusOk == 200){
+            this.abrir_modal = true;
+            this.msg = "Pagamento inserido com sucesso";
+            setTimeout(() => (this.abrir_modal = false), 2000);
+            this.retrievePagamentosFei();
+          }
+         
+        });
+
+     
+    },
+    async checar_valor(){
+      const valor_pacote = this.valor_pacote_vista ? parseFloat(this.valor_pacote_vista.replace(/[^\d,]+/g, '').replace(",", ".")) : 0;
+      try {
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_URL}checar_valor`,
+          {
+            params: {
+              pos_venda_detalhada_id: this.id_pos_venda_detalhada,
+            },
+          }
+        );
+
+        const somatorio_parcelas = response.data.data;
+        
+
+        if(valor_pacote == somatorio_parcelas){
+          console.log("pode gerar menu")
+         this.habilitar_gerar_menu_avista = false
+         this.habilitar_finalizar_venda = false
+        }else{
+          this.habilitar_gerar_menu_avista = true
+          this.habilitar_finalizar_venda = true
+        }
+  
+        
+      } catch (error) {
+        console.log(error);
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+          setTimeout(() => (this.abrir_modal = false), 3000);
+        }
+      }
+    },
     verificarMetodoPagamento() {
       
       if(this.metodo_pagamento === 1){
         this.habilitar_finalizar_venda = true;
       }else{
         console.log("Metodo Pagamento", this.metodo_pagamento);
-        this.habilitar_finalizar_venda = false;
+        if(!this.valor_pacote_selecionado){
+          this.abrir_modal = true;
+          this.msg = "O valor do pacote não pode ser R$ 0,00";
+          setTimeout(() => (this.abrir_modal = false), 4000);
+          this.habilitar_finalizar_venda = true;
+          return;
+        }
+        if(!this.valor_pacote_customizado){
+          this.abrir_modal = true;
+          this.msg = "O valor do pacote customizado não pode ser R$ 0,00";
+          setTimeout(() => (this.abrir_modal = false), 4000);
+          this.habilitar_finalizar_venda = true;
+          return;
+        }
+     
+          this.habilitar_finalizar_venda = false;
+    
+      }
+
+      if(this.met_pagamento_vista === 1){
+        this.abrir_modal = true;
+          this.msg = "Para essa forma de pagamento utilize o método Financiamento";
+          setTimeout(() => (this.abrir_modal = false), 4000);
+          this.habilitar_inserir_pagamento = true;
+          return;
+      }
+      if(this.met_pagamento_vista != 1){      
+          this.habilitar_inserir_pagamento = false;         
       }
     },
     async dados_detalhada(){
@@ -4236,6 +5034,84 @@ export default {
         );
       }
     },
+    async retrieveTipoPagamento() {
+      try {
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_URL}tipo_pagamentos`,
+          {
+            params: {
+              status: 1
+            },
+          }
+        );
+
+        
+        // Faça algo com os dados aqui, como atribuir a uma variável de componente
+        this.metodo_pagamento_vista = response.data; // exemplo de atribuição
+        console.log("Lista de pagamentos", this.metodo_pagamento_vista);
+      } catch (error) {
+        console.log(error);
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
+    },
+    async retrievePagamentosFei() {
+      const pos_venda_detalhada_id =  this.id_pos_venda_detalhada;
+      try {        
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_URL}pagamento_fei`,
+          {
+            params: {
+              pos_venda_detalhada_id: pos_venda_detalhada_id,
+              status: 1,
+              page: this.page - 1,
+              size: this.pageSize,
+            },
+          }
+        );
+
+        console.log("Lista de pagamentos feisssssssssssssssssssssssssssssssssss", response);
+        this.itens_pagamentos = response.data.pagamento_fei;
+        this.checar_valor();
+      } catch (error) {
+        console.log(error);
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
+    },
+    checar_pagamento(){
+      console.log("Checando pagamento", this.pagamento_financiamento, this.pagamento_vista)
+      if(this.pagamento_vista == false){
+        console.log("Pagamento a vista selecionado")
+        this.pagamento_financiamento = false;
+        this.valor_pacote_vista = this.currency(this.valor_pacote_customizado);
+        this.retrieveTipoPagamento();
+        this.retrievePagamentosFei();
+      }
+      if(this.pagamento_vista == true){
+        console.log("Pagamento a vista selecionado")
+        this.pagamento_financiamento = true;
+      }
+      
+    },
+    checar_pag_financiamento(){
+      console.log("Checando pagamento", this.pagamento_financiamento, this.pagamento_vista)
+      if(this.pagamento_financiamento == false){
+        console.log("Pagamento a vista selecionado")
+        this.pagamento_vista = false;
+      }
+      if(this.pagamento_financiamento == true){
+        console.log("Pagamento a vista selecionado")
+        this.pagamento_vista = true;
+      }
+      
+    },
     popular_formulario(item) {
       console.log("Listando para popular formulário ", item);
       //Daddos do Atendimento
@@ -4244,9 +5120,13 @@ export default {
       this.cliente = item.pos_venda_proposta.clientes.nome;
       if(item.pos_venda_proposta.tipo_pagamento == '1'){
         this.tipo_pagamento = 'Pagamento à vista'
+        this.pagamento_vista = true;
+        this.pagamento_financiamento = false;
       }
       if(item.pos_venda_proposta.tipo_pagamento == '0'){
         this.tipo_pagamento = 'Pagamento por financimento'
+        this.pagamento_vista = false;
+        this.pagamento_financiamento = true
       }
       this.obs_desk = item.pos_venda_proposta.obs;
       //Daddos do Veículo
@@ -5556,35 +6436,149 @@ async atualizar_status_pos_venda(value) {
   let status;
 
   if (value === 1) {
-    const valor_pacote = this.formatarDecimal(this.valor_pacote_selecionado);
-    const total_financiado = this.formatarDecimal(this.total_financiamento_selecionado);
-    const valor_parcela = this.formatarDecimal(this.valor_parcela_selecionada);
-
-    console.log("Verificando finalizar", valor_pacote, total_financiado, valor_parcela)
-    if (valor_pacote == 0 || total_financiado == 0 || valor_parcela == 0) {
-      this.abrir_modal = true;
-      this.msg = "O valor da parcela não pode ser R$ 0,00!";
-      setTimeout(() => {
-        this.abrir_modal = false;        
-      }, 4000);
-      return; // Para a execução da função aqui
-    }else{      
+    console.log("Clicou no botão finalizar venda!")
+    if(this.pagamento_vista == true){
+      console.log("Finalizando a venda com método de pagamento Vista")
       status = "Venda Finalizada";
-     
+    }
+    if(this.pagamento_vista == false){
+      console.log("Finalizando a venda com método de pagamento Financimento")
+      const valor_pacote = this.formatarDecimal(this.valor_pacote_selecionado);
+      const total_financiado = this.formatarDecimal(this.total_financiamento_selecionado);
+      const valor_parcela = this.formatarDecimal(this.valor_parcela_selecionada);
+
+      console.log("Verificando finalizar", valor_pacote, total_financiado, valor_parcela)
+      if (valor_pacote == 0 || total_financiado == 0 || valor_parcela == 0) {
+        this.abrir_modal = true;
+        this.msg = "O valor da parcela não pode ser R$ 0,00!";
+        setTimeout(() => {
+          this.abrir_modal = false;        
+        }, 4000);
+        return; // Para a execução da função aqui
+      }else{      
+        status = "Venda Finalizada";     
+      }      
     }
 
-  } else if (value === 2) {
-    if (this.observacao.length < 30) {
-      this.abrir_modal = true;
-      this.msg = "O campo observação precisa conter mais de 30 caracteres de justificativa!";
-      setTimeout(() => {
-        this.abrir_modal = false;        
-      }, 4000);
-      return; // Para a execução da função aqui
-    } else {
-      status = "Venda Perdida";
-    }
+
+
+
+    // if(this.metodo_pagamento === 1){
+    //   console.log("Finalizando a venda com método de pagamento Financimento")
+    //   const valor_pacote = this.formatarDecimal(this.valor_pacote_selecionado);
+    //   const total_financiado = this.formatarDecimal(this.total_financiamento_selecionado);
+    //   const valor_parcela = this.formatarDecimal(this.valor_parcela_selecionada);
+
+    //   console.log("Verificando finalizar", valor_pacote, total_financiado, valor_parcela)
+    //   if (valor_pacote == 0 || total_financiado == 0 || valor_parcela == 0) {
+    //     this.abrir_modal = true;
+    //     this.msg = "O valor da parcela não pode ser R$ 0,00!";
+    //     setTimeout(() => {
+    //       this.abrir_modal = false;        
+    //     }, 4000);
+    //     return; // Para a execução da função aqui
+    //   }else{      
+    //     status = "Venda Finalizada";     
+    //   }      
+    // }else{
+    //   console.log("Metodo de pagamento não financiamento!")
+    //   if(!this.valor_pacote_selecionado){
+    //     console.log("Finalizando a venda com método de pagamento sem Financiamento")
+    //       this.abrir_modal = true;
+    //       this.msg = "O valor do pacote não pode ser R$ 0,00";
+    //       setTimeout(() => (this.abrir_modal = false), 4000);
+    //       this.habilitar_finalizar_venda = true;
+    //       return;
+    //     }
+    //     if(!this.valor_pacote_customizado){
+    //       this.abrir_modal = true;
+    //       this.msg = "O valor do pacote customizado não pode ser R$ 0,00";
+    //       setTimeout(() => (this.abrir_modal = false), 4000);
+    //       this.habilitar_finalizar_venda = true;
+    //       return;
+    //     }
+    //     status = "Venda Finalizada";     
+    // }
+
   }
+  if (value === 2) {
+      if (this.observacao.length < 30) {
+        this.abrir_modal = true;
+        this.msg = "O campo observação precisa conter mais de 30 caracteres de justificativa!";
+        setTimeout(() => {
+          this.abrir_modal = false;        
+        }, 4000);
+        return; // Para a execução da função aqui
+      } else {
+        status = "Venda Perdida";
+      }
+    }  
+
+
+
+  // if(this.metodo_pagamento === 1){
+  //   if (value === 1) {
+  //   const valor_pacote = this.formatarDecimal(this.valor_pacote_selecionado);
+  //   const total_financiado = this.formatarDecimal(this.total_financiamento_selecionado);
+  //   const valor_parcela = this.formatarDecimal(this.valor_parcela_selecionada);
+
+  //   console.log("Verificando finalizar", valor_pacote, total_financiado, valor_parcela)
+  //   if (valor_pacote == 0 || total_financiado == 0 || valor_parcela == 0) {
+  //     this.abrir_modal = true;
+  //     this.msg = "O valor da parcela não pode ser R$ 0,00!";
+  //     setTimeout(() => {
+  //       this.abrir_modal = false;        
+  //     }, 4000);
+  //     return; // Para a execução da função aqui
+  //   }else{      
+  //     status = "Venda Finalizada";
+     
+  //   }
+
+  //   } else if (value === 2) {
+  //     if (this.observacao.length < 30) {
+  //       this.abrir_modal = true;
+  //       this.msg = "O campo observação precisa conter mais de 30 caracteres de justificativa!";
+  //       setTimeout(() => {
+  //         this.abrir_modal = false;        
+  //       }, 4000);
+  //       return; // Para a execução da função aqui
+  //     } else {
+  //       status = "Venda Perdida";
+  //     }
+  //   }  
+  // }else{
+  //   if (value === 1) {
+  //   const valor_pacote = this.formatarDecimal(this.valor_pacote_selecionado);
+  //   const total_financiado = this.formatarDecimal(this.total_financiamento_selecionado);
+  //   const valor_parcela = this.formatarDecimal(this.valor_parcela_selecionada);
+
+  //   console.log("Verificando finalizar", valor_pacote, total_financiado, valor_parcela)
+  //   if (!this.valor_pacote_customizado) {
+  //     this.abrir_modal = true;
+  //     this.msg = "O valor do pacote customizado não pode ser R$ 0,00";
+  //     setTimeout(() => (this.abrir_modal = false), 4000);
+  //     return; // Para a execução da função aqui
+  //   }else{      
+  //     status = "Venda Finalizada";
+     
+  //   }
+
+  //   } else if (value === 2) {
+  //     if (this.observacao.length < 30) {
+  //       this.abrir_modal = true;
+  //       this.msg = "O campo observação precisa conter mais de 30 caracteres de justificativa!";
+  //       setTimeout(() => {
+  //         this.abrir_modal = false;        
+  //       }, 4000);
+  //       return; // Para a execução da função aqui
+  //     } else {
+  //       status = "Venda Perdida";
+  //     }
+  //   }
+  // }
+
+  
 
   try {
     const response = await fetch(
@@ -5931,6 +6925,9 @@ async atualizar_status_pos_venda(value) {
             setTimeout(() => (this.abrir_modal = false), 1000);
             this.retrievekitsAcessoriosItens();
             this.atualizarPacoteCustomizado();
+            this.retrievePagamentosFei();
+            this.pagamento_vista = false;
+            this.pagamento_financiamento = true;
           }
           if (resposta.StatusOk == 204) {
             this.abrir_modal = true;
@@ -5989,6 +6986,9 @@ async atualizar_status_pos_venda(value) {
             setTimeout(() => (this.abrir_modal = false), 1000);
             this.retrievekitsSegurosItens();
             this.atualizarPacoteCustomizado();
+            this.retrievePagamentosFei();
+            this.pagamento_vista = false;
+            this.pagamento_financiamento = true;
           }
           if (resposta.StatusOk == 204) {
             this.abrir_modal = true;
@@ -6047,6 +7047,9 @@ async atualizar_status_pos_venda(value) {
             setTimeout(() => (this.abrir_modal = false), 1000);
             this.retrievekitsRevisoesItens();
             this.atualizarPacoteCustomizado();
+            this.retrievePagamentosFei();
+            this.pagamento_vista = false;
+            this.pagamento_financiamento = true;
           }
           if (resposta.StatusOk == 204) {
             this.abrir_modal = true;
@@ -6075,6 +7078,9 @@ async atualizar_status_pos_venda(value) {
     remover_item_customizado(item) {
       this.id_acessorio_customizado = item.id;
     },
+    remover_item_pagamento(item) {
+      this.id_pagamento_fei = item.id;      
+    },
 
     async atualizarPacoteCustomizado() {
       this.de_customizado =
@@ -6089,6 +7095,9 @@ async atualizar_status_pos_venda(value) {
       // const valor_desk = parseFloat(this.parcela_desk);
       // console.log("Valor parcela antiga customizado", valor_desk)
       // this.apenas_customizado = (this.novo_valor_parcela_customizado - valor_desk) / 30;
+    },
+    async gerar_menu_avista(){
+
     },
     async atualizarPacote() {
       window.location.reload()
@@ -6125,12 +7134,117 @@ async atualizar_status_pos_venda(value) {
               this.retrievekitsAcessoriosItens();
               this.atualizarPacoteCustomizado();
               this.verificar_ranqueamento_customizado();
+              this.retrievePagamentosFei();
               this.precoDesconto = 0;
+              this.pagamento_vista = false;
+              this.pagamento_financiamento = true;
             }
             if (resposta.StatusOk === 204) {
               this.abrir_modal = true;
               this.msg = resposta.message;
               setTimeout(() => (this.abrir_modal = false), 4000);
+            }
+          });
+      } catch (error) {
+        console.error("Verificando log", error.message);
+
+        if (error.response && error.response.status === 500) {
+          this.abrir_modal = true;
+          this.msg = "Erro interno do servidor";
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        } else {
+          // Tratar outros erros
+          this.abrir_modal = true;
+          (this.msg = "Erro:"), error.message;
+          (this.msg = "Status:"), error.response.status;
+          (this.msg = "Dados:"), error.response.data;
+          (this.msg = "Cabeçalhos:"), error.response.headers;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
+    },
+    async confirmarAlteracaoPagamento(value) {
+      const id = this.id_pagamento_fei;
+      var status
+        if(value == 1){
+          status = 1
+          if(!this.edit_valor_pagamento){
+          console.log("Valor não pode ser vazio", value)
+          this.abrir_modal = true;
+          this.msg = "Valor não pode ser vazio";
+          setTimeout(() => (this.abrir_modal = false), 1000);
+          return;
+        }
+        if(this.edit_valor_pagamento){
+        const valor_pacote = this.formatarDecimal(this.valor_pacote_vista)    
+        const valor_pagamento = this.formatarDecimal(this.edit_valor_pagamento);    
+        console.log("Valor",valor_pacote)
+        try {
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_URL}checar_valor`,
+          {
+            params: {
+              pos_venda_detalhada_id: this.id_pos_venda_detalhada,
+            },
+          }
+        );
+
+        const somatorio_parcelas = response.data.data;
+        const total_pagamento = valor_pagamento + somatorio_parcelas;
+
+        if(valor_pacote < total_pagamento){
+          this.abrir_modal = true;
+          this.msg = "Valor do pagamento ultrapassa o valor do pacote";
+          setTimeout(() => (this.abrir_modal = false), 3000);
+          return;
+        }
+  
+        
+      } catch (error) {
+        console.log(error);
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
+      }
+      }
+      if(value == 2){
+        status = 2
+      }
+      
+    
+    
+      try {
+        await fetch(`${process.env.VUE_APP_API_URL}pagamento_fei/${id}`, {
+          method: "PUT",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: id,
+            tipo_pagamento_id: this.edit_tipo_pagamento,
+            //valor_pacote: this.edit_valor_pacote,
+            valor_parcela: this.edit_valor_pagamento,
+            qtd_parcela: this.edit_qtd_parcela,
+            status: status
+          }),
+        })
+          .then((data) => {
+            if (!data.ok) {
+              throw Error(data.status);
+            }
+            return data.json();
+          })
+          .then((resposta) => {
+            console.log("Resposta da atualização", resposta);
+            if (resposta.StatusOk === 200) {
+              this.abrir_modal = true;
+              this.msg = resposta.message;
+              setTimeout(() => (this.abrir_modal = false), 3000);
+              this.retrievePagamentosFei();
             }
           });
       } catch (error) {
@@ -6181,6 +7295,9 @@ async atualizar_status_pos_venda(value) {
               setTimeout(() => (this.abrir_modal = false), 1000);
               this.retrievekitsAcessoriosItens();
               this.atualizarPacoteCustomizado();
+              this.retrievePagamentosFei();
+              this.pagamento_vista = false;
+              this.pagamento_financiamento = true;
             }
           });
       } catch (error) {
@@ -6230,6 +7347,9 @@ async atualizar_status_pos_venda(value) {
               setTimeout(() => (this.abrir_modal = false), 1000);
               this.retrievekitsSegurosItens();
               this.atualizarPacoteCustomizado();
+              this.retrievePagamentosFei();
+              this.pagamento_vista = false;
+              this.pagamento_financiamento = true;
             }
           });
       } catch (error) {
@@ -6278,6 +7398,10 @@ async atualizar_status_pos_venda(value) {
               setTimeout(() => (this.abrir_modal = false), 1000);
               this.retrievekitsRevisoesItens();
               this.atualizarPacoteCustomizado();
+              this.retrievePagamentosFei();
+              this.pagamento_vista = false;
+              this.pagamento_financiamento = true;
+              
             }
           });
       } catch (error) {
@@ -6494,11 +7618,6 @@ async atualizar_status_pos_venda(value) {
     },
 
 
-
-    tamiris(){
-      console.log("Descrevendo uma função !!!!!!!!!!!!!!!!!")
-    },
-
     exibirModalConfirmacao(item) {
       // Exibir o modal
       console.log("Exibir o modal", item);
@@ -6506,6 +7625,16 @@ async atualizar_status_pos_venda(value) {
       // Salvar o item atual para confirmar a alteração posteriormente
       this.id_acessorio = item.id;
       this.status_acessorio = 1;
+    },
+    exibirModalPagamento(item) {
+      // Exibir o modal
+      console.log("Exibir o modal", item);
+
+      // Salvar o item atual para confirmar a alteração posteriormente
+      this.id_pagamento_fei = item.id;
+      this.edit_qtd_parcela = this.qtd_parcela_vista,
+      this.edit_tipo_pagamento = this.met_pagamento_vista
+   
     },
 
     //funções de formatação
@@ -6564,6 +7693,35 @@ async atualizar_status_pos_venda(value) {
    
       setTimeout(() => {
         html2pdf().from(this.$refs.contentToPrint).set(options).save();
+      }, 500);
+      //html2pdf().from(this.$refs.contentToPrint).set(options).save();
+    },
+    generatePdfPagamento() {
+      // console.log("Imprimir ----------------------------------------------------------------------------------------------------------------- 0001")
+      const options3 = {
+        margin: [5, 5],
+        filename: "menu_pos_venda_pagamento_vista.pdf",
+        image: { type: "pdf", quality: 2 },
+        html2canvas: { scale: 2 },
+        jsPDF: { format: "a4", orientation: "landscape" },
+        pagebreak: { mode: "avoid-all" },
+        enableLinks: true,
+      };
+      // Modificar o tamanho da fonte para impressão
+      document.querySelectorAll(".rf_texto_pdf").forEach((element) => {
+        element.style.fontSize = "9px"; // Tamanho de fonte para impressão
+      });
+      document.querySelectorAll(".rf_titulo_pdf").forEach((element) => {
+        element.style.fontSize = "12px"; // Tamanho de fonte para impressão
+      });
+      document.querySelectorAll(".rf_titulo_destaque_pdf").forEach((element) => {
+        element.style.fontSize = "14px"; // Tamanho de fonte para impressão
+      });
+
+
+   
+      setTimeout(() => {
+        html2pdf().from(this.$refs.contentToPrint3).set(options3).save();
       }, 500);
       //html2pdf().from(this.$refs.contentToPrint).set(options).save();
     },

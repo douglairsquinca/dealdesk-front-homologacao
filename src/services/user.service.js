@@ -312,6 +312,24 @@ class UserService {
     return api.get(`/midia?title=${title}`);
   }
 
+  //// Tipo Pagamento
+  getTipoPagamento(params) {
+    return api.get('/tipo_pagamento', {
+      params
+    });
+  }
+  getTipoPagamentoId(id) {
+    return api.get(`/tipo_pagamento/${id}`);
+  }
+  putTipoPagamentoId(id) {
+    return api.put(`/tipo_pagamento/${id}`);
+  }
+  findByTipoPagamento(title) {
+    return api.get(`/tipo_pagamento?title=${title}`);
+  }
+
+
+
   //// Propostas
   getProposta(params) {
     return api.get('/proposta', {

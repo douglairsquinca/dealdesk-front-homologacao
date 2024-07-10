@@ -23,6 +23,7 @@ import Midia from "./views/admin/Midia.vue";
 import ModeloVeiculo from "./views/admin/ModeloVeiculo.vue";
 import Usuario from "./views/admin/Usuario.vue";
 import Estoque from "./views/admin/estoque_veiculos.vue";
+import TipoPagamento  from "./views/admin/TipoPagamento.vue";
 
 //Rotas Atendimento
 //import Atendimento from "./views/atendimento/Dashboard.vue";
@@ -344,6 +345,12 @@ const routes = [
     path:"/admin/situacao_veiculo",
     name:"situacao_veiculo",
     component: SituacaoVeiculo,
+    beforeEach: [adminAuth],
+  },
+  {
+    path:"/admin/tipo_pagamento",
+    name:"tipo_pagamento",
+    component: TipoPagamento,
     beforeEach: [adminAuth],
   },
   // {
