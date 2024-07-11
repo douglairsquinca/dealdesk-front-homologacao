@@ -5105,10 +5105,13 @@ export default {
       if(this.pagamento_financiamento == false){
         console.log("Pagamento a vista selecionado")
         this.pagamento_vista = false;
+ 
       }
       if(this.pagamento_financiamento == true){
         console.log("Pagamento a vista selecionado")
         this.pagamento_vista = true;
+        this.retrieveTipoPagamento();
+        this.retrievePagamentosFei();
       }
       
     },
