@@ -271,85 +271,133 @@
             >
           </div>
         </div>
-        <div class="row g-2 p-2">
-          <div class="col">
-            <div class="form-floating">
-              <input
-                type="text"
-                disabled
-                class="form-control rf_bg_form rf_texto"
-                v-model="valor_entrada_selecionada"
-              />
-              <label class="rf_texto">Entrada Simulada</label>
+        <div v-if="this.checar_tipo_pagamento != 2">
+          <div class="row g-2 p-2">
+            <div class="col">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  disabled
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="valor_entrada_selecionada"
+                />
+                <label class="rf_texto">Entrada Simulada</label>
+              </div>
             </div>
+            <div class="col">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  disabled
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="valor_financiar"
+                />
+                <label class="rf_texto">Valor Proposta</label>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  disabled
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="valor_pacote_selecionado"
+                />
+                <label class="rf_texto">Valor Pacote</label>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  disabled
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="total_financiamento_selecionado"
+                />
+                <label class="rf_texto">Total Financiamento</label>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  disabled
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="valor_parcela_selecionada"
+                />
+                <label class="rf_texto">Valor Parcela</label>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  disabled
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="qtd_parcela"
+                />
+                <label class="rf_texto">Qtd. Parcela</label>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  disabled
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="tipo_pagamento"
+                />
+                <label class="rf_texto">Pagamento</label>
+              </div>
+            </div>   
+          </div> 
+        </div>    
+        <div v-if="this.checar_tipo_pagamento == 2">
+          <div class="row g-2 p-2">
+              <div class="col-2">
+                <div class="form-floating">
+                  <input
+                    type="text"                 
+                    class="form-control rf_bg_form rf_texto"
+                    disabled
+                    v-model="valor_pacote_vista"              
+                  />
+                  <label class="rf_texto">Valor do Pacote</label>
+                </div>
+              </div>           
           </div>
-          <div class="col">
-            <div class="form-floating">
-              <input
-                type="text"
-                disabled
-                class="form-control rf_bg_form rf_texto"
-                v-model="valor_financiar"
-              />
-              <label class="rf_texto">Valor Proposta</label>
-            </div>
-          </div>
-          <div class="col">
-            <div class="form-floating">
-              <input
-                type="text"
-                disabled
-                class="form-control rf_bg_form rf_texto"
-                v-model="valor_pacote_selecionado"
-              />
-              <label class="rf_texto">Valor Pacote</label>
-            </div>
-          </div>
-          <div class="col">
-            <div class="form-floating">
-              <input
-                type="text"
-                disabled
-                class="form-control rf_bg_form rf_texto"
-                v-model="total_financiamento_selecionado"
-              />
-              <label class="rf_texto">Total Financiamento</label>
-            </div>
-          </div>
-          <div class="col">
-            <div class="form-floating">
-              <input
-                type="text"
-                disabled
-                class="form-control rf_bg_form rf_texto"
-                v-model="valor_parcela_selecionada"
-              />
-              <label class="rf_texto">Valor Parcela</label>
-            </div>
-          </div>
-          <div class="col">
-            <div class="form-floating">
-              <input
-                type="text"
-                disabled
-                class="form-control rf_bg_form rf_texto"
-                v-model="qtd_parcela"
-              />
-              <label class="rf_texto">Qtd. Parcela</label>
-            </div>
-          </div>
-          <div class="col">
-            <div class="form-floating">
-              <input
-                type="text"
-                disabled
-                class="form-control rf_bg_form rf_texto"
-                v-model="tipo_pagamento"
-              />
-              <label class="rf_texto">Pagamento</label>
-            </div>
-          </div>   
-        </div>        
+          <div class="g-2 p-2">
+              <div class="card-title gy-4">
+                <i class="bi bi-tools fs-5 icone_kit"
+                  ><span class="texto_kit">Composição do Pagamento</span></i
+                >
+              </div>
+              <table class="table rf_texto">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 15%">Valor Informado</th>
+                    <th scope="col" style="width: 15%">Pagamento</th>
+                    <th scope="col" style="width: 10%">Qtd.</th> 
+                         
+                   
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="item in itens_pagamentos"
+                    :key="item.id"
+                    class="table-linha"
+                  >
+                    <td>{{ this.currency(item.valor_parcela) }}</td>
+                    <td>{{ item.tipo_pagamento_fei.descricao }}</td>
+                    <td>{{ item.qtd_parcela }}</td>           
+
+              
+                  </tr>
+                </tbody>
+              </table>
+            </div>   
+        </div>     
       </div>
     </div>
      <!--Informações do Pacote Selecionado-->
@@ -454,7 +502,8 @@
                 </div>
               </div>   
             <div class="col-2">
-              <button
+              <div v-if="this.checar_tipo_pagamento !=2">
+                <button
                 type="button"
                 style="height: 150px"
                 class="btn btn-lg btn-filtro"
@@ -462,7 +511,20 @@
                 data-bs-target="#ModalGerarMenuCustomizado"
               >
                Reimprimir Menu
-              </button>        
+              </button>     
+              </div>
+              <div v-if="this.checar_tipo_pagamento == 2">
+                <button
+                type="button"
+                style="height: 150px"
+                class="btn btn-lg btn-filtro"
+                data-bs-toggle="modal"
+                data-bs-target="#ModalGerarMenuPacotes"
+              >
+               Reimprimir Menu 
+              </button>     
+              </div>
+                 
             </div>     
       </div>
     </div>
@@ -857,6 +919,309 @@
       </div>
    
     </div>
+         <!--Modal Gerar Menu Pacote Customizado-->
+    <div
+      class="modal fade"
+      id="ModalGerarMenuPacotes"
+      aria-hidden="true"
+      aria-labelledby="exampleModalToggleLabel2"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-fullscreen rf_modal font-pdf-menu">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mt-3 rf_texto_pdf" ref="contentToPrint4">
+              <div class="row">
+                <div class="col-6">
+                  <a class="navbar-brand logo">
+                    <img
+                      src="../../assets/logo.png"
+                      alt="Bootstrap"
+                      width="100"
+                      height="30"
+                    />
+                  </a>
+                </div>
+                <div class="col-6" style="text-align: right">
+                  <a class="navbar-brand logo_cliente">
+                    <img
+                      src="../../assets/logo.png"
+                      alt="Bootstrap"
+                      height="30"
+                    />
+                  </a>
+                </div>
+              </div>
+              <!--Dados do Veículo-->
+              <div class="card card-vendas">
+                <div class="row g-2 p-2">
+                  <div class="col-12">
+                    <i class="bi bi-car-front fs-5 icone_filtro_menu "
+                      ><span class="texto_filtro_menu"
+                        ><strong class="rf_titulo_pdf">Dados do Veículo</strong></span
+                      ></i
+                    >
+                  </div>
+                  <div class="col-2">
+                    <div class="row rf_bg_form_menu ">
+                      <label class="rf_texto_menu_titulo rf_texto_pdf">Marca</label>
+                      <span class="rf_texto_menu rf_texto_pdf">{{ marca }}</span>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="row rf_bg_form_menu">
+                      <label class="rf_texto_menu_titulo rf_texto_pdf">Modelo</label>
+                      <span class="rf_texto_menu rf_texto_pdf">{{ modelo }}</span>
+                    </div>
+                  </div>
+                  <div class="col-1">
+                    <div class="row rf_bg_form_menu">
+                      <label class="rf_texto_menu_titulo rf_texto_pdf">Cor</label>
+                      <span class="rf_texto_menu rf_texto_pdf">{{ cor }}</span>
+                    </div>
+                  </div>
+                  <div class="col-1">
+                    <div class="row rf_bg_form_menu">
+                      <label class="rf_texto_menu_titulo rf_texto_pdf">Placa</label>
+                      <span class="rf_texto_menu rf_texto_pdf">{{ placa }}</span>
+                    </div>
+                  </div>
+                  <div class="col-1">
+                    <div class="row rf_bg_form_menu">
+                      <label class="rf_texto_menu_titulo rf_texto_pdf">Chassi</label>
+                      <span class="rf_texto_menu rf_texto_pdf">{{ chassi }}</span>
+                    </div>
+                  </div>
+                  <div class="col-1">
+                    <div class="row rf_bg_form_menu">
+                      <label class="rf_texto_menu_titulo rf_texto_pdf">Ano Fab.</label>
+                      <span class="rf_texto_menu rf_texto_pdf">{{ ano_fabricacao }}</span>
+                    </div>
+                  </div>
+                  <div class="col-1">
+                    <div class="row rf_bg_form_menu">
+                      <label class="rf_texto_menu_titulo rf_texto_pdf">Ano Mod.</label>
+                      <span class="rf_texto_menu rf_texto_pdf">{{ ano_modelo }}</span>
+                    </div>
+                  </div>
+                </div>
+                <!--Dados do Financiamento-->
+  
+                <div class="row g-2 p-2">                  
+                  <div class="col-12">
+                    <i class="bi bi-journal-text fs-5 icone_filtro_menu"
+                      ><span class="texto_filtro_menu"
+                        ><strong class="rf_titulo_pdf">Dados do Atendimento</strong></span
+                      ></i
+                    >
+                  </div>           
+                  <div class="col-1">
+                    <div class="row rf_bg_form_menu">
+                      <label class="rf_texto_menu_titulo rf_texto_pdf">Nº Atend.</label>
+                      <span class="rf_texto_menu rf_texto_pdf">{{ n_atendimento }}</span>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="row rf_bg_form_menu">
+                      <label class="rf_texto_menu_titulo rf_texto_pdf">Vendedor</label>
+                      <span class="rf_texto_menu rf_texto_pdf">{{ vendedor }}</span>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="row rf_bg_form_menu">
+                      <label class="rf_texto_menu_titulo rf_texto_pdf">Cliente</label>
+                      <span class="rf_texto_menu rf_texto_pdf">{{ cliente }}</span>
+                    </div>
+                  </div>
+                </div>
+                <!--Dados do Atendimento-->
+  
+                <div class="row g-2 p-2">
+                  <div class="col-7">
+                    <i class="bi bi-cash fs-5 icone_filtro_menu">
+                      <span class="texto_filtro_menu rf_texto_pdf "
+                        ><strong class="rf_titulo_pdf">Forma de Pagamento - </strong
+                        >Customizada</span
+                      >
+  
+                      <span class="texto_filtro_menu rf_texto_pdf"
+                        ><strong class="rf_titulo_pdf">Data - </strong
+                        >{{ new Date().toLocaleDateString("pt-BR") }}
+                        {{
+                          new Date().toLocaleTimeString("pt-BR", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })
+                        }}</span
+                      >
+                    </i>
+                  </div>
+                </div>
+              </div>
+  
+              <!--Quadro Customizado-->
+              <div class="card card-customizado">
+                <i class="bi bi-gem card-texto-vendas-customizado rf_titulo_destaque_pdf "> Pacote Selecionado</i>
+  
+                <div class="row">
+                  <!--Acessórios-->
+                  <div class="col divisoria_customizado_acessorio">
+                    <div class="barra_fei_menu_customizado">
+                      <span class="texto_centralizado rf_titulo_destaque_pdf"
+                        ><strong>Acessórios</strong></span
+                      >
+                    </div>
+                    <div class="col">
+                      <ul
+                        class="nav nav-item"
+                        style="display: block; clear: both"
+                      >
+                        <li
+                          class="nav-item"
+                          v-for="item in itens_kit_acessorios"
+                          :key="item.id"
+                        >
+                          <strong
+                            ><i class="bi bi-check2-circle p-2">
+                              <span class="sp_icon rf_texto_pdf">{{ item.descricao }}</span></i
+                            ></strong
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!--Revisão-->
+                  <div class="col divisoria_customizado_revisao">
+                    <div class="col barra_fei_menu_customizado">
+                      <span class="texto_centralizado rf_titulo_destaque_pdf"
+                        ><strong>Revisão pré-paga</strong></span
+                      >
+                    </div>
+                    <div class="col divisoria_customizado">
+                      <ul
+                        class="nav nav-item"
+                        style="display: block; clear: both"
+                      >
+                        <li
+                          class="nav-item"
+                          v-for="item in itens_kit_revisoes"
+                          :key="item.id"
+                        >
+                          <strong
+                            ><i class="bi bi-check2-circle p-2">
+                              <span class="sp_icon rf_texto_pdf">{{ item.descricao }}</span></i
+                            ></strong
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!--Seguros-->
+                  <div class="col divisoria_customizado_seguros">
+                    <div class="col barra_fei_menu_customizado">
+                      <span class="texto_centralizado rf_titulo_destaque_pdf"
+                        ><strong>Seguros</strong></span
+                      >
+                    </div>
+                    <div class="col">
+                      <ul
+                        class="nav nav-item"
+                        style="display: block; clear: both"
+                      >
+                        <li
+                          class="nav-item"
+                          v-for="item in itens_kit_seguros"
+                          :key="item.id"
+                        >
+                          <strong
+                            ><i class="bi bi-check2-circle p-2">
+                              <span class="sp_icon rf_texto_pdf">{{ item.descricao }}</span></i
+                            >
+                          </strong>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!--Informações-->
+                  <div class="col divisoria_customizado_info">
+                  <div class="col barra_fei_menu_customizado">
+                    <span class="texto_centralizado rf_titulo_destaque_pdf"
+                      ><strong>Formas de Pagamento</strong></span
+                    >
+                  </div>
+                  <div class="col">
+                    <table class="table rf_texto_pdf">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 15%">Valor Informado</th>
+                    <th scope="col" style="width: 15%">Pagamento</th>
+                    <th scope="col" style="width: 10%">Qtd.</th> 
+                         
+                   
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="item in itens_pagamentos"
+                    :key="item.id"
+                    class="table-linha"
+                  >
+                    <td>{{ this.currency(item.valor_parcela) }}</td>
+                    <td>{{ item.tipo_pagamento_fei.descricao }}</td>
+                    <td>{{ item.qtd_parcela }}</td>           
+
+                 
+                  </tr>
+                </tbody>
+              </table>
+                  </div>
+                </div>
+                </div>
+              </div>
+  
+  
+  
+              <div class="row g-2 p-2 mt-4">
+                <br>
+                <div class="col rf_assinatura">
+                  <span>Gerente: {{ vendedor }}</span>
+                </div>
+                <div class="col rf_assinatura">
+                  <span>Cliente: {{ cliente }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="col-1">
+              <button
+                type="button"
+                class="btn btn-lg btn-filtro"
+                data-bs-target="#ModaProposta"
+                data-bs-toggle="modal"
+              >
+                Fechar
+              </button>
+            </div>
+            <div class="col-1">
+              <button class="btn btn-lg btn-filtro" @click="generatePdfPacotesAvista">
+                IMPRIMIR
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+   
+    </div>
+  
   
   
     <!--Mensagens do Sistema-->
@@ -1175,6 +1540,7 @@
         habilitar_ranquear_pacotes: true,
         valor_entrada_selecionada:"",
         valor_entrada_selecionada_customizado:"",
+        checar_tipo_pagamento:"",
 
 
 
@@ -1185,9 +1551,86 @@
       this.habilitar();
       this.retrievePropostas();
       this.habilitar_fi();
+     
+      
       
     },
     methods: {
+      async retrieveTipoPagamento() {
+      try {
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_URL}tipo_pagamentos`,
+          {
+            params: {
+              status: 1
+            },
+          }
+        );
+
+        
+        // Faça algo com os dados aqui, como atribuir a uma variável de componente
+        this.metodo_pagamento_vista = response.data; // exemplo de atribuição
+        console.log("Lista de pagamentos", this.metodo_pagamento_vista);
+      } catch (error) {
+        console.log(error);
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
+    },
+    async retrievePagamentosFei() {
+      const pos_venda_detalhada_id =  this.id_pos_venda_detalhada;
+      try {        
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_URL}pagamento_fei`,
+          {
+            params: {
+              pos_venda_detalhada_id: pos_venda_detalhada_id,
+              status: 1,
+              page: this.page - 1,
+              size: this.pageSize,
+            },
+          }
+        );
+
+        console.log("Lista de pagamentos feisssssssssssssssssssssssssssssssssss", response);
+        this.itens_pagamentos = response.data.pagamento_fei;
+        this.checar_valor();
+      } catch (error) {
+        console.log(error);
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
+    },
+    async buscar_valor_pacote(){
+      const posVendaId = this.$route.params.id;
+        try {
+          const response = await axios.get(
+            `${process.env.VUE_APP_API_URL}buscar_valor_pacote/${posVendaId}`,
+            {
+              params: {
+                id: posVendaId,
+                empresa_id: this.company_id,
+              },
+            }
+          );
+  
+          console.log("Listassssssssssssssssssssssssss de propostas", response.data.menu_pos_venda_detalhada[0].valor_pacote);
+          this.valor_pacote_vista = this.currency(response.data.menu_pos_venda_detalhada[0].valor_pacote);
+        } catch (error) {
+          console.log(error);
+          if (error.response.status == 400) {
+            this.abrir_modal = true;
+            this.msg = error.response.data.message;
+            setTimeout(() => (this.abrir_modal = false), 1000);
+          }
+        }
+    },
       getToken() {
         const accessToken = TokenService.getLocalAccessToken();
         TokenService.getLocalRefreshToken();
@@ -1230,7 +1673,9 @@
           console.log("Lista de propostas", response.data);
           // Faça algo com os dados aqui, como atribuir a uma variável de componente
           this.vendas = response.data; // exemplo de atribuição
+          this.checar_tipo_pagamento = response.data.menu_pos_venda_detalhada[0].tipo_pagamento_pacote; //
           this.popular_formulario(this.vendas);
+          console.log("Tipo pagamento", this.checar_tipo_pagamento);
           //this.habilitar_fi(posVendaId);
         } catch (error) {
           console.log(error);
@@ -1295,6 +1740,9 @@
             this.id_pos_venda_detalhada = pos_venda.data.rows[0].id;
             console.log("ID Detalhado",  this.id_pos_venda_detalhada)
             this.buscar_parcelas_ranqueamento(pos_venda.data.rows[0].id);
+            this.retrieveTipoPagamento();
+            this.retrievePagamentosFei();
+            this.buscar_valor_pacote();
           }
           //this.buscar_parcelas_ranqueamento(this.id_pos_venda_detalhada);
         } catch (error) {
@@ -1454,7 +1902,35 @@
 
 
       },
+      generatePdfPacotesAvista() {
+      // console.log("Imprimir ----------------------------------------------------------------------------------------------------------------- 0001")
+      const options4 = {
+        margin: [5, 5],
+        filename: "menu_pos_venda_pagamento_vista.pdf",
+        image: { type: "pdf", quality: 2 },
+        html2canvas: { scale: 2 },
+        jsPDF: { format: "a4", orientation: "landscape" },
+        pagebreak: { mode: "avoid-all" },
+        enableLinks: true,
+      };
+      // Modificar o tamanho da fonte para impressão
+      document.querySelectorAll(".rf_texto_pdf").forEach((element) => {
+        element.style.fontSize = "9px"; // Tamanho de fonte para impressão
+      });
+      document.querySelectorAll(".rf_titulo_pdf").forEach((element) => {
+        element.style.fontSize = "12px"; // Tamanho de fonte para impressão
+      });
+      document.querySelectorAll(".rf_titulo_destaque_pdf").forEach((element) => {
+        element.style.fontSize = "14px"; // Tamanho de fonte para impressão
+      });
 
+
+   
+      setTimeout(() => {
+        html2pdf().from(this.$refs.contentToPrint4).set(options4).save();
+      }, 500);
+      //html2pdf().from(this.$refs.contentToPrint).set(options).save();
+    },
       validar_ranqueamento_customizado(){
         const entrada_customizado = this.valor_entrada_customizado;
         const valor_pacote = this.valor_pacote_customizado;
