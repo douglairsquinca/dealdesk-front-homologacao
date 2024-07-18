@@ -3514,6 +3514,7 @@ export default {
       valid: false,
 
       searchProposta: "",
+      check_midia:"",
 
       tipo: "",
 
