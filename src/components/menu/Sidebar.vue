@@ -82,10 +82,10 @@
                 </a></li>
               <li class="nav-item"><a @click="setActive('gerenciamentos')" href="/desk/reabrirProposta"
                   class="nav-link p-2"> Reabrir Atendimentos </a></li>
-              <li class="nav-item"><a @click="setActive('gerenciamentos')" href="/desk/relatorio" class="nav-link p-2">
+              <!-- <li class="nav-item"><a @click="setActive('gerenciamentos')" href="/desk/relatorio" class="nav-link p-2">
                   Relatórios </a></li>
               <li class="nav-item"><a @click="setActive('gerenciamentos')" href="/desk/situacaoGeral"
-                  class="nav-link p-2"> Situação Geral </a></li>
+                  class="nav-link p-2"> Situação Geral </a></li> -->
               <li class="nav-item"><a @click="setActive('gerenciamentos')" href="/desk/vendidosEstoque"
                   class="nav-link p-2"> Aguardando Faturamento </a></li>
             </ul>
@@ -107,6 +107,36 @@
               <li class="nav-item"><a @click="setActive('f&i')" href="/f&i/reabrir_atendimento" class="nav-link p-2"> Reabrir Atendimento </a></li>
             </ul>
           </li>
+          <li id="rf_relatorios" class="nav-item dropdown">
+            <button @click="setActive('relatorios')"
+                    :class="{ 'btn': true, 'btn-menu': true, 'btn-active': active === 'relatorios' }"
+                    class="dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="true">
+              Relatórios Desk
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark">        
+              <li class="nav-item"><a @click="setActive('gerenciamentos')" href="/desk/relatorio" class="nav-link p-2">
+                 Fluxo de Lojas </a></li>
+              <li class="nav-item"><a @click="setActive('gerenciamentos')" href="/desk/situacaoGeral"
+                  class="nav-link p-2"> Situação Geral </a></li>
+            </ul>
+          </li>
+          <!-- <li id="rf_relatorios_fei" class="nav-item dropdown">
+            <button @click="setActive('relatorios_fei')"
+                    :class="{ 'btn': true, 'btn-menu': true, 'btn-active': active === 'relatorios_fei' }"
+                    class="dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="true">
+              Relatórios F&I
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark">        
+              <li class="nav-item"><a @click="setActive('relatorios_fei')" href="/f&i/fluxo_lojas" class="nav-link p-2">
+                 Fluxo de Lojas </a></li>
+              
+            </ul>
+          </li> -->
+
         </ul>
       </div>
 

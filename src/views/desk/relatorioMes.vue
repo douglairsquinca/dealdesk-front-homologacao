@@ -12,7 +12,7 @@
           <div class="form-floating">
             <select class="form-select rf_bg_form rf_texto_desk" v-model="selectedRelatorio"
               @change="selecionarRelatorios()">
-              <option value="atendimentos">Atendimentos</option>
+              <option value="atendimentos">Fluxo de Lojas</option>
               <option value="venda_conversao">Conversão de Vendas</option>
               <option value="venda_perdida">Vendas Perdidas</option>
               <option value="venda_modelo">Vendas por Modelo</option>
@@ -64,8 +64,6 @@
 
   <!--Tabelas-->
   <div class="card card-tabela g-2 p-2 ">
-
-
     <div class="row g-2 p-2">
       <div class="col-12">
         <div class="card-title rf_texto gy-4">
@@ -85,7 +83,7 @@
         </div>
       </div>
 
-      <div class="col-2">
+      <div class="col-2" v-if="selectedRelatorio !== 'atendimentos'" >
         <div class="card-title rf_texto gy-4">
           <i class="bi bi-car-front fs-5 icone_filtro"><span class="texto_filtro">Veículos</span></i>
         </div>
@@ -125,10 +123,34 @@
           @click="exportToXLSX">          
           <i class="bi bi-filetype-xlsx dropdown-toggle-icon-desk"></i>         
         </button>
+        <button class="btn btn-lg btn-filtro" v-if="selectedRelatorio === 'atendimentos'"
+          @click="exportToXLSX_fluxo">          
+          <i class="bi bi-filetype-xlsx dropdown-toggle-icon-desk"></i>         
+        </button>
+        <button class="btn btn-lg btn-filtro" v-if="selectedRelatorio === 'venda_perdida'"
+          @click="exportToXLSX_perdida">          
+          <i class="bi bi-filetype-xlsx dropdown-toggle-icon-desk"></i>         
+        </button>
+        <button class="btn btn-lg btn-filtro" v-if="selectedRelatorio === 'venda_modelo'"
+          @click="exportToXLSX_modelo">          
+          <i class="bi bi-filetype-xlsx dropdown-toggle-icon-desk"></i>         
+        </button>
       </div>
       <div class="col-1 col-md-2">
         <button class="btn btn-lg btn-filtro" v-if="selectedRelatorio === 'venda_conversao'"
           data-bs-toggle="modal" data-bs-target="#ModalConversao">     
+          <i class="bi bi-filetype-pdf dropdown-toggle-icon-desk"></i>  
+        </button>
+        <button class="btn btn-lg btn-filtro" v-if="selectedRelatorio === 'atendimentos'"
+          data-bs-toggle="modal" data-bs-target="#ModalFluxoLoja">     
+          <i class="bi bi-filetype-pdf dropdown-toggle-icon-desk"></i>  
+        </button>
+        <button class="btn btn-lg btn-filtro" v-if="selectedRelatorio === 'venda_perdida'"
+          data-bs-toggle="modal" data-bs-target="#ModalVendaPerdida">     
+          <i class="bi bi-filetype-pdf dropdown-toggle-icon-desk"></i>  
+        </button>
+        <button class="btn btn-lg btn-filtro" v-if="selectedRelatorio === 'venda_modelo'"
+          data-bs-toggle="modal" data-bs-target="#ModalVendaModelo">     
           <i class="bi bi-filetype-pdf dropdown-toggle-icon-desk"></i>  
         </button>
       </div>
@@ -204,7 +226,7 @@
     </table>
 
 
-    <table class="table border-dark rf_texto mt-2" v-if="selectedRelatorio === 'venda_perdida'" id="VendaPerdida">
+    <table id="VendaPerdida" class="table rf_texto mt-2" v-if="selectedRelatorio === 'venda_perdida'" >
 
       <thead>
         <tr>
@@ -280,33 +302,6 @@
     <table id="tabela_venda_modelo" class="table border-dark rf_texto mt-2" v-if="selectedRelatorio === 'venda_modelo'">
       <thead>
         <tr>
-          <th scope="col" class="rf_header_table">
-            <button class="btn btn-secondary mt-2 rf_btn" v-if="selectedRelatorio === 'venda_modelo'"
-              @click="exportToXLSX_modedlo">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                class="bi bi-filetype-xlsx" viewBox="0 0 16 16">
-                <path fill-rule="evenodd"
-                  d="M14 4.5V11h-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM7.86 14.841a1.13 1.13 0 0 0 .401.823c.13.108.29.192.479.252.19.061.411.091.665.091.338 0 .624-.053.858-.158.237-.105.416-.252.54-.44a1.17 1.17 0 0 0 .187-.656c0-.224-.045-.41-.135-.56a1.002 1.002 0 0 0-.375-.357 2.028 2.028 0 0 0-.565-.21l-.621-.144a.97.97 0 0 1-.405-.176.37.37 0 0 1-.143-.299c0-.156.061-.284.184-.384.125-.101.296-.152.513-.152.143 0 .266.023.37.068a.624.624 0 0 1 .245.181.56.56 0 0 1 .12.258h.75a1.093 1.093 0 0 0-.199-.566 1.21 1.21 0 0 0-.5-.41 1.813 1.813 0 0 0-.78-.152c-.293 0-.552.05-.777.15-.224.099-.4.24-.527.421-.127.182-.19.395-.19.639 0 .201.04.376.123.524.082.149.199.27.351.367.153.095.332.167.54.213l.618.144c.207.049.36.113.462.193a.387.387 0 0 1 .153.326.512.512 0 0 1-.085.29.558.558 0 0 1-.255.193c-.111.047-.25.07-.413.07-.117 0-.224-.013-.32-.04a.837.837 0 0 1-.249-.115.578.578 0 0 1-.255-.384h-.764Zm-3.726-2.909h.893l-1.274 2.007 1.254 1.992h-.908l-.85-1.415h-.035l-.853 1.415H1.5l1.24-2.016-1.228-1.983h.931l.832 1.438h.036l.823-1.438Zm1.923 3.325h1.697v.674H5.266v-3.999h.791v3.325Zm7.636-3.325h.893l-1.274 2.007 1.254 1.992h-.908l-.85-1.415h-.035l-.853 1.415h-.861l1.24-2.016-1.228-1.983h.931l.832 1.438h.036l.823-1.438Z" />
-              </svg>
-              XLSX
-            </button>
-            <button class="btn btn-secondary mt-2 rf_btn" v-if="selectedRelatorio === 'venda_modelo'"
-              data-bs-toggle="modal" data-bs-target="#ModalVendaModelo">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                class="bi bi-filetype-pdf" viewBox="0 0 16 16">
-                <path fill-rule="evenodd"
-                  d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM1.6 11.85H0v3.999h.791v-1.342h.803c.287 0 .531-.057.732-.173.203-.117.358-.275.463-.474a1.42 1.42 0 0 0 .161-.677c0-.25-.053-.476-.158-.677a1.176 1.176 0 0 0-.46-.477c-.2-.12-.443-.179-.732-.179Zm.545 1.333a.795.795 0 0 1-.085.38.574.574 0 0 1-.238.241.794.794 0 0 1-.375.082H.788V12.48h.66c.218 0 .389.06.512.181.123.122.185.296.185.522Zm1.217-1.333v3.999h1.46c.401 0 .734-.08.998-.237a1.45 1.45 0 0 0 .595-.689c.13-.3.196-.662.196-1.084 0-.42-.065-.778-.196-1.075a1.426 1.426 0 0 0-.589-.68c-.264-.156-.599-.234-1.005-.234H3.362Zm.791.645h.563c.248 0 .45.05.609.152a.89.89 0 0 1 .354.454c.079.201.118.452.118.753a2.3 2.3 0 0 1-.068.592 1.14 1.14 0 0 1-.196.422.8.8 0 0 1-.334.252 1.298 1.298 0 0 1-.483.082h-.563v-2.707Zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638H7.896Z" />
-              </svg>
-              PDF
-            </button>
-          </th>
-          <th></th>
-          <th></th>
-          <th></th>
-
-
-        </tr>
-        <tr>
           <th scope="col" class="rf_header_table">{{ filtroSelecionadoLabel }}</th>
           <th scope="col" class="rf_header_table">Modelo</th>
           <th scope="col" class="rf_header_table" v-if="filtroSelecionadoLabel !== 'Loja'">Valor</th>
@@ -337,6 +332,54 @@
           <th scope="col" class="rf_header_table"></th>
         </tr>
       </thead>
+    </table>
+
+    <table id="tabela_atendientos" class="table rf_texto_desk " v-if="selectedRelatorio === 'atendimentos'"
+      ref="contentToPrintFluxo">
+      <thead>
+        <tr>
+          <!-- <th scope="col" class="rf_header_table">{{ filtroSelecionadoLabel }}</th> -->
+          <!--Bloco veiculos novos-->
+          <th scope="col"  class="rf_header_table">Loja</th>
+          <th scope="col"  class="rf_header_table">Atendimento</th>
+          <th scope="col"  class="rf_header_table">Data</th>          
+          <th scope="col"  class="rf_header_table">Atendente</th>
+          <th scope="col"  class="rf_header_table">Vendedor</th>
+          <th scope="col"  class="rf_header_table">Cliente</th>
+          <th scope="col"  style="width: 7%" class="rf_header_table">Tel1</th>
+          <th scope="col"  style="width: 7%" class="rf_header_table">Tel2</th>
+          <th scope="col"  class="rf_header_table">Email</th>
+          <th scope="col"  class="rf_header_table">Mídia</th>
+          <th scope="col"  class="rf_header_table">Retorno</th>
+          <th scope="col"  class="rf_header_table">Tipo Fechamento</th>
+          <th scope="col"  class="rf_header_table">Primeiro Acesso</th>
+          <th scope="col"  class="rf_header_table">Gerente Fechamento</th>
+          <th scope="col"  class="rf_header_table">Tempo Atendimento</th>
+          <th scope="col"  class="rf_header_table">Menus</th>
+          <th scope="col"  class="rf_header_table">Observação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in atendimentos" :key="item.id" class="table-linha">
+          <td class="rf_header_table">{{ (item.loja) }}</td>
+          <td class="rf_header_table">{{ item.atendimento }}</td>
+          <td class="rf_header_table">{{ formattedCreatedAt(item.data) }}</td>
+          <td class="rf_header_table">{{ item.atendente }}</td>
+          <td class="rf_header_table">{{ (item.vendedor) }}</td>   
+          <td class="rf_header_table">{{ item.cliente }}</td>
+          <td class="rf_header_table">{{ item.telefone }}</td>
+          <td class="rf_header_table">{{ (item.telefone2) }}</td>
+          <td class="rf_header_table">{{ item.email }}</td>
+          <td class="rf_header_table">{{ item.midia }}</td>
+          <td class="rf_header_table">{{ (item.retorno) }}</td>
+          <td class="rf_header_table">{{ (item.tipo_fechamento) }}</td>
+          <td class="rf_header_table">{{ (item.gerente) }}</td>
+          <td class="rf_header_table"> {{ item.gerente2 }}</td>
+          <td class="rf_header_table">{{ (item.tempo_de_atendimento) }}</td>
+          <td class="rf_header_table">{{ (item.menu) }}</td>
+          <td class="rf_header_table">{{ (item.observacao) }}</td>
+        </tr>
+      </tbody> 
     </table>
 
     <!--Modal Conversão de Vendas-->
@@ -591,8 +634,85 @@
       </div>
     </div>
 
-    <!-- <pagination v-if="propostas_at.length" :offset="totalPages_4" :total="totalItems_4" :limit="pageSize_4"
-          @change-page="handlePageChangeProposta" /> -->
+    <!--Modal Fluxo de Loja-->
+    <div class="modal fade" id="ModalFluxoLoja" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+      tabindex="-1">
+      <div class="modal-dialog modal-fullscreen rf_modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
+              BeniDesk
+            </h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class=" mt-3 rf_texto_pdf" ref="contentToPrintFluxo">
+              <div class="col">
+                <div class="row g-2 p-2">
+                  <div class="col-12">
+                    <div class="card-header rf_card_header"> Fluxo de Loja</div>
+                    <div class="rf_card_pdf">
+                      <table id="tabela_atendimentos" class="table table-striped mt-2"
+                        v-if="selectedRelatorio === 'atendimentos'">
+                        <thead>
+                          <tr>
+                            <th scope="col" class="rf_header_table">Loja</th>
+                            <th scope="col" class="rf_header_table">Atendimento</th>
+                            <th scope="col" class="rf_header_table">Data</th>
+                            <th scope="col" class="rf_header_table">Atendente</th>
+                            <th scope="col" class="rf_header_table">Vendedor</th>
+                            <th scope="col" class="rf_header_table">Cliente</th>
+                            <th scope="col" class="rf_header_table">Tel1</th>
+                            <th scope="col" class="rf_header_table">Tel2</th>
+                            <th scope="col" class="rf_header_table">Email</th>
+                            <th scope="col" class="rf_header_table">Mídia</th>
+                            <th scope="col" class="rf_header_table">Retorno</th>
+                            <th scope="col" class="rf_header_table">Tipo Fechamento</th>
+                            <th scope="col" class="rf_header_table">Primeiro Acesso</th>
+                            <th scope="col" class="rf_header_table">Gerente Fechamento</th>
+                            <th scope="col" class="rf_header_table">Tempo Atendimento</th>
+                            <th scope="col" class="rf_header_table">Menus</th>
+                            <th scope="col" class="rf_header_table">Observação</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="item in atendimentos" :key="item.id">
+                            <td class="rf_header_table">{{ (item.loja) }}</td>
+                            <td class="rf_header_table">{{ item.atendimento }}</td>
+                            <td class="rf_header_table">{{ formattedCreatedAt(item.data) }}</td>
+                            <td class="rf_header_table">{{ item.atendente }}</td>
+                            <td class="rf_header_table">{{ (item.vendedor) }}</td>   
+                            <td class="rf_header_table">{{ item.cliente }}</td>
+                            <td class="rf_header_table">{{ item.telefone }}</td>
+                            <td class="rf_header_table">{{ (item.telefone2) }}</td>
+                            <td class="rf_header_table">{{ item.email }}</td>
+                            <td class="rf_header_table">{{ item.midia }}</td>
+                            <td class="rf_header_table">{{ (item.retorno) }}</td>
+                            <td class="rf_header_table">{{ (item.tipo_fechamento) }}</td>
+                            <td class="rf_header_table">{{ (item.gerente) }}</td>
+                            <td class="rf_header_table"> {{ item.gerente2 }}</td>
+                            <td class="rf_header_table">{{ (item.tempo_de_atendimento) }}</td>
+                            <td class="rf_header_table">{{ (item.menu) }}</td>
+                            <td class="rf_header_table">{{ (item.observacao) }}</td>
+                          </tr>
+                        </tbody>                       
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-target="#ModaProposta" data-bs-toggle="modal">
+              Fechar
+            </button>
+            <button class="btn btn-secondary" :disabled="btn_gerar_menu" @click="generatePdfFluxo">IMPRIMIR</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <RodapeVue />
@@ -751,15 +871,61 @@ export default {
 
     exportToXLSX() {
       const table = document.getElementById('tabela_conversao');
-      const ws = XLSX.utils.table_to_sheet(table);
+      const rows = table.querySelectorAll('tr');
+      const data = [];
+
+      rows.forEach((row) => {
+        const rowData = [];
+        const cells = row.querySelectorAll('td, th');
+        cells.forEach((cell) => {
+          rowData.push(cell.innerText);
+        });
+        data.push(rowData);
+      });
+
+      const ws = XLSX.utils.aoa_to_sheet(data);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, 'Dados');
       XLSX.writeFile(wb, 'conversao_vendas.xlsx');
     },
 
+    exportToXLSX_fluxo() {
+      const table = document.getElementById('tabela_atendientos');
+      const rows = table.querySelectorAll('tr');
+      const data = [];
+
+      rows.forEach((row) => {
+        const rowData = [];
+        const cells = row.querySelectorAll('td, th');
+        cells.forEach((cell) => {
+          rowData.push(cell.innerText);
+        });
+        data.push(rowData);
+      });
+
+      const ws = XLSX.utils.aoa_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Dados');
+      XLSX.writeFile(wb, 'fluxo_lojas.xlsx');
+    },
+
+
+
     exportToXLSX_perdida() {
       const table = document.getElementById('VendaPerdida');
-      const ws = XLSX.utils.table_to_sheet(table);
+      const rows = table.querySelectorAll('tr');
+      const data = [];
+
+      rows.forEach((row) => {
+        const rowData = [];
+        const cells = row.querySelectorAll('td, th');
+        cells.forEach((cell) => {
+          rowData.push(cell.innerText);
+        });
+        data.push(rowData);
+      });
+
+      const ws = XLSX.utils.aoa_to_sheet(data);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, 'Dados');
       XLSX.writeFile(wb, 'venda_perdida.xlsx');
@@ -767,7 +933,19 @@ export default {
 
     exportToXLSX_modelo() {
       const table = document.getElementById('tabela_venda_modelo');
-      const ws = XLSX.utils.table_to_sheet(table);
+      const rows = table.querySelectorAll('tr');
+      const data = [];
+
+      rows.forEach((row) => {
+        const rowData = [];
+        const cells = row.querySelectorAll('td, th');
+        cells.forEach((cell) => {
+          rowData.push(cell.innerText);
+        });
+        data.push(rowData);
+      });
+
+      const ws = XLSX.utils.aoa_to_sheet(data);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, 'Dados');
       XLSX.writeFile(wb, 'venda_modelo.xlsx');
@@ -787,6 +965,23 @@ export default {
       };
       setTimeout(() => {
         html2pdf().from(this.$refs.contentToPrint).set(options).save();
+      }, 500);
+      //html2pdf().from(this.$refs.contentToPrint).set(options).save();
+    },
+    generatePdfFluxo() {
+      console.log("Imprimir ----------------------------------------------------------------------------------------------------------------- 0001")
+      const options = {
+        margin: [0, 0],
+        filename: 'fluxo_loja.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 1 },
+        jsPDF: { format: 'a4', orientation: 'landscape' },
+        pagebreak: { mode: 'avoid-all' },
+        enableLinks: true,
+
+      };
+      setTimeout(() => {
+        html2pdf().from(this.$refs.contentToPrintFluxo).set(options).save();
       }, 500);
       //html2pdf().from(this.$refs.contentToPrint).set(options).save();
     },
@@ -1282,43 +1477,64 @@ export default {
         const response = await axios.get(`${process.env.VUE_APP_API_URL}relatorio_atendimentos`, { params });
         const qtd = response.data.count;
         const { rows } = response.data;
-        console.log("Relatorio de Atendimentos", rows)
+        let gerente2 = "Gerente não cadastrado";
+        this.atendimentos = []; // Inicialize o array para armazenar os resultados
+
+        console.log("Relatorio de Atendimentos", rows);
+
         for (let i = 0; i < qtd; i++) {
-          // const modelo_veiculo = rows[i].proposta_veiculo?.modelo_veiculo || ''; // Verifica se é null
-          // const categoria = rows[i].proposta_veiculo?.categoria || '';
-          // const valor_veiculo = rows[i].proposta_veiculo?.valor_veiculo || 0.00;
+          const row = rows[i];       
+
+          
+
+          if (row.gerente_id_alteracao !== undefined && row.gerente_id_alteracao !== null) {
+            console.log(`Gerente ID Alteracao está definido: ${row.gerente_id_alteracao}`);
+              
+            // Verifique se gerente_alteracao está presente e não é undefined
+            if (row.gerente_alteracao && row.gerente_alteracao.username) {              
+              gerente2 = row.gerente_alteracao.username;
+              console.log(`Gerente encontrado:`,gerente2);
+            } else {
+              gerente2 = ""; // Adiciona um valor padrão novamente para cada loop
+              console.log('Gerente Alteracao não encontrado ou informações incompletas.');
+            }
+          } else {
+            gerente2 = ""; // Adiciona um valor padrão novamente para cada loop
+            console.log('Gerente ID Alteracao não está definido.');
+          }
+
           const arr = {
-            loja: rows[i].empresa_proposta.nome,
-            atendimento: rows[i].id,
-            data: rows[i].createdAt,
-            atendente: rows[i].usuarios.username,
-            vendedor: rows[i].vendedores.username,
-            cliente: rows[i].clientes.nome,
-            telefone: rows[i].clientes.tel,
-            telefone2: rows[i].clientes.cel,
-            email: rows[i].clientes.email,
-            midia: rows[i].midias.descricao,
-            retorno: rows[i].retorno,
-            tipo_fechamento: rows[i].status_proposta,
-            gerente: rows[i].gerentes.username,
-            tempo_de_atendimento: rows[i].total_tempo_atendimento,
-            observacao: rows[i].obs,
-        
+            loja: row.empresa_proposta.nome,
+            atendimento: row.id,
+            data: row.createdAt,
+            atendente: row.usuarios.username,
+            vendedor: row.vendedores.username,
+            cliente: row.clientes.nome,
+            telefone: row.clientes.tel,
+            telefone2: row.clientes.cel,
+            email: row.clientes.email,
+            midia: row.midias.descricao,
+            retorno: row.retorno,
+            tipo_fechamento: row.status_proposta,
+            gerente: row.gerentes.username,
+            gerente2: gerente2,
+            menu: row.menus,
+            tempo_de_atendimento: row.total_tempo_atendimento,
+            observacao: row.obs,
           };
 
           this.atendimentos.push(arr); // Adiciona o novo objeto ao array
         }
 
         console.log(this.atendimentos);
-
-
       } catch (error) {
-        console.log(error)
-        if (error.response.status == 400) {
+        console.log(error);
+        if (error.response && error.response.status == 400) {
           this.abrir_modal = true;
           this.msg = error.response.data.message;
         }
       }
+
 
     },
     async getEmpresas() {

@@ -58,6 +58,7 @@ import ModeloFeiEstoque from "./views/f&i/modelo_fei_estoque.vue";
 import VendasCustomizado from "./views/f&i/vendas_customizado.vue";
 import ReimprimirMenu from "./views/f&i/reimprimirMenu.vue";
 import ReabrirAtendimento from "./views/f&i/reabrir_atendimento";
+import FluxoLojas from "./views/f&i/fluxo_lojas.vue";
 
 // lazy-loaded
 const Profile = () => import("./components/Profile.vue")
@@ -506,6 +507,12 @@ const routes = [
     path:"/f&i/reabrir_atendimento",
     name:"reabrir_atendimento",
     component: ReabrirAtendimento,
+    beforeEnter: [vendedorFEI],
+  },
+  {
+    path:"/f&i/fluxo_lojas",
+    name:"fluxo_de_lojas",
+    component: FluxoLojas ,
     beforeEnter: [vendedorFEI],
   },
 
