@@ -136,7 +136,7 @@
           <i class="bi bi-filetype-xlsx dropdown-toggle-icon-desk"></i>         
         </button>
       </div>
-      <div class="col-1 col-md-2">
+      <!-- <div class="col-1 col-md-2">
         <button class="btn btn-lg btn-filtro" v-if="selectedRelatorio === 'venda_conversao'"
           data-bs-toggle="modal" data-bs-target="#ModalConversao">     
           <i class="bi bi-filetype-pdf dropdown-toggle-icon-desk"></i>  
@@ -153,7 +153,7 @@
           data-bs-toggle="modal" data-bs-target="#ModalVendaModelo">     
           <i class="bi bi-filetype-pdf dropdown-toggle-icon-desk"></i>  
         </button>
-      </div>
+      </div> -->
     </div>
 
     <table id="tabela_conversao" class="table rf_texto_desk " v-if="selectedRelatorio === 'venda_conversao'"
@@ -1270,7 +1270,7 @@ export default {
         const response = await axios.get(`${process.env.VUE_APP_API_URL}relatorio_conversao_vendas`, {
           params
         });
-        console.log(response.data.result)
+        console.log("Relatorio Desk",response.data.result)
         const qtd = response.data.result.length;
         this.conversao_vendas = []
         for (let i = 0; i < qtd; i++) {

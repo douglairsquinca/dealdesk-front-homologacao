@@ -134,13 +134,14 @@
                 item.status === 'Venda Finalizada' ||
                 item.status === 'Venda Perdida'
               "
+              @click="redirecionar(item.id)"
             >
-              <router-link
+              <!-- <router-link
                 class="nav-link active"
                 :to="`/desk/menu/proposta/${item.id}`"
-              >
+              > -->
                 <i class="bi bi-pencil-square"></i>
-              </router-link>
+              <!-- </router-link> -->
             </button>
 
             <button
@@ -1400,6 +1401,7 @@ export default {
       valor_custo_contabil: "",
       tipo_veiculo: "",
       botoesVisiveis: false,
+      user_log: "",
       botoes: [
         { id: 1, icone: "bi bi-printer", texto: "Imprimir" },
         { id: 2, icone: "bi bi-file-lock", texto: "Abrir Arquivo" },
@@ -1870,7 +1872,10 @@ export default {
     const accessToken = TokenService.getLocalAccessToken();
     const decodedToken = jwt_decode(accessToken);
     this.empresaID = decodedToken.company;
+    const user_log = TokenService.getUser();
+    this.user_log = user_log.id;
     this.timestampInicioEdicao = new Date();
+
   },
 
   mounted() {
@@ -2218,6 +2223,34 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    async redirecionar(id){
+      try{
+        await this.atualizar_gerente(id);
+        this.$router.push(`/desk/menu/proposta/${id}`);
+      }catch(error){
+        console.error('Erro ao atualizar os dados:', error);
+      }
+    },
+    async atualizar_gerente(id){
+        try{
+          await fetch(
+          `${process.env.VUE_APP_API_URL}proposta_update_gerente/${id}`,
+          {
+            method: "PUT",
+
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              gerente_id: this.user_log,
+            }),
+          }
+        )
+        }catch (error) {
+        console.error('Erro ao atualizar os dados:', error);
+        throw error; // Lance o erro para ser capturado no handleClick
+      }
     },
 
     updateChart(series) {

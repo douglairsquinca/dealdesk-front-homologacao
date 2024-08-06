@@ -122,7 +122,7 @@
                   class="nav-link p-2"> Situação Geral </a></li>
             </ul>
           </li>
-          <!-- <li id="rf_relatorios_fei" class="nav-item dropdown">
+          <li id="rf_relatorios_fei" class="nav-item dropdown">
             <button @click="setActive('relatorios_fei')"
                     :class="{ 'btn': true, 'btn-menu': true, 'btn-active': active === 'relatorios_fei' }"
                     class="dropdown-toggle"
@@ -135,7 +135,7 @@
                  Fluxo de Lojas </a></li>
               
             </ul>
-          </li> -->
+          </li>
 
         </ul>
       </div>

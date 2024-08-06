@@ -7710,186 +7710,186 @@ export default {
   
     },
 
-async atualizar_status_pos_venda(value) {
-  const id = this.n_atendimento;
-  let status;
+    async atualizar_status_pos_venda(value) {
+      const id = this.n_atendimento;
+      let status;
 
-  if (value === 1) {
-    console.log("Clicou no botão finalizar venda!")
-    if(this.pagamento_vista == true){
-      console.log("Finalizando a venda com método de pagamento Vista")
-      status = "Venda Finalizada";
-    }
-    if(this.pagamento_vista == false){
-      console.log("Finalizando a venda com método de pagamento Financimento")
-      const valor_pacote = this.formatarDecimal(this.valor_pacote_selecionado);
-      const total_financiado = this.formatarDecimal(this.total_financiamento_selecionado);
-      const valor_parcela = this.formatarDecimal(this.valor_parcela_selecionada);
+      if (value === 1) {
+        console.log("Clicou no botão finalizar venda!")
+        if(this.pagamento_vista == true){
+          console.log("Finalizando a venda com método de pagamento Vista")
+          status = "Venda Finalizada";
+        }
+        if(this.pagamento_vista == false){
+          console.log("Finalizando a venda com método de pagamento Financimento")
+          const valor_pacote = this.formatarDecimal(this.valor_pacote_selecionado);
+          const total_financiado = this.formatarDecimal(this.total_financiamento_selecionado);
+          const valor_parcela = this.formatarDecimal(this.valor_parcela_selecionada);
 
-      console.log("Verificando finalizar", valor_pacote, total_financiado, valor_parcela)
-      if (valor_pacote == 0 || total_financiado == 0 || valor_parcela == 0) {
-        this.abrir_modal = true;
-        this.msg = "O valor da parcela não pode ser R$ 0,00!";
-        setTimeout(() => {
-          this.abrir_modal = false;        
-        }, 4000);
-        return; // Para a execução da função aqui
-      }else{      
-        status = "Venda Finalizada";     
-      }      
-    }
-
-
+          console.log("Verificando finalizar", valor_pacote, total_financiado, valor_parcela)
+          if (valor_pacote == 0 || total_financiado == 0 || valor_parcela == 0) {
+            this.abrir_modal = true;
+            this.msg = "O valor da parcela não pode ser R$ 0,00!";
+            setTimeout(() => {
+              this.abrir_modal = false;        
+            }, 4000);
+            return; // Para a execução da função aqui
+          }else{      
+            status = "Venda Finalizada";     
+          }      
+        }
 
 
-    // if(this.metodo_pagamento === 1){
-    //   console.log("Finalizando a venda com método de pagamento Financimento")
-    //   const valor_pacote = this.formatarDecimal(this.valor_pacote_selecionado);
-    //   const total_financiado = this.formatarDecimal(this.total_financiamento_selecionado);
-    //   const valor_parcela = this.formatarDecimal(this.valor_parcela_selecionada);
 
-    //   console.log("Verificando finalizar", valor_pacote, total_financiado, valor_parcela)
-    //   if (valor_pacote == 0 || total_financiado == 0 || valor_parcela == 0) {
-    //     this.abrir_modal = true;
-    //     this.msg = "O valor da parcela não pode ser R$ 0,00!";
-    //     setTimeout(() => {
-    //       this.abrir_modal = false;        
-    //     }, 4000);
-    //     return; // Para a execução da função aqui
-    //   }else{      
-    //     status = "Venda Finalizada";     
-    //   }      
-    // }else{
-    //   console.log("Metodo de pagamento não financiamento!")
-    //   if(!this.valor_pacote_selecionado){
-    //     console.log("Finalizando a venda com método de pagamento sem Financiamento")
-    //       this.abrir_modal = true;
-    //       this.msg = "O valor do pacote não pode ser R$ 0,00";
-    //       setTimeout(() => (this.abrir_modal = false), 4000);
-    //       this.habilitar_finalizar_venda = true;
-    //       return;
-    //     }
-    //     if(!this.valor_pacote_customizado){
-    //       this.abrir_modal = true;
-    //       this.msg = "O valor do pacote customizado não pode ser R$ 0,00";
-    //       setTimeout(() => (this.abrir_modal = false), 4000);
-    //       this.habilitar_finalizar_venda = true;
-    //       return;
-    //     }
-    //     status = "Venda Finalizada";     
-    // }
 
-  }
-  if (value === 2) {
-      if (this.observacao.length < 30) {
-        this.abrir_modal = true;
-        this.msg = "O campo observação precisa conter mais de 30 caracteres de justificativa!";
-        setTimeout(() => {
-          this.abrir_modal = false;        
-        }, 4000);
-        return; // Para a execução da função aqui
-      } else {
-        status = "Venda Perdida";
+        // if(this.metodo_pagamento === 1){
+        //   console.log("Finalizando a venda com método de pagamento Financimento")
+        //   const valor_pacote = this.formatarDecimal(this.valor_pacote_selecionado);
+        //   const total_financiado = this.formatarDecimal(this.total_financiamento_selecionado);
+        //   const valor_parcela = this.formatarDecimal(this.valor_parcela_selecionada);
+
+        //   console.log("Verificando finalizar", valor_pacote, total_financiado, valor_parcela)
+        //   if (valor_pacote == 0 || total_financiado == 0 || valor_parcela == 0) {
+        //     this.abrir_modal = true;
+        //     this.msg = "O valor da parcela não pode ser R$ 0,00!";
+        //     setTimeout(() => {
+        //       this.abrir_modal = false;        
+        //     }, 4000);
+        //     return; // Para a execução da função aqui
+        //   }else{      
+        //     status = "Venda Finalizada";     
+        //   }      
+        // }else{
+        //   console.log("Metodo de pagamento não financiamento!")
+        //   if(!this.valor_pacote_selecionado){
+        //     console.log("Finalizando a venda com método de pagamento sem Financiamento")
+        //       this.abrir_modal = true;
+        //       this.msg = "O valor do pacote não pode ser R$ 0,00";
+        //       setTimeout(() => (this.abrir_modal = false), 4000);
+        //       this.habilitar_finalizar_venda = true;
+        //       return;
+        //     }
+        //     if(!this.valor_pacote_customizado){
+        //       this.abrir_modal = true;
+        //       this.msg = "O valor do pacote customizado não pode ser R$ 0,00";
+        //       setTimeout(() => (this.abrir_modal = false), 4000);
+        //       this.habilitar_finalizar_venda = true;
+        //       return;
+        //     }
+        //     status = "Venda Finalizada";     
+        // }
+
       }
-    }  
+      if (value === 2) {
+          if (this.observacao.length < 30) {
+            this.abrir_modal = true;
+            this.msg = "O campo observação precisa conter mais de 30 caracteres de justificativa!";
+            setTimeout(() => {
+              this.abrir_modal = false;        
+            }, 4000);
+            return; // Para a execução da função aqui
+          } else {
+            status = "Venda Perdida";
+          }
+        }  
 
 
 
-  // if(this.metodo_pagamento === 1){
-  //   if (value === 1) {
-  //   const valor_pacote = this.formatarDecimal(this.valor_pacote_selecionado);
-  //   const total_financiado = this.formatarDecimal(this.total_financiamento_selecionado);
-  //   const valor_parcela = this.formatarDecimal(this.valor_parcela_selecionada);
+      // if(this.metodo_pagamento === 1){
+      //   if (value === 1) {
+      //   const valor_pacote = this.formatarDecimal(this.valor_pacote_selecionado);
+      //   const total_financiado = this.formatarDecimal(this.total_financiamento_selecionado);
+      //   const valor_parcela = this.formatarDecimal(this.valor_parcela_selecionada);
 
-  //   console.log("Verificando finalizar", valor_pacote, total_financiado, valor_parcela)
-  //   if (valor_pacote == 0 || total_financiado == 0 || valor_parcela == 0) {
-  //     this.abrir_modal = true;
-  //     this.msg = "O valor da parcela não pode ser R$ 0,00!";
-  //     setTimeout(() => {
-  //       this.abrir_modal = false;        
-  //     }, 4000);
-  //     return; // Para a execução da função aqui
-  //   }else{      
-  //     status = "Venda Finalizada";
-     
-  //   }
+      //   console.log("Verificando finalizar", valor_pacote, total_financiado, valor_parcela)
+      //   if (valor_pacote == 0 || total_financiado == 0 || valor_parcela == 0) {
+      //     this.abrir_modal = true;
+      //     this.msg = "O valor da parcela não pode ser R$ 0,00!";
+      //     setTimeout(() => {
+      //       this.abrir_modal = false;        
+      //     }, 4000);
+      //     return; // Para a execução da função aqui
+      //   }else{      
+      //     status = "Venda Finalizada";
+        
+      //   }
 
-  //   } else if (value === 2) {
-  //     if (this.observacao.length < 30) {
-  //       this.abrir_modal = true;
-  //       this.msg = "O campo observação precisa conter mais de 30 caracteres de justificativa!";
-  //       setTimeout(() => {
-  //         this.abrir_modal = false;        
-  //       }, 4000);
-  //       return; // Para a execução da função aqui
-  //     } else {
-  //       status = "Venda Perdida";
-  //     }
-  //   }  
-  // }else{
-  //   if (value === 1) {
-  //   const valor_pacote = this.formatarDecimal(this.valor_pacote_selecionado);
-  //   const total_financiado = this.formatarDecimal(this.total_financiamento_selecionado);
-  //   const valor_parcela = this.formatarDecimal(this.valor_parcela_selecionada);
+      //   } else if (value === 2) {
+      //     if (this.observacao.length < 30) {
+      //       this.abrir_modal = true;
+      //       this.msg = "O campo observação precisa conter mais de 30 caracteres de justificativa!";
+      //       setTimeout(() => {
+      //         this.abrir_modal = false;        
+      //       }, 4000);
+      //       return; // Para a execução da função aqui
+      //     } else {
+      //       status = "Venda Perdida";
+      //     }
+      //   }  
+      // }else{
+      //   if (value === 1) {
+      //   const valor_pacote = this.formatarDecimal(this.valor_pacote_selecionado);
+      //   const total_financiado = this.formatarDecimal(this.total_financiamento_selecionado);
+      //   const valor_parcela = this.formatarDecimal(this.valor_parcela_selecionada);
 
-  //   console.log("Verificando finalizar", valor_pacote, total_financiado, valor_parcela)
-  //   if (!this.valor_pacote_customizado) {
-  //     this.abrir_modal = true;
-  //     this.msg = "O valor do pacote customizado não pode ser R$ 0,00";
-  //     setTimeout(() => (this.abrir_modal = false), 4000);
-  //     return; // Para a execução da função aqui
-  //   }else{      
-  //     status = "Venda Finalizada";
-     
-  //   }
+      //   console.log("Verificando finalizar", valor_pacote, total_financiado, valor_parcela)
+      //   if (!this.valor_pacote_customizado) {
+      //     this.abrir_modal = true;
+      //     this.msg = "O valor do pacote customizado não pode ser R$ 0,00";
+      //     setTimeout(() => (this.abrir_modal = false), 4000);
+      //     return; // Para a execução da função aqui
+      //   }else{      
+      //     status = "Venda Finalizada";
+        
+      //   }
 
-  //   } else if (value === 2) {
-  //     if (this.observacao.length < 30) {
-  //       this.abrir_modal = true;
-  //       this.msg = "O campo observação precisa conter mais de 30 caracteres de justificativa!";
-  //       setTimeout(() => {
-  //         this.abrir_modal = false;        
-  //       }, 4000);
-  //       return; // Para a execução da função aqui
-  //     } else {
-  //       status = "Venda Perdida";
-  //     }
-  //   }
-  // }
+      //   } else if (value === 2) {
+      //     if (this.observacao.length < 30) {
+      //       this.abrir_modal = true;
+      //       this.msg = "O campo observação precisa conter mais de 30 caracteres de justificativa!";
+      //       setTimeout(() => {
+      //         this.abrir_modal = false;        
+      //       }, 4000);
+      //       return; // Para a execução da função aqui
+      //     } else {
+      //       status = "Venda Perdida";
+      //     }
+      //   }
+      // }
 
-  
+      
 
-  try {
-    const response = await fetch(
-      `${process.env.VUE_APP_API_URL}atualizar_status_pos_venda/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: id,
-          status: status,
-          observacao: this.observacao,
-        }),
+      try {
+        const response = await fetch(
+          `${process.env.VUE_APP_API_URL}atualizar_status_pos_venda/${id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: id,
+              status: status,
+              observacao: this.observacao,
+            }),
+          }
+        );
+
+        console.log("resposta da atualização", response.statusText);
+
+        if (response.ok) {
+          this.abrir_modal = true;
+          this.msg = "Atendimento finalizado!";
+          setTimeout(() => {
+            this.abrir_modal = false;
+            this.$router.push('/f&i/vendas_f&i'); // Redireciona após fechar o modal
+          }, 4000);
+        }
+      } catch (error) {
+        console.error("Erro ao atualizar status:", error);
+        // Trate o erro de acordo, por exemplo, mostrando uma mensagem de erro ao usuário
       }
-    );
-
-    console.log("resposta da atualização", response.statusText);
-
-    if (response.ok) {
-      this.abrir_modal = true;
-      this.msg = "Atendimento finalizado!";
-      setTimeout(() => {
-        this.abrir_modal = false;
-        this.$router.push('/f&i/vendas_f&i'); // Redireciona após fechar o modal
-      }, 4000);
-    }
-  } catch (error) {
-    console.error("Erro ao atualizar status:", error);
-    // Trate o erro de acordo, por exemplo, mostrando uma mensagem de erro ao usuário
-  }
-},
+    },
 
 
     //funções customizado

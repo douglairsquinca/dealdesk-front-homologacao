@@ -8025,6 +8025,7 @@ export default {
           id: id,
           status_proposta: "Venda Perdida",
           obs: this.info_adicionais,
+          gerente_id_alteracao: this.$store.state.auth.user.id
         }),
       })
         .then((data) => {
