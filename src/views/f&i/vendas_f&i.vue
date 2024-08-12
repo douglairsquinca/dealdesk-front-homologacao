@@ -244,6 +244,53 @@ export default {
       this.status_proposta = "Pesquisa Periodo";
       this.retrievePropostas();
     },
+    getRequestParamsProposta(
+      searchProposta,
+      page,
+      pageSize,
+      empresa_id,
+      status_proposta,
+      data_ini,
+      data_fim,
+      tipo_veiculo
+    ) {
+      let params = {};
+      if (searchProposta) {
+        params["nome"] = searchProposta;
+      }
+      if (page) {
+        params["page"] = page - 1;
+      }
+      if (pageSize) {
+        params["size"] = pageSize;
+      }
+      if (empresa_id) {
+        params["empresa_id"] = empresa_id;
+      }
+      if (status_proposta) {
+        params["status_proposta"] = status_proposta;
+      }
+      if (data_ini) {
+        params["data_ini"] = data_ini;
+      }
+      if (data_fim) {
+        params["data_fim"] = data_fim;
+      }
+      if (tipo_veiculo) {
+        params["tipo_veiculo"] = tipo_veiculo;
+      }
+
+      return params;
+    },
+    handlePageChangeProposta(value) {
+      this.page_4 = value;
+      this.retrievePropostas();
+    },
+    handlePageSizeChangeProposta(size) {
+      this.pageSize_4 = size;
+      this.page_4 = 1;
+      this.retrievePropostas();
+    },
     async retrievePropostas() {
       try {
         const response = await axios.get(
@@ -253,6 +300,9 @@ export default {
               empresa_id: this.company_id,
               page: this.page - 1,
               size: this.pageSize,
+              status: this.status_proposta,
+              data_ini:this.data_ini,
+              data_fim:this.data_fim,
             },
           }
         );
