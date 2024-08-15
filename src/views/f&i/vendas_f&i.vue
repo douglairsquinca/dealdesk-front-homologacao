@@ -283,27 +283,30 @@ export default {
       return params;
     },
     handlePageChangeProposta(value) {
-      this.page_4 = value;
+      this.page = value;
       this.retrievePropostas();
     },
     handlePageSizeChangeProposta(size) {
-      this.pageSize_4 = size;
-      this.page_4 = 1;
+      this.pageSize = size;
+      this.page = 1;
       this.retrievePropostas();
     },
     async retrievePropostas() {
       try {
+        const params = this.getRequestParamsProposta(
+          this.searchProposta,
+          this.page,
+          this.pageSize,
+          this.company_id,
+          this.status_proposta,
+          this.data_ini,
+          this.data_fim,
+          this.tipo_veiculo
+        );
         const response = await axios.get(
           `${process.env.VUE_APP_API_URL}listar_pos_venda`,
           {
-            params: {
-              empresa_id: this.company_id,
-              page: this.page - 1,
-              size: this.pageSize,
-              status: this.status_proposta,
-              data_ini:this.data_ini,
-              data_fim:this.data_fim,
-            },
+            params
           }
         );
 
