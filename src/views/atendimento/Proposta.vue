@@ -581,12 +581,6 @@ export default {
       const switchModal = () => {
         const modal = document.getElementById("modal_cadastrar_cliente");
         modal.style.display = "block";
-        // const actualStyle = modal.style.display;
-        // if (actualStyle == "block") {
-        //   modal.style.display = "none";
-        // } else {
-        //   modal.style.display = "block";
-        // }
       };
       switchModal();
     },
@@ -594,12 +588,6 @@ export default {
       const switchModal = () => {
         const modal = document.getElementById("modal_justificar");
         modal.style.display = "block";
-        // const actualStyle = modal.style.display;
-        // if (actualStyle == "block") {
-        //   modal.style.display = "none";
-        // } else {
-        //   modal.style.display = "block";
-        // }
       };
       switchModal();
     },
@@ -607,12 +595,6 @@ export default {
       const switchModal = () => {
         const modal = document.getElementById("modal_cadastrar_cliente");
         modal.style.display = "none";
-        // const actualStyle = modal.style.display;
-        // if (actualStyle == "block") {
-        //   modal.style.display = "none";
-        // } else {
-        //   modal.style.display = "block";
-        // }
       };
       switchModal();
     },
@@ -627,16 +609,7 @@ export default {
       this.habilitar_cadastro = false;
       this.close_modal();
     },
-    // habilitar_cadastro() {
-    //   this.input_cliente = false;
-    //   this.modal_cpfcnpj = "";
-    //   // Defina aqui a lógica para mudar as cores das bordas dos campos
-    //   this.nomeBorderColor = "green"; // Por exemplo, a cor verde indica que o campo está habilitado
-    //   this.emailBorderColor = "green";
-    //   this.telBorderColor = "green";
-    //   this.celBorderColor = "green";
 
-    // },
     async cadastrar_cliente() {
       try {
         if (this.cel === this.tel) {
@@ -796,6 +769,19 @@ export default {
                     this.$router.push('/atendimento/dashboard')
                   ),
                   4000
+                );
+              }
+              if (resposta.StatusOk == 1) {
+                this.abrir_modal = true;
+                this.msg = "Sistema será redirecionado a tela de login, por inatividade";
+                
+                setTimeout(
+                  () => (
+                    (this.abrir_modal = false),
+                    this.$store.dispatch("auth/logout"),
+                    this.$router.push("/login")
+                  ),
+                 4000
                 );
               }
               if (resposta.StatusOk == 204) {

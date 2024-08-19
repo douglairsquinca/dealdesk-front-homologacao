@@ -186,7 +186,7 @@ export default {
     },
   },
   mounted() {
-    console.log("Tema selecionado ------ " + this.$store.getters.currentTheme);
+    
     UserService.getAdminBoard().then(
       (response) => {
         this.content = response.data;
@@ -202,6 +202,7 @@ export default {
         if (error.response && error.response.status === 403) {
           console.log("Entrei no IF")
           this.$store.dispatch("auth/logout");
+          this.$router.push("/login");
         }
       }
     );
