@@ -3163,17 +3163,17 @@
                   <div class="rf_texto_pdf texto_menu_ent_desk">
                     <div>
                       <div class="col">
-                        <strong> {{ Valor_Entrada_1 }}</strong>
+                        <strong> {{ Entrada_Total_1 }}</strong>
                       </div>
                     </div>
                     <div>
                       <div class="col">
-                        <strong> {{ Valor_Entrada_2 }}</strong>
+                        <strong> {{ Entrada_Total_2 }}</strong>
                       </div>
                     </div>
                     <div>
                       <div class="col">
-                        <strong> {{ Valor_Entrada_3 }}</strong>
+                        <strong> {{ Entrada_Total_3 }}</strong>
                       </div>
                     </div>
                   </div>
@@ -3831,6 +3831,9 @@ export default {
       open_proposta: true,
       id_cliente: "",
 
+      Entrada_Total_1:"",
+      Entrada_Total_2:"",
+      Entrada_Total_3:"",
       Valor_Financiado_1: "",
       Valor_Entrada_1: "",
       handlePageChange: "",
@@ -4641,14 +4644,17 @@ export default {
           this.Quantidade_Meses = resposta["Quantidade_Meses"];
 
           this.Valor_Entrada_1 = resposta["Valor_Entrada_1"];
+          this.Entrada_Total_1 = resposta["Entrada_Total_1"];
           this.Valor_Financiado_1 = resposta["Valor_Financiado_1"];
           this.Quantidade_Meses_1 = resposta["Quantidade_Meses_1"];
 
           this.Valor_Entrada_2 = resposta["Valor_Entrada_2"];
+          this.Entrada_Total_2 = resposta["Entrada_Total_2"];
           this.Valor_Financiado_2 = resposta["Valor_Financiado_2"];
           this.Quantidade_Meses_2 = resposta["Quantidade_Meses_2"];
 
           this.Valor_Entrada_3 = resposta["Valor_Entrada_3"];
+          this.Entrada_Total_3 = resposta["Entrada_Total_3"];
           this.Valor_Financiado_3 = resposta["Valor_Financiado_3"];
           this.Quantidade_Meses_3 = resposta["Quantidade_Meses_3"];
 
