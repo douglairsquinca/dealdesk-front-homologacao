@@ -57,13 +57,13 @@
           </button>
         </div>
       </div>
-      <div class="col-2">
+      <!-- <div class="col-2">
         <div class="input-group-append">
           <button class="btn btn-lg btn-filtro" type="button" @click="page = 1; sincronizarEstoqueOracle();">
             <span class="rf_texto_btn">Sincronizar Estoque Oracle</span>
           </button>
         </div>
-      </div>
+      </div> -->
 
 
     </div>
