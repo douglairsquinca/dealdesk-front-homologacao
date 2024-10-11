@@ -57,6 +57,13 @@
           </button>
         </div>
       </div>
+      <div class="col-2">
+        <div class="input-group-append">
+          <button class="btn btn-lg btn-filtro" type="button" @click="page = 1; sincronizarEstoqueOracle();">
+            <span class="rf_texto_btn">Sincronizar Estoque Oracle</span>
+          </button>
+        </div>
+      </div>
 
 
     </div>
@@ -301,6 +308,23 @@ export default {
           this.msg = message;
           setTimeout(() => (this.abrir_modal = false), 4000);
           this.retrieveEstoque();
+
+        });
+      } catch (error) {
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+        }
+      }
+    },
+    async sincronizarEstoqueOracle() {
+      try {
+        userService.getEstoqueSincronizarOracle().then((response) => {
+          const { message } = response.data;
+          this.abrir_modal = true;
+          this.msg = message;
+          setTimeout(() => (this.abrir_modal = false), 4000);
+          //this.retrieveEstoque();
 
         });
       } catch (error) {

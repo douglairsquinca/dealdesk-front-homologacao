@@ -336,7 +336,7 @@
       </div>
       <!--Venda Futura-->
       <div class="row g-2 p-2">
-        <div class="col-2 col-md-3" v-if="venda_Futura">
+        <div class="col-2 " v-if="venda_Futura">
           <div class="form-floating">
             <select
               class="form-select rf_bg_form rf_texto"
@@ -354,12 +354,12 @@
             <label class="rf_texto">Família</label>
           </div>
         </div>
-        <div class="col-2 col-md-3" v-if="venda_Futura">
+        <div class="col-2 " v-if="venda_Futura">
           <div class="form-floating">
             <select
               class="form-select rf_bg_form rf_texto"
               v-model="selected_modelo_veiculo_escolhido"
-              @change="completar_modelo(selected_modelo_veiculo_escolhido)"
+              @change="cor_modelo()"
             >
               <option
                 v-for="item in modelo_veiculo_escolhido"
@@ -370,6 +370,24 @@
               </option>
             </select>
             <label class="rf_texto">Modelo</label>
+          </div>
+        </div>
+        <div class="col-2 " v-if="venda_Futura">
+          <div class="form-floating">
+            <select
+              class="form-select rf_bg_form rf_texto"
+              v-model="selected_cor_veiculo_escolhido"
+              @change="completar_modelo(selected_modelo_veiculo_escolhido)"
+            >
+              <option
+                v-for="item in cor_veiculo_escolhido"
+                :value="item.descricao"
+                :key="item.id"
+              >
+                {{ item.descricao }}
+              </option>
+            </select>
+            <label class="rf_texto">Cor</label>
           </div>
         </div>
         <div class="col-2 col-md-3">
@@ -389,6 +407,8 @@
             </div>
           </div>
         </div>
+        <!--Aguardando definição de como será implementado-->
+        <!-- @change="pagamento_vista()" -->
         <div class="col-2 col-md-3">
           <div class="form-floating">
             <div class="form-check form-switch rf_texto mt-3">
@@ -397,6 +417,7 @@
                 type="checkbox"
                 role="switch"
                 v-model="pagamento"
+                
               />
               <label class="form-check-label">Venda à Vista</label>
             </div>
@@ -407,7 +428,7 @@
   </div>
   <!--Bloco Veiculos-->
   <div class="card card-filtro">
-    <div class="row">    
+    <div class="row">
       <!--Veículos para compra-->
       <div class="col-12">
         <form @submit.prevent="onSubmitVeiculo">
@@ -549,7 +570,7 @@
                 <td>{{ item.descricao }}</td>
                 <td>{{ item.valor }}</td>
                 <td>{{ item.custo }}</td>
-                <td>{{ cortesia }}</td>
+                <td>{{ item.cortesia }}</td>
                 <td>
                   <button
                     type="button"
@@ -579,7 +600,8 @@
             </div>
           </div>
 
-          <div class="col mt-4">
+          <!-- Não utiliza cortesia inclusa no financiamento-->
+          <div class="col mt-4" v-if="incluir_financiamento">
             <div class="form-floating">
               <div class="form-check form-switch rf_texto">
                 <input
@@ -600,132 +622,255 @@
         </div>
       </div>
       <!--Veículos para troca-->
-    <div class="col-12">
-      
-      
-      <form @submit.prevent="onSubmitVeiculoAvaliacao">
+      <div class="col-12">
+        <!-- <form @submit.prevent="onSubmitVeiculoAvaliacao">
+          <div class="row g-2 p-2">
+            <div class="card-title gy-4">
+              <i class="bi bi-car-front-fill fs-5 icone_filtro"
+                ><span class="texto_filtro">Veículo de Entrada</span></i
+              >
+            </div>
+
+            <div class="col-1">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="placa_avaliacao"
+                  v-on:blur="verificar_avaliacao_placa()"
+                  required
+                />
+                <label class="rf_texto">Placa</label>
+              </div>
+            </div>
+
+            <div class="col-2">
+              <div class="form-floating">
+                <input
+                  v-model="marca_avaliacao"
+                  class="form-control rf_bg_form rf_texto"
+                  required
+                />
+                <label class="rf_texto">Marca</label>
+              </div>
+            </div>
+
+            <div class="col-2">
+              <div class="form-floating">
+                <input
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="modelo_avaliacao"
+                  required
+                />
+                <label class="rf_texto">Modelo</label>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="anoModelo_avaliacao"
+                  required
+                />
+                <label class="rf_texto">Ano Modelo</label>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="cor_avaliacao"
+                  required
+                />
+                <label class="rf_texto">Cor</label>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="kilometragem"
+                  required
+                  @input="kilometragem = formatarKM(kilometragem)"
+                />
+                <label class="rf_texto">Kilometragem</label>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  class="form-control rf_bg_form rf_texto"
+                  v-model="valor_avaliacao"
+                  required
+                  @input="valor_avaliacao = formatarValor(valor_avaliacao)"
+                />
+                <label class="rf_texto">R$ Avaliado</label>
+              </div>
+            </div>
+          </div>
+          <div class="row g-2 p-2">
+            <div class="col-1">
+              <div class="form-floating">
+                <button type="submit" class="btn btn-filtro">
+                  <span class="rf_texto_btn">Cadastrar</span>
+                </button>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-floating">
+                <button
+                  class="btn btn-filtro"
+                  data-bs-target="#ModalAvaliacaoVeiculo"
+                  data-bs-toggle="modal"
+                  :disabled="hab_avaliacao"
+                  @click="dialog_avaliacao = true"
+                >
+                  <span class="rf_texto_btn">Histórico Veículo</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </form> -->
+        <!--Veículos de Entrada-->
         <div class="row g-2 p-2">
           <div class="card-title gy-4">
-            <i class="bi bi-car-front-fill fs-5 icone_filtro"
-              ><span class="texto_filtro">Veículo de Entrada</span></i
+            <i class="bi bi-clipboard-check fs-5 icone_filtro"
+              ><span class="texto_filtro">Veículos de Entrada</span></i
             >
           </div>
-          
-          <div class="col-1">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="placa_avaliacao"
-                v-on:blur="verificar_avaliacao_placa()" required />
-              <label class="rf_texto">Placa</label>
-            </div>
-          </div>
-          
-          <div class="col-2">
-            <div class="form-floating">
-              <input v-model="marca_avaliacao" class="form-control rf_bg_form rf_texto" required />
-              <label class="rf_texto">Marca</label>              
-            </div>
-          </div>
-             
-          <div class="col-2">
-            <div class="form-floating">
-              <input class="form-control rf_bg_form rf_texto" v-model="modelo_avaliacao" required />
-              <label  class="rf_texto">Modelo</label>
-            </div>
-          </div>
-          <div class="col-1">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="anoModelo_avaliacao" required/>
-              <label class="rf_texto">Ano Modelo</label>
-            </div>
-          </div>
-          <div class="col-4">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="cor_avaliacao" required/>
-              <label class="rf_texto">Cor</label>
-            </div>
-          </div>    
-          <div class="col-1">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="kilometragem" required @input="kilometragem = formatarKM(kilometragem)" />
-              <label class="rf_texto">Kilometragem</label>
-            </div>
-          </div>
-          <div class="col-1">
-            <div class="form-floating">
-              <input type="text" class="form-control rf_bg_form rf_texto" v-model="valor_avaliacao" required @input="valor_avaliacao = formatarValor(valor_avaliacao)" />
-              <label class="rf_texto">R$ Avaliado</label>
-            </div>
-          </div>
-        </div>       
+        </div>
+        <div class="card card-tabela-desk g-2 p-2 mt-2">
+          <table class="table rf_texto card_avaliacao" disabled>
+            <thead>
+              <tr>
+                <th scope="col">Marca</th>
+                <th scope="col">Modelo</th>
+                <th scope="col">Placa</th>
+                <th scope="col">Ano Modelo</th>
+                <th scope="col">Cor</th>
+                <th scope="col">Kilometragem</th>
+                <th scope="col">R$ Avaliado</th>
+                <th scope="col">Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in veiculos_avaliados" :key="item.descricao">
+                <td>{{ item.marca }}</td>
+                <td>{{ item.modelo }}</td>
+                <td>{{ item.placa }}</td>
+                <td>{{ item.ano_mod }}</td>
+                <td>{{ item.cor }}</td>
+                <td>{{ item.kilometragem }}</td>
+                <td>{{ item.preco_avaliado }}</td>
+
+                <td>
+                  <button
+                    type="button"
+                    class="dropdown-toggle-icon"
+                    @click="excluir_veiculo_av(item)"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="dropdown-toggle-icon"
+                    data-bs-target="#ModalAvaliacaoVeiculo"
+                    data-bs-toggle="modal"
+                    :disabled="hab_avaliacao"
+                    @click="verificar_avaliacoes_placa(item)"
+                  >
+                    <i class="bi bi-car-front-fill"></i>
+                  </button>
+                </td>
+              </tr>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th scope="col">Total</th>
+              <td>{{ currency(this.valor_avaliacao) }}</td>
+            </tbody>
+          </table>
+        </div>
         <div class="row g-2 p-2">
-          <div class="col-1 ">
+          <div class="col-1">
             <div class="form-floating">
-              <button type="submit" class="btn btn-filtro">
-                <span class="rf_texto_btn">Cadastrar</span>
-              </button>            
-            </div>
-          </div>  
-          <div class="col-2 ">
-            <div class="form-floating">              
               <button
-                class="btn  btn-filtro"
-                data-bs-target="#ModalAvaliacaoVeiculo"
+                type="button"
+                class="btn btn-filtro"
+                data-bs-target="#ModalVeiculoAvaliacao"
                 data-bs-toggle="modal"
-                :disabled="hab_avaliacao" @click="dialog_avaliacao = true"
-                
+                :disabled="inserir_item_avaliacao"
+                @click="habilitar_itens_avaliacao"
               >
-                <span class="rf_texto_btn">Histórico Veículo</span>
+                <span class="rf_texto_btn">Inserir</span>
               </button>
             </div>
-          </div>                
+          </div>
         </div>
-      </form>
-      <div class="row g-2 p-2">
+
+        <!--Itens de Avaliação-->
+        <!-- <div class="row g-2 p-2">
           <div class="card-title gy-4">
             <i class="bi bi-clipboard-check fs-5 icone_filtro"
               ><span class="texto_filtro">Itens Avaliação</span></i
             >
           </div>
-        </div>
-      <div class="card card-tabela-desk g-2 p-2 mt-2">
-        <table class="table rf_texto card_avaliacao" disabled>
-          <thead>
-            <tr>
-              <th scope="col">Item</th>
-              <th scope="col">R$ Valor</th>
-              <th scope="col">Tipo</th>
-              <th scope="col">Ação</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in itens_veiculo" :key="item.descricao">
-              <td>{{ item.item }}</td>
-              <td>{{ item.valor }}</td>
-              <td>{{ item.tipo }}</td>
-              <td>
-                <button type="button" class="btn btn-secondary" @click="excluir_item_av(item)">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        </div> -->
+        <!-- <div class="card card-tabela-desk g-2 p-2 mt-2">
+          <table class="table rf_texto card_avaliacao" disabled>
+            <thead>
+              <tr>
+                <th scope="col">Item</th>
+                <th scope="col">R$ Valor</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in itens_veiculo" :key="item.descricao">
+                <td>{{ item.item }}</td>
+                <td>{{ item.valor }}</td>
+                <td>{{ item.tipo }}</td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    @click="excluir_item_av(item)"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div> -->
+        <!-- <div class="row g-2 p-2">
+          <div class="col-1">
+            <div class="form-floating">
+              <button
+                type="button"
+                class="btn btn-filtro"
+                data-bs-target="#ModalItensAvaliacao"
+                data-bs-toggle="modal"
+                :disabled="inserir_item_avaliacao"
+                @click="habilitar_itens_avaliacao"
+              >
+                <span class="rf_texto_btn">Inserir</span>
+              </button>
+            </div>
+          </div>
+        </div> -->
       </div>
-      <div class="row g-2 p-2">
-        <div class="col-1">
-          <div class="form-floating">
-          <button type="button" class="btn btn-filtro" data-bs-target="#ModalItensAvaliacao"
-            data-bs-toggle="modal" :disabled="inserir_item_avaliacao" @click="habilitar_itens_avaliacao">
-            <span class="rf_texto_btn">Inserir</span>
-          </button>
-        </div>
-        </div>
-      </div>     
-  </div> 
     </div>
   </div>
-    <!--Bloco Resumo da Proposta-->
-    <div class="card card-filtro">
+  <!--Bloco Resumo da Proposta-->
+  <div class="card card-filtro">
     <div class="row g-2 p-2">
       <div class="card-title rf_texto gy-4">
         <i class="bi bi-car-front-fill fs-5 icone_filtro"
@@ -743,61 +888,79 @@
       <!--Descrição-->
       <div class="col col-md-4">
         <div class="form-floating">
-            <input
-              type="text"
-              class="form-control rf_bg_form rf_texto"
-              v-model="Valor_Sugerido"
-              :disabled="true"
-            />
-            <label for="valid_descricao" class="rf_texto">Valor Sugerido de Venda</label>
+          <input
+            type="text"
+            class="form-control rf_bg_form rf_texto"
+            v-model="Valor_Sugerido"
+            :disabled="true"
+          />
+          <label for="valid_descricao" class="rf_texto"
+            >Valor Sugerido de Venda</label
+          >
         </div>
       </div>
       <div class="col col-md-4">
         <div class="form-floating">
-            <input
-              type="text"
-              class="form-control rf_bg_form rf_texto"
-              v-model="Valor_Custo_variaveis"
-              :disabled="true"
-            />
-            <label for="valid_descricao" class="rf_texto">Valor Custos Variáveis (+)</label>
-        </div>        
+          <input
+            type="text"
+            class="form-control rf_bg_form rf_texto"
+            v-model="Valor_Custo_variaveis"
+            :disabled="true"
+          />
+          <label for="valid_descricao" class="rf_texto"
+            >Valor Custos Variáveis (+)</label
+          >
+        </div>
       </div>
       <div class="col col-md-4">
         <div class="form-floating">
-            <input
-              type="text"
-              class="form-control rf_bg_form rf_texto"
-              v-model="Valor_Itens_Acessorios"
-              :disabled="true"
-            />
-            <label for="valid_descricao" class="rf_texto">Valor dos Acessórios</label>
-        </div>         
+          <input
+            type="text"
+            class="form-control rf_bg_form rf_texto"
+            v-model="Valor_Itens_Acessorios"
+            :disabled="true"
+          />
+          <label for="valid_descricao" class="rf_texto"
+            >Valor dos Acessórios</label
+          >
+        </div>
       </div>
       <div class="col col-md-4">
         <div class="form-floating">
-          <input type="text" class="form-control rf_bg_form rf_texto" v-model="desconto"
-                              v-on:blur="inserir_desconto" @input="desconto = formatarValor(desconto)" />
-            <label for="valid_descricao" class="rf_texto">Desconto</label>
-        </div>         
+          <input
+            type="text"
+            class="form-control rf_bg_form rf_texto"
+            v-model="desconto"
+            v-on:blur="inserir_desconto"
+            @input="desconto = formatarValor(desconto)"
+          />
+          <label for="valid_descricao" class="rf_texto">Desconto</label>
+        </div>
       </div>
       <div class="col col-md-4">
         <div class="form-floating">
-          <input type="text" class="form-control rf_bg_form rf_texto" v-model="adicional"
-                              v-on:blur="inserir_acrescimo" @input="adicional = formatarValor(adicional)" />
-            <label for="valid_descricao" class="rf_texto">Acréscimo</label>
-        </div>  
+          <input
+            type="text"
+            class="form-control rf_bg_form rf_texto"
+            v-model="adicional"
+            v-on:blur="inserir_acrescimo"
+            @input="adicional = formatarValor(adicional)"
+          />
+          <label for="valid_descricao" class="rf_texto">Acréscimo</label>
+        </div>
       </div>
       <div class="col col-md-4">
         <div class="form-floating">
-            <input
-              type="text"
-              class="form-control rf_bg_form rf_texto"
-              v-model="Valor_Total_Venda"
-              :disabled="true"
-            />
-            <label for="valid_descricao" class="rf_texto">Valor Total Veículo Venda</label>
-        </div>       
+          <input
+            type="text"
+            class="form-control rf_bg_form rf_texto"
+            v-model="Valor_Total_Venda"
+            :disabled="true"
+          />
+          <label for="valid_descricao" class="rf_texto"
+            >Valor Total Veículo Venda</label
+          >
+        </div>
       </div>
     </div>
   </div>
@@ -805,102 +968,116 @@
     <div class="card-desk-menu">
       <span>Resultado Operacional / Gerencial</span>
     </div>
-    <div class="row g-2 p-2">      
+    <div class="row g-2 p-2">
       <div class="col col-md-3">
         <div class="form-floating">
-            <input
-              type="text"
-              class="form-control rf_bg_form rf_texto"
-              v-model="Lucro_Bruto"
-              :disabled="true"
-            />
-            <label for="valid_descricao" class="rf_texto">Valor Resultado Bruto</label>
-        </div> 
-      </div>
-      <div class="col col-md-3">       
-        <div class="form-floating">
-            <input
-              type="text"
-              class="form-control rf_bg_form rf_texto"
-              v-model="Lucro_Operacional"
-              :disabled="true"
-            />
-            <label for="valid_descricao" class="rf_texto">Valor Resultado Gerencial</label>
-        </div> 
+          <input
+            type="text"
+            class="form-control rf_bg_form rf_texto"
+            v-model="Lucro_Bruto"
+            :disabled="true"
+          />
+          <label for="valid_descricao" class="rf_texto"
+            >Valor Resultado Bruto</label
+          >
+        </div>
       </div>
       <div class="col col-md-3">
         <div class="form-floating">
-            <input
-              type="text"
-              class="form-control rf_bg_form rf_texto"
-              v-model="Valor_Resultado_Financiamento"
-              :disabled="true"
-            />
-            <label for="valid_descricao" class="rf_texto">Valor Resultado Financiamento</label>
-        </div> 
+          <input
+            type="text"
+            class="form-control rf_bg_form rf_texto"
+            v-model="Lucro_Operacional"
+            :disabled="true"
+          />
+          <label for="valid_descricao" class="rf_texto"
+            >Valor Resultado Gerencial</label
+          >
+        </div>
+      </div>
+      <div class="col col-md-3">
+        <div class="form-floating">
+          <input
+            type="text"
+            class="form-control rf_bg_form rf_texto"
+            v-model="Valor_Resultado_Financiamento"
+            :disabled="true"
+          />
+          <label for="valid_descricao" class="rf_texto"
+            >Valor Resultado Financiamento</label
+          >
+        </div>
       </div>
 
       <div class="col col-md-3">
         <div class="form-floating">
-            <input
-              type="text"
-              class="form-control rf_bg_form rf_texto"
-              v-model="Lucro_liquido"
-              :disabled="true"
-            />
-            <label for="valid_descricao" class="rf_texto">Valor Resultado Liquído</label>
-        </div> 
+          <input
+            type="text"
+            class="form-control rf_bg_form rf_texto"
+            v-model="Lucro_liquido"
+            :disabled="true"
+          />
+          <label for="valid_descricao" class="rf_texto"
+            >Valor Resultado Liquído</label
+          >
+        </div>
       </div>
     </div>
   </div>
-  <div class="card card-filtro">  
+  <div class="card card-filtro">
     <div class="card-desk-menu">
       <span>Avaliação do Veículo</span>
     </div>
     <div class="row g-2 p-2">
-      <div class="col col-md-3">        
+      <div class="col col-md-3">
         <div class="form-floating">
-            <input
-              type="text"
-              class="form-control rf_bg_form rf_texto"
-              v-model="Valor_Avaliado"
-              :disabled="true"
-            />
-            <label for="valid_descricao" class="rf_texto">Valor Avaliação</label>
-        </div> 
+          <input
+            type="text"
+            class="form-control rf_bg_form rf_texto"
+            v-model="Valor_Avaliado"
+            :disabled="true"
+          />
+          <label for="valid_descricao" class="rf_texto">Valor Avaliação</label>
+        </div>
       </div>
-      <div class="col col-md-3">        
+      <div class="col col-md-3">
         <div class="form-floating">
-            <input
-              type="text"
-              class="form-control rf_bg_form rf_texto"
-              v-model="Valor_Itens_Avaliacao_db"
-              :disabled="true"
-            />
-            <label for="valid_descricao" class="rf_texto">Valor itens Avaliados DB(-)</label>
-        </div> 
+          <input
+            type="text"
+            class="form-control rf_bg_form rf_texto"
+            v-model="Valor_Itens_Avaliacao_db"
+            :disabled="true"
+          />
+          <label for="valid_descricao" class="rf_texto"
+            >Valor itens Avaliados DB(-)</label
+          >
+        </div>
       </div>
-      <div class="col col-md-3">       
+      <div class="col col-md-3">
         <div class="form-floating">
-            <input
-              type="text"
-              class="form-control rf_bg_form rf_texto"
-              v-model="Valor_Itens_Avaliacao_cr"
-              :disabled="true"
-            />
-            <label for="valid_descricao" class="rf_texto">Valor itens Avaliados CR(2)</label>
-        </div> 
+          <input
+            type="text"
+            class="form-control rf_bg_form rf_texto"
+            v-model="Valor_Itens_Avaliacao_cr"
+            :disabled="true"
+          />
+          <label for="valid_descricao" class="rf_texto"
+            >Valor itens Avaliados CR(2)</label
+          >
+        </div>
       </div>
-      <div class="col col-md-3">     
+      <div class="col col-md-3">
         <div class="form-floating">
-            <input
-              type="text"
-              class="form-control rf_bg_form rf_texto"
-              v-model="Valor_Avaliacao_Final"
-              :disabled="true"
-            />
-            <label for="valid_descricao" class="rf_texto">Valor Avaliação Final</label>
-        </div> 
+          <input
+            type="text"
+            class="form-control rf_bg_form rf_texto"
+            v-model="Valor_Avaliacao_Final"
+            :disabled="true"
+          />
+          <label for="valid_descricao" class="rf_texto"
+            >Valor Avaliação Final</label
+          >
+        </div>
       </div>
     </div>
   </div>
@@ -909,55 +1086,207 @@
       <span>Informações sobre o Financiamento</span>
     </div>
     <div class="row g-2 p-2">
-      <div class="col col-md-3">       
+      <div class="col col-md-3">
         <div class="form-floating">
-            <input
-              type="text"
-              class="form-control rf_bg_form rf_texto"
-              v-model="Valor_Entrada"
-              :disabled="true"
-            />
-            <label for="valid_descricao" class="rf_texto">Valor Entrada</label>
-        </div> 
+          <input
+            type="text"
+            class="form-control rf_bg_form rf_texto"
+            v-model="Valor_Entrada"
+            :disabled="true"
+          />
+          <label for="valid_descricao" class="rf_texto">Valor Entrada</label>
+        </div>
       </div>
-      <div class="col col-md-3">   
+      <div class="col col-md-3">
         <div class="form-floating">
-            <input
-              type="text"
-              class="form-control rf_bg_form rf_texto"
-              v-model="Valor_Financiado"
-              :disabled="true"
-            />
-            <label for="valid_descricao" class="rf_texto">Valor Financiado</label>
-        </div> 
+          <input
+            type="text"
+            class="form-control rf_bg_form rf_texto"
+            v-model="Valor_Financiado"
+            :disabled="true"
+          />
+          <label for="valid_descricao" class="rf_texto">Valor Financiado</label>
+        </div>
       </div>
-      <div class="col col-md-3">      
+      <div class="col col-md-3">
         <div class="form-floating">
-            <input
-              type="text"
-              class="form-control rf_bg_form rf_texto"
-              v-model="Quantidade_Meses"
-              :disabled="true"
-            />
-            <label for="valid_descricao" class="rf_texto">Quantidade de Meses</label>
-        </div> 
+          <input
+            type="text"
+            class="form-control rf_bg_form rf_texto"
+            v-model="Quantidade_Meses"
+            :disabled="true"
+          />
+          <label for="valid_descricao" class="rf_texto"
+            >Quantidade de Meses</label
+          >
+        </div>
       </div>
 
       <div class="col col-md-3">
         <div class="form-floating">
-            <input
-              type="text"
-              class="form-control rf_bg_form rf_texto"
-              v-model="Pmt"
-              :disabled="true"
-            />
-            <label for="valid_descricao" class="rf_texto">Valor da Parcela</label>
-        </div> 
+          <input
+            type="text"
+            class="form-control rf_bg_form rf_texto"
+            v-model="Pmt"
+            :disabled="true"
+          />
+          <label for="valid_descricao" class="rf_texto">Valor da Parcela</label>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="modal-content">
+  <!--Quadro para Venda a Vista-->
+  <div class="card-filtro" v-if="venda_vista">
+    <div class="card card-vendas">
+      <div class="row g-2 p-2">
+        <div class="col-6">
+          <div class="card-title gy-4">
+            <i class="bi bi-journal-text fs-5 icone_filtro"
+              ><span class="texto_filtro"
+                ><strong>Pagamento à vista</strong></span
+              ></i
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-2 p-2">
+        <div class="col">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              disabled
+              v-model="valor_da_venda"
+            />
+            <label class="rf_texto">Valor da Venda</label>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-floating">
+            <select
+              class="form-select rf_bg_form rf_texto"
+              v-model="met_pagamento_vista"
+              @change="verificarMetodoPagamento"
+            >
+              <option
+                v-for="item in metodo_pagamento_vista"
+                :value="item.id"
+                :key="item.id"
+                :disabled="item.descricao === 'FINANCIAMENTO'"
+              >
+                {{ item.descricao }}
+              </option>
+            </select>
+            <label for="valid_empresa" class="rf_texto"
+              >Tipo de Pagamento
+            </label>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="valor_parcela_vista"
+              @input="valor_parcela_vista = formatarValor(valor_parcela_vista)"
+            />
+            <label class="rf_texto">Valor</label>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-floating">
+            <select
+              class="form-select rf_bg_form rf_texto"
+              v-model="qtd_parcela_vista"
+            >
+              <option
+                v-for="item in qtd_parcelamento"
+                :value="item.value"
+                :key="item.value"
+              >
+                {{ item.value }}
+              </option>
+            </select>
+            <label for="valid_empresa" class="rf_texto">Parcela </label>
+          </div>
+        </div>
+        <div class="col">
+          <button
+            type="button"
+            class="btn btn-lg btn-desk-filtro rf_texto_btn"
+            :disabled="habilitar_inserir_pagamento"
+            @click="inserir_pagamento()"
+          >
+            Inserir
+          </button>
+        </div>
+
+        <div class="col">
+          <button
+            class="btn btn-lg btn-desk-filtro"
+            data-bs-toggle="modal"
+            data-bs-target="#ModalGerarMenuPagamentoOuro"
+            :disabled="habilitar_gerar_menu_avista"
+            @click="gerar_menu_avista"
+          >
+            <span class="rf_texto_btn">Gerar Menu</span>
+          </button>
+        </div>
+      </div>
+      <div class="g-2 p-2">
+        <div class="card-title gy-4">
+          <i class="bi bi-tools fs-5 icone_kit"
+            ><span class="texto_kit">Composição do Pagamento</span></i
+          >
+        </div>
+        <table class="table rf_texto">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 15%">Valor Informado</th>
+              <th scope="col" style="width: 15%">Pagamento</th>
+              <th scope="col" style="width: 10%">Qtd.</th>
+
+              <th scope="col" style="width: 5%">Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="item in itens_pagamentos"
+              :key="item.id"
+              class="table-linha"
+            >
+              <td>{{ this.currency(item.valor_parcela) }}</td>
+              <td>{{ item.tipo_pagamento_fei.descricao }}</td>
+              <td>{{ item.qtd_parcela }}</td>
+
+              <td style="display: flex">
+                <!-- <button
+                    @click="exibirModalPagamento(item)"
+                    data-bs-target="#ModalEditarPagamento"
+                    data-bs-toggle="modal"
+                    class="dropdown-toggle-icon p-1"
+                  >
+                    <i class="bi bi-pencil-square"></i>
+                  </button> -->
+                <button
+                  class="dropdown-toggle-icon"
+                  data-bs-target="#excluiModalPagamento"
+                  data-bs-toggle="modal"
+                  @click="remover_item_pagamento(item)"
+                >
+                  <i class="bi bi-trash3"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!--Quadro para financiamento-->
+  <div class="modal-content" v-if="venda_financiamento">
     <div class="card card-filtro">
       <div class="row g-2 p-2">
         <div class="card-title rf_texto gy-4">
@@ -1269,7 +1598,9 @@
                     <button
                       class="btn btn-lg btn-desk-filtro"
                       id="btn_1"
-                      :disabled="entrada_1 === '' || entrada_2 === '' || entrada_3 === ''"
+                      :disabled="
+                        entrada_1 === '' || entrada_2 === '' || entrada_3 === ''
+                      "
                       data-bs-target="#ModalRanqueamento"
                       data-bs-toggle="modal"
                       @click="ranqueamento_1()"
@@ -1283,7 +1614,9 @@
                     <button
                       class="btn btn-lg btn-desk-filtro"
                       id="btn_2"
-                      :disabled="entrada_1 === '' || entrada_2 === '' || entrada_3 === ''"
+                      :disabled="
+                        entrada_1 === '' || entrada_2 === '' || entrada_3 === ''
+                      "
                       data-bs-target="#ModalRanqueamento"
                       data-bs-toggle="modal"
                       @click="ranqueamento_2()"
@@ -1297,7 +1630,9 @@
                     <button
                       class="btn btn-lg btn-desk-filtro"
                       id="btn_3"
-                      :disabled="entrada_1 === '' || entrada_2 === '' || entrada_3 === ''"
+                      :disabled="
+                        entrada_1 === '' || entrada_2 === '' || entrada_3 === ''
+                      "
                       data-bs-target="#ModalRanqueamento"
                       data-bs-toggle="modal"
                       @click="ranqueamento_3()"
@@ -1337,13 +1672,8 @@
     </div>
     <div>
       <!-- <button @click="openModal('Sua mensagem aqui')">Abrir Modal</button> -->
-      <Aviso 
-      :msg="modalMessage"
-      :visible="showModal"
-      @close="closeModal"
-      />
+      <Aviso :msg="modalMessage" :visible="showModal" @close="closeModal" />
     </div>
-
 
     <div v-if="abrir_modal_atualizar">
       <MessageAtualizar :msg="msg_atualizar" v-show="msg_atualizar" />
@@ -1378,6 +1708,255 @@
     </div>
   </div>
 
+  <!--Modal Veiculo Avaliação-->
+  <div
+    class="modal fade"
+    id="ModalVeiculoAvaliacao"
+    aria-hidden="true"
+    aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content card-container-desk rf_texto">
+        <div class="modal-header">
+          <div class="card-title gy-4">
+            <i class="bi bi-car-front-fill fs-5 icone_filtro"
+              ><span class="texto_kit">Veículo para Avaliação </span></i
+            >
+          </div>
+
+          <button
+            type="button"
+            class="btn btn-modal btn-lg p-1 mt-1"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          >
+            Sair
+          </button>
+        </div>
+        <div class="modal-body">
+          <form @submit.prevent="onSubmitVeiculoAvaliacao">
+            <!--Item-->
+            <div class="row g-2 p-2">
+              <div class="col-2">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control rf_bg_form rf_texto"
+                    v-model="placa_av"
+                    :style="{ 'border-color': placaCorBorda }"
+                    v-on:blur="verificar_avaliacao_placa()"
+                  />
+                  <label class="rf_texto">Placa *</label>
+                </div>
+              </div>
+              <!--Marca-->
+              <div class="col-3">
+                <div class="form-floating">
+                  <input
+                    v-model="marcaSelecionada"
+                    class="form-control rf_bg_form rf_texto"
+                    list="datalistMarcas"
+                    id="marca"
+                    autocomplete="off"
+                    @change="buscarModelo"
+                    ref="marcaInput"
+                    :style="{ 'border-color': marcaCorBorda }"
+                  />
+
+                  <label class="rf_texto">Marcas *</label>
+                  <datalist id="datalistMarcas" ref="datalistMarcas">
+                    <option
+                      v-for="marca in marcas"
+                      :data-id="marca.codigo"
+                      :value="marca.descricao"
+                      :key="marca.id"
+                    ></option>
+                  </datalist>
+                </div>
+              </div>
+              <!--Modelo-->
+              <div class="col">
+                <div class="form-floating">
+                  <input
+                    v-model="modeloSelecionado"
+                    class="form-control rf_bg_form rf_texto"
+                    list="datalistModelos"
+                    id="modelo"
+                    autocomplete="off"
+                    :style="{ 'border-color': modeloCorBorda }"
+                  />
+
+                  <label class="rf_texto">Modelo *</label>
+                  <datalist id="datalistModelos">
+                    <option
+                      v-for="modelo in modelos"
+                      :data-id="modelo.codigo"
+                      :value="modelo.descricao"
+                      :key="modelo.id"
+                    ></option>
+                  </datalist>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control rf_bg_form rf_texto"
+                    v-model="anoModelo_av"
+                    :style="{ 'border-color': anoModeloCorBorda }"
+                  />
+                  <label class="rf_texto">Ano Modelo *</label>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 p-2">
+              <div class="col">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control rf_bg_form rf_texto"
+                    v-model="cor_av"
+                    :style="{ 'border-color': corCorBorda }"
+                  />
+                  <label class="rf_texto">Cor *</label>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control rf_bg_form rf_texto"
+                    v-model="kilometragem_av"
+                    :style="{ 'border-color': kilometragemCorBorda }"
+                    @input="kilometragem_av = formatarKM(kilometragem_av)"
+                  />
+                  <label class="rf_texto">Kilometragem *</label>
+                </div>
+              </div>
+              <!-- <div class="col-3">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control rf_bg_form rf_texto"
+                    v-model="valor_avaliacao"
+                    required
+                    @input="valor_avaliacao = formatarValor(valor_avaliacao)"
+                  />
+                  <label class="rf_texto">R$ Fipe</label>
+                </div>
+              </div> -->
+              <div class="col-3">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control rf_bg_form rf_texto"
+                    v-model="valor_av"
+                    :style="{ 'border-color': valorAvaliadoCorBorda }"
+                    @input="valor_av = formatarValor(valor_av)"
+                  />
+                  <label class="rf_texto">R$ Avaliado *</label>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 p-2">
+              <div class="col-12">
+                <div class="form-floating">
+                  <textarea
+                    v-model="obs_av"
+                    class="form-control rf_bg_form rf_texto"
+                  ></textarea>
+                  <label class="rf_texto">Observação</label>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="card-title gy-4">
+                  <i class="bi bi-book fs-5 icone_filtro"
+                    ><span class="texto_kit">Última Avaliação</span></i
+                  >
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control rf_bg_form rf_texto"
+                    v-model="data_av_hst"
+                    disabled
+                  />
+                  <label class="rf_texto">Data</label>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control rf_bg_form rf_texto"
+                    v-model="kilometragem_av_hst"
+                    disabled
+                  />
+                  <label class="rf_texto">Kilometragem</label>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control rf_bg_form rf_texto"
+                    v-model="valor_av_hst"
+                    disabled
+                  />
+                  <label class="rf_texto">R$ Avaliado</label>
+                </div>
+              </div>
+              <div class="col-12">
+                <label class="rf_texto" v-if="info_erros.placa_av"
+                  >Preencha o campo Placa!</label
+                >
+                <label class="rf_texto" v-if="info_erros.marcaSelecionada"
+                  >Preencha o campo Marca!</label
+                >
+                <label class="rf_texto" v-if="info_erros.modeloSelecionado"
+                  >Preencha o campo Modelo!</label
+                >
+                <label class="rf_texto" v-if="info_erros.anoModelo_av"
+                  >Preencha o campo Ano!</label
+                >
+                <label class="rf_texto" v-if="info_erros.cor_av"
+                  >Preencha o campo Cor!</label
+                >
+              </div>
+            </div>
+
+            <div class="row g-2 p-2">
+              <div class="col">
+                <div class="form-floating">
+                  <button
+                    class="btn btn-lg btn-desk-filtro"
+                    type="submit"                 
+                    @click="handleUpdate"
+                  >
+                    <span class="rf_texto_btn">Alterar Veículo</span>
+                  </button>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-floating">
+                  <button
+                    class="btn btn-lg btn-desk-filtro"
+                    type="submit"
+                    @click="handleInsert"
+                  >
+                    <span class="rf_texto_btn">Inserir</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
   <!--Modal Estoque-->
   <div
     class="modal fade"
@@ -1652,7 +2231,7 @@
           <form @submit.prevent="onSubmitTrocaVendedor">
             <div class="row g-2 p-2">
               <div v-if="abrir_modal">
-                <div class="alert  text-center" role="alert">
+                <div class="alert text-center" role="alert">
                   {{ msg }}
                 </div>
               </div>
@@ -1708,8 +2287,8 @@
       </div>
     </div>
   </div>
-    <!--Modal Trocar Mídia-->
-    <div
+  <!--Modal Trocar Mídia-->
+  <div
     class="modal fade"
     id="ModalTrocarMidia"
     aria-hidden="true"
@@ -1738,12 +2317,12 @@
           <form @submit.prevent="onSubmitTrocaMidia">
             <div class="row g-2 p-2">
               <div v-if="abrir_modal">
-                <div class="alert  text-center" role="alert">
+                <div class="alert text-center" role="alert">
                   {{ msg }}
                 </div>
               </div>
               <div class="row g-2 p-2">
-              <!-- <div class="col">
+                <!-- <div class="col">
                 <div class="form-floating">
                   <input
                     type="text"
@@ -1754,32 +2333,39 @@
                   <label class="rf_texto">Justificativa</label>
                 </div>
               </div> -->
-              <div class="row g-2 p-2">
-                <div class="col-6 col-md-3">
-                <div class="form-floating">
-                  <select class="form-select rf_bg_form rf_texto "  required v-model="midia_id">
-
-                    <option v-for="item in midia" :value="item.id" :key="item.id">
-                      {{ item.descricao }}
-                    </option>
-                  </select>
-                  <label class="rf_texto">Midia</label>
+                <div class="row g-2 p-2">
+                  <div class="col-6 col-md-3">
+                    <div class="form-floating">
+                      <select
+                        class="form-select rf_bg_form rf_texto"
+                        required
+                        v-model="midia_id"
+                      >
+                        <option
+                          v-for="item in midia"
+                          :value="item.id"
+                          :key="item.id"
+                        >
+                          {{ item.descricao }}
+                        </option>
+                      </select>
+                      <label class="rf_texto">Midia</label>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="form-floating">
+                      <button
+                        class="btn btn-lg btn-desk-filtro"
+                        data-bs-dismiss="modal"
+                        :disabled="check_midia"
+                        type="submit"
+                      >
+                        <span class="rf_texto_btn">Alterar</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="col-3">
-                <div class="form-floating">
-                  <button
-                    class="btn btn-lg btn-desk-filtro"
-                    data-bs-dismiss="modal"
-                    :disabled="check_midia"
-                    type="submit"
-                  >
-                    <span class="rf_texto_btn">Alterar</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            </div>
             </div>
           </form>
         </div>
@@ -1915,7 +2501,7 @@
             Sair
           </button>
         </div>
-        <div class="modal-body">         
+        <div class="modal-body">
           <!--Tabelas-->
           <div class="card card-tabela-desk g-2 p-2 mt-2">
             <table class="table rf_texto_desk">
@@ -1929,15 +2515,14 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in avaliacoes.avaliacoes" :key="item.id">
+                <tr v-for="item in historico_avaliacoes.avaliacoes" :key="item.id">
                   <td>{{ currency(item.precoAvaliacao) }}</td>
-                  <td>{{ item.kilometragem }}</td>
+                  <td>{{ formatarKM(item.kilometragem) }}</td>
                   <td>{{ item.empresa }}</td>
                   <td>{{ item.avaliador_id }}</td>
                   <td>
                     {{ new Date(item.data).toLocaleDateString("pt-BR") }}
                   </td>
-                  
                 </tr>
               </tbody>
             </table>
@@ -1974,7 +2559,9 @@
             class="btn btn-modal btn-lg p-1 mt-1"
             data-bs-dismiss="modal"
             aria-label="Close"
-          >Sair</button>
+          >
+            Sair
+          </button>
         </div>
         <div class="modal-body">
           <form @submit.prevent="onSubmitItensAvaliacao">
@@ -2026,7 +2613,7 @@
                     data-bs-dismiss="modal"
                     type="submit"
                   >
-                  <span class="rf_texto_btn">Inserir</span>
+                    <span class="rf_texto_btn">Inserir</span>
                   </button>
                 </div>
               </div>
@@ -2140,7 +2727,7 @@
               :offset="totalPages"
               :total="totalItems"
               :limit="pageSize"
-              @change-page="handlePageChange"
+              @change-page="handlePageChangeItemAcessorio"
             />
           </div>
         </div>
@@ -2811,7 +3398,7 @@
       </div>
     </div>
   </div>
-  
+
   <!--Modal Mensagem Incluir Acessórios-->
   <div
     class="modal fade"
@@ -2890,81 +3477,139 @@
               <!--Dados do Cliente-->
               <div class="row g-2 p-2">
                 <div class="col-12">
-                  <i class="bi bi-person-badge fs-5 icone_filtro_desk "
+                  <i class="bi bi-person-badge fs-5 icone_filtro_desk"
                     ><span class="texto_filtro_desk"
-                      ><strong class="rf_titulo_pdf">Informações do Cliente</strong></span
+                      ><strong class="rf_titulo_pdf"
+                        >Informações do Cliente</strong
+                      ></span
                     ></i
                   >
                 </div>
                 <div class="col">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp ">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Cliente</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_cliente }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Cliente</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_cliente
+                    }}</span>
                   </div>
                 </div>
                 <div class="col-2">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">CPF/CNPJ</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_cpfCnpj }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >CPF/CNPJ</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_cpfCnpj
+                    }}</span>
                   </div>
                 </div>
                 <div class="col-2">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Telefone</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_fone }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Telefone</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_fone
+                    }}</span>
                   </div>
                 </div>
                 <div class="col-2">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Telefone 2</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_fone2 }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Telefone 2</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_fone2
+                    }}</span>
                   </div>
                 </div>
                 <div class="col-2">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Email</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_email }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Email</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_email
+                    }}</span>
                   </div>
                 </div>
               </div>
               <!--Informações da Proposta-->
               <div class="row g-2 p-2">
                 <div class="col-12">
-                  <i class="bi bi-person-badge fs-5 icone_filtro_desk "
+                  <i class="bi bi-person-badge fs-5 icone_filtro_desk"
                     ><span class="texto_filtro_desk"
-                      ><strong class="rf_titulo_pdf">Informações da Proposta</strong></span
+                      ><strong class="rf_titulo_pdf"
+                        >Informações da Proposta</strong
+                      ></span
                     ></i
                   >
                 </div>
                 <div class="col">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Gerente</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_gerente }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Gerente</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_gerente
+                    }}</span>
                   </div>
                 </div>
                 <div class="col">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Vendedor</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_vendedor }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Vendedor</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_vendedor
+                    }}</span>
                   </div>
                 </div>
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Negociação</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_negociacao }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Negociação</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_negociacao
+                    }}</span>
                   </div>
                 </div>
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Data</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_data_negociacao }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Data</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_data_negociacao
+                    }}</span>
                   </div>
-                </div>                
+                </div>
               </div>
               <!--Acessórios-->
               <div class="row g-2 p-2">
                 <div class="col-12">
-                  <i class="bi bi-person-badge fs-5 icone_filtro_desk "
+                  <i class="bi bi-person-badge fs-5 icone_filtro_desk"
                     ><span class="texto_filtro_desk"
                       ><strong class="rf_titulo_pdf">Acessórios</strong></span
                     ></i
@@ -2972,330 +3617,567 @@
                 </div>
                 <div>
                   <ul class="list-group list-group-horizontal">
-                      <li v-for="item in itens_acessorios" :key="item.id" class="list-group-item rf_texto_menu_desk">
-                          <div class="row">
-                              <div class="col rf_texto_pdf">
-                                  <span>{{ item.descricao }}</span>
-                              </div>
-                          </div>
-                          <div class="row">
-                              <div class="col">
-                                  <span class="rf_texto_pdf rf_texto_menu_titulo_desk">{{ this.currency(item.valor) }}</span>
-                              </div>
-                          </div>
-                      </li>
+                    <li
+                      v-for="item in itens_acessorios"
+                      :key="item.id"
+                      class="list-group-item rf_texto_menu_desk"
+                    >
+                      <div class="row">
+                        <div class="col rf_texto_pdf">
+                          <span>{{ item.descricao }}</span>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <span
+                            class="rf_texto_pdf rf_texto_menu_titulo_desk"
+                            >{{ this.currency(item.valor) }}</span
+                          >
+                        </div>
+                      </div>
+                    </li>
                   </ul>
-                  <i class="fs-5 icone_filtro_desk "
+                  <i class="fs-5 icone_filtro_desk"
                     ><span
                       ><strong class="rf_titulo_pdf">{{ msg }}</strong></span
                     ></i
-                  >  
-                </div>                    
+                  >
+                </div>
               </div>
-               <!--Informações do Veículo-->
-               <div class="row g-2 p-2">
+              <!--Informações do Veículo-->
+              <div class="row g-2 p-2">
                 <div class="col-12">
-                  <i class="bi bi-person-badge fs-5 icone_filtro_desk "
+                  <i class="bi bi-person-badge fs-5 icone_filtro_desk"
                     ><span class="texto_filtro_desk"
-                      ><strong class="rf_titulo_pdf">Informações do Veículo</strong></span
+                      ><strong class="rf_titulo_pdf"
+                        >Informações do Veículo</strong
+                      ></span
                     ></i
                   >
                 </div>
                 <div class="col-2">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Marca</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_marca }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Marca</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_marca
+                    }}</span>
                   </div>
                 </div>
                 <div class="col">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Modelo</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_modelo }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Modelo</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_modelo
+                    }}</span>
                   </div>
                 </div>
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Cor</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_cor }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Cor</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_cor
+                    }}</span>
                   </div>
                 </div>
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Placa</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_placa }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Placa</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_placa
+                    }}</span>
                   </div>
-                </div>     
+                </div>
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Chassi</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_chassi }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Chassi</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_chassi
+                    }}</span>
                   </div>
-                </div>   
+                </div>
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Ano Mod.</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_ano_modelo }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Ano Mod.</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_ano_modelo
+                    }}</span>
                   </div>
-                </div>    
+                </div>
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Ano Fab.</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_ano_fab }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Ano Fab.</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_ano_fab
+                    }}</span>
                   </div>
-                </div>          
+                </div>
               </div>
               <!--Resumos da compra-->
               <div class="row g-2 p-2">
                 <div class="col-12">
-                  <i class="bi bi-person-badge fs-5 icone_filtro_desk "
+                  <i class="bi bi-person-badge fs-5 icone_filtro_desk"
                     ><span class="texto_filtro_desk"
-                      ><strong class="rf_titulo_pdf">Resumo da Compra</strong></span
+                      ><strong class="rf_titulo_pdf"
+                        >Resumo da Compra</strong
+                      ></span
                     ></i
                   >
                 </div>
                 <div class="col">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Sugerido</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_val_sugerido }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Valor Sugerido</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_val_sugerido
+                    }}</span>
                   </div>
                 </div>
                 <div class="col">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Desconto</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_val_desconto }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Valor Desconto</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_val_desconto
+                    }}</span>
                   </div>
                 </div>
                 <div class="col">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Parcela Escolhida</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ Pmt }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Parcela Escolhida</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      Pmt
+                    }}</span>
                   </div>
                 </div>
                 <div class="col">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Tipo Pagamento</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ tipoPagamento }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Tipo Pagamento</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      tipoPagamento
+                    }}</span>
                   </div>
-                </div>     
+                </div>
                 <div class="col">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Total Veículo</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_val_veiculo }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Valor Total Veículo</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_val_veiculo
+                    }}</span>
                   </div>
-                </div>   
+                </div>
                 <div class="col">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Total Financiado</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ Valor_Financiado }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Total Financiado</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      Valor_Financiado
+                    }}</span>
                   </div>
-                </div>    
-                         
+                </div>
               </div>
               <!--Veículo de Troca-->
               <div class="row g-2 p-2">
                 <div class="col-12">
-                  <i class="bi bi-person-badge fs-5 icone_filtro_desk "
+                  <i class="bi bi-person-badge fs-5 icone_filtro_desk"
                     ><span class="texto_filtro_desk"
-                      ><strong class="rf_titulo_pdf">Veículo de Troca</strong></span
+                      ><strong class="rf_titulo_pdf">Veículo da Troca</strong></span
                     ></i
                   >
                 </div>
-                <div class="col-2">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Marca</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ this.marca_avaliacao }}</span>
+                <div>
+                  <ul class="list-group ">
+                    <li
+                      v-for="item in veiculos_avaliados"
+                      :key="item.id"
+                      class="list-group-item rf_texto_menu_desk"
+                    >
+                      <div class="row">
+                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
+                          <span>Marca</span>
+                        </div>
+                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
+                          <span>Modelo</span>
+                        </div>
+                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
+                          <span>Placa</span>
+                        </div>
+                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
+                          <span>Ano Modelo</span>
+                        </div>
+                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
+                          <span>Cor</span>
+                        </div>
+                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
+                          <span>Kilometragem</span>
+                        </div>
+                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
+                          <span>R$ Avaliado</span>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <span
+                            class="rf_texto_pdf "
+                            >{{ item.marca }}</span
+                          >
+                        </div>
+                        <div class="col">
+                          <span
+                            class="rf_texto_pdf "
+                            >{{ item.modelo }}</span
+                          >
+                        </div>
+                        <div class="col">
+                          <span
+                            class="rf_texto_pdf "
+                            >{{ item.placa }}</span
+                          >
+                        </div>
+                        <div class="col">
+                          <span
+                            class="rf_texto_pdf "
+                            >{{ item.ano_mod }}</span
+                          >
+                        </div>
+                        <div class="col">
+                          <span
+                            class="rf_texto_pdf "
+                            >{{ item.cor }}</span
+                          >
+                        </div>
+                        <div class="col">
+                          <span
+                            class="rf_texto_pdf "
+                            >{{ formatarKM(item.kilometragem) }}</span
+                          >
+                        </div>
+                        <div class="col">
+                          <span
+                            class="rf_texto_pdf "
+                            >{{ item.preco_avaliado }}</span
+                          >
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- <div class="col-2">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Marca</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      this.marca_avaliacao
+                    }}</span>
                   </div>
                 </div>
                 <div class="col">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Modelo</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ this.modelo_avaliacao }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Modelo</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      this.modelo_avaliacao
+                    }}</span>
                   </div>
                 </div>
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Placa</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ this.placa_avaliacao }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Placa</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      this.placa_avaliacao
+                    }}</span>
                   </div>
                 </div>
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Ano</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ this.anoModelo_avaliacao }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Ano</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      this.anoModelo_avaliacao
+                    }}</span>
                   </div>
-                </div>     
+                </div>
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Itens(-)</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ 0.00 }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Valor Itens(-)</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      0.0
+                    }}</span>
                   </div>
-                </div>   
+                </div>
                 <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Itens(+)</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ 0.00 }}</span>
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Valor Itens(+)</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      0.0
+                    }}</span>
                   </div>
-                </div>    
-                <div class="col-2">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Avaliado</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_valor_avaliado }}</span>
+                </div> -->
+                <div class="col">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Valor Total Acesssórios</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      Valor_Itens_Acessorios
+                    }}</span>
                   </div>
-                </div>  
-                <div class="col-1">
-                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Final</label>
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_valor_avaliacao_final }}</span>
+                </div>
+                <div class="col">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Valor Total Avaliação</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_valor_avaliacao_final
+                    }}</span>
                   </div>
-                </div>  
-                         
+                </div>
+                <div class="col">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Valor Entrada</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                     this.currency(this.entrada_escolhida)
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Total Entrada</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                     Valor_Entrada
+                    }}</span>
+                  </div>
+                </div>
               </div>
             </div>
             <!--Quadro Entradas-->
             <div class="row mt-2">
               <!--Entradas-->
               <div class="col divisoria_desk">
-                  <div class="barra_fei_menu_desk">
-                    <span class="texto_centralizado rf_titulo_destaque_pdf"
-                      ><strong>Entradas</strong></span
-                    >
-                  </div>
-                  <div class="rf_texto_pdf texto_menu_ent_desk">
-                    <div>
-                      <div class="col">
-                        <strong> {{ Entrada_Total_1 }}</strong>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="col">
-                        <strong> {{ Entrada_Total_2 }}</strong>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="col">
-                        <strong> {{ Entrada_Total_3 }}</strong>
-                      </div>
+                <div class="barra_fei_menu_desk">
+                  <span class="texto_centralizado rf_titulo_destaque_pdf"
+                    ><strong>Entradas</strong></span
+                  >
+                </div>
+                <div class="rf_texto_pdf texto_menu_ent_desk">
+                  <div>
+                    <div class="col">
+                      <strong> {{ Entrada_Total_1 }}</strong>
                     </div>
                   </div>
+                  <div>
+                    <div class="col">
+                      <strong> {{ Entrada_Total_2 }}</strong>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="col">
+                      <strong> {{ Entrada_Total_3 }}</strong>
+                    </div>
+                  </div>
+                </div>
               </div>
               <!--Total Financiado-->
               <div class="col divisoria_desk">
-                  <div class="barra_fei_menu_desk">
-                    <span class="texto_centralizado rf_titulo_destaque_pdf"
-                      ><strong>Total Financiado</strong></span
-                    >
-                  </div>
-                  <div class="rf_texto_pdf texto_menu_ent_desk">
-                    <div>
-                      <div class="col">
-                        <strong> {{ Valor_Financiado_1 }}</strong>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="col">
-                        <strong> {{ Valor_Financiado_2 }}</strong>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="col">
-                        <strong> {{ Valor_Financiado_3 }}</strong>
-                      </div>
+                <div class="barra_fei_menu_desk">
+                  <span class="texto_centralizado rf_titulo_destaque_pdf"
+                    ><strong>Total Financiado</strong></span
+                  >
+                </div>
+                <div class="rf_texto_pdf texto_menu_ent_desk">
+                  <div>
+                    <div class="col">
+                      <strong> {{ Valor_Financiado_1 }}</strong>
                     </div>
                   </div>
+                  <div>
+                    <div class="col">
+                      <strong> {{ Valor_Financiado_2 }}</strong>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="col">
+                      <strong> {{ Valor_Financiado_3 }}</strong>
+                    </div>
+                  </div>
+                </div>
               </div>
               <!--Meses-->
               <div class="col divisoria_desk">
-                  <div class="barra_fei_menu_desk">
-                    <span class="texto_centralizado rf_titulo_destaque_pdf"
-                      ><strong>{{ parcela_1 }} Meses</strong></span
-                    >
-                  </div>
-                  <div class="rf_texto_pdf texto_menu_ent_desk">
-                    <div>
-                      <div class="col">
-                        <strong> {{ parcela_1_1 }}</strong>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="col">
-                        <strong> {{ parcela_2_1 }}</strong>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="col">
-                        <strong> {{ parcela_3_1 }}</strong>
-                      </div>
+                <div class="barra_fei_menu_desk">
+                  <span class="texto_centralizado rf_titulo_destaque_pdf"
+                    ><strong>{{ parcela_1 }} Meses</strong></span
+                  >
+                </div>
+                <div class="rf_texto_pdf texto_menu_ent_desk">
+                  <div>
+                    <div class="col">
+                      <strong> {{ parcela_1_1 }}</strong>
                     </div>
                   </div>
+                  <div>
+                    <div class="col">
+                      <strong> {{ parcela_2_1 }}</strong>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="col">
+                      <strong> {{ parcela_3_1 }}</strong>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="col divisoria_desk">
-                  <div class="barra_fei_menu_desk">
-                    <span class="texto_centralizado rf_titulo_destaque_pdf"
-                      ><strong>{{ parcela_2 }} Meses</strong></span
-                    >
-                  </div>
-                  <div class="rf_texto_pdf texto_menu_ent_desk">
-                    <div>
-                      <div class="col">
-                        <strong> {{ parcela_1_2 }}</strong>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="col">
-                        <strong> {{ parcela_2_2 }}</strong>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="col">
-                        <strong> {{ parcela_3_2 }}</strong>
-                      </div>
+                <div class="barra_fei_menu_desk">
+                  <span class="texto_centralizado rf_titulo_destaque_pdf"
+                    ><strong>{{ parcela_2 }} Meses</strong></span
+                  >
+                </div>
+                <div class="rf_texto_pdf texto_menu_ent_desk">
+                  <div>
+                    <div class="col">
+                      <strong> {{ parcela_1_2 }}</strong>
                     </div>
                   </div>
+                  <div>
+                    <div class="col">
+                      <strong> {{ parcela_2_2 }}</strong>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="col">
+                      <strong> {{ parcela_3_2 }}</strong>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="col divisoria_desk2">
-                  <div class="barra_fei_menu_desk">
-                    <span class="texto_centralizado rf_titulo_destaque_pdf"
-                      ><strong>{{ parcela_3 }} Meses</strong></span
-                    >
-                  </div>
-                  <div class="rf_texto_pdf texto_menu_ent_desk">
-                    <div>
-                      <div class="col">
-                        <strong> {{ parcela_1_3 }}</strong>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="col">
-                        <strong> {{ parcela_2_3 }}</strong>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="col">
-                        <strong> {{ parcela_3_3 }}</strong>
-                      </div>
+                <div class="barra_fei_menu_desk">
+                  <span class="texto_centralizado rf_titulo_destaque_pdf"
+                    ><strong>{{ parcela_3 }} Meses</strong></span
+                  >
+                </div>
+                <div class="rf_texto_pdf texto_menu_ent_desk">
+                  <div>
+                    <div class="col">
+                      <strong> {{ parcela_1_3 }}</strong>
                     </div>
                   </div>
+                  <div>
+                    <div class="col">
+                      <strong> {{ parcela_2_3 }}</strong>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="col">
+                      <strong> {{ parcela_3_3 }}</strong>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-       
+
             <div class="row g-2 p-2">
-              <div class="col"><br>
+              <div class="col">
+                <br />
                 <span>
                   * O preço sugerido é válido enquanto durarem os veículos em
                   estoque.</span
                 >
-          
+
                 <span> ** Despesa Operacional para preparação do veículo</span>
-           
+
                 <!-- <span>A contratação de seguros é opcional, sendo possível a desistência do
                     contrato em até 7 (sete) dias corridos com a devolução integral do
                     valor pago.</span> -->
-            
-                <span
-                  > É proibido condicionar desconto de bem à aquisição de
+
+                <span>
+                  É proibido condicionar desconto de bem à aquisição de
                   seguro.</span
                 >
-            
               </div>
             </div>
             <div class="row g-2 p-2 mt-1">
@@ -3393,6 +4275,7 @@ export default {
       id_proposta: "", // Armazena o id da Proposta
       propostas_at: [],
       itens_veiculo: [],
+      veiculos_avaliados: [],
       estoque_veiculo: [],
       acessorios: [],
       itens_acessorios: [],
@@ -3424,7 +4307,7 @@ export default {
       valid: false,
 
       searchProposta: "",
-      check_midia:"",
+      check_midia: "",
 
       tipo: "",
 
@@ -3575,10 +4458,10 @@ export default {
       isLoading2: false,
       search2: null,
       totalItems2: null,
-      midia:[],
-      midia_informada:"",
-      midia_alterada:"",
-      midia_id:"",
+      midia: [],
+      midia_informada: "",
+      midia_alterada: "",
+      midia_id: "",
       page_midia: 1,
       totalPages_midia: 0,
       totalItems_midia: 0,
@@ -3592,6 +4475,15 @@ export default {
       familia_avaliacao: "",
       familia_avaliacao_desc: "",
       placa_avaliacao: "",
+      placa_av: "",
+      placa_av_hst: "",
+      valor_av_hst: "",
+      kilometragem_av_hst: "",
+      valor_av: "",
+      kilometragem_av: "",
+      anoModelo_av: "",
+      cor_av: "",
+      obs_av: "",
       valor_avaliacao: "",
       kilometragem: "",
       anoModelo_avaliacao: "",
@@ -3602,7 +4494,19 @@ export default {
       hab_avaliacao: true,
       ativar_placa: false,
       desativar_placa: true,
-      cor_avaliacao:"",
+      cor_avaliacao: "",
+      marcaSelecionada: "",
+      marcas: [],
+      modelos: [],
+      id_veiculo: "",
+      lastClicked: "",
+      placaCorBorda: "",
+      marcaCorBorda: "",
+      modeloCorBorda: "",
+      anoModeloCorBorda: "",
+      corCorBorda: "",
+      kilometragemCorBorda: "",
+      valorAvaliadoCorBorda: "",
 
       //Campos Veículo compra
       chassi_proposta: "",
@@ -3831,9 +4735,9 @@ export default {
       open_proposta: true,
       id_cliente: "",
 
-      Entrada_Total_1:"",
-      Entrada_Total_2:"",
-      Entrada_Total_3:"",
+      Entrada_Total_1: "",
+      Entrada_Total_2: "",
+      Entrada_Total_3: "",
       Valor_Financiado_1: "",
       Valor_Entrada_1: "",
       handlePageChange: "",
@@ -3848,14 +4752,16 @@ export default {
       entrada_3_perc: "",
       valor_sugerido_original: "",
       valor_custo_contabil: "",
-
+      entrada_escolhida:"",
       //Daddos da Proposta
       dados_proposta: "",
       pmtSelected: null,
       selected_familia_veiculo_escolhido: [],
       selected_modelo_veiculo_escolhido: [],
+      selected_cor_veiculo_escolhido: [],
       familia_veiculo_escolhido: "",
       modelo_veiculo_escolhido: "",
+      cor_veiculo_escolhido: "",
       venda_a_vista: "",
       recepcionista: "",
       vendedor: [],
@@ -3915,6 +4821,7 @@ export default {
       vendedor_troca: "",
       bloquear_entrada: false,
       timer: null,
+      historico_avaliacoes:[],
 
       //Historico do Cliente
       id_historico_cliente: "",
@@ -3922,7 +4829,31 @@ export default {
       hist_cliente: [],
       modal_historico_cliente: false,
       showModal: false,
-      modalMessage: '',
+      modalMessage: "",
+      info_erros: {},
+      //Pagamento a vista
+      venda_vista: false,
+      venda_financiamento: true,
+      incluir_financiamento: true,
+      valor_da_venda: "",
+      metodo_pagamento_vista: [],
+      met_pagamento_vista: "",
+      valor_parcela_vista: "",
+      qtd_parcela_vista: "",
+      qtd_parcelamento: [
+        { value: 1 },
+        { value: 2 },
+        { value: 3 },
+        { value: 4 },
+        { value: 5 },
+        { value: 6 },
+        { value: 7 },
+        { value: 8 },
+        { value: 9 },
+        { value: 10 },
+        { value: 11 },
+        { value: 12 },
+      ],
     };
   },
   watch: {
@@ -3936,6 +4867,14 @@ export default {
       this.searchChassi = "";
       this.searchPlaca = "";
     },
+    marcaSelecionada: function (novaMarca) {
+      const marca = this.marcas.find((m) => m.descricao === novaMarca);
+      this.marcaId = marca ? marca.id : null;
+    },
+    modeloSelecionado: function (novoModelo) {
+      const modelo = this.modelos.find((m) => m.descricao === novoModelo);
+      this.modeloId = modelo ? modelo.id : null;
+    },
   },
   computed: {
     tipoPagamento() {
@@ -3948,70 +4887,35 @@ export default {
     this.getToken();
     this.habilitar_proposta();
     this.retrieveMidia();
+    this.retrieveTipoPagamento();
+    this.buscar_marcas();
   },
   methods: {
-    getRequestParamsMidias(searchTitle, page_midia, pageSize_midia) {
-      let params = {};
-      if (searchTitle) {
-        params["nome"] = searchTitle;
-      }
-      if (page_midia) {
-        params["page"] = page_midia - 1;
-      }
-      if (pageSize_midia) {
-        params["size"] = pageSize_midia;
-      }
-      return params;
-    },
-    async retrieveMidia() {
-      try {
-        const params = this.getRequestParamsMidias(
-          this.searchTitle,
-          this.page_midia,
-          this.pageSize_midia
-        );
-        userService.getMidia(params).then((response) => {
-          const { midias } = response.data;
-
-          this.midia = midias;
-
-          console.log(response.data);
-        }).catch((error) => {
-          if (error.response.status == 400) {
-            this.abrir_modal = true;
-            this.msg = error.response.data.message;
-          }
-        })
-      } catch (error) {
-        if (error.response.status == 400) {
-          this.abrir_modal = true;
-          this.msg = error.response.data.message;
-        }
-      }
-    },
-  
-    /**Função 0001 */
-    getToken() {
-      const accessToken = TokenService.getLocalAccessToken();
-      // Obter o token de atualização (refresh token)
-      TokenService.getLocalRefreshToken();
-      // Obter o usuário completo (incluindo os tokens) se necessário
+      /**Função 0001 */
+      getToken() {
+      const accessToken = TokenService.getLocalAccessToken();      
+      TokenService.getLocalRefreshToken();     
       const user_log = TokenService.getUser();
-
       const decodedToken = jwt_decode(accessToken);
       this.company_id = decodedToken.company;
       this.user_log = user_log.id;
+
+      console.log("Função inicial onde armazeno os seguintes dados -------------- 0001 ");
+      console.log("usuário : ", user_log.id);
+      console.log("Token de Acesso : ", decodedToken);
+      console.log("Empresa Logada :", this.company_id)
     },
     /**Função 0002 */
     async habilitar_proposta() {
       const propostaId = this.$route.params.id;
-      //Buscar dados da proposta
-      console.log("Dados obitido da proposta");
+     
+      
       try {
         await userService.getPropostaId(propostaId).then((response) => {
           this.dados_proposta = response.data;
-         
-          console.log("Dados obitido da proposta", response.data);
+          console.log("Dados obitido da proposta ----------------- 0002");
+          console.log("Proposta", response.data);
+
           /**Bloco de dados com informações do cliente */
           const dados_cliente = {
             id_cliente: this.dados_proposta["cliente_id"],
@@ -4116,9 +5020,9 @@ export default {
             );
 
             if (this.dados_proposta.avaliacaoVeiculo_id != null) {
-              this.valor_avaliacao = this.currency(
-                this.dados_proposta.avaliacoes_veiculo.precoAvaliacao
-              );
+              // this.valor_avaliacao = this.currency(
+              //   this.dados_proposta.avaliacoes_veiculo.precoAvaliacao
+              // );
               this.retrieveItensVeiculo();
               this.inserir_item_avaliacao = false;
               this.btn_avaliacao = false;
@@ -4135,7 +5039,7 @@ export default {
               );
             } else {
               this.inserir_veiculo = true; // Bloqueia a inserção de veiculo para compra até preencher a avaliação
-              this.valor_avaliacao = 0;
+              //this.valor_avaliacao = 0;
               this.btn_avaliacao = false;
               console.log(
                 "Bloqueia a inserção de veiculo para compra até preencher a avaliação ----- 0030"
@@ -4201,6 +5105,7 @@ export default {
           //Resumo da Proposta
           this.modal_proposta = true;
           this.resumo();
+          this.retrieveVeiculosAvaliacao();
         });
       } catch (error) {
         if (error.response.status == 400) {
@@ -4237,10 +5142,276 @@ export default {
       });
     },
 
+
+    async buscar_marcas() {
+      try {
+        console.log("Buscando marcas");
+
+        //const response = await axios.get("http://localhost:3007/api/marcas_fipe");
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_FIPE_URL}marcas_fipe`
+        );
+
+        this.marcas = response.data.rows;
+        console.log("Lista de marcas", this.marcas);
+      } catch (error) {
+        console.error(error);
+        this.abrir_modal = true;
+        this.msg = `Ocorreu um erro ao buscar as marcas. Código do erro: ${
+          error.response?.status
+        }. Mensagem: ${error.response?.data?.message || "Erro desconhecido."}`;
+        setTimeout(() => (this.abrir_modal = false), 1000);
+      }
+    },
+    buscarModelo() {
+      const valorSelecionado = this.marcaSelecionada;
+      const datalist = this.$refs.datalistMarcas;
+
+      // Converter as opções em um array para facilitar a busca
+      const options = Array.from(datalist.options);
+
+      // Encontrar a opção que corresponde ao valor selecionado
+      const opcao = options.find((opt) => opt.value === valorSelecionado);
+
+      if (opcao) {
+        const id = opcao.getAttribute("data-id");
+        this.marcaIdSelecionada = id;
+        console.log("ID da marca selecionada:", this.marcaIdSelecionada);
+        this.buscar_modelo(this.marcaIdSelecionada);
+        // Aqui você pode chamar outra função ou realizar alguma ação com o ID da marca
+        // Por exemplo: this.carregarModelos(id);
+      } else {
+        console.log("Nenhuma marca correspondente encontrada.");
+        this.marcaIdSelecionada = null;
+      }
+    },
+    async buscar_modelo(id_marca) {
+      try {
+        console.log("Buscando modelo", id_marca);
+
+        //const response = await axios.get("http://localhost:3007/api/marcas_fipe");
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_FIPE_URL}modelo_marca`,
+          {
+            params: { id: id_marca },
+          }
+        );
+
+        this.modelos = response.data.rows;
+        console.log("Lista de modelos", response);
+      } catch (error) {
+        console.error(error);
+        this.abrir_modal = true;
+        this.msg = `Ocorreu um erro ao buscar as marcas. Código do erro: ${
+          error.response?.status
+        }. Mensagem: ${error.response?.data?.message || "Erro desconhecido."}`;
+        setTimeout(() => (this.abrir_modal = false), 1000);
+      }
+    },
+    getRequestParamsMidias(searchTitle, page_midia, pageSize_midia) {
+      let params = {};
+      if (searchTitle) {
+        params["nome"] = searchTitle;
+      }
+      if (page_midia) {
+        params["page"] = page_midia - 1;
+      }
+      if (pageSize_midia) {
+        params["size"] = pageSize_midia;
+      }
+      return params;
+    },
+    pagamento_vista() {
+      if (this.pagamento == true) {
+        this.venda_vista = true;
+        this.venda_financiamento = false;
+        this.incluir_acessorios = false;
+        this.incluir_financiamento = false;
+      } else {
+        this.venda_vista = false;
+        this.venda_financiamento = true;
+        this.incluir_acessorios = true;
+        this.incluir_financiamento = true;
+      }
+    },
+    async inserir_pagamento() {
+      const valor_pacote = this.valor_pacote_vista
+        ? parseFloat(
+            this.valor_pacote_vista.replace(/[^\d,]+/g, "").replace(",", ".")
+          )
+        : 0;
+      const valor_parcela = this.valor_parcela_vista
+        ? parseFloat(
+            this.valor_parcela_vista.replace(/[^\d,]+/g, "").replace(",", ".")
+          )
+        : 0;
+
+      if (valor_parcela) {
+        try {
+          const response = await axios.get(
+            `${process.env.VUE_APP_API_URL}checar_valor`,
+            {
+              params: {
+                pos_venda_detalhada_id: this.id_pos_venda_detalhada,
+              },
+            }
+          );
+
+          const somatorio_parcelas = response.data.data;
+          const total_pagamento = valor_parcela + somatorio_parcelas;
+
+          if (valor_pacote < total_pagamento) {
+            this.abrir_modal = true;
+            this.msg = "Valor do pagamento ultrapassa o valor do pacote";
+            setTimeout(() => (this.abrir_modal = false), 3000);
+            return;
+          }
+        } catch (error) {
+          console.log(error);
+          if (error.response.status == 400) {
+            this.abrir_modal = true;
+            this.msg = error.response.data.message;
+            setTimeout(() => (this.abrir_modal = false), 3000);
+          }
+        }
+      }
+
+      //Validando antes de enviar para a api
+      if (valor_pacote < valor_parcela || valor_parcela == 0) {
+        this.abrir_modal = true;
+        this.msg =
+          "O valor do pacote não pode ser menor que o valor da parcela ou a parcela não pode ser R$ 0,00";
+        setTimeout(() => (this.abrir_modal = false), 4000);
+        return;
+      }
+      await fetch(`${process.env.VUE_APP_API_URL}pagamento_fei`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          pos_venda_detalhada_id: this.id_pos_venda_detalhada,
+          tipo_pagamento_id: this.met_pagamento_vista,
+          valor_pacote: valor_pacote,
+          valor_parcela: valor_parcela,
+          qtd_parcela: this.qtd_parcela_vista,
+          status: 1,
+        }),
+      })
+        .then((data) => {
+          if (!data.ok) {
+            throw Error(data.status);
+          }
+          return data.json();
+        })
+        .then((resposta) => {
+          console.log("Pagamento inserido com sucesso ------ " + resposta);
+          if (resposta.StatusOk == 200) {
+            this.abrir_modal = true;
+            this.msg = "Pagamento inserido com sucesso";
+            setTimeout(() => (this.abrir_modal = false), 2000);
+            this.retrievePagamentosFei();
+          }
+        });
+    },
+    verificarMetodoPagamento() {
+      if (this.metodo_pagamento === 1) {
+        this.habilitar_finalizar_venda = true;
+      } else {
+        console.log("Metodo Pagamento", this.metodo_pagamento);
+        if (!this.valor_pacote_selecionado) {
+          this.abrir_modal = true;
+          this.msg = "O valor do pacote não pode ser R$ 0,00";
+          setTimeout(() => (this.abrir_modal = false), 4000);
+          this.habilitar_finalizar_venda = true;
+          return;
+        }
+        if (!this.valor_pacote_customizado) {
+          this.abrir_modal = true;
+          this.msg = "O valor do pacote customizado não pode ser R$ 0,00";
+          setTimeout(() => (this.abrir_modal = false), 4000);
+          this.habilitar_finalizar_venda = true;
+          return;
+        }
+
+        this.habilitar_finalizar_venda = false;
+      }
+
+      if (this.met_pagamento_vista === 1) {
+        this.abrir_modal = true;
+        this.msg =
+          "Para essa forma de pagamento utilize o método Financiamento";
+        setTimeout(() => (this.abrir_modal = false), 4000);
+        this.habilitar_inserir_pagamento = true;
+        return;
+      }
+      if (this.met_pagamento_vista != 1) {
+        this.habilitar_inserir_pagamento = false;
+      }
+    },
+    async retrieveTipoPagamento() {
+      try {
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_URL}tipo_pagamentos`,
+          {
+            params: {
+              status: 1,
+            },
+          }
+        );
+
+        // Faça algo com os dados aqui, como atribuir a uma variável de componente
+        this.metodo_pagamento_vista = response.data; // exemplo de atribuição
+        console.log("Lista de pagamentos", this.metodo_pagamento_vista);
+      } catch (error) {
+        console.log(error);
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
+    },
+    async retrieveMidia() {
+      try {
+        const params = this.getRequestParamsMidias(
+          this.searchTitle,
+          this.page_midia,
+          this.pageSize_midia
+        );
+        userService
+          .getMidia(params)
+          .then((response) => {
+            const { midias } = response.data;
+
+            this.midia = midias;
+
+            console.log(response.data);
+          })
+          .catch((error) => {
+            if (error.response.status == 400) {
+              this.abrir_modal = true;
+              this.msg = error.response.data.message;
+            }
+          });
+      } catch (error) {
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+        }
+      }
+    },
+
+  
+ 
+
     /**Função 003 */
     /*Venda Futura e Veiculo do estoque*/
     async completar_modelo(item) {
       try {
+        console.log("checando dados do modelo");
+        console.log(item);
+    
         const id_modelo = item;
         const modelo_venda = await axios.get(
           `${process.env.VUE_APP_API_URL}modelo/${id_modelo}`,
@@ -4268,7 +5439,7 @@ export default {
             (this.placa = ""),
             (this.combustivel_proposta =
               modelo_venda.data.combustivel_veiculo["descricao"]),
-            (this.cor_proposta = ""),
+            (this.cor_proposta = this.selected_cor_veiculo_escolhido),
             (this.numero_veiculo_proposta = 0);
           this.status_veiculo = 1;
           (this.valor_custo_contabil = modelo_venda.data["precoVenda"]),
@@ -4418,15 +5589,16 @@ export default {
           }
         );
 
-        if (verificar_veiculo.data.statusOk == 1) { 
-          console.log(verificar_veiculo.data.data)
+        if (verificar_veiculo.data.statusOk == 1) {
+          console.log(verificar_veiculo.data.data);
           const Filial = verificar_veiculo.data.data[0].empresa_proposta.nome;
           const Gerente = verificar_veiculo.data.data[0].gerentes.username;
-          const Data_Venda = verificar_veiculo.data.data[0].horario_termino_atendimento;
+          const Data_Venda =
+            verificar_veiculo.data.data[0].horario_termino_atendimento;
           const date = new Date(Data_Venda);
 
-          const day = String(date.getDate()).padStart(2, '0');
-          const month = String(date.getMonth() + 1).padStart(2, '0'); // Os meses são baseados em zero
+          const day = String(date.getDate()).padStart(2, "0");
+          const month = String(date.getMonth() + 1).padStart(2, "0"); // Os meses são baseados em zero
           const year = date.getFullYear();
 
           const formattedDate = `${day}/${month}/${year}`;
@@ -4435,7 +5607,7 @@ export default {
                             Empresa: ${Filial} 
                             Gerente: ${Gerente}
                             Data: ${formattedDate}`;
-          this.openModal(Mensagem);          
+          this.openModal(Mensagem);
           return;
         }
 
@@ -4616,7 +5788,7 @@ export default {
           return data.json();
         })
         .then((resposta) => {
-          console.log("Resumo", resposta)
+          console.log("Resumo", resposta);
           if (resposta["tipo_veiculo"] == "NOVO") {
             this.Lucro_Bruto = resposta["Lucro_Bruto_Zero"];
             this.Lucro_Operacional = resposta["Lucro_Operacional_Zero"];
@@ -4631,10 +5803,12 @@ export default {
             (this.Valor_Custo_variaveis = resposta["Valor_Custo_variaveis"]),
             (this.Valor_Itens_Acessorios = resposta["Valor_Itens_Acessorios"]);
           this.Valor_Total_Venda = resposta["Valor_Total_Venda"];
-          this.Valor_Avaliado = resposta["Valor_Avaliado"];
-          this.Valor_Itens_Avaliacao_db = resposta["Valor_Itens_Avaliacao_db"];
-          this.Valor_Itens_Avaliacao_cr = resposta["Valor_Itens_Avaliacao_cr"];
-          this.Valor_Avaliacao_Final = resposta["Valor_Avaliacao_Final"];
+
+          // this.Valor_Avaliado = resposta["Valor_Avaliado"];
+          // this.Valor_Itens_Avaliacao_db = resposta["Valor_Itens_Avaliacao_db"];
+          // this.Valor_Itens_Avaliacao_cr = resposta["Valor_Itens_Avaliacao_cr"];
+          // this.Valor_Avaliacao_Final = resposta["Valor_Avaliacao_Final"];
+          this.Valor_Avaliacao_Final = this.currency(this.valor_avaliacao)
 
           this.Valor_Resultado_Financiamento =
             resposta["Valor_Resultado_Financiamento"];
@@ -4704,30 +5878,32 @@ export default {
             console.log(
               "Não Somar Acessorios ---------------------------------------------------------------------------"
             );
-          }    
+          }
           if (resposta["Pmt"] != "") {
             this.btn_gerar_menu = false;
-            this.btn_1 = false;           
+            this.btn_1 = false;
           }
-        this.checar_pmt_escolhido();
-          console.log("Checando Resposta agora---------------------",resposta);
+          this.checar_pmt_escolhido();
+          console.log("Checando Resposta agora---------------------", resposta);
         });
     },
 
     /**Função 0006 */
-    async checar_pmt_escolhido(){     
+    async checar_pmt_escolhido() {
       const pmt_escolhido = await axios.get(
-          `${process.env.VUE_APP_API_URL}pmt_escolhido`,
-          {
-            params: { id: this.id_proposta },
-          }
-        );
-      console.log("Resultado da consulta ----", pmt_escolhido.data.data.rows[0].pmt_escolhido);
+        `${process.env.VUE_APP_API_URL}pmt_escolhido`,
+        {
+          params: { id: this.id_proposta },
+        }
+      );
+      console.log(
+        "Resultado da consulta ----",
+        pmt_escolhido.data.data.rows[0].pmt_escolhido
+      );
 
-      if (pmt_escolhido.data.data.rows[0].pmt_escolhido != null) {       
-            this.btn_finalizar_venda = false;
-          }
-      
+      if (pmt_escolhido.data.data.rows[0].pmt_escolhido != null) {
+        this.btn_finalizar_venda = false;
+      }
     },
 
     /**Função 0007 */
@@ -4886,28 +6062,25 @@ export default {
       //const justificativa = this.justificativa_midia;
       const id_midia_trocada = this.midia_id;
 
-      await fetch(
-        `${process.env.VUE_APP_API_URL}proposta_troca_midia/${id}`,
-        {
-          method: "PUT",
+      await fetch(`${process.env.VUE_APP_API_URL}proposta_troca_midia/${id}`, {
+        method: "PUT",
 
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: id,
-            // just_troca_vendedor: justificativa,
-            midia_id: id_midia_trocada,
-          }),
-        }
-      )
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: id,
+          // just_troca_vendedor: justificativa,
+          midia_id: id_midia_trocada,
+        }),
+      })
         .then((data) => {
           if (!data.ok) {
             throw Error(data.status);
           }
           return data.json();
         })
-        .then((resposta) => {        
+        .then((resposta) => {
           this.abrir_modal = true;
           this.msg = resposta.message;
           setTimeout(() => (this.abrir_modal = false), 4000);
@@ -4948,7 +6121,7 @@ export default {
       const ano1 = dataObj.getFullYear();
       const mes1 = String(dataObj.getMonth() + 1).padStart(2, "0"); // Mês começa em 0
       const dia1 = String(dataObj.getDate()).padStart(2, "0");
-      return `${ano1}-${mes1}-${dia1}`;
+      return `${dia1}-${mes1}-${ano1}`;
     },
     habilitar_cadastro() {
       console.log("Habilitando cadastro");
@@ -5040,7 +6213,30 @@ export default {
         this.modelo_veiculo_escolhido = [];
       }
     },
-
+    async cor_modelo(){
+      try{
+        await axios
+          .get(`${process.env.VUE_APP_API_URL}cor_modelo`, {
+            params: {},
+          })
+          .then((response) => {
+            this.cor_veiculo_escolhido = response.data;
+            console.log("listando as cores")
+            console.log(response.data);
+          })
+          .catch((error) => {
+            if (error.response.status == 400) {
+              this.abrir_modal = true;
+              this.msg = error.response.data.message;
+              setTimeout(() => (this.abrir_modal = false), 4000);
+            }
+          });
+      }catch (error) {
+        this.abrir_modal = true;
+          this.msg = error.message;
+          setTimeout(() => (this.abrir_modal = false), 4000);
+      }
+    },
     generatePdf() {
       // console.log("Imprimir ----------------------------------------------------------------------------------------------------------------- 0001")
       const options = {
@@ -5059,16 +6255,20 @@ export default {
       document.querySelectorAll(".rf_titulo_pdf").forEach((element) => {
         element.style.fontSize = "12px"; // Tamanho de fonte para impressão
       });
-      document.querySelectorAll(".rf_titulo_destaque_pdf").forEach((element) => {
-        element.style.fontSize = "14px"; // Tamanho de fonte para impressão
-      });
-      document.querySelectorAll(".rf_bg_form_menu_desk_imp").forEach((element) => {
-        element.style.border = "1px solid #2A2B3F"; // Define a borda
-        element.style.borderRadius = "4px"; // Define o raio da borda
-        element.style.marginLeft = "2px"; // Define a margem esquerda
-        element.style.marginRight = "2px"; // Define a margem direita
-        element.style.height = "30px"; // Define a altura
-      });
+      document
+        .querySelectorAll(".rf_titulo_destaque_pdf")
+        .forEach((element) => {
+          element.style.fontSize = "14px"; // Tamanho de fonte para impressão
+        });
+      document
+        .querySelectorAll(".rf_bg_form_menu_desk_imp")
+        .forEach((element) => {
+          element.style.border = "1px solid #2A2B3F"; // Define a borda
+          element.style.borderRadius = "4px"; // Define o raio da borda
+          element.style.marginLeft = "2px"; // Define a margem esquerda
+          element.style.marginRight = "2px"; // Define a margem direita
+          element.style.height = "30px"; // Define a altura
+        });
 
       setTimeout(() => {
         html2pdf().from(this.$refs.contentToPrint).set(options).save();
@@ -5167,7 +6367,7 @@ export default {
         this.g_menu_itens_avaliacao_db = this.Valor_Itens_Avaliacao_db ?? 0;
         this.g_menu_itens_avaliacao_cr = this.Valor_Itens_Avaliacao_cr ?? 0;
         this.g_menu_valor_avaliacao_final = this.Valor_Avaliacao_Final ?? 0;
-
+        this.calcular_entrada_gerar_menu();
         // Acessorios
         this.g_menu_total_acessorios = this.Valor_Itens_Acessorios;
         this.itens_acessorios = data?.data?.rows[0]?.acessorios_proposta ?? [];
@@ -5202,10 +6402,13 @@ export default {
     },
     formatarKM(numero) {
       // Converter para string e remover quaisquer caracteres não numéricos
-      const numeroString = numero.toString().replace(/\D/g, '');
+      const numeroString = numero.toString().replace(/\D/g, "");
 
       // Adicionar ponto a cada três dígitos, começando da direita
-      const numeroFormatado = numeroString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      const numeroFormatado = numeroString.replace(
+        /\B(?=(\d{3})+(?!\d))/g,
+        "."
+      );
 
       return numeroFormatado;
     },
@@ -5225,11 +6428,16 @@ export default {
         let valor_numerico = parseFloat(
           this.entrada_1.replace(/[^\d,]+/g, "").replace(",", ".")
         );
-        let valor_numerico_avaliacao = parseFloat(
-          this.valor_avaliacao.replace(/[^\d,]+/g, "").replace(",", ".")
-        );
-        let entrada_perc = ((valor_numerico + valor_numerico_avaliacao) / valor_original) * 100;
+        // let valor_numerico_avaliacao = parseFloat(
+        //   this.valor_avaliacao.replace(/[^\d,]+/g, "").replace(",", ".")
+        // );
+        let valor_numerico_avaliacao = parseFloat(this.valor_avaliacao);
+        let entrada_perc =
+          ((valor_numerico + valor_numerico_avaliacao) / valor_original) * 100;
         this.entrada_1_perc = parseFloat(entrada_perc).toFixed(2);
+ 
+
+
       } else {
         this.entrada_1_perc = "";
       }
@@ -5249,11 +6457,13 @@ export default {
         let valor_numerico = parseFloat(
           this.entrada_2.replace(/[^\d,]+/g, "").replace(",", ".")
         );
-        let valor_numerico_avaliacao = parseFloat(
-          this.valor_avaliacao.replace(/[^\d,]+/g, "").replace(",", ".")
-        );
-        let entrada_perc = ((valor_numerico + valor_numerico_avaliacao) / valor_original) * 100;
-        
+        // let valor_numerico_avaliacao = parseFloat(
+        //   this.valor_avaliacao.replace(/[^\d,]+/g, "").replace(",", ".")
+        // );
+        let valor_numerico_avaliacao = parseFloat(this.valor_avaliacao);
+        let entrada_perc =
+          ((valor_numerico + valor_numerico_avaliacao) / valor_original) * 100;
+
         this.entrada_2_perc = parseFloat(entrada_perc).toFixed(2);
       } else {
         this.entrada_2_perc = "";
@@ -5267,11 +6477,13 @@ export default {
         let valor_numerico = parseFloat(
           this.entrada_3.replace(/[^\d,]+/g, "").replace(",", ".")
         );
-        let valor_numerico_avaliacao = parseFloat(
-          this.valor_avaliacao.replace(/[^\d,]+/g, "").replace(",", ".")
-        );
-        let entrada_perc = ((valor_numerico + valor_numerico_avaliacao) / valor_original) * 100;
-        
+        // let valor_numerico_avaliacao = parseFloat(
+        //   this.valor_avaliacao.replace(/[^\d,]+/g, "").replace(",", ".")
+        // );
+        let valor_numerico_avaliacao = parseFloat(this.valor_avaliacao);
+        let entrada_perc =
+          ((valor_numerico + valor_numerico_avaliacao) / valor_original) * 100;
+
         this.entrada_3_perc = parseFloat(entrada_perc).toFixed(2);
       } else {
         this.entrada_3_perc = "";
@@ -5283,6 +6495,23 @@ export default {
         this.Valor_Total_Venda.replace(/[^\d,]+/g, "").replace(",", ".")
       );
       this.entrada_3 = this.currency(valor_original * calc_entrada3);
+    },
+
+    calcular_entrada_gerar_menu() {
+   
+        let valor_original = parseFloat(
+          this.Valor_Entrada.replace(/[^\d,]+/g, "").replace(",", ".")
+        );
+        let valor_numerico = parseFloat(
+          this.g_menu_valor_avaliacao_final.replace(/[^\d,]+/g, "").replace(",", ".")
+        );
+ 
+        
+        let entrada_perc =
+          (valor_original - valor_numerico );
+
+        this.entrada_escolhida = parseFloat(entrada_perc).toFixed(2);
+     
     },
     filtrarPropostas() {
       if (this.selectedFilter === "Em Atendimento") {
@@ -5823,6 +7052,44 @@ export default {
         }
       }
     },
+    async retrieveVeiculosAvaliacao() {
+      try {
+        const id_proposta = this.id_proposta;
+        console.log("Veiculos de Avaliação -----------", id_proposta);
+        userService.getVeiculosAvaliacaoId(id_proposta).then((response) => {
+          var veiculo_av = [];
+          var veiculo_av2 = [];
+          const { rows } = response.data;
+          const TotalAvaliacoes = response.data.totalPrecoAvaliacao;
+          this.valor_avaliacao = TotalAvaliacoes;
+
+          for (var i = 0; i < rows.length; i++) {
+            var arr_it = {
+              marca: rows[i]["veiculo_usado_avaliacao"]["marca"],
+              modelo: rows[i]["veiculo_usado_avaliacao"]["modelo"],
+              placa: rows[i]["veiculo_usado_avaliacao"]["placa"],
+              preco_avaliado: this.currency(rows[i]["precoAvaliacao"]),
+              cor: rows[i]["veiculo_usado_avaliacao"]["cor"],
+              kilometragem: rows[i]["veiculo_usado_avaliacao"]["kilometragem"],
+              ano_mod: rows[i]["veiculo_usado_avaliacao"]["anoModelo"],
+            };
+            veiculo_av = arr_it;
+            veiculo_av2.push(veiculo_av);
+          }
+
+          this.veiculos_avaliados = veiculo_av2;
+          console.log("veiculos_avaliados")
+          console.log(this.veiculos_avaliados)
+          console.log(this.valor_avaliacao)
+        });
+      } catch (error) {
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+          setTimeout(() => (this.abrir_modal = false), 4000);
+        }
+      }
+    },
     async onSubmitItensAvaliacao() {
       const response = await fetch(
         `${process.env.VUE_APP_API_URL}itens_avaliacao`,
@@ -5867,78 +7134,194 @@ export default {
       }
     },
     async onSubmitVeiculoAvaliacao() {
-      
-      const id_userCad = this.$store.state.auth.user.id;
-      await fetch(
-        `${process.env.VUE_APP_API_URL}veiculo_usado`,
-        {
-          method: "POST",
+      try {
+        const id_userCad = this.$store.state.auth.user.id;
+        if (this.lastClicked === "insert") {
 
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            marca: this.marca_avaliacao,
-            modelo: this.modelo_avaliacao,           
-            placa: this.placa_avaliacao,
-            precoAvaliacao: this.valor_avaliacao,
-            kilometragem: this.kilometragem,           
-            anoModelo: this.anoModelo_avaliacao,
-            avaliador_id: id_userCad,
-            veiculoUsado_id: this.veiculoUsado_id,
-            proposta_id: this.id_proposta,
-            empresa_id: this.company_id,
-            cor: this.cor_avaliacao
-          }),
-        })
-        .then(response => {
-         
-          if (!response.ok) {
-              return response.json().then(error => {
-                  // Aqui você acessa a mensagem de erro enviada pelo backend
-                  console.error('Erro:', error.message);              
-                  this.abrir_modal = true;
-                  this.msg = "Formmato da Placa está incorreto";
-                  setTimeout(() => (this.abrir_modal = false), 4000);
-              });
+          if (!this.placa_av) {
+            this.placaCorBorda = "red";
+            return;
+          } else {
+            this.placaCorBorda = "green";
           }
-          return response.json();
-      })
-      .then(data => {
-          console.log('Sucesso:', data);
-          this.abrir_modal = true;
-          this.msg = data.message;
-          setTimeout(() => (this.abrir_modal = false), 4000);
-          this.inserir_veiculo = false; //Habilita inserir veiculo para compra
-          this.inserir_item_avaliacao = false; //Habilita inseir itens para avaliação
-      })
-      .catch(error => {
-          console.error('Erro na requisição:', error);
-          this.abrir_modal = true;
-          this.msg = "Formmato da Placa está incorreto";
-          setTimeout(() => (this.abrir_modal = false), 4000);
-      });
-        
-        
-        
-      //   const resp = JSON.stringify(response);
-      // console.log(resp)
-      // if (resp == 200) {
-      //   this.modal = true;
-      //   this.dialog = true;
-      //   this.message = "Avaliação criada com sucesso!";
-      //   this.inserir_veiculo = false; //Habilita inserir veiculo para compra
-      //   this.inserir_item_avaliacao = false; //Habilita inseir itens para avaliação
-      //   setTimeout(() => (this.dialog = false), 4000);
-      // } else {
-      //   this.modal = true;
-      //   this.dialog = true;
-      //   this.message = "Erro ao inserir a avaliação";
-      //   setTimeout(() => (this.dialog = false), 4000);
-      // }
+          if (!this.marcaSelecionada) {
+            this.marcaCorBorda = "red";
+            return;
+          } else {
+            this.marcaCorBorda = "green";
+          }
+          if (!this.modeloSelecionado) {
+            this.modeloCorBorda = "red";
+            return;
+          } else {
+            this.modeloCorBorda = "green";
+          }
+          if (!this.anoModelo_av) {
+            this.anoModeloCorBorda = "red";
+            return;
+          } else {
+            this.anoModeloCorBorda = "green";
+          }
+          if (!this.cor_av) {
+            this.corCorBorda = "red";
+            return;
+          } else {
+            this.corCorBorda = "green";
+          }
+          if (!this.kilometragem_av) {
+            this.kilometragemCorBorda = "red";
+            console.log("preencha o km")
+            return;
+          } else {
+            this.kilometragemCorBorda = "green";
+          }
+          if (!this.valor_av) {
+            this.valorAvaliadoCorBorda = "red";
+            return;
+          } else {
+            this.valorAvaliadoCorBorda = "green";
+          }
+
+
+          await fetch(`${process.env.VUE_APP_API_URL}veiculo_usado`, {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              marca: this.marcaSelecionada,
+              modelo: this.modeloSelecionado,
+              placa: this.placa_av,
+              precoAvaliacao: this.valor_av,
+              kilometragem: this.kilometragem_av,
+              anoModelo: this.anoModelo_av,
+              avaliador_id: id_userCad,
+              veiculoUsado_id: this.veiculoUsado_id,
+              proposta_id: this.id_proposta,
+              empresa_id: this.company_id,
+              cor: this.cor_av,
+              obs: this.obs_av,
+              status: 1,
+            }),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                return response.json().then((error) => {    
+                  this.abrir_modal = true;
+                  this.msg = error.message;
+                  setTimeout(() => (this.abrir_modal = false), 4000);
+                });
+              }
+              return response.json();
+            })
+            .then((data) => {
+              this.abrir_modal = true;
+              this.msg = data.message;
+              setTimeout(() => (this.abrir_modal = false), 4000);
+              this.limpar_form_av();
+              this.retrieveVeiculosAvaliacao();
+              this.inserir_veiculo = false; //Habilita inserir veiculo para compra
+              this.inserir_item_avaliacao = false; //Habilita inseir itens para avaliação
+
+            })
+            .catch((error) => {
+              console.error("Erro na requisição:", error);
+              this.abrir_modal = true;
+              this.msg = "Formmato da Placa está incorreto";
+              setTimeout(() => (this.abrir_modal = false), 4000);
+            });
+        } else if (this.lastClicked === "update") {
+         
+          if (!this.placa_av) {
+            this.placaCorBorda = "red";
+            return;
+          } else {
+            this.placaCorBorda = "green";
+          }
+          if (!this.marcaSelecionada) {
+            this.marcaCorBorda = "red";
+            return;
+          } else {
+            this.marcaCorBorda = "green";
+          }
+          if (!this.modeloSelecionado) {
+            this.modeloCorBorda = "red";
+            return;
+          } else {
+            this.modeloCorBorda = "green";
+          }
+          if (!this.anoModelo_av) {
+            this.anoModeloCorBorda = "red";
+            return;
+          } else {
+            this.anoModeloCorBorda = "green";
+          }
+          if (!this.cor_av) {
+            this.corCorBorda = "red";
+            return;
+          } else {
+            this.corCorBorda = "green";
+          }
+          
+
+          const id = this.id_veiculo;
+          console.log("id do veículo", id);
+          await fetch(`${process.env.VUE_APP_API_URL}veiculo_usado/${id}`, {
+            method: "PUT",
+
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: id,
+              marca: this.marcaSelecionada,
+              modelo: this.modeloSelecionado,
+              placa: this.placa_av,
+              anoModelo: this.anoModelo_av,
+              avaliador_id: id_userCad,
+              cor: this.cor_av,
+            }),
+          })
+            .then((data) => {
+              if (!data.ok) {
+                throw Error(data.status);
+              }
+              return data.json();
+            })
+            .then((resposta) => {
+              if (resposta.status === 200) {
+                this.abrir_modal = true;
+                this.msg = "Veículo Atualizado!";
+                setTimeout(() => (this.abrir_modal = false), 4000);
+              }
+              this.limpar_form_av();
+              this.retrieveVeiculosAvaliacao();
+            });
+        }
+      } catch (error) {
+        this.abrir_modal = true;
+                this.msg = error.message;
+                setTimeout(() => (this.abrir_modal = false), 4000);
+      }
+    },
+    limpar_form_av(){
+      this.marcaSelecionada = "",
+      this.modeloSelecionado ="",
+      this.placa_av = "",
+      this.valor_av = "",
+      this.kilometragem_av = "",
+      this.anoModelo_av = "",
+      this.cor_av = "",
+      this.obs_av = ""
+    },
+    handleInsert() {
+      this.lastClicked = "insert";
+    },
+    handleUpdate() {
+      this.lastClicked = "update";
     },
     async verificar_avaliacao_placa() {
-
       await fetch(`${process.env.VUE_APP_API_URL}veiculo_usado_avaliacao`, {
         method: "POST",
 
@@ -5946,7 +7329,7 @@ export default {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          placa: this.placa_avaliacao,
+          placa: this.placa_av,
         }),
       })
         .then((data) => {
@@ -5964,15 +7347,27 @@ export default {
           this.ativar_placa = false;
           this.desativar_placa = true;
           if (resposta.status != 1) {
-            (this.marca_avaliacao = resposta.marca),              
-              (this.modelo_avaliacao = resposta.modelo),             
+            const ultimaAvaliacao =
+              resposta.avaliacoes[resposta.avaliacoes.length - 1];
+            (this.marca_avaliacao = resposta.marca),
+              (this.modeloSelecionado = resposta.modelo),
+              (this.id_veiculo = resposta.id),
               (this.kilometragem = resposta.kilometragem),
-              (this.anoModelo_avaliacao = resposta.anoModelo),  
-              (this.cor_avaliacao = resposta.cor_avaliacao),           
-              (this.valor_avaliacao = this.currency(
-                resposta.avaliacoes[0]["precoAvaliacao"]
+              (this.kilometragem_av_hst = this.formatarKM(
+                ultimaAvaliacao.kilometragem
               )),
-              (this.avaliacoes = resposta),
+              (this.anoModelo_av = resposta.anoModelo),
+              (this.cor_av = resposta.cor_avaliacao),
+              (this.data_av_hst = this.formatarData(ultimaAvaliacao.data)),
+              (this.marca_av_hst = resposta.marca),
+              (this.marcaSelecionada = resposta.marca),
+              (this.valor_av_hst = this.currency(
+                ultimaAvaliacao.precoAvaliacao
+              )),
+              // (this.valor_avaliacao = this.currency(
+              //   resposta.avaliacoes[0]["precoAvaliacao"]
+              // )),
+              // (this.avaliacoes = resposta),
               (this.info_avaliacao =
                 "Existem avaliações para esse veículo, clique no botão info para visualizar!"),
               (this.inserir_item_avaliacao = false),
@@ -6012,22 +7407,23 @@ export default {
           return data.json();
         })
         .then((resposta) => {
-          console.log(resposta);
+         
           console.log(
             "Avaliações por ID ------------------------------------------------------------------------------------------------------------------------------------- 0014"
           );
+          console.log(resposta);
           // this.ativar_placa = false;
           // this.desativar_placa = true;
           if (resposta.status != 1) {
-            this.placa_avaliacao = resposta.placa,
-            (this.marca_avaliacao = resposta.marca),              
-              (this.modelo_avaliacao = resposta.modelo),             
+            (this.placa_avaliacao = resposta.placa),
+              (this.marca_avaliacao = resposta.marca),
+              (this.modelo_avaliacao = resposta.modelo),
               (this.kilometragem = resposta.kilometragem),
-              (this.anoModelo_avaliacao = resposta.anoModelo),  
-              (this.cor_avaliacao = resposta.cor_avaliacao),           
-              (this.valor_avaliacao = this.currency(
-                resposta.avaliacoes[0]["precoAvaliacao"]
-              )),
+              (this.anoModelo_avaliacao = resposta.anoModelo),
+              (this.cor_avaliacao = resposta.cor_avaliacao),
+              // (this.valor_avaliacao = this.currency(
+              //   resposta.avaliacoes[0]["precoAvaliacao"]
+              // )),
               (this.avaliacoes = resposta),
               (this.info_avaliacao =
                 "Existem avaliações para esse veículo, clique no botão info para visualizar!"),
@@ -6040,13 +7436,43 @@ export default {
 
             //(this.dialog_avaliacao = true);
           } else {
-            this.valor_avaliacao = this.currency(0.00);
+            this.valor_avaliacao = this.currency(0.0);
             (this.info_avaliacao = "Não existe avaliação para esse veículo!"),
               console.log(this.avaliacoes);
             this.hab_avaliacao = true;
           }
         });
     },
+    async verificar_avaliacoes_placa(item) {
+
+     await fetch(`${process.env.VUE_APP_API_URL}veiculo_usado_avaliacoes`, {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          placa: item.placa,
+        }),
+      })
+        .then((data) => {
+          if (!data.ok) {
+            throw Error(data.status);
+          }
+
+          return data.json();
+        })
+        .then((resposta) => {
+          this.historico_avaliacoes = resposta
+          console.log(resposta);
+          console.log(
+            "Historico de Avaliações ------------------------------------------------------------------------------------------------------------------------------------- 0014"
+          );
+    
+          
+        });
+    },
+    
     //** Fim veículo para troca */
 
     rowSelect(idx, id, id_parcela) {
@@ -6104,6 +7530,45 @@ export default {
       // if (resp == 200) {
 
       // }
+    },
+    async excluir_todos_item_ac() {      
+      await fetch(`${process.env.VUE_APP_API_URL}itens_acessorios_todos`, {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({         
+          proposta_id: this.id_proposta,
+        }),
+      });   
+    },
+    async excluir_veiculo_av(item) {
+      console.log("Dados do Veiculo a ser excluido");
+      console.log(item);
+      await fetch(`${process.env.VUE_APP_API_URL}remover_veiculo_avaliacao`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          placa: item.placa,
+          proposta_id: this.id_proposta,
+          status: 0,
+        }),
+      })
+        .then((data) => {
+          if (!data.ok) {
+            throw Error(data.status);
+          }
+          return data.json();
+        })
+        .then((resposta) => {
+          console.log(resposta);
+          this.abrir_modal = true;
+          this.msg = resposta.message;
+          setTimeout(() => (this.abrir_modal = false), 2000);
+          this.retrieveVeiculosAvaliacao();
+        });
     },
     fechar_rank() {
       this.modal_ranqueamento = false;
@@ -6515,7 +7980,9 @@ export default {
     },
 
     habilitar_incluir_itens_financiamento() {
+      console.log("Incluirr financiamento");
       if (this.incluir_acessorios == true) {
+        this.venda_vista = false;
         this.dialog_incluir_acessorios = true;
         this.message_incluir_acessorios =
           "Ao clicar no botão SIM, o total de acessórios será incluso no Financiamento, será necessário RANQUEAR novamente, deseja continuar?";
@@ -6894,8 +8361,7 @@ export default {
       });
     },
     /**Após retorno positivo do ranqueamento essa função monta as taxas do primeiro bloco de entrada */
-    async ranqueamento_entrada_1() {     
-
+    async ranqueamento_entrada_1() {
       const params = this.getRequestParamsEntrada1(
         this.filtro_tipo_veiculo,
         this.filtro_tipo_tabela,
@@ -6941,8 +8407,8 @@ export default {
       this.parcela = this.parcela_1;
       this.id_coluna = 1;
       console.log(
-        "Botão ranquear 1, armazeno o valor da coluna e quantidade de parcelas escolhida! ------- 0038"
-        ,this.entrada_1
+        "Botão ranquear 1, armazeno o valor da coluna e quantidade de parcelas escolhida! ------- 0038",
+        this.entrada_1
       );
       console.log(
         "Quantidade de parcelas ---- " + this.parcela + " ------------- 0039"
@@ -7546,6 +9012,7 @@ export default {
           .then((resposta) => {
             console.log(resposta);
             if (resposta.StatusOk == 200) {
+              this.excluir_todos_item_ac();
               window.location.reload();
             }
           });
@@ -7603,6 +9070,9 @@ export default {
           const { acessorios, totalPages } = response.data;
           this.acessorios = acessorios;
           this.totalPages = totalPages;
+
+          console.log("Itens Acessórios")
+          console.log(this.acessorios)
         });
       } catch (error) {
         if (error.response.status == 400) {
@@ -7701,7 +9171,6 @@ export default {
         params["financiamento_total"] = financiamento_total;
       }
 
-
       return params;
     },
     select_pmt(value, ordem) {
@@ -7713,7 +9182,12 @@ export default {
         this.Valor_Entrada = this.Valor_Entrada_1;
         this.Valor_Financiado = this.Valor_Financiado_1;
         this.Quantidade_Meses = this.Quantidade_Meses_1; //12
-        const params = this.getRequestParamsPMT(id, ordem, this.Valor_Entrada, this.valor_avaliacao);
+        const params = this.getRequestParamsPMT(
+          id,
+          ordem,
+          this.Valor_Entrada,
+          this.valor_avaliacao
+        );
         userService.getProposta_pmt(params).then((response) => {
           console.log(response.data);
         });
@@ -7722,7 +9196,12 @@ export default {
         this.Valor_Entrada = this.Valor_Entrada_1;
         this.Valor_Financiado = this.Valor_Financiado_1;
         this.Quantidade_Meses = this.Quantidade_Meses_2; //24
-        const params = this.getRequestParamsPMT(id, ordem, this.Valor_Entrada, this.valor_avaliacao);
+        const params = this.getRequestParamsPMT(
+          id,
+          ordem,
+          this.Valor_Entrada,
+          this.valor_avaliacao
+        );
         userService.getProposta_pmt(params).then((response) => {
           console.log(response.data);
         });
@@ -7731,7 +9210,12 @@ export default {
         this.Valor_Entrada = this.Valor_Entrada_1;
         this.Valor_Financiado = this.Valor_Financiado_1;
         this.Quantidade_Meses = this.Quantidade_Meses_3; //36
-        const params = this.getRequestParamsPMT(id, ordem, this.Valor_Entrada, this.valor_avaliacao);
+        const params = this.getRequestParamsPMT(
+          id,
+          ordem,
+          this.Valor_Entrada,
+          this.valor_avaliacao
+        );
         userService.getProposta_pmt(params).then((response) => {
           console.log(response.data);
         });
@@ -7741,7 +9225,12 @@ export default {
         this.Valor_Entrada = this.Valor_Entrada_2;
         this.Valor_Financiado = this.Valor_Financiado_2;
         this.Quantidade_Meses = this.Quantidade_Meses_1;
-        const params = this.getRequestParamsPMT(id, ordem, this.Valor_Entrada, this.valor_avaliacao);
+        const params = this.getRequestParamsPMT(
+          id,
+          ordem,
+          this.Valor_Entrada,
+          this.valor_avaliacao
+        );
         userService.getProposta_pmt(params).then((response) => {
           console.log(response.data);
         });
@@ -7750,7 +9239,12 @@ export default {
         this.Valor_Entrada = this.Valor_Entrada_2;
         this.Valor_Financiado = this.Valor_Financiado_2;
         this.Quantidade_Meses = this.Quantidade_Meses_2;
-        const params = this.getRequestParamsPMT(id, ordem, this.Valor_Entrada, this.valor_avaliacao);
+        const params = this.getRequestParamsPMT(
+          id,
+          ordem,
+          this.Valor_Entrada,
+          this.valor_avaliacao
+        );
         userService.getProposta_pmt(params).then((response) => {
           console.log(response.data);
         });
@@ -7759,7 +9253,12 @@ export default {
         this.Valor_Entrada = this.Valor_Entrada_2;
         this.Valor_Financiado = this.Valor_Financiado_2;
         this.Quantidade_Meses = this.Quantidade_Meses_3;
-        const params = this.getRequestParamsPMT(id, ordem, this.Valor_Entrada, this.valor_avaliacao);
+        const params = this.getRequestParamsPMT(
+          id,
+          ordem,
+          this.Valor_Entrada,
+          this.valor_avaliacao
+        );
         userService.getProposta_pmt(params).then((response) => {
           console.log(response.data);
         });
@@ -7769,7 +9268,12 @@ export default {
         this.Valor_Entrada = this.Valor_Entrada_3;
         this.Valor_Financiado = this.Valor_Financiado_3;
         this.Quantidade_Meses = this.Quantidade_Meses_1;
-        const params = this.getRequestParamsPMT(id, ordem, this.Valor_Entrada, this.valor_avaliacao);
+        const params = this.getRequestParamsPMT(
+          id,
+          ordem,
+          this.Valor_Entrada,
+          this.valor_avaliacao
+        );
         userService.getProposta_pmt(params).then((response) => {
           console.log(response.data);
         });
@@ -7778,7 +9282,12 @@ export default {
         this.Valor_Entrada = this.Valor_Entrada_3;
         this.Valor_Financiado = this.Valor_Financiado_3;
         this.Quantidade_Meses = this.Quantidade_Meses_2;
-        const params = this.getRequestParamsPMT(id, ordem, this.Valor_Entrada, this.valor_avaliacao);
+        const params = this.getRequestParamsPMT(
+          id,
+          ordem,
+          this.Valor_Entrada,
+          this.valor_avaliacao
+        );
         userService.getProposta_pmt(params).then((response) => {
           console.log(response.data);
         });
@@ -7787,7 +9296,12 @@ export default {
         this.Valor_Entrada = this.Valor_Entrada_3;
         this.Valor_Financiado = this.Valor_Financiado_3;
         this.Quantidade_Meses = this.Quantidade_Meses_3;
-        const params = this.getRequestParamsPMT(id, ordem, this.Valor_Entrada, this.valor_avaliacao);
+        const params = this.getRequestParamsPMT(
+          id,
+          ordem,
+          this.Valor_Entrada,
+          this.valor_avaliacao
+        );
         userService.getProposta_pmt(params).then((response) => {
           console.log(response.data);
         });
@@ -8075,7 +9589,7 @@ export default {
           id: id,
           status_proposta: "Venda Perdida",
           obs: this.info_adicionais,
-          gerente_id_alteracao: this.$store.state.auth.user.id
+          gerente_id_alteracao: this.$store.state.auth.user.id,
         }),
       })
         .then((data) => {
@@ -8094,7 +9608,6 @@ export default {
         });
     },
 
-    //Funções para fazer validações em inputs
     numberToReal(numb) {
       var numero = numb.toFixed(0).split(".");
       numero[0] = numb[0].split(/(?=(?:...)*$)/).join(".");
@@ -8300,6 +9813,21 @@ export default {
     // Remova os ouvintes de eventos ao destruir o componente
     window.removeEventListener("mousemove", this.resetTimer);
     window.removeEventListener("keydown", this.resetTimer);
+  },
+
+  //Avaliação
+  updateSelectedOption() {
+    const selectedOption = this.marcas.find(
+      (option) => option.descricao === this.selectedOption.descricao
+    );
+    if (selectedOption) {
+      this.selectedOption = {
+        id: selectedOption.id,
+        descricao: selectedOption.descricao,
+      };
+    } else {
+      this.selectedOption = { id: null, descricao: "" };
+    }
   },
 };
 </script>

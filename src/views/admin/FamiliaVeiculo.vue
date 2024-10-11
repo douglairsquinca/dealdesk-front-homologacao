@@ -451,7 +451,8 @@ export default {
           this.familias = familia_veiculo;
           this.totalPages = totalPages;
           this.totalItems = totalItems;
-          console.log(response.data);
+          console.log("Familias ------------------------");
+          console.log("Familias ------------------------", response.data);
         });
       } catch (error) {
         if (error.response.status == 400) {

@@ -597,7 +597,7 @@
                   class="btn btn-lg btn-filtro"
                   data-bs-target="#ModalItensAcessorios"
                   data-bs-toggle="modal"
-                  @click="habilitar_itens_acessorio"
+                  @click="listar_acessorios()"
                 >
                   <span class="rf_texto_btn">Incluir</span><br />
                   <span class="rf_texto_btn">Acessórios</span>
@@ -6320,7 +6320,7 @@ export default {
       }
       
     },
-    popular_formulario(item) {
+    async popular_formulario(item) {
       console.log("Listando para popular formulário ", item);
       //Daddos do Atendimento
       this.n_atendimento = item.atendimento_id;
@@ -7900,9 +7900,10 @@ export default {
       this.cadastro = true;
       this.dados_detalhada();
       this.resetar_pacote();
-      this.retrieveAcessorios();
+      
       this.retrieveSeguros();
       this.retrieveRevisoes();
+      this.retrieveAcessorios();
       this.retrievekitsAcessoriosItens();
       this.retrievekitsSegurosItens();
       this.retrievekitsRevisoesItens();
@@ -8802,7 +8803,12 @@ export default {
         }
       }
     },
-
+    listar_acessorios(){
+      //this.descobrir_modelo();
+      console.log("Buscar id do Modelo ++++++++++++++++++");
+      console.log(this.modelo_id);
+      return
+    },
     async retrieveAcessorios() {
       console.log("Buscando lista de acessórios");
 
@@ -8820,7 +8826,8 @@ export default {
           }
         );
 
-        console.log("Dados dos acessorios");
+        console.log("Dados ACESSORIOS ----------------------------------------------------");
+        console.log(response.data)
         this.estoque_pecas = response.data.acessorio_modelo;
         this.totalPages = response.data.totalPages;
         this.totalItems = response.data.totalItems;
@@ -8834,7 +8841,7 @@ export default {
       }
     },
     async retrieveSeguros() {
-      console.log("Buscando lista de acessórios");
+      console.log("Buscando lista de seguros");
 
       try {
         const response = await axios.get(
@@ -8850,7 +8857,7 @@ export default {
           }
         );
 
-        console.log("Dados dos acessorios");
+        console.log("Dados dos Seguros");
         console.log(response.data.seguros);
         this.seguros_modelo = response.data.seguros;
         this.totalPages = response.data.totalPages;

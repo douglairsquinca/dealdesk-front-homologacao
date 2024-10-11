@@ -66,6 +66,11 @@ class UserService {
       params
     })
   }
+    getAcessoriosModelo(params){
+    return api.get('/listar_acessorios_modelo',{
+      params
+    })
+  }
   getCusto(params){
     return api.get('/custo',{
       params
@@ -391,6 +396,11 @@ class UserService {
       params
     });
   }
+  getEstoqueSincronizarOracle(params) {
+    return api.get('/estoqueOracle', {
+      params
+    });
+  }
   getEstoqueVeiculo(params) {
     return api.get('/estoque_veiculo', {
       params
@@ -419,6 +429,10 @@ class UserService {
   getCorEstoque() {
     return api.get('/cores_estoque', {      
     });
+  }
+  //Veículos Avaliação
+  getVeiculosAvaliacaoId(id) {
+    return api.get(`/veiculos_avaliacao/${id}`);
   }
 
   ///Itens Avaliação

@@ -42,6 +42,37 @@
             <label for="valid_email" class="rf_texto">Email</label>
           </div>
         </div>
+             <!--UF-->
+             <div class="col-1">
+            <div class="form-floating">
+              <input v-model="uf" class="form-control rf_bg_form rf_texto" list="datalistOptions" id="estado"
+                autocomplete="off" />
+
+              <label class="rf_texto">UF</label>
+              <datalist id="datalistOptions">
+                <option v-for="opt in estados" :data-value="opt.id" :value="opt.sigla" :key="opt.id"></option>
+              </datalist>
+            </div>
+          </div>
+          <!--Cidade-->
+          <div class="col-2">
+            <div class="form-floating">
+              <input v-model="cidade" class="form-control rf_bg_form rf_texto" list="datalistCidades" id="estado"
+                autocomplete="off" />
+
+              <label class="rf_texto">Cidade</label>
+              <datalist id="datalistCidades">
+                <option v-for="opt in cidades" :data-value="opt.id" :value="opt.nome" :key="opt.id"></option>
+              </datalist>
+            </div>
+          </div>
+          <!--Bairro-->
+          <div class="col-2">
+            <div class="form-floating">
+              <input type="text" class="form-control rf_bg_form rf_texto" v-model="bairro" autocomplete="off" />
+              <label class="rf_texto">Bairro</label>
+            </div>
+          </div>        
       </div>
     </form>
     <div class="row">
@@ -301,6 +332,7 @@ export default {
       midia_id: "",
       obs: "",
       tipo: "",
+      bairro:"",
 
       modal_nome: "",
       modal_cpfcnpj: "",
@@ -348,7 +380,37 @@ export default {
       habilitar_cadastro: true,
       habilitar_telefone: false,
       retorno: false,
-      input_proposta: true
+      input_proposta: true,
+      cidades: [],
+      estados: [
+        { id: 11, sigla: "RO" },
+        { id: 12, sigla: "AC" },
+        { id: 13, sigla: "AM" },
+        { id: 14, sigla: "RR" },
+        { id: 15, sigla: "PA" },
+        { id: 16, sigla: "AP" },
+        { id: 17, sigla: "TO" },
+        { id: 21, sigla: "MA" },
+        { id: 22, sigla: "PI" },
+        { id: 23, sigla: "CE" },
+        { id: 24, sigla: "RN" },
+        { id: 25, sigla: "PB" },
+        { id: 26, sigla: "PE" },
+        { id: 27, sigla: "AL" },
+        { id: 28, sigla: "SE" },
+        { id: 29, sigla: "BA" },
+        { id: 31, sigla: "MG" },
+        { id: 32, sigla: "ES" },
+        { id: 33, sigla: "RJ" },
+        { id: 35, sigla: "SP" },
+        { id: 41, sigla: "PR" },
+        { id: 42, sigla: "SC" },
+        { id: 43, sigla: "RS" },
+        { id: 50, sigla: "MS" },
+        { id: 51, sigla: "MT" },
+        { id: 52, sigla: "GO" },
+        { id: 53, sigla: "DF" },
+      ],
 
     };
   },
@@ -358,6 +420,7 @@ export default {
     //this.retrieveFamilia();
     this.retrieveMidia();
     this.retrieveVendedorDispo();
+    this.retrieveCidade();
   },
 
   computed: {
@@ -640,6 +703,9 @@ export default {
             tel: this.tel,
             cel: this.cel,
             email: this.email,
+            bairro: this.bairro,
+            cidade: this.cidade,
+            uf: this.uf
           }),
         });
         const dados = await response.json();
@@ -668,6 +734,25 @@ export default {
       }
 
 
+    },
+
+    async retrieveCidade() {
+      try {
+        const params = this.getRequestParams(
+          this.searchTitle,
+          this.page,
+          this.pageSize
+        );
+        userService.getCidades(params).then((response) => {
+          const { cidade } = response.data;
+          this.cidades = cidade;
+        });
+      } catch (error) {
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+        } 
+      }
     },
 
     async update_cliente() {
