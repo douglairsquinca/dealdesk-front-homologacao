@@ -780,7 +780,7 @@
                     class="dropdown-toggle-icon"
                     data-bs-target="#ModalAvaliacaoVeiculo"
                     data-bs-toggle="modal"
-                    :disabled="hab_avaliacao"
+                   
                     @click="verificar_avaliacoes_placa(item)"
                   >
                     <i class="bi bi-car-front-fill"></i>
@@ -805,7 +805,7 @@
                 class="btn btn-filtro"
                 data-bs-target="#ModalVeiculoAvaliacao"
                 data-bs-toggle="modal"
-                :disabled="inserir_item_avaliacao"
+               
                 @click="habilitar_itens_avaliacao"
               >
                 <span class="rf_texto_btn">Inserir</span>
@@ -6121,7 +6121,7 @@ export default {
       const ano1 = dataObj.getFullYear();
       const mes1 = String(dataObj.getMonth() + 1).padStart(2, "0"); // Mês começa em 0
       const dia1 = String(dataObj.getDate()).padStart(2, "0");
-      return `${dia1}-${mes1}-${ano1}`;
+      return `${ano1}-${mes1}-${dia1}`;
     },
     habilitar_cadastro() {
       console.log("Habilitando cadastro");
@@ -7371,7 +7371,7 @@ export default {
               (this.info_avaliacao =
                 "Existem avaliações para esse veículo, clique no botão info para visualizar!"),
               (this.inserir_item_avaliacao = false),
-              (this.hab_avaliacao = false),
+              // (this.hab_avaliacao = false),
               console.log(
                 "Existe avaliação ------------------------------------------------ 0015"
               ),
@@ -7384,7 +7384,7 @@ export default {
             );
             (this.info_avaliacao = "Não existe avaliação para esse veículo!"),
               console.log(this.avaliacoes);
-            this.hab_avaliacao = true;
+            // this.hab_avaliacao = true;
           }
         });
     },
@@ -7428,7 +7428,7 @@ export default {
               (this.info_avaliacao =
                 "Existem avaliações para esse veículo, clique no botão info para visualizar!"),
               (this.inserir_item_avaliacao = false),
-              (this.hab_avaliacao = false),
+              // (this.hab_avaliacao = false),
               console.log(
                 "Existe avaliação ------------------------------------------------ 0015"
               ),
@@ -7439,7 +7439,7 @@ export default {
             this.valor_avaliacao = this.currency(0.0);
             (this.info_avaliacao = "Não existe avaliação para esse veículo!"),
               console.log(this.avaliacoes);
-            this.hab_avaliacao = true;
+            // this.hab_avaliacao = true;
           }
         });
     },
