@@ -407,9 +407,7 @@
             </div>
           </div>
         </div>
-        <!--Aguardando definição de como será implementado-->
-        <!-- @change="pagamento_vista()" -->
-        <!-- <div class="col-2 col-md-3">
+        <div class="col-2 col-md-3">
           <div class="form-floating">
             <div class="form-check form-switch rf_texto mt-3">
               <input
@@ -417,7 +415,6 @@
                 type="checkbox"
                 role="switch"
                 v-model="pagamento"
-                @change="pagamento_vista()"
               />
               <label class="form-check-label">Venda à Vista</label>
             </div>
@@ -743,129 +740,41 @@
             >
           </div>
         </div>
-        <div class="card card-tabela-desk g-2 p-2 mt-2">
-          <table class="table rf_texto card_avaliacao" disabled>
-            <thead>
-              <tr>
-                <th scope="col">Marca</th>
-                <th scope="col">Modelo</th>
-                <th scope="col">Placa</th>
-                <th scope="col">Ano Modelo</th>
-                <th scope="col">Cor</th>
-                <th scope="col">Kilometragem</th>
-                <th scope="col">R$ Avaliado</th>
-                <th scope="col">Ação</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="item in veiculos_avaliados" :key="item.descricao">
-                <td>{{ item.marca }}</td>
-                <td>{{ item.modelo }}</td>
-                <td>{{ item.placa }}</td>
-                <td>{{ item.ano_mod }}</td>
-                <td>{{ item.cor }}</td>
-                <td>{{ formatarKM(item.kilometragem) }}</td>
-                <td>{{ item.preco_avaliado }}</td>
-
-                <td>
-                  <button
-                    type="button"
-                    class="dropdown-toggle-icon"
-                    @click="excluir_veiculo_av(item)"
-                  >
-                    <i class="bi bi-trash"></i>
-                  </button>
-                  <button
-                    type="button"
-                    class="dropdown-toggle-icon"
-                    data-bs-target="#ModalAvaliacaoVeiculo"
-                    data-bs-toggle="modal"
-                    :disabled="hab_avaliacao"
-                    @click="verificar_avaliacoes_placa(item)"
-                  >
-                    <i class="bi bi-car-front-fill"></i>
-                  </button>
-                </td>
-              </tr>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th scope="col">Total</th>
-              <td>{{ currency(this.valor_avaliacao) }}</td>
-            </tbody>
-          </table>
-        </div>
-        <div class="row g-2 p-2">
-          <div class="col-1">
-            <div class="form-floating">
-              <button
-                type="button"
-                class="btn btn-filtro"
-                data-bs-target="#ModalVeiculoAvaliacao"
-                data-bs-toggle="modal"                
-                @click="habilitar_itens_avaliacao"
-              >
-                <span class="rf_texto_btn">Inserir</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!--Itens de Avaliação-->
-        <!-- <div class="row g-2 p-2">
-          <div class="card-title gy-4">
-            <i class="bi bi-clipboard-check fs-5 icone_filtro"
-              ><span class="texto_filtro">Itens Avaliação</span></i
-            >
-          </div>
-        </div> -->
-        <!-- <div class="card card-tabela-desk g-2 p-2 mt-2">
-          <table class="table rf_texto card_avaliacao" disabled>
-            <thead>
-              <tr>
-                <th scope="col">Item</th>
-                <th scope="col">R$ Valor</th>
-                <th scope="col">Tipo</th>
-                <th scope="col">Ação</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="item in itens_veiculo" :key="item.descricao">
-                <td>{{ item.item }}</td>
-                <td>{{ item.valor }}</td>
-                <td>{{ item.tipo }}</td>
-                <td>
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    @click="excluir_item_av(item)"
-                  >
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div> -->
-        <!-- <div class="row g-2 p-2">
-          <div class="col-1">
-            <div class="form-floating">
-              <button
-                type="button"
-                class="btn btn-filtro"
-                data-bs-target="#ModalItensAvaliacao"
-                data-bs-toggle="modal"
-                :disabled="inserir_item_avaliacao"
-                @click="habilitar_itens_avaliacao"
-              >
-                <span class="rf_texto_btn">Inserir</span>
-              </button>
-            </div>
-          </div>
-        </div> -->
+      <div class="card card-tabela-desk g-2 p-2 mt-2">
+        <table class="table rf_texto card_avaliacao" disabled>
+          <thead>
+            <tr>
+              <th scope="col">Item</th>
+              <th scope="col">R$ Valor</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in itens_veiculo" :key="item.descricao">
+              <td>{{ item.item }}</td>
+              <td>{{ item.valor }}</td>
+              <td>{{ item.tipo }}</td>
+              <td>
+                <button type="button" class="btn btn-secondary" @click="excluir_item_av(item)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+      <div class="row g-2 p-2">
+        <div class="col-1">
+          <div class="form-floating">
+          <button type="button" class="btn btn-filtro" data-bs-target="#ModalItensAvaliacao"
+            data-bs-toggle="modal" :disabled="inserir_item_avaliacao" @click="habilitar_itens_avaliacao">
+            <span class="rf_texto_btn">Inserir</span>
+          </button>
+        </div>
+        </div>
+      </div>     
+  </div> 
     </div>
   </div>
   <!--Bloco Resumo da Proposta-->
@@ -1134,7 +1043,9 @@
       </div>
     </div>
   </div>
-  <div class="card card-filtro">   
+
+  <div class="modal-content">
+    <div class="card card-filtro">
       <div class="row g-2 p-2">
         <div class="col-10">
             <div class="card-title gy-4">
@@ -1237,894 +1148,412 @@
               </button>
             </div>
 
-            <!-- <div class="col">
-              <button
-                class="btn btn-lg btn-desk-filtro"
-                data-bs-toggle="modal"
-                data-bs-target="#ModalGerarMenuVista"
-                :disabled="habilitar_gerar_menu_avista"
-                @click="carregarDadosMenuVista"
-              >
-                <span class="rf_texto_btn">Gerar Menu</span>
-              </button>
-            </div> -->
-            <div v-if=" this.hab_avista" class="alert alert-warning alert-dismissible fade show" role="alert">
-              <strong>{{this.msg}}</strong>          
-            </div>
-          </div>
-          <div class="g-2 p-2">
-            <div class="card-title gy-4">
-              <i class="bi bi-tools fs-5 icone_kit"
-                ><span class="texto_kit">Composição do Pagamento</span></i
-              >
-            </div>
-            <table class="table rf_texto">
-              <thead>
-                <tr>
-                  <th scope="col" style="width: 15%">Valor Informado</th>
-                  <th scope="col" style="width: 15%">Pagamento</th>
-                  <th scope="col" style="width: 10%">Qtd.</th>
-
-                  <th scope="col" style="width: 5%">Ação</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="item in itens_pagamentos"
-                  :key="item.id"
-                  class="table-linha"
-                >
-                  <td>{{ this.currency(item.valor_parcela) }}</td>
-                  <td>{{ item.tipo_pagamento_desk.descricao }}</td>
-                  <td>{{ item.qtd_parcela }}</td>
-
-                  <td style="display: flex">      
-                    <button
-                      class="dropdown-toggle-icon"
-                      data-bs-target="#excluiModalPagamento"
-                      data-bs-toggle="modal"
-                      @click="remover_item_pagamento(item)"
+          <table class="table rf_texto">
+            <thead>
+              <tr>
+                <th class="col-2"></th>
+                <th class="col-1"></th>
+                <th class="col-1"></th>
+                <!--Parcela 1-->
+                <th class="col-md-2">
+                  <div class="form-floating">
+                    <select
+                      class="form-select rf_bg_form rf_texto"
+                      v-model="parcela_1"
                     >
-                      <i class="bi bi-trash3"></i>
+                      <option
+                        v-for="item in itens_financiamento"
+                        :value="item.value"
+                        :key="item.value"
+                      >
+                        {{ item.value }}
+                      </option>
+                    </select>
+                    <label for="valid_empresa" class="rf_texto">Parcela</label>
+                  </div>
+                </th>
+                <!--Parcela 2-->
+                <th class="col-md-2">
+                  <div class="form-floating">
+                    <select
+                      class="form-select rf_bg_form rf_texto"
+                      v-model="parcela_2"
+                      v-on:blur="hab_ranquear"
+                    >
+                      <option
+                        v-for="item in itens_financiamento"
+                        :value="item.value"
+                        :key="item.value"
+                      >
+                        {{ item.value }}
+                      </option>
+                    </select>
+                    <label for="valid_empresa" class="rf_texto">Parcela</label>
+                  </div>
+                </th>
+                <!--Parcela 3-->
+                <th class="col-md-2">
+                  <div class="form-floating">
+                    <select
+                      class="form-select rf_bg_form rf_texto"
+                      v-model="parcela_3"
+                      v-on:blur="hab_ranquear"
+                    >
+                      <option
+                        v-for="item in itens_financiamento"
+                        :value="item.value"
+                        :key="item.value"
+                      >
+                        {{ item.value }}
+                      </option>
+                    </select>
+                    <label for="valid_empresa" class="rf_texto">Parcela</label>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <!--Primeira Linha-->
+              <tr>
+                <th scope="row">
+                  <div class="d-grid gap-2 disabled">
+                    <button class="btn btn-lg btn-desk-filtro-disabled">
+                      <span class="rf_texto_btn">Simulação 1</span>
                     </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-      </div>
-    
-      <!--Quadro para financiamento-->
-      <div  v-if="venda_financiamento">          
-          <div class="col">
-              <div class="card-desk-menu">
-                <span>Simulação de Parcelas</span>
+                  </div>
+                </th>
+                <td>
+                  <div class="form-floating">
+                    <input
+                      type="text"
+                      class="form-control rf_bg_form rf_texto_desk"
+                      v-model="entrada_1"
+                      v-on:blur="calcular_real_1"
+                      :disabled="bloquear_entrada"
+                      @input="entrada_1 = formatarValor(entrada_1)"
+                    />
+                    <label class="rf_texto">Entrada R$</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="form-floating">
+                    <input
+                      type="text"
+                      class="form-control rf_bg_form rf_texto_desk"
+                      :disabled="true"
+                      v-model="entrada_1_perc"
+                      @input="calcular_perc_1()"
+                    />
+                    <label class="rf_texto">Entrada %</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-grid gap-2">
+                    <button
+                      type="button"
+                      class="btn btn-lg btn-desk-filtro"
+                      :class="{ active: pmtSelected === 11 }"
+                      @click="select_pmt(parcela_1_1, 11)"
+                    >
+                      {{ parcela_1_1 }}
+                    </button>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-grid gap-2">
+                    <button
+                      type="button"
+                      class="btn btn-lg btn-desk-filtro"
+                      :class="{ active: pmtSelected === 12 }"
+                      @click="select_pmt(parcela_1_2, 12)"
+                    >
+                      {{ parcela_1_2 }}
+                    </button>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-grid gap-2">
+                    <button
+                      type="button"
+                      class="btn btn-lg btn-desk-filtro"
+                      :class="{ active: pmtSelected === 13 }"
+                      @click="select_pmt(parcela_1_3, 13)"
+                    >
+                      {{ parcela_1_3 }}
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <!-- Segunda Linha-->
+              <tr>
+                <th scope="row">
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-lg btn-desk-filtro-disabled">
+                      <span class="rf_texto_btn">Simulação 2</span>
+                    </button>
+                  </div>
+                </th>
+                <td>
+                  <div class="form-floating">
+                    <input
+                      type="text"
+                      class="form-control rf_bg_form rf_texto rf_texto_desk"
+                      v-model="entrada_2"
+                      :disabled="bloquear_entrada"
+                      v-on:blur="calcular_real_2"
+                      @input="entrada_2 = formatarValor(entrada_2)"
+                    />
+                    <label class="rf_texto">Entrada R$</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="form-floating">
+                    <input
+                      type="text"
+                      class="form-control rf_bg_form rf_texto rf_texto_desk"
+                      :disabled="true"
+                      v-model="entrada_2_perc"
+                      @input="calcular_perc_2()"
+                    />
+                    <label class="rf_texto">Entrada %</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-grid gap-2">
+                    <button
+                      type="button"
+                      class="btn btn-lg btn-desk-filtro"
+                      :class="{ active: pmtSelected === 21 }"
+                      @click="select_pmt(parcela_2_1, 21)"
+                    >
+                      {{ parcela_2_1 }}
+                    </button>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-grid gap-2">
+                    <button
+                      type="button"
+                      class="btn btn-lg btn-desk-filtro"
+                      :class="{ active: pmtSelected === 22 }"
+                      @click="select_pmt(parcela_2_2, 22)"
+                    >
+                      {{ parcela_2_2 }}
+                    </button>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-grid gap-2">
+                    <button
+                      type="button"
+                      class="btn btn-lg btn-desk-filtro"
+                      :class="{ active: pmtSelected === 23 }"
+                      @click="select_pmt(parcela_2_3, 23)"
+                    >
+                      {{ parcela_2_3 }}
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <!--Terceira Linha-->
+              <tr>
+                <th scope="row">
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-lg btn-desk-filtro-disabled">
+                      <span class="rf_texto_btn">Simulação 3</span>
+                    </button>
+                  </div>
+                </th>
+                <td>
+                  <div class="form-floating">
+                    <input
+                      type="text"
+                      class="form-control rf_bg_form rf_texto rf_texto_desk"
+                      v-model="entrada_3"
+                      :disabled="bloquear_entrada"
+                      v-on:blur="calcular_real_3"
+                      @input="entrada_3 = formatarValor(entrada_3)"
+                    />
+                    <label class="rf_texto">Entrada R$</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="form-floating">
+                    <input
+                      type="text"
+                      class="form-control rf_bg_form rf_texto rf_texto_desk"
+                      :disabled="true"
+                      v-model="entrada_3_perc"
+                      @input="calcular_perc_3()"
+                    />
+                    <label class="rf_texto">Entrada %</label>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-grid gap-2">
+                    <button
+                      type="button"
+                      class="btn btn-lg btn-desk-filtro"
+                      :class="{ active: pmtSelected === 31 }"
+                      @click="select_pmt(parcela_3_1, 31)"
+                    >
+                      {{ parcela_3_1 }}
+                    </button>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-grid gap-2">
+                    <button
+                      type="button"
+                      class="btn btn-lg btn-desk-filtro"
+                      :class="{ active: pmtSelected === 32 }"
+                      @click="select_pmt(parcela_3_2, 32)"
+                    >
+                      {{ parcela_3_2 }}
+                    </button>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-grid gap-2">
+                    <button
+                      type="button"
+                      class="btn btn-lg btn-desk-filtro"
+                      :class="{ active: pmtSelected === 33 }"
+                      @click="select_pmt(parcela_3_3, 33)"
+                    >
+                      {{ parcela_3_3 }}
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <!--Quarta Linha-->
+              <tr>
+                <td class="col-md-2">
+                  <div class="d-grid gap-2">
+                    <button
+                      class="btn btn-lg btn-desk-filtro"
+                      @click="limpar_financiamento"
+                    >
+                      <span class="rf_texto_btn">Limpar Entradas</span>
+                    </button>
+                  </div>
+                </td>
+                <th></th>
+                <th></th>
+                <th scope="row">
+                  <div class="d-grid gap-2">
+                    <button
+                      class="btn btn-lg btn-desk-filtro"
+                      id="btn_1"
+                      :disabled="entrada_1 === '' || entrada_2 === '' || entrada_3 === ''"
+                      data-bs-target="#ModalRanqueamento"
+                      data-bs-toggle="modal"
+                      @click="ranqueamento_1()"
+                    >
+                      <span class="rf_texto_btn">Ranquear</span>
+                    </button>
+                  </div>
+                </th>
+                <th scope="row">
+                  <div class="d-grid gap-2">
+                    <button
+                      class="btn btn-lg btn-desk-filtro"
+                      id="btn_2"
+                      :disabled="entrada_1 === '' || entrada_2 === '' || entrada_3 === ''"
+                      data-bs-target="#ModalRanqueamento"
+                      data-bs-toggle="modal"
+                      @click="ranqueamento_2()"
+                    >
+                      <span class="rf_texto_btn">Ranquear</span>
+                    </button>
+                  </div>
+                </th>
+                <th scope="row">
+                  <div class="d-grid gap-2">
+                    <button
+                      class="btn btn-lg btn-desk-filtro"
+                      id="btn_3"
+                      :disabled="entrada_1 === '' || entrada_2 === '' || entrada_3 === ''"
+                      data-bs-target="#ModalRanqueamento"
+                      data-bs-toggle="modal"
+                      @click="ranqueamento_3()"
+                    >
+                      <span class="rf_texto_btn">Ranquear</span>
+                    </button>
+                  </div>
+                </th>
+              </tr>
+            </tbody>
+          </table>
+          <div class="row g-2">
+            <div class="col col-md-8">
+              <div class="form-floating">
+                <textarea
+                  v-model="info_adicionais"
+                  class="form-control rf_bg_form rf_texto"
+                ></textarea>
+                <label class="rf_texto">Informações Adicionais</label>
               </div>
-              <div v-if=" this.hab_financiamento" class="alert alert-warning alert-dismissible fade show" role="alert">
-                  <strong>{{this.msg}}</strong>          
-              </div>
-              <table class="table rf_texto">
-                <thead>
-                  <tr>
-                    <th class="col-2"></th>
-                    <th class="col-1"></th>
-                    <th class="col-1"></th>
-                    <!--Parcela 1-->
-                    <th class="col-md-2">
-                      <div class="form-floating">
-                        <select
-                          class="form-select rf_bg_form rf_texto"
-                          v-model="parcela_1"
-                        >
-                          <option
-                            v-for="item in itens_financiamento"
-                            :value="item.value"
-                            :key="item.value"
-                          >
-                            {{ item.value }}
-                          </option>
-                        </select>
-                        <label for="valid_empresa" class="rf_texto">Parcela</label>
-                      </div>
-                    </th>
-                    <!--Parcela 2-->
-                    <th class="col-md-2">
-                      <div class="form-floating">
-                        <select
-                          class="form-select rf_bg_form rf_texto"
-                          v-model="parcela_2"
-                          v-on:blur="hab_ranquear"
-                        >
-                          <option
-                            v-for="item in itens_financiamento"
-                            :value="item.value"
-                            :key="item.value"
-                          >
-                            {{ item.value }}
-                          </option>
-                        </select>
-                        <label for="valid_empresa" class="rf_texto">Parcela</label>
-                      </div>
-                    </th>
-                    <!--Parcela 3-->
-                    <th class="col-md-2">
-                      <div class="form-floating">
-                        <select
-                          class="form-select rf_bg_form rf_texto"
-                          v-model="parcela_3"
-                          v-on:blur="hab_ranquear"
-                        >
-                          <option
-                            v-for="item in itens_financiamento"
-                            :value="item.value"
-                            :key="item.value"
-                          >
-                            {{ item.value }}
-                          </option>
-                        </select>
-                        <label for="valid_empresa" class="rf_texto">Parcela</label>
-                      </div>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!--Primeira Linha-->
-                  <tr>
-                    <th scope="row">
-                      <div class="d-grid gap-2 disabled">
-                        <button class="btn btn-lg btn-desk-filtro-disabled">
-                          <span class="rf_texto_btn">Simulação 1</span>
-                        </button>
-                      </div>
-                    </th>
-                    <td>
-                      <div class="form-floating">
-                        <input
-                          type="text"
-                          class="form-control rf_bg_form rf_texto_desk"
-                          v-model="entrada_1"
-                          v-on:blur="calcular_real_1"
-                          :disabled="bloquear_entrada"
-                          @input="entrada_1 = formatarValor(entrada_1)"
-                        />
-                        <label class="rf_texto">Entrada R$</label>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="form-floating">
-                        <input
-                          type="text"
-                          class="form-control rf_bg_form rf_texto_desk"
-                          :disabled="true"
-                          v-model="entrada_1_perc"
-                          @input="calcular_perc_1()"
-                        />
-                        <label class="rf_texto">Entrada %</label>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="d-grid gap-2">
-                        <button
-                          type="button"
-                          class="btn btn-lg btn-desk-filtro"
-                          :class="{ active: pmtSelected === 11 }"
-                          @click="select_pmt(parcela_1_1, 11)"
-                        >
-                          {{ parcela_1_1 }}
-                        </button>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="d-grid gap-2">
-                        <button
-                          type="button"
-                          class="btn btn-lg btn-desk-filtro"
-                          :class="{ active: pmtSelected === 12 }"
-                          @click="select_pmt(parcela_1_2, 12)"
-                        >
-                          {{ parcela_1_2 }}
-                        </button>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="d-grid gap-2">
-                        <button
-                          type="button"
-                          class="btn btn-lg btn-desk-filtro"
-                          :class="{ active: pmtSelected === 13 }"
-                          @click="select_pmt(parcela_1_3, 13)"
-                        >
-                          {{ parcela_1_3 }}
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <!-- Segunda Linha-->
-                  <tr>
-                    <th scope="row">
-                      <div class="d-grid gap-2">
-                        <button class="btn btn-lg btn-desk-filtro-disabled">
-                          <span class="rf_texto_btn">Simulação 2</span>
-                        </button>
-                      </div>
-                    </th>
-                    <td>
-                      <div class="form-floating">
-                        <input
-                          type="text"
-                          class="form-control rf_bg_form rf_texto rf_texto_desk"
-                          v-model="entrada_2"
-                          :disabled="bloquear_entrada"
-                          v-on:blur="calcular_real_2"
-                          @input="entrada_2 = formatarValor(entrada_2)"
-                        />
-                        <label class="rf_texto">Entrada R$</label>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="form-floating">
-                        <input
-                          type="text"
-                          class="form-control rf_bg_form rf_texto rf_texto_desk"
-                          :disabled="true"
-                          v-model="entrada_2_perc"
-                          @input="calcular_perc_2()"
-                        />
-                        <label class="rf_texto">Entrada %</label>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="d-grid gap-2">
-                        <button
-                          type="button"
-                          class="btn btn-lg btn-desk-filtro"
-                          :class="{ active: pmtSelected === 21 }"
-                          @click="select_pmt(parcela_2_1, 21)"
-                        >
-                          {{ parcela_2_1 }}
-                        </button>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="d-grid gap-2">
-                        <button
-                          type="button"
-                          class="btn btn-lg btn-desk-filtro"
-                          :class="{ active: pmtSelected === 22 }"
-                          @click="select_pmt(parcela_2_2, 22)"
-                        >
-                          {{ parcela_2_2 }}
-                        </button>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="d-grid gap-2">
-                        <button
-                          type="button"
-                          class="btn btn-lg btn-desk-filtro"
-                          :class="{ active: pmtSelected === 23 }"
-                          @click="select_pmt(parcela_2_3, 23)"
-                        >
-                          {{ parcela_2_3 }}
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <!--Terceira Linha-->
-                  <tr>
-                    <th scope="row">
-                      <div class="d-grid gap-2">
-                        <button class="btn btn-lg btn-desk-filtro-disabled">
-                          <span class="rf_texto_btn">Simulação 3</span>
-                        </button>
-                      </div>
-                    </th>
-                    <td>
-                      <div class="form-floating">
-                        <input
-                          type="text"
-                          class="form-control rf_bg_form rf_texto rf_texto_desk"
-                          v-model="entrada_3"
-                          :disabled="bloquear_entrada"
-                          v-on:blur="calcular_real_3"
-                          @input="entrada_3 = formatarValor(entrada_3)"
-                        />
-                        <label class="rf_texto">Entrada R$</label>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="form-floating">
-                        <input
-                          type="text"
-                          class="form-control rf_bg_form rf_texto rf_texto_desk"
-                          :disabled="true"
-                          v-model="entrada_3_perc"
-                          @input="calcular_perc_3()"
-                        />
-                        <label class="rf_texto">Entrada %</label>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="d-grid gap-2">
-                        <button
-                          type="button"
-                          class="btn btn-lg btn-desk-filtro"
-                          :class="{ active: pmtSelected === 31 }"
-                          @click="select_pmt(parcela_3_1, 31)"
-                        >
-                          {{ parcela_3_1 }}
-                        </button>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="d-grid gap-2">
-                        <button
-                          type="button"
-                          class="btn btn-lg btn-desk-filtro"
-                          :class="{ active: pmtSelected === 32 }"
-                          @click="select_pmt(parcela_3_2, 32)"
-                        >
-                          {{ parcela_3_2 }}
-                        </button>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="d-grid gap-2">
-                        <button
-                          type="button"
-                          class="btn btn-lg btn-desk-filtro"
-                          :class="{ active: pmtSelected === 33 }"
-                          @click="select_pmt(parcela_3_3, 33)"
-                        >
-                          {{ parcela_3_3 }}
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <!--Quarta Linha-->
-                  <tr>
-                    <td class="col-md-2">
-                      <div class="d-grid gap-2">
-                        <button
-                          class="btn btn-lg btn-desk-filtro"
-                          @click="limpar_financiamento"
-                        >
-                          <span class="rf_texto_btn">Limpar Entradas</span>
-                        </button>
-                      </div>
-                    </td>
-                    <th></th>
-                    <th></th>
-                    <th scope="row">
-                      <div class="d-grid gap-2">
-                        <button
-                          class="btn btn-lg btn-desk-filtro"
-                          id="btn_1"
-                          :disabled="this.hab_ranquear"
-                          data-bs-target="#ModalRanqueamento"
-                          data-bs-toggle="modal"
-                          @click="ranqueamento_1()"
-                        >
-                          <span class="rf_texto_btn">Ranquear</span>
-                        </button>
-                      </div>
-                    </th>
-                    <th scope="row">
-                      <div class="d-grid gap-2">
-                        <button
-                          class="btn btn-lg btn-desk-filtro"
-                          id="btn_2"
-                          :disabled="this.hab_ranquear"
-                          data-bs-target="#ModalRanqueamento"
-                          data-bs-toggle="modal"
-                          @click="ranqueamento_2()"
-                        >
-                          <span class="rf_texto_btn">Ranquear</span>
-                        </button>
-                      </div>
-                    </th>
-                    <th scope="row">
-                      <div class="d-grid gap-2">
-                        <button
-                          class="btn btn-lg btn-desk-filtro"
-                          id="btn_3"
-                          :disabled="this.hab_ranquear"
-                          data-bs-target="#ModalRanqueamento"
-                          data-bs-toggle="modal"
-                          @click="ranqueamento_3()"
-                        >
-                          <span class="rf_texto_btn">Ranquear</span>
-                        </button>
-                      </div>
-                    </th>
-                  </tr>
-                </tbody>
-              </table>
-              
-          </div> 
-          <div v-if="abrir_modal">
-            <Message :msg="msg" v-show="msg" />
-          </div>
-          <div>
-            <!-- <button @click="openModal('Sua mensagem aqui')">Abrir Modal</button> -->
-            <Aviso :msg="modalMessage" :visible="showModal" @close="closeModal" />
-          </div>
-          <div v-if="abrir_modal_atualizar">
-            <MessageAtualizar :msg="msg_atualizar" v-show="msg_atualizar" />
-          </div>         
-      </div>
-      <!--Informações-->
-      <div class="row g-2 p-2">
-        <div class="col">
-          <div class="form-floating">
-            <textarea
-              v-model="info_adicionais"
-              class="form-control rf_bg_form rf_texto"
-            ></textarea>
-            <label class="rf_texto">Informações Adicionais</label>
-          </div>
-        </div>
-     
-      </div>
-      <!--Botões-->
-      <div class="row g-2 p-2">
-        <div class="col-3 p-1" >
-          <button
-            class="btn btn-lg btn-desk-filtro"
-            :disabled="info_adicionais === ''"
-            @click="grava_info_adicional"
-          >
-            <span class="rf_texto_btn_desk">GRAVAR INFORMAÇÕES</span>
-          </button>
-        </div>
-        <div v-if="venda_financiamento" class="col-3 p-1">
-          <button
-            type="submit"
-            class="btn btn-lg btn-desk-filtro"
-            data-bs-toggle="modal"
-            data-bs-target="#ModalGerarMenu"
-            :disabled="btn_gerar_menu"
-            @click="carregarDadosMenu()"
-          >
-            <span class="rf_texto_btn_desk"> GERAR MENU</span>
-          </button>         
-        </div>
-        <div v-if="venda_vista" class="col-3 p-1">
-          <button
+            </div>
+            <div class="col-2 col-md-4">
+              <button
                 class="btn btn-lg btn-desk-filtro"
-                data-bs-toggle="modal"
-                data-bs-target="#ModalGerarMenuVista"
-                :disabled="habilitar_gerar_menu_avista"
-                @click="carregarDadosMenuVista"
+                :disabled="info_adicionais === ''"
+                @click="grava_info_adicional"
               >
-                <span class="rf_texto_btn_desk">GERAR MENU</span>
-           </button>
-        </div>
-        <div v-if="venda_financiamento" class="col-3 p-1">
-          <button
-            class="btn btn-lg btn-desk-filtro"
-            :disabled="btn_finalizar_venda"
-            @click="finalizar_venda"
-          >
-            <span class="rf_texto_btn_desk">FINALIZAR VENDA</span>
-          </button>
-        </div>
-        <div v-if="venda_vista" class="col-3 p-1">
-          <button
-            class="btn btn-lg btn-desk-filtro"
-            :disabled="btn_finalizar_venda_vista"
-            @click="finalizar_venda"
-          >
-            <span class="rf_texto_btn_desk">FINALIZAR VENDA</span>
-          </button>
-        </div>
-        <div class="col-3  p-1">
-          <button class="btn btn-lg btn-desk-filtro" @click="venda_perdida">
-            <span class="rf_texto_btn_desk">VENDA PERDIDA</span>
-          </button>
-        </div>
-      </div>
-    
-  </div>  
-
- 
- 
-
-
-      <!--Modal Exclusão pagamento-->
-  <div
-    class="modal fade"
-    id="excluiModalPagamento"
-    tabindex="-1"
-    aria-labelledby="confirmModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog">
-      <div class="modal-content card-container rf_texto">
-        <div class="modal-header">
-          <div class="card-title gy-4">
-            <i class="bi bi-tools fs-5 icone_kit"
-              ><span class="texto_kit">Exclusão</span></i
-            >
-          </div>
-        </div>
-        <div class="modal-body">
-          <div class="row g-2 p-2">
-            <span class="texto_kit">Deseja remover o pagamento?</span>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <div class="row">
-            <div class="col-6">
-              <button
-                type="button"
-                class="btn btn-lg btn-filtro"
-                data-bs-dismiss="modal"
-              >
-                Cancelar
-              </button>
-            </div>
-            <div class="col-6">
-              <button
-                type="button"
-                class="btn btn-lg btn-filtro"
-                data-bs-dismiss="modal"
-                @click="confirmarAlteracaoPagamento()"
-              >
-                Confirmar
+                <span class="rf_texto_btn">Gravar Informações</span>
               </button>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+    <div v-if="abrir_modal">
+      <Message :msg="msg" v-show="msg" />
+    </div>
+    <div>
+      <!-- <button @click="openModal('Sua mensagem aqui')">Abrir Modal</button> -->
+      <Aviso 
+      :msg="modalMessage"
+      :visible="showModal"
+      @close="closeModal"
+      />
+    </div>
 
-  <!-- Modal para edição -->
-  <!-- Modal -->
-  <div class="modal fade" id="clienteFoundByCpfCnpjModal" tabindex="-1" aria-labelledby="clienteFoundByCpfCnpjModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content card-container rf_texto">
-        <div class="modal-header">
-            <div class="card-title gy-4">
-              <i class="bi bi-exclamation-triangle-fill fs-5 icone_kit"><span class="texto_kit">Encontramos este cliente na base</span></i>         
-            </div>
-            <button class="btn btn-modal btn-lg py-1 px-3 mt-1" type="button" data-bs-target="#clienteFoundByCpfCnpjModal"
-              data-bs-toggle="modal" aria-label="Close"> Fechar </button>
-          </div>
-        <div class="modal-body">
-          <div class="row g-2 p-2">
-            <!--Nome-->
-            <div class="col">
-              <div class="form-floating">
-                  <input type="text" class="form-control rf_bg_form rf_texto" v-model="modal_cliente" id="modal_cliente" required />
-                  <label for="modal_cliente" class="rf_texto">Nome</label>
-                  <div class="invalid-feedback">O campo nome é obrigatório!</div>
-              </div>
-            </div>
-            <!--CPF/CNPJ-->
-            <div class="col-2">
-              <div class="form-floating">
-                <input type="text" class="form-control rf_bg_form rf_texto" v-model="modal_cpfCnpj" id="modal_cpfCnpj" />
-                <label for="modal_cpfCnpj" class="rf_texto">CPF/CNPJ</label>
-              </div>
-            </div>
-            <!--Data Nascimento-->
-            <div class="col-2">
-              <div class="form-floating">
-                <input type="date" class="form-control rf_bg_form rf_texto" v-model="modal_dataNascimento" id="modal_dataNascimento" />
-                <label for="modal_dataNascimento" class="rf_texto">Data Nascimento</label>
-                <div class="invalid-feedback">
-                  O campo data nascimento é obrigatório!
-                </div>
-              </div>
-            </div>
-            <!--Email-->
-            <div class="col-3">
-              <div class="form-floating">
-                <input type="email" class="form-control rf_bg_form rf_texto" v-model="modal_email" id="modal_email" v-on:blur="email" />
-                <label for="modal_email" class="rf_texto">Email</label>
-              </div>
-            </div>
-          </div>
-          <div class="row g-2 p-2">
-            <!--Endereço-->
-            <div class="col">
-              <div class="form-floating">
-                <input type="text" class="form-control rf_bg_form rf_texto" v-model="modal_endereco" id="modal_endereco" required />
-                <label for="modal_endereco" class="rf_texto">Endereço</label>
-                <div class="invalid-feedback">
-                  O campo endereço é obrigatório!
-                </div>
-              </div>
-            </div>
-            <!--Complemento-->
-            <div class="col-2">
-              <div class="form-floating">
-                <input type="text" class="form-control rf_bg_form rf_texto" v-model="modal_complemento" id="modal_complemento" required />
-                <label for="modal_complemento" class="rf_texto">Complemento</label>
-                <div class="invalid-feedback">
-                  O campo complemento é obrigatório!
-                </div>
-              </div>
-            </div>
-            <!--Telefone-->
-            <div class="col-2">
-              <div class="form-floating">
-                <input type="text" class="form-control rf_bg_form rf_texto" v-model="modal_tel" id="modal_tel" v-on:blur="vTel" />
-                <label for="modal_tel" class="rf_texto">Telefone</label>
-              </div>
-            </div>
-            <!--Celular-->
-            <div class="col-2">
-              <div class="form-floating">
-                <input type="text" class="form-control rf_bg_form rf_texto" v-model="modal_cel" id="modal_cel" v-on:blur="vCel" />
-                <label for="modal_cel" class="rf_texto">Celular</label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer flex gap-2">
-          <button type="button" data-bs-dismiss="modal" class="btn btn-modal btn-secondary btn-lg py-1 px-3 mt-1">
-            Cancelar
-          </button>
-          <button type="button" @click="acceptClienteFoundByCpfCnpjInfo()" class="btn btn-modal btn-lg py-1 px-3 mt-1">
-            Aceitar informações
-          </button>
-        </div>
+
+    <div v-if="abrir_modal_atualizar">
+      <MessageAtualizar :msg="msg_atualizar" v-show="msg_atualizar" />
+    </div>
+    <div class="desk-footer">
+      <div class="col-1 col-md-3 p-1">
+        <button
+          type="submit"
+          class="btn btn-lg btn-desk-filtro"
+          data-bs-toggle="modal"
+          data-bs-target="#ModalGerarMenu"
+          :disabled="btn_gerar_menu"
+          @click="carregarDadosMenu()"
+        >
+          <span class="rf_texto_btn_desk"> GERAR MENU</span>
+        </button>
+      </div>
+      <div class="col-2 col-md-3 p-1">
+        <button
+          class="btn btn-lg btn-desk-filtro"
+          :disabled="btn_finalizar_venda"
+          @click="finalizar_venda"
+        >
+          <span class="rf_texto_btn_desk">FINALIZAR VENDA</span>
+        </button>
+      </div>
+      <div class="col-1 col-md-3 p-1">
+        <button class="btn btn-lg btn-desk-filtro" @click="venda_perdida">
+          <span class="rf_texto_btn_desk">VENDA PERDIDA</span>
+        </button>
       </div>
     </div>
   </div>
 
-  <!--Modal Veiculo Avaliação-->
-  <div
-    class="modal fade"
-    id="ModalVeiculoAvaliacao"
-    aria-hidden="true"
-    aria-labelledby="exampleModalToggleLabel2"
-    tabindex="-1"
-  >
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-      <div class="modal-content card-container-desk rf_texto">
-        <div class="modal-header">
-          <div class="card-title gy-4">
-            <i class="bi bi-car-front-fill fs-5 icone_filtro"
-              ><span class="texto_kit">Veículo para Avaliação </span></i
-            >
-          </div>
-
-          <button
-            type="button"
-            class="btn btn-modal btn-lg p-1 mt-1"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          >
-            Sair
-          </button>
-        </div>
-        <div class="modal-body">
-          <form @submit.prevent="onSubmitVeiculoAvaliacao">
-            <!--Item-->
-            <div class="row g-2 p-2">
-              <div class="col-2">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="placa_av"
-                    :style="{ 'border-color': placaCorBorda }"
-                    v-on:blur="verificar_avaliacao_placa()"
-                  />
-                  <label class="rf_texto">Placa *</label>
-                </div>
-              </div>
-              <!--Marca-->
-              <div class="col-3">
-                <div class="form-floating">
-                  <input
-                    v-model="marcaSelecionada"
-                    class="form-control rf_bg_form rf_texto"
-                    list="datalistMarcas"
-                    id="marca"
-                    autocomplete="off"
-                    @change="buscarModelo"
-                    ref="marcaInput"
-                    :style="{ 'border-color': marcaCorBorda }"
-                  />
-
-                  <label class="rf_texto">Marcas *</label>
-                  <datalist id="datalistMarcas" ref="datalistMarcas">
-                    <option
-                      v-for="marca in marcas"
-                      :data-id="marca.codigo"
-                      :value="marca.descricao"
-                      :key="marca.id"
-                    ></option>
-                  </datalist>
-                </div>
-              </div>
-              <!--Modelo-->
-              <div class="col">
-                <div class="form-floating">
-                  <input
-                    v-model="modeloSelecionado"
-                    class="form-control rf_bg_form rf_texto"
-                    list="datalistModelos"
-                    id="modelo"
-                    autocomplete="off"
-                    :style="{ 'border-color': modeloCorBorda }"
-                  />
-
-                  <label class="rf_texto">Modelo *</label>
-                  <datalist id="datalistModelos">
-                    <option
-                      v-for="modelo in modelos"
-                      :data-id="modelo.codigo"
-                      :value="modelo.descricao"
-                      :key="modelo.id"
-                    ></option>
-                  </datalist>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="anoModelo_av"
-                    :style="{ 'border-color': anoModeloCorBorda }"
-                  />
-                  <label class="rf_texto">Ano Modelo *</label>
-                </div>
-              </div>
-            </div>
-            <div class="row g-2 p-2">
-              <div class="col">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="cor_av"
-                    :style="{ 'border-color': corCorBorda }"
-                  />
-                  <label class="rf_texto">Cor *</label>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="kilometragem_av"
-                    :style="{ 'border-color': kilometragemCorBorda }"
-                    @input="kilometragem_av = formatarKM(kilometragem_av)"
-                  />
-                  <label class="rf_texto">Kilometragem *</label>
-                </div>
-              </div>
-              <!-- <div class="col-3">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="valor_avaliacao"
-                    required
-                    @input="valor_avaliacao = formatarValor(valor_avaliacao)"
-                  />
-                  <label class="rf_texto">R$ Fipe</label>
-                </div>
-              </div> -->
-              <div class="col-3">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="valor_av"
-                    :style="{ 'border-color': valorAvaliadoCorBorda }"
-                    @input="valor_av = formatarValor(valor_av)"
-                  />
-                  <label class="rf_texto">R$ Avaliado *</label>
-                </div>
-              </div>
-            </div>
-            <div class="row g-2 p-2">
-              <div class="col-12">
-                <div class="form-floating">
-                  <textarea
-                    v-model="obs_av"
-                    class="form-control rf_bg_form rf_texto"
-                  ></textarea>
-                  <label class="rf_texto">Observação</label>
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="card-title gy-4">
-                  <i class="bi bi-book fs-5 icone_filtro"
-                    ><span class="texto_kit">Última Avaliação</span></i
-                  >
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="data_av_hst"
-                    disabled
-                  />
-                  <label class="rf_texto">Data</label>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="kilometragem_av_hst"
-                    disabled
-                  />
-                  <label class="rf_texto">Kilometragem</label>
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control rf_bg_form rf_texto"
-                    v-model="valor_av_hst"
-                    disabled
-                  />
-                  <label class="rf_texto">R$ Avaliado</label>
-                </div>
-              </div>
-              <div class="col-12">
-                <label class="rf_texto" v-if="info_erros.placa_av"
-                  >Preencha o campo Placa!</label
-                >
-                <label class="rf_texto" v-if="info_erros.marcaSelecionada"
-                  >Preencha o campo Marca!</label
-                >
-                <label class="rf_texto" v-if="info_erros.modeloSelecionado"
-                  >Preencha o campo Modelo!</label
-                >
-                <label class="rf_texto" v-if="info_erros.anoModelo_av"
-                  >Preencha o campo Ano!</label
-                >
-                <label class="rf_texto" v-if="info_erros.cor_av"
-                  >Preencha o campo Cor!</label
-                >
-              </div>
-            </div>
-
-            <div class="row g-2 p-2">
-              <div class="col">
-                <div class="form-floating">
-                  <button
-                    class="btn btn-lg btn-desk-filtro"
-                    type="submit"                 
-                    @click="handleUpdate"
-                  >
-                    <span class="rf_texto_btn">Alterar Veículo</span>
-                  </button>
-                </div>
-              </div>
-              <div class="col">
-                <div class="form-floating">
-                  <button
-                    class="btn btn-lg btn-desk-filtro"
-                    type="submit"
-                    @click="handleInsert"
-                  >
-                    <span class="rf_texto_btn">Inserir</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
   <!--Modal Estoque-->
   <div
     class="modal fade"
@@ -3765,20 +3194,45 @@
                   </div>
                 </div>
                 <div class="col-1">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Data</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      g_menu_data_negociacao
-                    }}</span>
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Data</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_data_negociacao }}</span>
                   </div>
-                </div>
-              </div>        
-              <!--Informações do Veículo-->
+                </div>                
+              </div>
+              <!--Acessórios-->
               <div class="row g-2 p-2">
+                <div class="col-12">
+                  <i class="bi bi-person-badge fs-5 icone_filtro_desk "
+                    ><span class="texto_filtro_desk"
+                      ><strong class="rf_titulo_pdf">Acessórios</strong></span
+                    ></i
+                  >
+                </div>
+                <div>
+                  <ul class="list-group list-group-horizontal">
+                      <li v-for="item in itens_acessorios" :key="item.id" class="list-group-item rf_texto_menu_desk">
+                          <div class="row">
+                              <div class="col rf_texto_pdf">
+                                  <span>{{ item.descricao }}</span>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col">
+                                  <span class="rf_texto_pdf rf_texto_menu_titulo_desk">{{ this.currency(item.valor) }}</span>
+                              </div>
+                          </div>
+                      </li>
+                  </ul>
+                  <i class="fs-5 icone_filtro_desk "
+                    ><span
+                      ><strong class="rf_titulo_pdf">{{ msg }}</strong></span
+                    ></i
+                  >  
+                </div>                    
+              </div>
+               <!--Informações do Veículo-->
+               <div class="row g-2 p-2">
                 <div class="col-12">
                   <i class="bi bi-person-badge fs-5 icone_filtro_desk"
                     ><span class="texto_filtro_desk"
@@ -3955,45 +3409,8 @@
                       Valor_Financiado
                     }}</span>
                   </div>
-                </div>
-              </div>
-                    <!--Acessórios-->
-              <div class="row g-2 p-2">
-                <div class="col-12">
-                  <i class="bi bi-person-badge fs-5 icone_filtro_desk"
-                    ><span class="texto_filtro_desk"
-                      ><strong class="rf_titulo_pdf">Acessórios</strong></span
-                    ></i
-                  >
-                </div>
-                <div>
-                  <ul class="list-group list-group-horizontal">
-                    <li
-                      v-for="item in itens_acessorios"
-                      :key="item.id"
-                      class="list-group-item rf_texto_menu_desk"
-                    >
-                      <div class="row">
-                        <div class="col rf_texto_pdf">
-                          <span>{{ item.descricao }}</span>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col">
-                          <span
-                            class="rf_texto_pdf rf_texto_menu_titulo_desk"
-                            >{{ this.currency(item.valor) }}</span
-                          >
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                  <i class="fs-5 icone_filtro_desk"
-                    ><span
-                      ><strong class="rf_titulo_pdf">{{ msg }}</strong></span
-                    ></i
-                  >
-                </div>
+                </div>    
+                         
               </div>
               <!--Veículo de Troca-->
               <div class="row g-2 p-2">
@@ -4004,131 +3421,55 @@
                     ></i
                   >
                 </div>
-                <div>
-                  <ul class="list-group ">
-                    <li
-                      v-for="item in veiculos_avaliados"
-                      :key="item.id"
-                      class="list-group-item rf_texto_menu_desk"
-                    >
-                      <div class="row">
-                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
-                          <span>Marca</span>
-                        </div>
-                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
-                          <span>Modelo</span>
-                        </div>
-                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
-                          <span>Placa</span>
-                        </div>
-                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
-                          <span>Ano Modelo</span>
-                        </div>
-                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
-                          <span>Cor</span>
-                        </div>
-                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
-                          <span>Kilometragem</span>
-                        </div>
-                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
-                          <span>R$ Avaliado</span>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col">
-                          <span
-                            class="rf_texto_pdf "
-                            >{{ item.marca }}</span
-                          >
-                        </div>
-                        <div class="col">
-                          <span
-                            class="rf_texto_pdf "
-                            >{{ item.modelo }}</span
-                          >
-                        </div>
-                        <div class="col">
-                          <span
-                            class="rf_texto_pdf "
-                            >{{ item.placa }}</span
-                          >
-                        </div>
-                        <div class="col">
-                          <span
-                            class="rf_texto_pdf "
-                            >{{ item.ano_mod }}</span
-                          >
-                        </div>
-                        <div class="col">
-                          <span
-                            class="rf_texto_pdf "
-                            >{{ item.cor }}</span
-                          >
-                        </div>
-                        <div class="col">
-                          <span
-                            class="rf_texto_pdf "
-                            >{{ formatarKM(item.kilometragem) }}</span
-                          >
-                        </div>
-                        <div class="col">
-                          <span
-                            class="rf_texto_pdf "
-                            >{{ item.preco_avaliado }}</span
-                          >
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>            
-                <div class="col">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Valor Total Acesssórios</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      Valor_Itens_Acessorios
-                    }}</span>
+                <div class="col-2">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Marca</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ this.marca_avaliacao }}</span>
                   </div>
                 </div>
                 <div class="col">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Valor Total Avaliação</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      g_menu_valor_avaliacao_final
-                    }}</span>
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Modelo</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ this.modelo_avaliacao }}</span>
                   </div>
                 </div>
-                <div class="col">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Valor Entrada</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                     this.currency(this.entrada_escolhida)
-                    }}</span>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Placa</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ this.placa_avaliacao }}</span>
                   </div>
                 </div>
-                <div class="col">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Total Entrada</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                     Valor_Entrada
-                    }}</span>
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Ano</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ this.anoModelo_avaliacao }}</span>
                   </div>
-                </div>
+                </div>     
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Itens(-)</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ 0.00 }}</span>
+                  </div>
+                </div>   
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Itens(+)</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ 0.00 }}</span>
+                  </div>
+                </div>    
+                <div class="col-2">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Avaliado</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_valor_avaliado }}</span>
+                  </div>
+                </div>  
+                <div class="col-1">
+                  <div class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp">
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf">Valor Final</label>
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{ g_menu_valor_avaliacao_final }}</span>
+                  </div>
+                </div>  
+                         
               </div>
             </div>
             <!--Quadro Entradas-->
@@ -4259,624 +3600,24 @@
             </div>
 
             <div class="row g-2 p-2">
-              <div class="col">
-             
-                <p>
-                  * Fica o cliente ciente de que a compra e venda em questão está condicionada à disponibilidade do veículo pela fábrica e sujeita a reajuste no preço aqui pactuado, que ocorrendo será informado ao cliente antes do faturamento do veículo, podendo haver desistência em caso de não concordância, com devolução do sinal dado como princípio de pagamento.</p
+              <div class="col"><br>
+                <span>
+                  * O preço sugerido é válido enquanto durarem os veículos em
+                  estoque.</span
                 >
-                <p>* A concessão do financiamento está condicionada à análise de crédito por parte da instituição financeira.</p>
-                <p>* O pagamento do IPVA do veículo desta proposta é de inteira responsabilidade do cliente.</p>
-                <p>* O veículo usado da troca deverá ser entregue nas mesmas condições descritas na avaliação em anexo.</p>
-                <p>* Declaro-me ciente e informado de que meus dados pessoais serão objeto de atividades de tratamento pelo presente controlador e demais empresas de seu grupo econômico e parceiros comerciais aplicáveis à presente venda, inclusive inseridos em sistemas informatizados, com a finalidade de possibilitar o controle, gestão e cumprimento dos termos e regras estipulados no presente instrumento, bem como para o cumprimento de obrigações legais e regulamentares vigentes. Declaro-me ciente e informado de que meus dados poderão ser utilizados para ações de marketing, sendo-me facultado a qualquer tempo opor-me a tal operação pelos canais de contato do presente controlador destinados ao exercício dos direitos do titular.
-                </p>
-              </div>
-
-            </div>
-            <div class="row g-2 p-2 mt-1">
-              <div class="col rf_assinatura">
-                <span>Gerente: {{ g_menu_gerente }}</span>
-              </div>
-              <div class="col rf_assinatura">
-                <span>Cliente: {{ g_menu_cliente }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-target="#ModaProposta"
-            data-bs-toggle="modal"
-          >
-            Fechar
-          </button>
-          <button
-            class="btn btn-secondary"
-            :disabled="btn_gerar_menu"
-            @click="generatePdf"
-          >
-            IMPRIMIR
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-    <!--Modal Gerar Menu A vista-->
-  <div
-    class="modal fade"
-    id="ModalGerarMenuVista"
-    aria-hidden="true"
-    aria-labelledby="exampleModalToggleLabel2"
-    tabindex="-1"
-  >
-    <div class="modal-dialog modal-fullscreen rf_modal font-pdf-menu">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body">
-          <div class="mt-3 rf_texto_pdf" ref="contentToPrint2">
-            <div class="row">
-              <div class="col-6">
-                <a class="navbar-brand logo">
-                  <img
-                    src="../../assets/logo.png"
-                    alt="Bootstrap"
-                    width="100"
-                    height="30"
-                  />
-                </a>
-              </div>
-              <div class="col-6" style="text-align: right">
-                <a class="navbar-brand logo_cliente">
-                  <img
-                    src="../../assets/logo.png"
-                    alt="Bootstrap"
-                    height="30"
-                  />
-                </a>
-              </div>
-            </div>
-            <div class="card card-desk mt-3">
-              <!--Dados do Cliente-->
-              <div class="row g-2 p-2">
-                <div class="col-12">
-                  <i class="bi bi-person-badge fs-5 icone_filtro_desk"
-                    ><span class="texto_filtro_desk"
-                      ><strong class="rf_titulo_pdf"
-                        >Informações do Cliente</strong
-                      ></span
-                    ></i
-                  >
-                </div>
-                <div class="col">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Cliente</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      g_menu_cliente
-                    }}</span>
-                  </div>
-                </div>
-                <div class="col-2">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >CPF/CNPJ</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      g_menu_cpfCnpj
-                    }}</span>
-                  </div>
-                </div>
-                <div class="col-2">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Telefone</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      g_menu_fone
-                    }}</span>
-                  </div>
-                </div>
-                <div class="col-2">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Telefone 2</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      g_menu_fone2
-                    }}</span>
-                  </div>
-                </div>
-                <div class="col-2">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Email</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      g_menu_email
-                    }}</span>
-                  </div>
-                </div>
-              </div>
-              <!--Informações da Proposta-->
-              <div class="row g-2 p-2">
-                <div class="col-12">
-                  <i class="bi bi-person-badge fs-5 icone_filtro_desk"
-                    ><span class="texto_filtro_desk"
-                      ><strong class="rf_titulo_pdf"
-                        >Informações da Proposta</strong
-                      ></span
-                    ></i
-                  >
-                </div>
-                <div class="col">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Gerente</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      g_menu_gerente
-                    }}</span>
-                  </div>
-                </div>
-                <div class="col">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Vendedor</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      g_menu_vendedor
-                    }}</span>
-                  </div>
-                </div>
-                <div class="col-1">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Negociação</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      g_menu_negociacao
-                    }}</span>
-                  </div>
-                </div>
-                <div class="col-1">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Data</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      g_menu_data_negociacao
-                    }}</span>
-                  </div>
-                </div>
-              </div>        
-              <!--Informações do Veículo-->
-              <div class="row g-2 p-2">
-                <div class="col-12">
-                  <i class="bi bi-person-badge fs-5 icone_filtro_desk"
-                    ><span class="texto_filtro_desk"
-                      ><strong class="rf_titulo_pdf"
-                        >Informações do Veículo</strong
-                      ></span
-                    ></i
-                  >
-                </div>
-                <div class="col-2">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Marca</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      g_menu_marca
-                    }}</span>
-                  </div>
-                </div>
-                <div class="col">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Modelo</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      g_menu_modelo
-                    }}</span>
-                  </div>
-                </div>
-                <div class="col-1">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Cor</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      g_menu_cor
-                    }}</span>
-                  </div>
-                </div>
-                <div class="col-1">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Placa</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      g_menu_placa
-                    }}</span>
-                  </div>
-                </div>
-                <div class="col-1">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Chassi</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      g_menu_chassi
-                    }}</span>
-                  </div>
-                </div>
-                <div class="col-1">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Ano Mod.</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      g_menu_ano_modelo
-                    }}</span>
-                  </div>
-                </div>
-                <div class="col-1">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Ano Fab.</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      g_menu_ano_fab
-                    }}</span>
-                  </div>
-                </div>
-              </div>
-              <!--Resumos da compra-->
-              <div class="row g-2 p-2">
-                <div class="col-12">
-                  <i class="bi bi-person-badge fs-5 icone_filtro_desk"
-                    ><span class="texto_filtro_desk"
-                      ><strong class="rf_titulo_pdf"
-                        >Resumo da Compra</strong
-                      ></span
-                    ></i
-                  >
-                </div>
-                <div class="col">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Valor Sugerido</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      g_menu_val_sugerido
-                    }}</span>
-                  </div>
-                </div>
-                <div class="col">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Valor Desconto</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      g_menu_val_desconto
-                    }}</span>
-                  </div>
-                </div>      
-                <div class="col">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Tipo Pagamento</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      tipoPagamento
-                    }}</span>
-                  </div>
-                </div>
-                <div class="col">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Valor Total Veículo</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      g_menu_val_veiculo
-                    }}</span>
-                  </div>
-                </div>            
-              </div>
-              <!--Acessórios-->
-              <div class="row g-2 p-2">
-                <div class="col-12">
-                  <i class="bi bi-person-badge fs-5 icone_filtro_desk"
-                    ><span class="texto_filtro_desk"
-                      ><strong class="rf_titulo_pdf">Acessórios</strong></span
-                    ></i
-                  >
-                </div>
-                <div>
-                  <ul class="list-group list-group-horizontal">
-                    <li
-                      v-for="item in itens_acessorios"
-                      :key="item.id"
-                      class="list-group-item rf_texto_menu_desk"
-                    >
-                      <div class="row">
-                        <div class="col rf_texto_pdf">
-                          <span>{{ item.descricao }}</span>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col">
-                          <span
-                            class="rf_texto_pdf rf_texto_menu_titulo_desk"
-                            >{{ this.currency(item.valor) }}</span
-                          >
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                  <i class="fs-5 icone_filtro_desk"
-                    ><span
-                      ><strong class="rf_titulo_pdf">{{ msg }}</strong></span
-                    ></i
-                  >
-                </div>
-              </div>
-              <!--Veículo de Troca-->
-              <div class="row g-2 p-2">
-                <div class="col-12">
-                  <i class="bi bi-person-badge fs-5 icone_filtro_desk"
-                    ><span class="texto_filtro_desk"
-                      ><strong class="rf_titulo_pdf">Veículo da Troca</strong></span
-                    ></i
-                  >
-                </div>
-                <div>
-                  <ul class="list-group ">
-                    <li
-                      v-for="item in veiculos_avaliados"
-                      :key="item.id"
-                      class="list-group-item rf_texto_menu_desk"
-                    >
-                      <div class="row">
-                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
-                          <span>Marca</span>
-                        </div>
-                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
-                          <span>Modelo</span>
-                        </div>
-                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
-                          <span>Placa</span>
-                        </div>
-                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
-                          <span>Ano Modelo</span>
-                        </div>
-                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
-                          <span>Cor</span>
-                        </div>
-                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
-                          <span>Kilometragem</span>
-                        </div>
-                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
-                          <span>R$ Avaliado</span>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col">
-                          <span
-                            class="rf_texto_pdf "
-                            >{{ item.marca }}</span
-                          >
-                        </div>
-                        <div class="col">
-                          <span
-                            class="rf_texto_pdf "
-                            >{{ item.modelo }}</span
-                          >
-                        </div>
-                        <div class="col">
-                          <span
-                            class="rf_texto_pdf "
-                            >{{ item.placa }}</span
-                          >
-                        </div>
-                        <div class="col">
-                          <span
-                            class="rf_texto_pdf "
-                            >{{ item.ano_mod }}</span
-                          >
-                        </div>
-                        <div class="col">
-                          <span
-                            class="rf_texto_pdf "
-                            >{{ item.cor }}</span
-                          >
-                        </div>
-                        <div class="col">
-                          <span
-                            class="rf_texto_pdf "
-                            >{{ formatarKM(item.kilometragem) }}</span
-                          >
-                        </div>
-                        <div class="col">
-                          <span
-                            class="rf_texto_pdf "
-                            >{{ item.preco_avaliado }}</span
-                          >
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>           
-       
-              </div>
-               <!--Formas de Pagamento-->
-               <div class="row g-2 p-2">
-                <div class="col-12">
-                  <i class="bi bi-person-badge fs-5 icone_filtro_desk"
-                    ><span class="texto_filtro_desk"
-                      ><strong class="rf_titulo_pdf">Composição do Pagamento</strong></span
-                    ></i
-                  >
-                </div>
-                <div>
-                  <ul class="list-group ">
-                    <li
-                      v-for="item in itens_pagamentos"
-                      :key="item.id"
-                      class="list-group-item rf_texto_menu_desk"
-                    >
-                      <div class="row">
-                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
-                          <span>Valor Informado</span>
-                        </div>
-                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
-                          <span>Pagamento</span>
-                        </div>
-                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
-                          <span>Qtd</span>
-                        </div>
-                        
-                      </div>
-                      <div class="row">
-                        <div class="col">
-                          <span
-                            class="rf_texto_pdf "
-                            >{{ this.currency(item.valor_parcela) }}</span
-                          >
-                        </div>
-                        <div class="col">
-                          <span
-                            class="rf_texto_pdf "
-                            >{{ item.tipo_pagamento_desk.descricao }}</span
-                          >
-                        </div>
-                        <div class="col">
-                          <span
-                            class="rf_texto_pdf "
-                            >{{ item.qtd_parcela }}</span
-                          >
-                        </div>                        
-                      </div>
-                    </li>
-                  </ul>
-                </div>         
-                
-                
-                <div class="col">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Valor Total Acesssórios</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      Valor_Itens_Acessorios
-                    }}</span>
-                  </div>
-                </div>
-                <div class="col">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Valor Total Avaliação</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      g_menu_valor_avaliacao_final
-                    }}</span>
-                  </div>
-                </div>
-                <div class="col">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Valor Entrada</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                     this.currency(this.entrada_escolhida)
-                    }}</span>
-                  </div>
-                </div>
-                <div class="col">
-                  <div
-                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
-                  >
-                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
-                      >Total Entrada</label
-                    >
-                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                     Valor_Entrada
-                    }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-        
-
-            <div class="row g-2 p-2">
-              <div class="col">
-             
-                <p>
-                  * Fica o cliente ciente de que a compra e venda em questão está condicionada à disponibilidade do veículo pela fábrica e sujeita a reajuste no preço aqui pactuado, que ocorrendo será informado ao cliente antes do faturamento do veículo, podendo haver desistência em caso de não concordância, com devolução do sinal dado como princípio de pagamento.</p
+          
+                <span> ** Despesa Operacional para preparação do veículo</span>
+           
+                <!-- <span>A contratação de seguros é opcional, sendo possível a desistência do
+                    contrato em até 7 (sete) dias corridos com a devolução integral do
+                    valor pago.</span> -->
+            
+                <span
+                  > É proibido condicionar desconto de bem à aquisição de
+                  seguro.</span
                 >
-                <p>* A concessão do financiamento está condicionada à análise de crédito por parte da instituição financeira.</p>
-                <p>* O pagamento do IPVA do veículo desta proposta é de inteira responsabilidade do cliente.</p>
-                <p>* O veículo usado da troca deverá ser entregue nas mesmas condições descritas na avaliação em anexo.</p>
-                <p>* Declaro-me ciente e informado de que meus dados pessoais serão objeto de atividades de tratamento pelo presente controlador e demais empresas de seu grupo econômico e parceiros comerciais aplicáveis à presente venda, inclusive inseridos em sistemas informatizados, com a finalidade de possibilitar o controle, gestão e cumprimento dos termos e regras estipulados no presente instrumento, bem como para o cumprimento de obrigações legais e regulamentares vigentes. Declaro-me ciente e informado de que meus dados poderão ser utilizados para ações de marketing, sendo-me facultado a qualquer tempo opor-me a tal operação pelos canais de contato do presente controlador destinados ao exercício dos direitos do titular.
-                </p>
+            
               </div>
-
             </div>
             <div class="row g-2 p-2 mt-1">
               <div class="col rf_assinatura">
@@ -5541,9 +4282,6 @@ export default {
       vendedor_troca: "",
       bloquear_entrada: false,
       timer: null,
-      historico_avaliacoes:[],
-      modeloSelecionado:"",
-      data_av_hst:"",
 
       //Historico do Cliente
       id_historico_cliente: "",
@@ -5551,42 +4289,7 @@ export default {
       hist_cliente: [],
       modal_historico_cliente: false,
       showModal: false,
-      modalMessage: "",
-      info_erros: {},
-      //Pagamento a vista
-      itens_pagamentos: [],
-      venda_vista: false,
-      venda_financiamento: true,
-      incluir_financiamento: true,
-      valor_da_venda: "",
-      metodo_pagamento_vista: [],
-      met_pagamento_vista: "",
-      valor_parcela_vista: "",
-      qtd_parcela_vista: "",
-      qtd_parcelamento: [
-        { value: 1 },
-        { value: 2 },
-        { value: 3 },
-        { value: 4 },
-        { value: 5 },
-        { value: 6 },
-        { value: 7 },
-        { value: 8 },
-        { value: 9 },
-        { value: 10 },
-        { value: 11 },
-        { value: 12 },
-      ],
-
-      id_pagamento:"",
-      pagamentoVistaJaChamado: false,
-      id_pagamento_desk: "",
-      hab_ranquear: true,
-
-      //Mensagens de aviso
-      hab_avista : false,
-      hab_financiamento: false,
-      forma_pagamento: false,
+      modalMessage: '',
     };
   },
   watch: {
@@ -5641,16 +4344,13 @@ export default {
     /**Função 0002 */
     async habilitar_proposta() {
       const propostaId = this.$route.params.id;
-
+      //Buscar dados da proposta
+      console.log("Dados obitido da proposta");
       try {
         await userService.getPropostaId(propostaId).then((response) => {
           this.dados_proposta = response.data;
-          console.log("Dados obitido da proposta ----------------- 0002");
-          console.log("Proposta", response.data);
-
-          console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA -----------------");
-          console.log(propostaId, this.dados_proposta["cliente_id"])
-
+         
+          console.log("Dados obitido da proposta", response.data);
           /**Bloco de dados com informações do cliente */
           const dados_cliente = {
             id_cliente: this.dados_proposta["cliente_id"],
@@ -5841,8 +4541,6 @@ export default {
           //Resumo da Proposta
           this.modal_proposta = true;
           this.resumo();
-          this.retrieveVeiculosAvaliacao();
-          
         });
       } catch (error) {
         if (error.response.status == 400) {
@@ -6340,6 +5038,269 @@ export default {
       }
     },
 
+
+    async buscar_marcas() {
+      try {
+        console.log("Buscando marcas");
+
+        //const response = await axios.get("http://localhost:3007/api/marcas_fipe");
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_FIPE_URL}marcas_fipe`
+        );
+
+        this.marcas = response.data.rows;
+        console.log("Lista de marcas", this.marcas);
+      } catch (error) {
+        console.error(error);
+        this.abrir_modal = true;
+        this.msg = `Ocorreu um erro ao buscar as marcas. Código do erro: ${
+          error.response?.status
+        }. Mensagem: ${error.response?.data?.message || "Erro desconhecido."}`;
+        setTimeout(() => (this.abrir_modal = false), 1000);
+      }
+    },
+    buscarModelo() {
+      const valorSelecionado = this.marcaSelecionada;
+      const datalist = this.$refs.datalistMarcas;
+
+      // Converter as opções em um array para facilitar a busca
+      const options = Array.from(datalist.options);
+
+      // Encontrar a opção que corresponde ao valor selecionado
+      const opcao = options.find((opt) => opt.value === valorSelecionado);
+
+      if (opcao) {
+        const id = opcao.getAttribute("data-id");
+        this.marcaIdSelecionada = id;
+        console.log("ID da marca selecionada:", this.marcaIdSelecionada);
+        this.buscar_modelo(this.marcaIdSelecionada);
+        // Aqui você pode chamar outra função ou realizar alguma ação com o ID da marca
+        // Por exemplo: this.carregarModelos(id);
+      } else {
+        console.log("Nenhuma marca correspondente encontrada.");
+        this.marcaIdSelecionada = null;
+      }
+    },
+    async buscar_modelo(id_marca) {
+      try {
+        console.log("Buscando modelo", id_marca);
+
+        //const response = await axios.get("http://localhost:3007/api/marcas_fipe");
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_FIPE_URL}modelo_marca`,
+          {
+            params: { id: id_marca },
+          }
+        );
+
+        this.modelos = response.data.rows;
+        console.log("Lista de modelos", response);
+      } catch (error) {
+        console.error(error);
+        this.abrir_modal = true;
+        this.msg = `Ocorreu um erro ao buscar as marcas. Código do erro: ${
+          error.response?.status
+        }. Mensagem: ${error.response?.data?.message || "Erro desconhecido."}`;
+        setTimeout(() => (this.abrir_modal = false), 1000);
+      }
+    },
+    getRequestParamsMidias(searchTitle, page_midia, pageSize_midia) {
+      let params = {};
+      if (searchTitle) {
+        params["nome"] = searchTitle;
+      }
+      if (page_midia) {
+        params["page"] = page_midia - 1;
+      }
+      if (pageSize_midia) {
+        params["size"] = pageSize_midia;
+      }
+      return params;
+    },
+    pagamento_vista() {
+      if (this.pagamento == true) {
+        this.venda_vista = true;
+        this.venda_financiamento = false;
+        this.incluir_acessorios = false;
+        this.incluir_financiamento = false;
+      } else {
+        this.venda_vista = false;
+        this.venda_financiamento = true;
+        this.incluir_acessorios = true;
+        this.incluir_financiamento = true;
+      }
+    },
+    async inserir_pagamento() {
+      const valor_pacote = this.valor_pacote_vista
+        ? parseFloat(
+            this.valor_pacote_vista.replace(/[^\d,]+/g, "").replace(",", ".")
+          )
+        : 0;
+      const valor_parcela = this.valor_parcela_vista
+        ? parseFloat(
+            this.valor_parcela_vista.replace(/[^\d,]+/g, "").replace(",", ".")
+          )
+        : 0;
+
+      if (valor_parcela) {
+        try {
+          const response = await axios.get(
+            `${process.env.VUE_APP_API_URL}checar_valor`,
+            {
+              params: {
+                pos_venda_detalhada_id: this.id_pos_venda_detalhada,
+              },
+            }
+          );
+
+          const somatorio_parcelas = response.data.data;
+          const total_pagamento = valor_parcela + somatorio_parcelas;
+
+          if (valor_pacote < total_pagamento) {
+            this.abrir_modal = true;
+            this.msg = "Valor do pagamento ultrapassa o valor do pacote";
+            setTimeout(() => (this.abrir_modal = false), 3000);
+            return;
+          }
+        } catch (error) {
+          console.log(error);
+          if (error.response.status == 400) {
+            this.abrir_modal = true;
+            this.msg = error.response.data.message;
+            setTimeout(() => (this.abrir_modal = false), 3000);
+          }
+        }
+      }
+
+      //Validando antes de enviar para a api
+      if (valor_pacote < valor_parcela || valor_parcela == 0) {
+        this.abrir_modal = true;
+        this.msg =
+          "O valor do pacote não pode ser menor que o valor da parcela ou a parcela não pode ser R$ 0,00";
+        setTimeout(() => (this.abrir_modal = false), 4000);
+        return;
+      }
+      await fetch(`${process.env.VUE_APP_API_URL}pagamento_fei`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          pos_venda_detalhada_id: this.id_pos_venda_detalhada,
+          tipo_pagamento_id: this.met_pagamento_vista,
+          valor_pacote: valor_pacote,
+          valor_parcela: valor_parcela,
+          qtd_parcela: this.qtd_parcela_vista,
+          status: 1,
+        }),
+      })
+        .then((data) => {
+          if (!data.ok) {
+            throw Error(data.status);
+          }
+          return data.json();
+        })
+        .then((resposta) => {
+          console.log("Pagamento inserido com sucesso ------ " + resposta);
+          if (resposta.StatusOk == 200) {
+            this.abrir_modal = true;
+            this.msg = "Pagamento inserido com sucesso";
+            setTimeout(() => (this.abrir_modal = false), 2000);
+            this.retrievePagamentosFei();
+          }
+        });
+    },
+    verificarMetodoPagamento() {
+      if (this.metodo_pagamento === 1) {
+        this.habilitar_finalizar_venda = true;
+      } else {
+        console.log("Metodo Pagamento", this.metodo_pagamento);
+        if (!this.valor_pacote_selecionado) {
+          this.abrir_modal = true;
+          this.msg = "O valor do pacote não pode ser R$ 0,00";
+          setTimeout(() => (this.abrir_modal = false), 4000);
+          this.habilitar_finalizar_venda = true;
+          return;
+        }
+        if (!this.valor_pacote_customizado) {
+          this.abrir_modal = true;
+          this.msg = "O valor do pacote customizado não pode ser R$ 0,00";
+          setTimeout(() => (this.abrir_modal = false), 4000);
+          this.habilitar_finalizar_venda = true;
+          return;
+        }
+
+        this.habilitar_finalizar_venda = false;
+      }
+
+      if (this.met_pagamento_vista === 1) {
+        this.abrir_modal = true;
+        this.msg =
+          "Para essa forma de pagamento utilize o método Financiamento";
+        setTimeout(() => (this.abrir_modal = false), 4000);
+        this.habilitar_inserir_pagamento = true;
+        return;
+      }
+      if (this.met_pagamento_vista != 1) {
+        this.habilitar_inserir_pagamento = false;
+      }
+    },
+    async retrieveTipoPagamento() {
+      try {
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_URL}tipo_pagamentos`,
+          {
+            params: {
+              status: 1,
+            },
+          }
+        );
+
+        // Faça algo com os dados aqui, como atribuir a uma variável de componente
+        this.metodo_pagamento_vista = response.data; // exemplo de atribuição
+        console.log("Lista de pagamentos", this.metodo_pagamento_vista);
+      } catch (error) {
+        console.log(error);
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+          setTimeout(() => (this.abrir_modal = false), 1000);
+        }
+      }
+    },
+    async retrieveMidia() {
+      try {
+        const params = this.getRequestParamsMidias(
+          this.searchTitle,
+          this.page_midia,
+          this.pageSize_midia
+        );
+        userService
+          .getMidia(params)
+          .then((response) => {
+            const { midias } = response.data;
+
+            this.midia = midias;
+
+            console.log(response.data);
+          })
+          .catch((error) => {
+            if (error.response.status == 400) {
+              this.abrir_modal = true;
+              this.msg = error.response.data.message;
+            }
+          });
+      } catch (error) {
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+        }
+      }
+    },
+
+  
+ 
+
     /**Função 003 */
     /*Venda Futura e Veiculo do estoque*/
     async completar_modelo(item) {
@@ -6819,127 +5780,8 @@ export default {
             this.btn_gerar_menu = false;
             this.btn_1 = false;
           }
-          this.checar_pmt_escolhido();
-          console.log("Checando Resposta agora---------------------", resposta);
-        });
-    },
-    async resumo_vista() {
-      console.log("Aqui Resumo");
-      await fetch(`${process.env.VUE_APP_API_URL}taxas/resumo_vista`, {
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          proposta_id: this.id_proposta,
-        }),
-      })
-        .then((data) => {
-          if (!data.ok) {
-            throw Error(data.status);
-          }
-          return data.json();
-        })
-        .then((resposta) => {
-          console.log("Resumo", resposta);
-          if (resposta["tipo_veiculo"] == "NOVO") {
-            console.log("novo");
-            this.Lucro_Bruto = resposta["Lucro_Bruto_Zero"];
-            this.Lucro_Operacional = resposta["Lucro_Operacional_Zero"];
-            this.Lucro_liquido = resposta["Lucro_liquido_Zero"];
-          }
-          if (resposta["tipo_veiculo"] == "USADO") {
-            this.Lucro_Bruto = resposta["Lucro_Bruto"];
-            this.Lucro_Operacional = resposta["Lucro_Operacional"];
-            this.Lucro_liquido = resposta["Lucro_liquido"];
-          }
-          (this.Valor_Sugerido = resposta["Valor_Sugerido"]),
-            (this.Valor_Custo_variaveis = resposta["Valor_Custo_variaveis"]),
-            (this.Valor_Itens_Acessorios = resposta["Valor_Itens_Acessorios"]);
-          this.Valor_Total_Venda = resposta["Valor_Total_Venda"];
-
-          // this.Valor_Avaliado = resposta["Valor_Avaliado"];
-          // this.Valor_Itens_Avaliacao_db = resposta["Valor_Itens_Avaliacao_db"];
-          // this.Valor_Itens_Avaliacao_cr = resposta["Valor_Itens_Avaliacao_cr"];
-          // this.Valor_Avaliacao_Final = resposta["Valor_Avaliacao_Final"];
-          this.Valor_Avaliacao_Final = this.currency(this.valor_avaliacao)
-
-          this.Valor_Resultado_Financiamento =
-            resposta["Valor_Resultado_Financiamento"];
-
-          this.Valor_Entrada = resposta["Valor_Entrada"];
-          this.Valor_Financiado = resposta["Valor_Financiado"];
-          this.Quantidade_Meses = resposta["Quantidade_Meses"];
-
-          this.Valor_Entrada_1 = resposta["Valor_Entrada_1"];
-          this.Entrada_Total_1 = resposta["Entrada_Total_1"];
-          this.Valor_Financiado_1 = resposta["Valor_Financiado_1"];
-          this.Quantidade_Meses_1 = resposta["Quantidade_Meses_1"];
-
-          this.Valor_Entrada_2 = resposta["Valor_Entrada_2"];
-          this.Entrada_Total_2 = resposta["Entrada_Total_2"];
-          this.Valor_Financiado_2 = resposta["Valor_Financiado_2"];
-          this.Quantidade_Meses_2 = resposta["Quantidade_Meses_2"];
-
-          this.Valor_Entrada_3 = resposta["Valor_Entrada_3"];
-          this.Entrada_Total_3 = resposta["Entrada_Total_3"];
-          this.Valor_Financiado_3 = resposta["Valor_Financiado_3"];
-          this.Quantidade_Meses_3 = resposta["Quantidade_Meses_3"];
-
-          this.Pmt = resposta["Pmt"];
-          this.parcela_1_1 = resposta["Pmt_1"];
-          this.parcela_2_1 = resposta["Pmt_2"];
-          this.parcela_3_1 = resposta["Pmt_3"];
-          this.parcela_1_2 = resposta["Pmt_4"];
-          this.parcela_2_2 = resposta["Pmt_5"];
-          this.parcela_3_2 = resposta["Pmt_6"];
-          this.parcela_1_3 = resposta["Pmt_7"];
-          this.parcela_2_3 = resposta["Pmt_8"];
-          this.parcela_3_3 = resposta["Pmt_9"];
-          if (resposta["Parcela1"]) {
-            console.log("Existe uma parcela");
-            this.parcela_1 = resposta["Parcela1"];
-            this.bloquear_entrada = true;
-          }
-
-          if (resposta["Parcela2"] === undefined) {
-            this.parcela_2 = 36;
-          } else {
-            this.parcela_2 = resposta["Parcela2"];
-          }
-          if (resposta["Parcela3"] === undefined) {
-            this.parcela_3 = 48;
-          } else {
-            this.parcela_3 = resposta["Parcela3"];
-          }
-
-          let v_entrada_1 = resposta["Entrada1"];
-          let v_entrada_2 = resposta["Entrada2"];
-          let v_entrada_3 = resposta["Entrada3"];
-          this.entrada_1 = this.currency(v_entrada_1);
-          this.entrada_2 = this.currency(v_entrada_2);
-          this.entrada_3 = this.currency(v_entrada_3);
-          this.adicional = resposta["Valor_Adicional"];
-          this.desconto = resposta["Valor_Desconto"];
-
-          if (resposta["incluir_acessorios"] == "1") {
-            console.log(
-              "Somar Acessorios ---------------------------------------------------------------------------"
-            );
-            this.incluir_acessorios = true;
-          } else {
-            this.incluir_acessorios = false;
-            console.log(
-              "Não Somar Acessorios ---------------------------------------------------------------------------"
-            );
-          }
-          if (resposta["Pmt"] != "") {
-            this.btn_gerar_menu = false;
-            this.btn_1 = false;
-          }
-          this.checar_pmt_escolhido();
-          console.log("Checando Resposta agora---------------------", resposta);
+        this.checar_pmt_escolhido();
+          console.log("Checando Resposta agora---------------------",resposta);
         });
     },
 
@@ -7310,20 +6152,16 @@ export default {
       document.querySelectorAll(".rf_titulo_pdf").forEach((element) => {
         element.style.fontSize = "12px"; // Tamanho de fonte para impressão
       });
-      document
-        .querySelectorAll(".rf_titulo_destaque_pdf")
-        .forEach((element) => {
-          element.style.fontSize = "14px"; // Tamanho de fonte para impressão
-        });
-      document
-        .querySelectorAll(".rf_bg_form_menu_desk_imp")
-        .forEach((element) => {
-          element.style.border = "1px solid #2A2B3F"; // Define a borda
-          element.style.borderRadius = "4px"; // Define o raio da borda
-          element.style.marginLeft = "2px"; // Define a margem esquerda
-          element.style.marginRight = "2px"; // Define a margem direita
-          //element.style.height = "30px"; // Define a altura
-        });
+      document.querySelectorAll(".rf_titulo_destaque_pdf").forEach((element) => {
+        element.style.fontSize = "14px"; // Tamanho de fonte para impressão
+      });
+      document.querySelectorAll(".rf_bg_form_menu_desk_imp").forEach((element) => {
+        element.style.border = "1px solid #2A2B3F"; // Define a borda
+        element.style.borderRadius = "4px"; // Define o raio da borda
+        element.style.marginLeft = "2px"; // Define a margem esquerda
+        element.style.marginRight = "2px"; // Define a margem direita
+        element.style.height = "30px"; // Define a altura
+      });
 
       setTimeout(() => {
         html2pdf().from(this.$refs.contentToPrint).set(options).save();
@@ -7460,117 +6298,7 @@ export default {
         this.g_menu_itens_avaliacao_db = this.Valor_Itens_Avaliacao_db ?? 0;
         this.g_menu_itens_avaliacao_cr = this.Valor_Itens_Avaliacao_cr ?? 0;
         this.g_menu_valor_avaliacao_final = this.Valor_Avaliacao_Final ?? 0;
-        this.calcular_entrada_gerar_menu();
-        // Acessorios
-        this.g_menu_total_acessorios = this.Valor_Itens_Acessorios;
-        this.itens_acessorios = data?.data?.rows[0]?.acessorios_proposta ?? [];
 
-        if (this.incluir_acessorios == true) {
-          this.msg = "Valor incluso no financiamento!";
-        } else {
-          this.msg = "Valor não incluso no financiamento!";
-        }
-      } catch (error) {
-        if (error.response.status == 400) {
-          this.abrir_modal = true;
-          this.msg = error.response.data.message;
-          setTimeout(() => (this.abrir_modal = false), 4000);
-        }
-      }
-    },
-    async carregarDadosMenuVista() {
-      try {
-        const id = this.id_proposta;
-
-        const response = await fetch(
-          `${process.env.VUE_APP_API_URL}gerar_menu/${id}`,
-          {
-            method: "post",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              id: id,
-            }),
-          }
-        );
-
-        if (!response.ok) {
-          throw Error(response.status);
-        }
-
-        const data = await response.json();
-        const createdAt = data?.data?.rows[0]?.createdAt;
-
-        console.log(data);
-
-        const cliente = data?.data?.rows[0]?.clientes || {};
-        const veiculo = data?.data?.rows[0]?.proposta_veiculo || {};
-        const veiculoAvaliacao = data?.data?.rows[0]?.veiculos_usados || {};
-
-        // Informações do Cliente
-        this.g_menu_cliente = cliente.nome ?? "";
-        this.g_menu_cpfCnpj = cliente.cpfCnpj ?? "";
-        this.g_menu_fone = cliente.tel ?? "";
-        this.g_menu_fone2 = cliente.cel ?? "";
-        this.g_menu_email = cliente.email ?? "";
-
-        // Informações da Proposta
-        this.g_menu_gerente = data?.data?.rows[0]?.gerentes?.username ?? "";
-        this.g_menu_vendedor = data?.data?.rows[0]?.vendedores?.username ?? "";
-        this.g_menu_negociacao = data?.data?.rows[0]?.id ?? "";
-        this.g_menu_data_negociacao = createdAt
-          ? new Date(createdAt).toLocaleDateString("pt-BR")
-          : "";
-
-        // Opções de Compra
-        this.g_menu_val_sugerido = this.currency(
-          parseFloat(data?.data?.rows[0]?.proposta_veiculo.valor_veiculo ?? 0) +
-            parseFloat(data?.data?.rows[0]?.custos_variaveis ?? 0) +
-            parseFloat(data?.data?.rows[0]?.adicional ?? 0)
-        );
-        this.g_menu_val_desconto = this.currency(
-          data?.data?.rows[0]?.desconto ?? 0
-        );
-        // this.g_menu_val_veiculo = this.currency(
-        //   parseFloat(data?.data?.rows[0]?.val_sugerido_venda ?? 0) +
-        //   parseFloat(data?.data?.rows[0]?.custos_variaveis ?? 0) +
-        //   parseFloat(data?.data?.rows[0]?.acessorios ?? 0) +
-        //   parseFloat(data?.data?.rows[0]?.adicional ?? 0)
-        // );
-        this.g_menu_val_veiculo = this.currency(
-          parseFloat(data?.data?.rows[0]?.proposta_veiculo.valor_veiculo ?? 0) +
-            parseFloat(data?.data?.rows[0]?.custos_variaveis ?? 0) +
-            parseFloat(data?.data?.rows[0]?.adicional ?? 0) -
-            parseFloat(data?.data?.rows[0]?.desconto ?? 0)
-        );
-        this.g_menu_total_financiado = this.currency(
-          parseFloat(data?.data?.rows[0]?.val_financiamento ?? 0) +
-            parseFloat(data?.data?.rows[0]?.val_entrada_financiamento ?? 0)
-        );
-
-        // Dados veiculo compra
-        this.g_menu_marca = veiculo.marca ?? "";
-        this.g_menu_modelo = veiculo.modelo_veiculo ?? "";
-        this.g_menu_cor = veiculo.cor ?? "";
-        this.g_menu_chassi = veiculo.chassis ?? "";
-        this.g_menu_ano_modelo = veiculo.ano_modelo ?? "";
-        this.g_menu_ano_fab = veiculo.ano_fabricacao ?? "";
-        this.g_menu_placa = veiculo.placa ?? "";
-
-        // Dados veiculo troca
-        this.g_menu_marca_avaliacao =
-          veiculoAvaliacao.modeloVeiculo?.familiaVeiculo?.marcaVeiculo
-            ?.descricao ?? "";
-        this.g_menu_placa_avaliacao = veiculoAvaliacao.placa ?? "";
-        this.g_menu_modelo_avaliacao =
-          veiculoAvaliacao.modeloVeiculo?.descricao ?? "";
-        this.g_menu_ano_modelo_avaliacao = veiculoAvaliacao.anoModelo ?? "";
-        this.g_menu_valor_avaliado = this.Valor_Avaliado ?? 0;
-        this.g_menu_itens_avaliacao_db = this.Valor_Itens_Avaliacao_db ?? 0;
-        this.g_menu_itens_avaliacao_cr = this.Valor_Itens_Avaliacao_cr ?? 0;
-        this.g_menu_valor_avaliacao_final = this.Valor_Avaliacao_Final ?? 0;
-        this.calcular_entrada_gerar_menu();
         // Acessorios
         this.g_menu_total_acessorios = this.Valor_Itens_Acessorios;
         this.itens_acessorios = data?.data?.rows[0]?.acessorios_proposta ?? [];
@@ -7638,9 +6366,6 @@ export default {
         let entrada_perc =
           ((valor_numerico + valor_numerico_avaliacao) / valor_original) * 100;
         this.entrada_1_perc = parseFloat(entrada_perc).toFixed(2);
-        this.entrada_perc_1_padronizada = this.configurar_taxas(entrada_perc)
-
-
       } else {
         this.entrada_1_perc = "";
       }
@@ -8652,7 +7377,7 @@ export default {
               (this.info_avaliacao =
                 "Existem avaliações para esse veículo, clique no botão info para visualizar!"),
               (this.inserir_item_avaliacao = false),
-              (this.hab_avaliacao = false),
+              // (this.hab_avaliacao = false),
               console.log(
                 "Existe avaliação ------------------------------------------------ 0015"
               ),
@@ -8665,7 +7390,7 @@ export default {
             );
             (this.info_avaliacao = "Não existe avaliação para esse veículo!"),
               console.log(this.avaliacoes);
-            this.hab_avaliacao = true;
+            // this.hab_avaliacao = true;
           }
         });
     },
@@ -8709,7 +7434,7 @@ export default {
               (this.info_avaliacao =
                 "Existem avaliações para esse veículo, clique no botão info para visualizar!"),
               (this.inserir_item_avaliacao = false),
-              (this.hab_avaliacao = false),
+              // (this.hab_avaliacao = false),
               console.log(
                 "Existe avaliação ------------------------------------------------ 0015"
               ),
@@ -8720,7 +7445,7 @@ export default {
             this.valor_avaliacao = this.currency(0.0);
             (this.info_avaliacao = "Não existe avaliação para esse veículo!"),
               console.log(this.avaliacoes);
-            this.hab_avaliacao = true;
+            // this.hab_avaliacao = true;
           }
         });
     },
@@ -9654,8 +8379,8 @@ export default {
         }
     },
     /**Após retorno positivo do ranqueamento essa função monta as taxas do primeiro bloco de entrada */
-    async ranqueamento_entrada_1() {
-      
+    async ranqueamento_entrada_1() {     
+
       const params = this.getRequestParamsEntrada1(
           this.filtro_tipo_veiculo,
           this.filtro_tipo_tabela,
