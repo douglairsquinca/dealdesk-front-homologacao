@@ -38,6 +38,7 @@ import Proposta from "./views/desk/abrirProposta.vue";
 import ReimprimirProposta from "./views/desk/reimprimirMenu.vue";
 import SituacaoGeral from "./views/desk/situacaoGeral.vue";
 import VendidosEstoque from "./views/desk/vendidosEstoque.vue";
+import VeiculosAvaliacao from "./views/desk/veiculosAvaliacao.vue";
 import VeiculosReserva from "./views/admin/reservados.vue";
 import VeiculosVendidoEstoque from "./views/admin/VeiculosVendidoEstoque.vue";
 import SituacaoVeiculo from "./views/admin/SituacaoVeiculo.vue";
@@ -397,6 +398,13 @@ const routes = [
     path:"/desk/situacaoGeral",
     name:"situacaoGeral",
     component: SituacaoGeral,
+    beforeEnter: [gerenteAuth],
+    
+  },
+  {
+    path:"/desk/veiculosAvaliacao",
+    name:"veiculosAvaliacao",
+    component: VeiculosAvaliacao,
     beforeEnter: [gerenteAuth],
     
   },

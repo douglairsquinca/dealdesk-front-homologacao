@@ -325,6 +325,12 @@
 
   }
 
+  .btn-secondary {
+    background: #fff;
+    color: #2A2B3F;
+    border: 1px solid #2A2B3F;
+  }
+
   .btn-filtro:hover {
     background-color: #922020;
     color: #fff;

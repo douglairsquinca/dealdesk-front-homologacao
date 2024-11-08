@@ -1923,10 +1923,10 @@ export default {
     this.graficos();
     this.graficos_usados();
 
-    let darkModeFromStorage = localStorage.getItem("darkMode");
-    this.darkMode = darkModeFromStorage
-      ? darkModeFromStorage === "true"
-      : false;
+    // let darkModeFromStorage = localStorage.getItem("darkMode");
+    // this.darkMode = darkModeFromStorage
+    //   ? darkModeFromStorage === "true"
+    //   : false;
   },
   methods: {
     async graficos() {
@@ -2785,7 +2785,9 @@ export default {
         );
 
         const response = await userService.getPropostaCliente(params);
+        console.log("Dados vindo da consulta - 00001 ")
         console.log(response);
+     
         const { propostas } = response.data;
         const propostaIDs = propostas.map((proposta) => proposta.id);
         const quantidadePropostaMenu = await this.getQuantidadePropostaMenu(

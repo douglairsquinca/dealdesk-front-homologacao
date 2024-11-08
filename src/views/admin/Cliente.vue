@@ -171,6 +171,13 @@
           </button>
         </div>
       </div>
+      <div class="col-1">
+        <div class="input-group-append">
+          <button class="btn btn-lg btn-filtro" type="button" @click="page = 1; sincronizarEstoqueOracle();">
+            <span class="rf_texto_btn">Sincronizar</span>
+          </button>
+        </div>
+      </div>
 
 
     </div>

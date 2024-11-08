@@ -814,7 +814,7 @@
 
 
   <div class="modal-content">
-    <div class="card card-filtro">
+    <!-- <div class="card card-filtro">
       <div class="row g-2 p-2">
         <div class="card-title rf_texto gy-4">
           <i class="bi bi-car-front-fill fs-5 icone_filtro"
@@ -834,7 +834,7 @@
                 <th class="col-2"></th>
                 <th class="col-1"></th>
                 <th class="col-1"></th>
-                <!--Parcela 1-->
+               
                 <th>
                   <div class="form-floating">
                     <select
@@ -853,7 +853,7 @@
                     <label for="valid_empresa" class="rf_texto">Parcela</label>
                   </div>
                 </th>
-                <!--Parcela 2-->
+         
                 <th>
                   <div class="form-floating">
                     <select
@@ -873,7 +873,7 @@
                     <label for="valid_empresa" class="rf_texto">Parcela</label>
                   </div>
                 </th>
-                <!--Parcela 3-->
+     
                 <th>
                   <div class="form-floating">
                     <select
@@ -896,7 +896,7 @@
               </tr>
             </thead>
             <tbody>
-              <!--Primeira Linha-->
+        
               <tr>
                 <th scope="row">
                   <div class="d-grid gap-2 disabled">
@@ -970,7 +970,7 @@
                   </div>
                 </td>
               </tr>
-              <!-- Segunda Linha-->
+           
               <tr>
                 <th scope="row">
                   <div class="d-grid gap-2">
@@ -1044,7 +1044,7 @@
                   </div>
                 </td>
               </tr>
-              <!--Terceira Linha-->
+       
               <tr>
                 <th scope="row">
                   <div class="d-grid gap-2">
@@ -1118,8 +1118,8 @@
                   </div>
                 </td>
               </tr>
-              <!--Quarta Linha-->
-              <!-- <tr>
+        
+              <tr>
                 <td>
                   <div class="d-grid gap-2">
                     <button
@@ -1174,7 +1174,7 @@
                     </button>
                   </div>
                 </th>
-              </tr> -->
+              </tr>
             </tbody>
           </table>
           <div class="row g-2">
@@ -1191,7 +1191,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <div v-if="abrir_modal">
       <Message :msg="msg" v-show="msg" />
     </div>
@@ -1199,13 +1199,23 @@
       <MessageAtualizar :msg="msg_atualizar" v-show="msg_atualizar" />
     </div>
     <div class="desk-footer">
-      <div class="col-2 p-1">
+      <div v-if="pagamento_escolhido == 1" class="col-2 p-1">
         <button
           type="submit"
           class="btn btn-lg btn-desk-filtro"
           data-bs-toggle="modal"
-          data-bs-target="#ModalGerarMenu"
-          :disabled="btn_gerar_menu"
+          data-bs-target="#ModalGerarMenu"          
+          @click="carregarDadosMenu()"
+        >
+          <span class="rf_texto_btn_desk"> REIMPRIMIR MENU</span>
+        </button>
+      </div>
+      <div v-if="pagamento_escolhido == 0" class="col-2 p-1">
+        <button
+          type="submit"
+          class="btn btn-lg btn-desk-filtro"
+          data-bs-toggle="modal"
+          data-bs-target="#ModalGerarMenuVista"          
           @click="carregarDadosMenu()"
         >
           <span class="rf_texto_btn_desk"> REIMPRIMIR MENU</span>
@@ -1217,7 +1227,7 @@
         >
       </div>
     </div>
-      <!--Modal Gerar Menu-->
+  <!--Modal Gerar Menu-->
   <div
     class="modal fade"
     id="ModalGerarMenu"
@@ -1651,24 +1661,17 @@
             </div>
        
             <div class="row g-2 p-2">
-              <div class="col"><br>
-                <span>
-                  * O preço sugerido é válido enquanto durarem os veículos em
-                  estoque.</span
-                >
-          
-                <span> ** Despesa Operacional para preparação do veículo</span>
-           
-                <!-- <span>A contratação de seguros é opcional, sendo possível a desistência do
-                    contrato em até 7 (sete) dias corridos com a devolução integral do
-                    valor pago.</span> -->
-            
-                <span
-                  > É proibido condicionar desconto de bem à aquisição de
-                  seguro.</span
-                >
-            
-              </div>
+              <div class="col">
+             
+             <p>
+               * Fica o cliente ciente de que a compra e venda em questão está condicionada à disponibilidade do veículo pela fábrica e sujeita a reajuste no preço aqui pactuado, que ocorrendo será informado ao cliente antes do faturamento do veículo, podendo haver desistência em caso de não concordância, com devolução do sinal dado como princípio de pagamento.</p
+             >
+             <p>* A concessão do financiamento está condicionada à análise de crédito por parte da instituição financeira.</p>
+             <p>* O pagamento do IPVA do veículo desta proposta é de inteira responsabilidade do cliente.</p>
+             <p>* O veículo usado da troca deverá ser entregue nas mesmas condições descritas na avaliação em anexo.</p>
+             <p>* Declaro-me ciente e informado de que meus dados pessoais serão objeto de atividades de tratamento pelo presente controlador e demais empresas de seu grupo econômico e parceiros comerciais aplicáveis à presente venda, inclusive inseridos em sistemas informatizados, com a finalidade de possibilitar o controle, gestão e cumprimento dos termos e regras estipulados no presente instrumento, bem como para o cumprimento de obrigações legais e regulamentares vigentes. Declaro-me ciente e informado de que meus dados poderão ser utilizados para ações de marketing, sendo-me facultado a qualquer tempo opor-me a tal operação pelos canais de contato do presente controlador destinados ao exercício dos direitos do titular.
+             </p>
+           </div>
             </div>
             <div class="row g-2 p-2 mt-1">
               <div class="col rf_assinatura">
@@ -1693,6 +1696,611 @@
             class="btn btn-secondary"
             :disabled="btn_gerar_menu"
             @click="generatePdf"
+          >
+            IMPRIMIR
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+     <!--Modal Gerar Menu A vista-->
+  <div
+    class="modal fade"
+    id="ModalGerarMenuVista"
+    aria-hidden="true"
+    aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1"
+  >
+    <div class="modal-dialog modal-fullscreen rf_modal font-pdf-menu">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="mt-3 rf_texto_pdf" ref="contentToPrint2">
+            <div class="row">
+              <div class="col-6">
+                <a class="navbar-brand logo">
+                  <img
+                    src="../../assets/logo.png"
+                    alt="Bootstrap"
+                    width="100"
+                    height="30"
+                  />
+                </a>
+              </div>
+              <div class="col-6" style="text-align: right">
+                <a class="navbar-brand logo_cliente">
+                  <img
+                    src="../../assets/logo.png"
+                    alt="Bootstrap"
+                    height="30"
+                  />
+                </a>
+              </div>
+            </div>
+            <div class="card card-desk mt-3">
+              <!--Dados do Cliente-->
+              <div class="row g-2 p-2">
+                <div class="col-12">
+                  <i class="bi bi-person-badge fs-5 icone_filtro_desk"
+                    ><span class="texto_filtro_desk"
+                      ><strong class="rf_titulo_pdf"
+                        >Informações do Cliente</strong
+                      ></span
+                    ></i
+                  >
+                </div>
+                <div class="col">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Cliente</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_cliente
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col-2">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >CPF/CNPJ</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_cpfCnpj
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col-2">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Telefone</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_fone
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col-2">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Telefone 2</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_fone2
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col-2">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Email</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_email
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+              <!--Informações da Proposta-->
+              <div class="row g-2 p-2">
+                <div class="col-12">
+                  <i class="bi bi-person-badge fs-5 icone_filtro_desk"
+                    ><span class="texto_filtro_desk"
+                      ><strong class="rf_titulo_pdf"
+                        >Informações da Proposta</strong
+                      ></span
+                    ></i
+                  >
+                </div>
+                <div class="col">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Gerente</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_gerente
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Vendedor</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_vendedor
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Negociação</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_negociacao
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Data</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_data_negociacao
+                    }}</span>
+                  </div>
+                </div>
+              </div>        
+              <!--Informações do Veículo-->
+              <div class="row g-2 p-2">
+                <div class="col-12">
+                  <i class="bi bi-person-badge fs-5 icone_filtro_desk"
+                    ><span class="texto_filtro_desk"
+                      ><strong class="rf_titulo_pdf"
+                        >Informações do Veículo</strong
+                      ></span
+                    ></i
+                  >
+                </div>
+                <div class="col-2">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Marca</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_marca
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Modelo</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_modelo
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Cor</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_cor
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Placa</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_placa
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Chassi</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_chassi
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Ano Mod.</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_ano_modelo
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Ano Fab.</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_ano_fab
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+              <!--Resumos da compra-->
+              <div class="row g-2 p-2">
+                <div class="col-12">
+                  <i class="bi bi-person-badge fs-5 icone_filtro_desk"
+                    ><span class="texto_filtro_desk"
+                      ><strong class="rf_titulo_pdf"
+                        >Resumo da Compra</strong
+                      ></span
+                    ></i
+                  >
+                </div>
+                <div class="col">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Valor Sugerido</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_val_sugerido
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Valor Desconto</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_val_desconto
+                    }}</span>
+                  </div>
+                </div>      
+                <div class="col">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Tipo Pagamento</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      tipoPagamento
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Valor Total Veículo</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_val_veiculo
+                    }}</span>
+                  </div>
+                </div>            
+              </div>
+              <!--Acessórios-->
+              <div class="row g-2 p-2">
+                <div class="col-12">
+                  <i class="bi bi-person-badge fs-5 icone_filtro_desk"
+                    ><span class="texto_filtro_desk"
+                      ><strong class="rf_titulo_pdf">Acessórios</strong></span
+                    ></i
+                  >
+                </div>
+                <div>
+                  <ul class="list-group list-group-horizontal">
+                    <li
+                      v-for="item in itens_acessorios"
+                      :key="item.id"
+                      class="list-group-item rf_texto_menu_desk"
+                    >
+                      <div class="row">
+                        <div class="col rf_texto_pdf">
+                          <span>{{ item.descricao }}</span>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <span
+                            class="rf_texto_pdf rf_texto_menu_titulo_desk"
+                            >{{ this.currency(item.valor) }}</span
+                          >
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <i class="fs-5 icone_filtro_desk"
+                    ><span
+                      ><strong class="rf_titulo_pdf">{{ msg }}</strong></span
+                    ></i
+                  >
+                </div>
+              </div>
+              <!--Veículo de Troca-->
+              <div class="row g-2 p-2">
+                <div class="col-12">
+                  <i class="bi bi-person-badge fs-5 icone_filtro_desk"
+                    ><span class="texto_filtro_desk"
+                      ><strong class="rf_titulo_pdf">Veículo da Troca</strong></span
+                    ></i
+                  >
+                </div>
+                <div>
+                  <ul class="list-group ">
+                    <li
+                      v-for="item in veiculos_avaliados"
+                      :key="item.id"
+                      class="list-group-item rf_texto_menu_desk"
+                    >
+                      <div class="row">
+                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
+                          <span>Marca</span>
+                        </div>
+                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
+                          <span>Modelo</span>
+                        </div>
+                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
+                          <span>Placa</span>
+                        </div>
+                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
+                          <span>Ano Modelo</span>
+                        </div>
+                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
+                          <span>Cor</span>
+                        </div>
+                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
+                          <span>Kilometragem</span>
+                        </div>
+                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
+                          <span>R$ Avaliado</span>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <span
+                            class="rf_texto_pdf "
+                            >{{ item.marca }}</span
+                          >
+                        </div>
+                        <div class="col">
+                          <span
+                            class="rf_texto_pdf "
+                            >{{ item.modelo }}</span
+                          >
+                        </div>
+                        <div class="col">
+                          <span
+                            class="rf_texto_pdf "
+                            >{{ item.placa }}</span
+                          >
+                        </div>
+                        <div class="col">
+                          <span
+                            class="rf_texto_pdf "
+                            >{{ item.ano_mod }}</span
+                          >
+                        </div>
+                        <div class="col">
+                          <span
+                            class="rf_texto_pdf "
+                            >{{ item.cor }}</span
+                          >
+                        </div>
+                        <div class="col">
+                          <span
+                            class="rf_texto_pdf "
+                            >{{ formatarKM(item.kilometragem) }}</span
+                          >
+                        </div>
+                        <div class="col">
+                          <span
+                            class="rf_texto_pdf "
+                            >{{ item.preco_avaliado }}</span
+                          >
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>           
+       
+              </div>
+               <!--Formas de Pagamento-->
+               <div class="row g-2 p-2">
+                <div class="col-12">
+                  <i class="bi bi-person-badge fs-5 icone_filtro_desk"
+                    ><span class="texto_filtro_desk"
+                      ><strong class="rf_titulo_pdf">Composição do Pagamento</strong></span
+                    ></i
+                  >
+                </div>
+                <div>
+                  <ul class="list-group ">
+                    <li
+                      v-for="item in itens_pagamentos"
+                      :key="item.id"
+                      class="list-group-item rf_texto_menu_desk"
+                    >
+                      <div class="row">
+                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
+                          <span>Valor Informado</span>
+                        </div>
+                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
+                          <span>Pagamento</span>
+                        </div>
+                        <div class="col rf_texto_pdf rf_texto_menu_titulo_desk">
+                          <span>Qtd</span>
+                        </div>
+                        
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <span
+                            class="rf_texto_pdf "
+                            >{{ this.currency(item.valor_parcela) }}</span
+                          >
+                        </div>
+                        <div class="col">
+                          <span
+                            class="rf_texto_pdf "
+                            >{{ item.tipo_pagamento_desk.descricao }}</span
+                          >
+                        </div>
+                        <div class="col">
+                          <span
+                            class="rf_texto_pdf "
+                            >{{ item.qtd_parcela }}</span
+                          >
+                        </div>                        
+                      </div>
+                    </li>
+                  </ul>
+                </div>         
+                
+                
+                <div class="col">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Valor Total Acesssórios</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      Valor_Itens_Acessorios
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Valor Total Avaliação</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                      g_menu_valor_avaliacao_final
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Valor Entrada</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                     this.currency(this.entrada_escolhida)
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col">
+                  <div
+                    class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
+                  >
+                    <label class="rf_texto_menu_titulo_desk rf_texto_pdf"
+                      >Total Entrada</label
+                    >
+                    <span class="rf_texto_menu_desk rf_texto_pdf">{{
+                     Valor_Entrada
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+
+            <div class="row g-2 p-2">
+              <div class="col">
+             
+                <p>
+                  * Fica o cliente ciente de que a compra e venda em questão está condicionada à disponibilidade do veículo pela fábrica e sujeita a reajuste no preço aqui pactuado, que ocorrendo será informado ao cliente antes do faturamento do veículo, podendo haver desistência em caso de não concordância, com devolução do sinal dado como princípio de pagamento.</p
+                >
+                <p>* A concessão do financiamento está condicionada à análise de crédito por parte da instituição financeira.</p>
+                <p>* O pagamento do IPVA do veículo desta proposta é de inteira responsabilidade do cliente.</p>
+                <p>* O veículo usado da troca deverá ser entregue nas mesmas condições descritas na avaliação em anexo.</p>
+                <p>* Declaro-me ciente e informado de que meus dados pessoais serão objeto de atividades de tratamento pelo presente controlador e demais empresas de seu grupo econômico e parceiros comerciais aplicáveis à presente venda, inclusive inseridos em sistemas informatizados, com a finalidade de possibilitar o controle, gestão e cumprimento dos termos e regras estipulados no presente instrumento, bem como para o cumprimento de obrigações legais e regulamentares vigentes. Declaro-me ciente e informado de que meus dados poderão ser utilizados para ações de marketing, sendo-me facultado a qualquer tempo opor-me a tal operação pelos canais de contato do presente controlador destinados ao exercício dos direitos do titular.
+                </p>
+              </div>
+
+            </div>
+            <div class="row g-2 p-2 mt-1">
+              <div class="col rf_assinatura">
+                <span>Gerente: {{ g_menu_gerente }}</span>
+              </div>
+              <div class="col rf_assinatura">
+                <span>Cliente: {{ g_menu_cliente }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-target="#ModaProposta"
+            data-bs-toggle="modal"
+          >
+            Fechar
+          </button>
+          <button
+            class="btn btn-secondary"
+            :disabled="habilitar_gerar_menu_avista"
+            @click="generatePdfAvista"
           >
             IMPRIMIR
           </button>
@@ -1738,6 +2346,7 @@ export default {
       endDate: "",
       adicional: "",
 
+      pagamento_escolhido:"",
       message: "",
       dialog: "",
       abrir_modal: false,
@@ -2308,7 +2917,8 @@ export default {
       try {
         await userService.getPropostaId(propostaId).then((response) => {
           this.dados_proposta = response.data;
-
+          this.pagamento_escolhido = response.data.tipo_pagamento
+          console.log("Dados para reimpressão")
           console.log(response.data);
           /**Bloco de dados com informações do cliente */
           const dados_cliente = {
@@ -2488,7 +3098,14 @@ export default {
 
           //Resumo da Proposta
           this.modal_proposta = true;
-          this.resumo();
+          if(response.data.tipo_pagamento == 0){
+            this.resumo_vista();
+          }
+          if(response.data.tipo_pagamento == 1){
+            this.resumo();
+          }
+        
+          
         });
       } catch (error) {
         if (error.response.status == 400) {
@@ -2604,6 +3221,125 @@ export default {
           }
 
           console.log("Resposta do Resumo", resposta);
+        });
+    },
+    async resumo_vista() {
+      console.log("Aqui Resumo");
+      await fetch(`${process.env.VUE_APP_API_URL}taxas/resumo_vista`, {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          proposta_id: this.id_proposta,
+        }),
+      })
+        .then((data) => {
+          if (!data.ok) {
+            throw Error(data.status);
+          }
+          return data.json();
+        })
+        .then((resposta) => {
+          console.log("Resumo", resposta);
+          if (resposta["tipo_veiculo"] == "NOVO") {
+            console.log("novo");
+            this.Lucro_Bruto = resposta["Lucro_Bruto_Zero"];
+            this.Lucro_Operacional = resposta["Lucro_Operacional_Zero"];
+            this.Lucro_liquido = resposta["Lucro_liquido_Zero"];
+          }
+          if (resposta["tipo_veiculo"] == "USADO") {
+            this.Lucro_Bruto = resposta["Lucro_Bruto"];
+            this.Lucro_Operacional = resposta["Lucro_Operacional"];
+            this.Lucro_liquido = resposta["Lucro_liquido"];
+          }
+          (this.Valor_Sugerido = resposta["Valor_Sugerido"]),
+            (this.Valor_Custo_variaveis = resposta["Valor_Custo_variaveis"]),
+            (this.Valor_Itens_Acessorios = resposta["Valor_Itens_Acessorios"]);
+          this.Valor_Total_Venda = resposta["Valor_Total_Venda"];
+
+          // this.Valor_Avaliado = resposta["Valor_Avaliado"];
+          // this.Valor_Itens_Avaliacao_db = resposta["Valor_Itens_Avaliacao_db"];
+          // this.Valor_Itens_Avaliacao_cr = resposta["Valor_Itens_Avaliacao_cr"];
+          // this.Valor_Avaliacao_Final = resposta["Valor_Avaliacao_Final"];
+          this.Valor_Avaliacao_Final = this.currency(this.valor_avaliacao)
+
+          this.Valor_Resultado_Financiamento =
+            resposta["Valor_Resultado_Financiamento"];
+
+          this.Valor_Entrada = resposta["Valor_Entrada"];
+          this.Valor_Financiado = resposta["Valor_Financiado"];
+          this.Quantidade_Meses = resposta["Quantidade_Meses"];
+
+          this.Valor_Entrada_1 = resposta["Valor_Entrada_1"];
+          this.Entrada_Total_1 = resposta["Entrada_Total_1"];
+          this.Valor_Financiado_1 = resposta["Valor_Financiado_1"];
+          this.Quantidade_Meses_1 = resposta["Quantidade_Meses_1"];
+
+          this.Valor_Entrada_2 = resposta["Valor_Entrada_2"];
+          this.Entrada_Total_2 = resposta["Entrada_Total_2"];
+          this.Valor_Financiado_2 = resposta["Valor_Financiado_2"];
+          this.Quantidade_Meses_2 = resposta["Quantidade_Meses_2"];
+
+          this.Valor_Entrada_3 = resposta["Valor_Entrada_3"];
+          this.Entrada_Total_3 = resposta["Entrada_Total_3"];
+          this.Valor_Financiado_3 = resposta["Valor_Financiado_3"];
+          this.Quantidade_Meses_3 = resposta["Quantidade_Meses_3"];
+
+          this.Pmt = resposta["Pmt"];
+          this.parcela_1_1 = resposta["Pmt_1"];
+          this.parcela_2_1 = resposta["Pmt_2"];
+          this.parcela_3_1 = resposta["Pmt_3"];
+          this.parcela_1_2 = resposta["Pmt_4"];
+          this.parcela_2_2 = resposta["Pmt_5"];
+          this.parcela_3_2 = resposta["Pmt_6"];
+          this.parcela_1_3 = resposta["Pmt_7"];
+          this.parcela_2_3 = resposta["Pmt_8"];
+          this.parcela_3_3 = resposta["Pmt_9"];
+          if (resposta["Parcela1"]) {
+            console.log("Existe uma parcela");
+            this.parcela_1 = resposta["Parcela1"];
+            this.bloquear_entrada = true;
+          }
+
+          if (resposta["Parcela2"] === undefined) {
+            this.parcela_2 = 36;
+          } else {
+            this.parcela_2 = resposta["Parcela2"];
+          }
+          if (resposta["Parcela3"] === undefined) {
+            this.parcela_3 = 48;
+          } else {
+            this.parcela_3 = resposta["Parcela3"];
+          }
+
+          let v_entrada_1 = resposta["Entrada1"];
+          let v_entrada_2 = resposta["Entrada2"];
+          let v_entrada_3 = resposta["Entrada3"];
+          this.entrada_1 = this.currency(v_entrada_1);
+          this.entrada_2 = this.currency(v_entrada_2);
+          this.entrada_3 = this.currency(v_entrada_3);
+          this.adicional = resposta["Valor_Adicional"];
+          this.desconto = resposta["Valor_Desconto"];
+
+          if (resposta["incluir_acessorios"] == "1") {
+            console.log(
+              "Somar Acessorios ---------------------------------------------------------------------------"
+            );
+            this.incluir_acessorios = true;
+          } else {
+            this.incluir_acessorios = false;
+            console.log(
+              "Não Somar Acessorios ---------------------------------------------------------------------------"
+            );
+          }
+          if (resposta["Pmt"] != "") {
+            this.btn_gerar_menu = false;
+            this.btn_1 = false;
+          }
+          this.checar_pmt_escolhido();
+          console.log("Checando Resposta agora---------------------", resposta);
         });
     },
 

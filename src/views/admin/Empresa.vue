@@ -566,11 +566,14 @@ export default {
     },
   },
   methods: {
+    //Alteração nesse trecho de código
+    //return status == 0 ? 'Desabilitado' : 'Habilitado';
+    //return tipo_empresa == 1 ? 'Quatro Rodas' : 'Duas Rodas';
     getStatus(status) {
-      return status === 0 ? 'Desabilitado' : 'Habilitado';
+      return status == 0 ? 'Desabilitado' : 'Habilitado';
     },
     getTipoEmpresa(tipo_empresa) {
-      return tipo_empresa === 1 ? 'Quatro Rodas' : 'Duas Rodas';
+      return tipo_empresa == 1 ? 'Quatro Rodas' : 'Duas Rodas';
     },
     async onSubmit() {
       const id_userCad = this.$store.state.auth.user.id;
@@ -760,7 +763,8 @@ export default {
         qtd_usuarios: this.edit_qtdUsuarios,
         dataCadastro: this.edit_dataCadastro,
         obs: this.edit_obs,
-        tipo_empresa: this.edit_tipo_empresa
+        tipo_empresa: this.edit_tipo_empresa,
+        status: this.edit_status,
       };
 
       const response = await axios.put(

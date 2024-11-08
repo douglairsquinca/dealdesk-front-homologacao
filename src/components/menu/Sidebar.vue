@@ -120,6 +120,8 @@
                  Fluxo de Lojas </a></li>
               <li class="nav-item"><a @click="setActive('gerenciamentos')" href="/desk/situacaoGeral"
                   class="nav-link p-2"> Situação Geral </a></li>
+              <li class="nav-item"><a @click="setActive('gerenciamentos')" href="/desk/veiculosAvaliacao"
+                  class="nav-link p-2"> Avaliação </a></li>
             </ul>
           </li>
           <li id="rf_relatorios_fei" class="nav-item dropdown">

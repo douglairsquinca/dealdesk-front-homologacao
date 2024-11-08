@@ -120,6 +120,7 @@
           <th scope="col">Cliente</th>
           <th scope="col">Vendedor</th>
           <th scope="col">Status Proposta</th>
+          <th scope="col">Ação</th>
 
         </tr>
       </thead>
@@ -135,6 +136,12 @@
           <td>{{ item.clientes ? item.clientes.nome : 'N/A' }}</td>
           <td>{{ item.vendedores ? item.vendedores.username : 'N/A' }}</td>
           <td>{{ item.status_proposta }}</td>
+          <td>
+            <button type="button" class="dropdown-toggle-icon" data-bs-toggle="modal" data-bs-target="#ModalEditarPlaca"
+              @click="editar_proposta(item)">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -143,6 +150,78 @@
   </div>
   <div v-if="abrir_modal">
     <Message :msg="msg" v-show="msg" />
+  </div>
+
+    <!--Modal Veiculo Avaliação-->
+    <div
+    class="modal fade"
+    id="ModalEditarPlaca"
+    aria-hidden="true"
+    aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1"
+  >
+    <div class="modal-dialog modal-dialog-centered modal">
+      <div class="modal-content card-container-desk rf_texto">
+        <div class="modal-header">
+          <div class="card-title gy-4">
+            <i class="bi bi-car-front-fill fs-5 icone_filtro"
+              ><span class="texto_kit">Editar Placa </span></i
+            >
+          </div>
+
+          <button
+            class="btn btn-modal btn-lg p-1 mt-1"
+            type="button"
+            data-bs-target="#ModalEditarPlaca"
+            data-bs-toggle="modal"
+            aria-label="Close"
+          >
+            Sair
+          </button>
+        </div>
+        <div class="modal-body">
+          <form @submit.prevent="editar_placa">
+            <!--Item-->
+            <div class="row g-2 p-2">
+              <div class="col">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control rf_bg_form rf_texto"
+                    v-model="edit_id" 
+                    disabled                   
+                  />
+                  <label class="rf_texto">Atendimento</label>
+                </div>
+              </div>  
+              <div class="col">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control rf_bg_form rf_texto"
+                    v-model="placa_av"                    
+                  />
+                  <label class="rf_texto">Placa *</label>
+                </div>
+              </div>                      
+            </div>
+            <div class="row g-2 p-2">
+              <div class="col">
+                <div class="form-floating">
+                  <button
+                    class="btn btn-lg btn-desk-filtro"
+                    type="submit"                    
+                  >
+                    <span class="rf_texto_btn">Atualizar</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 
   <RodapeVue />
@@ -207,7 +286,8 @@ export default {
       funcao: "",
       message: "",
       dialog: "",
-
+      placa_av:"",
+      edit_id:"",
       modal: false,
       modal_msg: false,
 
@@ -290,6 +370,61 @@ export default {
       if (resp == 200) {
         this.dialog = true;
         this.message = "Vendedor se tornou Indisponível!";
+        this.retrieveVendedorDispo();
+        this.retrieveVendedorInd();
+        document.location.reload(true);
+      }
+    },
+    async editar_proposta(item) {
+      console.log(item);
+      this.edit_id = item.id;
+      this.placa_av = item.placa_avaliacao;
+      //const id = item.id;
+      // const response = await fetch(
+      //   `${process.env.VUE_APP_API_URL}status_vendedor/${id}`,
+      //   {
+      //     method: "PUT",
+
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({
+      //       status_vendedor: 1,
+      //     }),
+      //   }
+      // );
+      // const resp = JSON.stringify(response.status);
+      // console.log(resp);
+      // if (resp == 200) {
+      //   this.dialog = true;
+      //   this.message = "Vendedor se tornou Indisponível!";
+      //   this.retrieveVendedorDispo();
+      //   this.retrieveVendedorInd();
+      //   document.location.reload(true);
+      // }
+    },
+    async editar_placa() {
+      const id = this.edit_id;
+      const placa_avaliacao = this.placa_av;
+      const response = await fetch(
+        `${process.env.VUE_APP_API_URL}editar_placa/${id}`,
+        {
+          method: "PUT",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: id,
+            placa_avaliacao: placa_avaliacao,
+          }),
+        }
+      );
+      const resp = JSON.stringify(response.status);
+      console.log(resp);
+      if (resp == 200) {
+        this.dialog = true;
+        this.message = "Placa atualizada com sucesso!";
         this.retrieveVendedorDispo();
         this.retrieveVendedorInd();
         document.location.reload(true);

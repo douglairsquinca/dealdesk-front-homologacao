@@ -42,6 +42,37 @@
             <label for="valid_email" class="rf_texto">Email</label>
           </div>
         </div>
+             <!--UF-->
+             <div class="col-1">
+            <div class="form-floating">
+              <input v-model="uf" class="form-control rf_bg_form rf_texto" list="datalistOptions" id="estado"
+                autocomplete="off" />
+
+              <label class="rf_texto">UF</label>
+              <datalist id="datalistOptions">
+                <option v-for="opt in estados" :data-value="opt.id" :value="opt.sigla" :key="opt.id"></option>
+              </datalist>
+            </div>
+          </div>
+          <!--Cidade-->
+          <div class="col-2">
+            <div class="form-floating">
+              <input v-model="cidade" class="form-control rf_bg_form rf_texto" list="datalistCidades" id="estado"
+                autocomplete="off" />
+
+              <label class="rf_texto">Cidade</label>
+              <datalist id="datalistCidades">
+                <option v-for="opt in cidades" :data-value="opt.id" :value="opt.nome" :key="opt.id"></option>
+              </datalist>
+            </div>
+          </div>
+          <!--Bairro-->
+          <div class="col-2">
+            <div class="form-floating">
+              <input type="text" class="form-control rf_bg_form rf_texto" v-model="bairro" autocomplete="off" />
+              <label class="rf_texto">Bairro</label>
+            </div>
+          </div>        
       </div>
     </form>
     <div class="row">
@@ -131,7 +162,7 @@
       </div>
       <div class="row g-2 p-2">
         <!--Vendedor-->
-        <div class="col-2 col-md-3">
+        <div class="col-7 col-md-3">
           <div class="form-floating">
             <select class="form-select rf_bg_form rf_texto" :disabled="input_proposta" v-model="vendedor_inicial"
               v-on:blur="checar_vendedor">
@@ -143,7 +174,7 @@
           </div>
         </div>
         <!--Tipo Veiculo-->
-        <div class="col-1 col-md-3">
+        <div class="col-5 col-md-2">
           <div class="form-floating">
             <select class="form-select rf_bg_form rf_texto" :disabled="input_proposta" v-model="tipo_veiculo">
               <option value="0">Novo</option>
@@ -153,7 +184,7 @@
           </div>
         </div>
         <!--Midia-->
-        <div class="col-1 col-md-3">
+        <div class="col-6 col-md-3">
           <div class="form-floating">
             <select class="form-select rf_bg_form rf_texto " :disabled="input_proposta" required v-model="midia_id">
 
@@ -165,7 +196,7 @@
           </div>
         </div>
         <!--Veiculo troca-->
-        <div class="col-1 col-md-3">
+        <div class="col-3 col-md-2">
           <div class="form-floating">
             <select class="form-select rf_bg_form rf_texto" id="valid_funcao" :disabled="input_proposta" required
               v-model="searchTroca">
@@ -175,13 +206,30 @@
             <label class="rf_texto">Veículo Troca</label>
           </div>
         </div>
+        <!--Veiculo placa-->
+        <div class="col-3 col-md-2">
+          <div class="form-floating">
+            <input type="text" class="form-control rf_bg_form rf_texto" :disabled="input_proposta || searchTroca !== '1'" v-model="veiculo_placa" maxlength="8" />
+            <label class="rf_texto">Placa Veículo</label>
+          </div>
+        </div>
       </div>
       <div class="row g-2 p-2">
         <!--Observação-->
-        <div class="col col-md-12">
+        <div class="col col-md-10">
           <div class="form-floating">
             <input type="text" class="form-control rf_bg_form rf_texto" :disabled="input_proposta" v-model="obs" />
             <label class="rf_texto">Observação</label>
+          </div>
+        </div>
+        <div class="col-3 col-md-2">
+          <div class="form-floating">
+            <select class="form-select rf_bg_form rf_texto" id="valid_funcao" :disabled="input_proposta" required
+              v-model="clientePCD">
+              <option value="0">Não</option>
+              <option value="1">Sim</option>
+            </select>
+            <label class="rf_texto">Cliente PCD</label>
           </div>
         </div>
       </div>
@@ -287,6 +335,7 @@ export default {
       //   { desc: "Usados", value: 0 },
       // ],
       searchTroca: 0,
+      clientePCD: 0,
       troca: [{ desc: "SIM" }, { desc: "NÃO" }],
       user_id: "",
       cliente_id: "",
@@ -301,6 +350,7 @@ export default {
       midia_id: "",
       obs: "",
       tipo: "",
+      bairro:"",
 
       modal_nome: "",
       modal_cpfcnpj: "",
@@ -348,7 +398,37 @@ export default {
       habilitar_cadastro: true,
       habilitar_telefone: false,
       retorno: false,
-      input_proposta: true
+      input_proposta: true,
+      cidades: [],
+      estados: [
+        { id: 11, sigla: "RO" },
+        { id: 12, sigla: "AC" },
+        { id: 13, sigla: "AM" },
+        { id: 14, sigla: "RR" },
+        { id: 15, sigla: "PA" },
+        { id: 16, sigla: "AP" },
+        { id: 17, sigla: "TO" },
+        { id: 21, sigla: "MA" },
+        { id: 22, sigla: "PI" },
+        { id: 23, sigla: "CE" },
+        { id: 24, sigla: "RN" },
+        { id: 25, sigla: "PB" },
+        { id: 26, sigla: "PE" },
+        { id: 27, sigla: "AL" },
+        { id: 28, sigla: "SE" },
+        { id: 29, sigla: "BA" },
+        { id: 31, sigla: "MG" },
+        { id: 32, sigla: "ES" },
+        { id: 33, sigla: "RJ" },
+        { id: 35, sigla: "SP" },
+        { id: 41, sigla: "PR" },
+        { id: 42, sigla: "SC" },
+        { id: 43, sigla: "RS" },
+        { id: 50, sigla: "MS" },
+        { id: 51, sigla: "MT" },
+        { id: 52, sigla: "GO" },
+        { id: 53, sigla: "DF" },
+      ],
 
     };
   },
@@ -358,6 +438,7 @@ export default {
     //this.retrieveFamilia();
     this.retrieveMidia();
     this.retrieveVendedorDispo();
+    this.retrieveCidade();
   },
 
   computed: {
@@ -556,6 +637,10 @@ export default {
         })
         .finally(() => (this.isLoading4 = false));
     },
+    searchTroca(newValue) {
+      // Limpa o valor de veiculo_placa se 'Veículo Troca' for igual a 'Não'
+      if (newValue === '0') this.veiculo_placa = '';
+    }
   },
   methods: {
     getToken() {
@@ -640,6 +725,9 @@ export default {
             tel: this.tel,
             cel: this.cel,
             email: this.email,
+            bairro: this.bairro,
+            cidade: this.cidade,
+            uf: this.uf
           }),
         });
         const dados = await response.json();
@@ -668,6 +756,25 @@ export default {
       }
 
 
+    },
+
+    async retrieveCidade() {
+      try {
+        const params = this.getRequestParams(
+          this.searchTitle,
+          this.page,
+          this.pageSize
+        );
+        userService.getCidades(params).then((response) => {
+          const { cidade } = response.data;
+          this.cidades = cidade;
+        });
+      } catch (error) {
+        if (error.response.status == 400) {
+          this.abrir_modal = true;
+          this.msg = error.response.data.message;
+        } 
+      }
     },
 
     async update_cliente() {
@@ -737,6 +844,8 @@ export default {
               user_id: id_userCad,
               retorno: this.retorno,
               avaliacao: this.searchTroca,
+              cliente_pcd: this.clientePCD,
+              placa_avaliacao: this.veiculo_placa,
               obs: this.obs,
               justificativa: this.dialog_justificativa,
               id_vendedor_fila: this.vend_ini,
@@ -745,8 +854,7 @@ export default {
               midia_id: this.midia_id,
               vendedor_id: this.vendedor_inicial,
               cliente_id: this.cliente_id,
-              tipo_veiculo: this.tipo_veiculo
-
+              tipo_veiculo: this.tipo_veiculo,
             }),
           })
             .then((data) => {
