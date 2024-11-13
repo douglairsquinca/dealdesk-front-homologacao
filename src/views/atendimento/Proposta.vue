@@ -854,7 +854,7 @@ export default {
               midia_id: this.midia_id,
               vendedor_id: this.vendedor_inicial,
               cliente_id: this.cliente_id,
-              tipo_veiculo: this.tipo_veiculo,
+              tipo_veiculo: this.tipo_veiculo,            
             }),
           })
             .then((data) => {

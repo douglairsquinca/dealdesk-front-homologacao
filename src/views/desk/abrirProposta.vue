@@ -19,7 +19,7 @@
 
       <!--Id da Proposta-->
       <div class="row g-2 p-2">
-        <div class="col-1 col-md-1">
+        <div class="col-1">
           <div class="form-floating">
             <input
               type="text"
@@ -30,7 +30,7 @@
             <label for="valid_descricao" class="rf_texto">Nº Proposta</label>
           </div>
         </div>
-        <div class="col-2 col-md-5">
+        <div class="col">
           <div class="form-floating">
             <input
               type="text"
@@ -41,7 +41,7 @@
             <label for="valid_descricao" class="rf_texto">Atendente</label>
           </div>
         </div>
-        <div class="col-4 col-md-5">
+        <div class="col">
           <div class="form-floating">
             <input
               type="text"
@@ -52,7 +52,7 @@
             <label for="valid_descricao" class="rf_texto">Vendedor</label>
           </div>
         </div>
-        <div class="col-1 col-md-1">
+        <div class="col-2">
           <div class="form-floating">
             <input
               type="text"
@@ -63,7 +63,20 @@
             <label for="valid_descricao" class="rf_texto">Mídia</label>
           </div>
         </div>
-        <div class="col-2 col-md-2">
+        <div class="col-1">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control rf_bg_form rf_texto"
+              v-model="cliente_pcd"
+              :disabled="true"
+            />
+            <label for="valid_descricao" class="rf_texto">Cliente PCD</label>
+          </div>
+        </div>   
+      </div>
+      <div class="row g-2 p-2">
+        <div class="col-2">
           <div class="form-floating">
             <button
               type="button"
@@ -76,7 +89,7 @@
             </button>
           </div>
         </div>
-        <div class="col-2 col-md-2">
+        <div class="col-2">
           <div class="form-floating">
             <button
               type="button"
@@ -89,7 +102,7 @@
             </button>
           </div>
         </div>
-        <div class="col-2 col-md-2">
+        <div class="col-2">
           <div class="form-floating">
             <button
               type="button"
@@ -101,7 +114,6 @@
           </div>
         </div>
       </div>
-
       <!-- Dados do Cliente-->
       <div class="row g-2 p-2">
         <!--CPF/CNPJ-->
@@ -4257,20 +4269,12 @@
                 </div>
               </div>
             </div>
-
+            <!--Mensagem Rodapé-->
             <div class="row g-2 p-2">
-              <div class="col">
-             
-                <p>
-                  * Fica o cliente ciente de que a compra e venda em questão está condicionada à disponibilidade do veículo pela fábrica e sujeita a reajuste no preço aqui pactuado, que ocorrendo será informado ao cliente antes do faturamento do veículo, podendo haver desistência em caso de não concordância, com devolução do sinal dado como princípio de pagamento.</p
-                >
-                <p>* A concessão do financiamento está condicionada à análise de crédito por parte da instituição financeira.</p>
-                <p>* O pagamento do IPVA do veículo desta proposta é de inteira responsabilidade do cliente.</p>
-                <p>* O veículo usado da troca deverá ser entregue nas mesmas condições descritas na avaliação em anexo.</p>
-                <p>* Declaro-me ciente e informado de que meus dados pessoais serão objeto de atividades de tratamento pelo presente controlador e demais empresas de seu grupo econômico e parceiros comerciais aplicáveis à presente venda, inclusive inseridos em sistemas informatizados, com a finalidade de possibilitar o controle, gestão e cumprimento dos termos e regras estipulados no presente instrumento, bem como para o cumprimento de obrigações legais e regulamentares vigentes. Declaro-me ciente e informado de que meus dados poderão ser utilizados para ações de marketing, sendo-me facultado a qualquer tempo opor-me a tal operação pelos canais de contato do presente controlador destinados ao exercício dos direitos do titular.
-                </p>
+              <div class="col">             
+                <p>* O preço sugerido é válido enquanto durarem os veículos em estoque.</p>                
+                <p>* Despesa Operacional para preparação do veículo É proibido condicionar desconto de bem à aquisição de seguro.</p>               
               </div>
-
             </div>
             <div class="row g-2 p-2 mt-1">
               <div class="col rf_assinatura">
@@ -4864,20 +4868,14 @@
             </div>
         
 
-            <div class="row g-2 p-2">
-              <div class="col">
-             
-                <p>
-                  * Fica o cliente ciente de que a compra e venda em questão está condicionada à disponibilidade do veículo pela fábrica e sujeita a reajuste no preço aqui pactuado, que ocorrendo será informado ao cliente antes do faturamento do veículo, podendo haver desistência em caso de não concordância, com devolução do sinal dado como princípio de pagamento.</p
-                >
-                <p>* A concessão do financiamento está condicionada à análise de crédito por parte da instituição financeira.</p>
-                <p>* O pagamento do IPVA do veículo desta proposta é de inteira responsabilidade do cliente.</p>
-                <p>* O veículo usado da troca deverá ser entregue nas mesmas condições descritas na avaliação em anexo.</p>
-                <p>* Declaro-me ciente e informado de que meus dados pessoais serão objeto de atividades de tratamento pelo presente controlador e demais empresas de seu grupo econômico e parceiros comerciais aplicáveis à presente venda, inclusive inseridos em sistemas informatizados, com a finalidade de possibilitar o controle, gestão e cumprimento dos termos e regras estipulados no presente instrumento, bem como para o cumprimento de obrigações legais e regulamentares vigentes. Declaro-me ciente e informado de que meus dados poderão ser utilizados para ações de marketing, sendo-me facultado a qualquer tempo opor-me a tal operação pelos canais de contato do presente controlador destinados ao exercício dos direitos do titular.
-                </p>
+           <!--Mensagem Rodapé-->
+           <div class="row g-2 p-2">
+              <div class="col">             
+                <p>* O preço sugerido é válido enquanto durarem os veículos em estoque.</p>                
+                <p>* Despesa Operacional para preparação do veículo É proibido condicionar desconto de bem à aquisição de seguro.</p>               
               </div>
-
             </div>
+            
             <div class="row g-2 p-2 mt-1">
               <div class="col rf_assinatura">
                 <span>Gerente: {{ g_menu_gerente }}</span>
@@ -5587,6 +5585,7 @@ export default {
       hab_avista : false,
       hab_financiamento: false,
       forma_pagamento: false,
+      cliente_pcd:""
     };
   },
   watch: {
@@ -5669,6 +5668,7 @@ export default {
             tel: this.dados_proposta.clientes["tel"],
             cel: this.dados_proposta.clientes["cel"],
             midia: this.dados_proposta.midias["descricao"],
+            cliente_pcd: this.dados_proposta["cliente_pcd"],
           };
           this.id_cliente = dados_cliente.id_cliente;
           //Alterações Histórico do cliente
@@ -6436,7 +6436,7 @@ export default {
           this.desconto = "0.00";
           this.atualizar_valor_total();
           this.update_entradas();
-          window.location.reload();
+          //window.location.reload();
         }
       } catch (error) {
         console.log(error);
@@ -7639,7 +7639,8 @@ export default {
           ((valor_numerico + valor_numerico_avaliacao) / valor_original) * 100;
         this.entrada_1_perc = parseFloat(entrada_perc).toFixed(2);
         this.entrada_perc_1_padronizada = this.configurar_taxas(entrada_perc)
-
+        console.log("Taxa 1");
+        console.log(this.entrada_perc_1_padronizada);
 
       } else {
         this.entrada_1_perc = "";
@@ -7669,6 +7670,8 @@ export default {
 
         this.entrada_2_perc = parseFloat(entrada_perc).toFixed(2);
         this.entrada_perc_2_padronizada = this.configurar_taxas(entrada_perc)
+        console.log("Taxa 2");
+        console.log(this.entrada_perc_2_padronizada);
       } else {
         this.entrada_2_perc = "";
       }
@@ -7690,6 +7693,8 @@ export default {
 
         this.entrada_3_perc = parseFloat(entrada_perc).toFixed(2);
         this.entrada_perc_3_padronizada = this.configurar_taxas(entrada_perc);
+        console.log("Taxa 3");
+        console.log(this.entrada_perc_3_padronizada);
       } else {
         this.entrada_3_perc = "";
       }
@@ -9656,29 +9661,34 @@ export default {
     /**Após retorno positivo do ranqueamento essa função monta as taxas do primeiro bloco de entrada */
     async ranqueamento_entrada_1() {
       
-      const params = this.getRequestParamsEntrada1(
-          this.filtro_tipo_veiculo,
-          this.filtro_tipo_tabela,
-          this.filtro_spf,
-          this.razao_financiamento,
-          this.plano,
-          this.page_1,
-          this.pageSize_1,
-          this.id_proposta,
-          this.id_coluna,
-          this.sortBy,
-          this.sortDesc,
-          this.parcela,
-          this.Valor_Total_Venda,
-          this.entrada_1,
-          this.entrada_perc_1_padronizada,
-          this.valor_avaliacao
-      );
 
       /**faço uma consulta na tabela TempTaxas chamando a função ranqueamento_entrada_1 */
-      userService.getRanqueamento_1(params).then((response) => {
-        const { parcelas, totalPages, totalItems } = response.data;
-        console.log("Taxas recuperadas", response.data);
+
+      const ranqueamento_coluna_1 = await axios.get(
+        `${process.env.VUE_APP_API_URL}taxas/ranqueamento_entrada_1`,
+        {
+          params: {         
+            filtro_tipo_veiculo: this.filtro_tipo_veiculo,
+            filtro_tipo_tabela: this.filtro_tipo_tabela,
+            filtro_spf: this.filtro_spf,
+            razao_financiamento: this.razao_financiamento,
+            plano: this.plano,
+            page_1: this.page_1,
+            pageSize_1: this.pageSize_1,
+            id_proposta: this.id_proposta,
+            id_coluna: this.id_coluna,
+            sortBy:   this.sortBy,
+            sortDesc:  this.sortDesc,
+            parcela: this.parcela,
+            Valor_Total_Venda: this.Valor_Total_Venda,
+            entrada: this.entrada_1,
+            entrada_per_1: this.entrada_perc_1_padronizada,
+            valor_avaliacao: this.valor_avaliacao
+          },
+        }
+      );
+      const { parcelas, totalPages, totalItems } = ranqueamento_coluna_1.data;
+        console.log("Taxas recuperadas", ranqueamento_coluna_1.data);
         this.parcelamento_1 = parcelas;
         this.totalPages_1 = totalPages;
         this.totalItems_1 = totalItems;
@@ -9696,7 +9706,28 @@ export default {
         this.Valor_Financiado_2 = this.currency(fin_2);
         this.Valor_Entrada_3 = this.currency(ent_3);
         this.Valor_Financiado_3 = this.currency(fin_3);
-      });
+       console.log(ranqueamento_coluna_1.data) 
+      // userService.getRanqueamento_1(params).then((response) => {
+      //   const { parcelas, totalPages, totalItems } = response.data;
+      //   console.log("Taxas recuperadas", response.data);
+      //   this.parcelamento_1 = parcelas;
+      //   this.totalPages_1 = totalPages;
+      //   this.totalItems_1 = totalItems;
+
+      //   var ent_1 = parcelas[0]["total_entrada_1"];
+      //   var fin_1 = parcelas[0]["total_financiado_1"];
+      //   var ent_2 = parcelas[0]["total_entrada_2"];
+      //   var fin_2 = parcelas[0]["total_financiado_2"];
+      //   var ent_3 = parcelas[0]["total_entrada_3"];
+      //   var fin_3 = parcelas[0]["total_financiado_3"];
+
+      //   this.Valor_Entrada = this.currency(ent_1);
+      //   this.Valor_Financiado = this.currency(fin_1);
+      //   this.Valor_Entrada_2 = this.currency(ent_2);
+      //   this.Valor_Financiado_2 = this.currency(fin_2);
+      //   this.Valor_Entrada_3 = this.currency(ent_3);
+      //   this.Valor_Financiado_3 = this.currency(fin_3);
+      // });
     },
     ranqueamento_1() {
       this.parcela = this.parcela_1;
@@ -9845,30 +9876,57 @@ export default {
       }
     },
     async ranqueamento_entrada_2() {
-      const params = this.getRequestParamsEntrada2(
-        this.filtro_tipo_veiculo,
-        this.filtro_tipo_tabela,
-        this.filtro_spf,
-        this.razao_financiamento,
-        this.plano,
-        this.page_2,
-        this.pageSize_2,
-        this.id_proposta,
-        this.id_coluna,
-        this.sortBy_2,
-        this.sortDesc_2,
-        this.parcela,
-        this.Valor_Total_Venda,
-        this.entrada_2,
-        this.entrada_perc_2_padronizada,
-        this.valor_avaliacao
+      const ranqueamento_coluna_2 = await axios.get(
+        `${process.env.VUE_APP_API_URL}taxas/ranqueamento_entrada_2`,
+        {
+          params: {         
+            filtro_tipo_veiculo: this.filtro_tipo_veiculo,
+            filtro_tipo_tabela: this.filtro_tipo_tabela,
+            filtro_spf: this.filtro_spf,
+            razao_financiamento: this.razao_financiamento,
+            plano: this.plano,
+            page_2: this.page_2,
+            pageSize_2: this.pageSize_2,
+            id_proposta: this.id_proposta,
+            id_coluna: this.id_coluna,
+            sortBy:   this.sortBy,
+            sortDesc:  this.sortDesc,
+            parcela: this.parcela,
+            Valor_Total_Venda: this.Valor_Total_Venda,
+            entrada: this.entrada_2,
+            entrada_per_2: this.entrada_perc_2_padronizada,
+            valor_avaliacao: this.valor_avaliacao
+          },
+        }
       );
-      userService.getRanqueamento_2(params).then((response) => {
-        const { parcelas, totalPages, totalItems } = response.data;
-        this.parcelamento_2 = parcelas;
+      const { parcelas, totalPages, totalItems } = ranqueamento_coluna_2.data;
+      this.parcelamento_2 = parcelas;
         this.totalPages_2 = totalPages;
         this.totalItems_2 = totalItems;
-      });
+      // const params = this.getRequestParamsEntrada2(
+      //   this.filtro_tipo_veiculo,
+      //   this.filtro_tipo_tabela,
+      //   this.filtro_spf,
+      //   this.razao_financiamento,
+      //   this.plano,
+      //   this.page_2,
+      //   this.pageSize_2,
+      //   this.id_proposta,
+      //   this.id_coluna,
+      //   this.sortBy_2,
+      //   this.sortDesc_2,
+      //   this.parcela,
+      //   this.Valor_Total_Venda,
+      //   this.entrada_2,
+      //   this.entrada_perc_2_padronizada,
+      //   this.valor_avaliacao
+      // );
+      // userService.getRanqueamento_2(params).then((response) => {
+      //   const { parcelas, totalPages, totalItems } = response.data;
+      //   this.parcelamento_2 = parcelas;
+      //   this.totalPages_2 = totalPages;
+      //   this.totalItems_2 = totalItems;
+      // });
     },
     ranqueamento_2() {
       this.parcela = this.parcela_2;
@@ -10037,7 +10095,33 @@ export default {
         this.entrada_perc_3_padronizada,
         this.valor_avaliacao
       );
-
+      const ranqueamento_coluna_3 = await axios.get(
+        `${process.env.VUE_APP_API_URL}taxas/ranqueamento_entrada_3`,
+        {
+          params: {         
+            filtro_tipo_veiculo: this.filtro_tipo_veiculo,
+            filtro_tipo_tabela: this.filtro_tipo_tabela,
+            filtro_spf: this.filtro_spf,
+            razao_financiamento: this.razao_financiamento,
+            plano: this.plano,
+            page_3: this.page_1,
+            pageSize_3: this.pageSize_3,
+            id_proposta: this.id_proposta,
+            id_coluna: this.id_coluna,
+            sortBy:   this.sortBy,
+            sortDesc:  this.sortDesc,
+            parcela: this.parcela,
+            Valor_Total_Venda: this.Valor_Total_Venda,
+            entrada: this.entrada_3,
+            entrada_per_: this.entrada_perc_3_padronizada,
+            valor_avaliacao: this.valor_avaliacao
+          },
+        }
+      );
+      const { parcelas, totalPages, totalItems } = ranqueamento_coluna_3.data;
+      this.parcelamento_3 = parcelas;
+        this.totalPages_3 = totalPages;
+        this.totalItems_3 = totalItems;
       userService.getRanqueamento_3(params).then((response) => {
         const { parcelas, totalPages, totalItems } = response.data;
         this.parcelamento_3 = parcelas;
@@ -11216,29 +11300,67 @@ export default {
     },
     
     configurar_taxas(valor){
-      var input
-      if(valor < 30){
-        input = 20
-       this.habilitar_ranquear()
-      }
-      if(valor >=30 && valor < 40){
-        input = 30
-        this.habilitar_ranquear()
-      }
-      if(valor >= 40 && valor < 98 ){
-        input = 40   
-        this.habilitar_ranquear()
-      }
+      // var input
+      // if(valor < 30){
+      //   input = 20
+      //  this.habilitar_ranquear()
+      // }
+      // if(valor >=30 && valor < 40){
+      //   input = 30
+      //   this.habilitar_ranquear()
+      // }
+      // if(valor >= 40 && valor < 98 ){
+      //   input = 40   
+      //   this.habilitar_ranquear()
+      // }
 
-      if(valor > 98 ){
-       console.log("Entrada maior que o permitido")  
-       this.hab_ranquear = true; 
-       this.hab_financiamento = true;
-       this.msg = "Valor da entrada ultrapassou o máximo permitido";
-        setTimeout(() => (this.hab_financiamento = false), 8000);
+      // if(valor > 98 ){
+      //  console.log("Entrada maior que o permitido")  
+      //  this.hab_ranquear = true; 
+      //  this.hab_financiamento = true;
+      //  this.msg = "Valor da entrada ultrapassou o máximo permitido";
+      //   setTimeout(() => (this.hab_financiamento = false), 8000);
           
-      }
-      return input
+      // }
+      // return input
+    let input = null;
+    var taxaMinima = 0;
+    var taxaMaxima = 50;
+    const incremento = 10;
+
+    // Certifique-se de que a taxaMinima e a taxaMaxima são múltiplos do incremento
+    const min = Math.floor(taxaMinima / incremento) * incremento;
+    const max = Math.floor(taxaMaxima / incremento) * incremento;
+
+    // Caso o valor seja menor que a taxa mínima, retorna a taxa mínima
+    if (valor < min) {
+        input = min;
+        this.habilitar_ranquear();
+    } else {
+        // Verifica cada intervalo de incremento até a taxa máxima permitida
+        for (let taxa = min; taxa <= max; taxa += incremento) {
+            if (valor >= taxa && valor < taxa + incremento) {
+                input = taxa;
+                this.habilitar_ranquear();
+                break;
+            }
+        }
+
+        // Caso o valor seja maior ou igual à taxa máxima configurada
+        if (valor >= max) {
+            input = max;
+            if (valor > 98) {
+                console.log("Entrada maior que o permitido");
+                this.hab_ranquear = true;
+                this.hab_financiamento = true;
+                this.msg = "Valor da entrada ultrapassou o máximo permitido";
+                setTimeout(() => (this.hab_financiamento = false), 8000);
+            }
+        }
+    }
+    console.log("Taxa escolhida");
+    console.log(input);
+    return input;
     },
     habilitar_ranquear(){
       console.log("metodo de checagem 1", this.entrada_1_perc);

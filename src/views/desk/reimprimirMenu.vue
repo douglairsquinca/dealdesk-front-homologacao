@@ -1660,18 +1660,12 @@
               </div>
             </div>
        
-            <div class="row g-2 p-2">
-              <div class="col">
-             
-             <p>
-               * Fica o cliente ciente de que a compra e venda em questão está condicionada à disponibilidade do veículo pela fábrica e sujeita a reajuste no preço aqui pactuado, que ocorrendo será informado ao cliente antes do faturamento do veículo, podendo haver desistência em caso de não concordância, com devolução do sinal dado como princípio de pagamento.</p
-             >
-             <p>* A concessão do financiamento está condicionada à análise de crédito por parte da instituição financeira.</p>
-             <p>* O pagamento do IPVA do veículo desta proposta é de inteira responsabilidade do cliente.</p>
-             <p>* O veículo usado da troca deverá ser entregue nas mesmas condições descritas na avaliação em anexo.</p>
-             <p>* Declaro-me ciente e informado de que meus dados pessoais serão objeto de atividades de tratamento pelo presente controlador e demais empresas de seu grupo econômico e parceiros comerciais aplicáveis à presente venda, inclusive inseridos em sistemas informatizados, com a finalidade de possibilitar o controle, gestão e cumprimento dos termos e regras estipulados no presente instrumento, bem como para o cumprimento de obrigações legais e regulamentares vigentes. Declaro-me ciente e informado de que meus dados poderão ser utilizados para ações de marketing, sendo-me facultado a qualquer tempo opor-me a tal operação pelos canais de contato do presente controlador destinados ao exercício dos direitos do titular.
-             </p>
-           </div>
+           <!--Mensagem Rodapé-->
+           <div class="row g-2 p-2">
+              <div class="col">             
+                <p>* O preço sugerido é válido enquanto durarem os veículos em estoque.</p>                
+                <p>* Despesa Operacional para preparação do veículo É proibido condicionar desconto de bem à aquisição de seguro.</p>               
+              </div>
             </div>
             <div class="row g-2 p-2 mt-1">
               <div class="col rf_assinatura">
@@ -2264,19 +2258,12 @@
             </div>
         
 
+            <!--Mensagem Rodapé-->
             <div class="row g-2 p-2">
-              <div class="col">
-             
-                <p>
-                  * Fica o cliente ciente de que a compra e venda em questão está condicionada à disponibilidade do veículo pela fábrica e sujeita a reajuste no preço aqui pactuado, que ocorrendo será informado ao cliente antes do faturamento do veículo, podendo haver desistência em caso de não concordância, com devolução do sinal dado como princípio de pagamento.</p
-                >
-                <p>* A concessão do financiamento está condicionada à análise de crédito por parte da instituição financeira.</p>
-                <p>* O pagamento do IPVA do veículo desta proposta é de inteira responsabilidade do cliente.</p>
-                <p>* O veículo usado da troca deverá ser entregue nas mesmas condições descritas na avaliação em anexo.</p>
-                <p>* Declaro-me ciente e informado de que meus dados pessoais serão objeto de atividades de tratamento pelo presente controlador e demais empresas de seu grupo econômico e parceiros comerciais aplicáveis à presente venda, inclusive inseridos em sistemas informatizados, com a finalidade de possibilitar o controle, gestão e cumprimento dos termos e regras estipulados no presente instrumento, bem como para o cumprimento de obrigações legais e regulamentares vigentes. Declaro-me ciente e informado de que meus dados poderão ser utilizados para ações de marketing, sendo-me facultado a qualquer tempo opor-me a tal operação pelos canais de contato do presente controlador destinados ao exercício dos direitos do titular.
-                </p>
+              <div class="col">             
+                <p>* O preço sugerido é válido enquanto durarem os veículos em estoque.</p>                
+                <p>* Despesa Operacional para preparação do veículo É proibido condicionar desconto de bem à aquisição de seguro.</p>               
               </div>
-
             </div>
             <div class="row g-2 p-2 mt-1">
               <div class="col rf_assinatura">
