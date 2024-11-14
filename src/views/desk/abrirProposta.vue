@@ -4875,7 +4875,7 @@
                 <p>* Despesa Operacional para preparação do veículo É proibido condicionar desconto de bem à aquisição de seguro.</p>               
               </div>
             </div>
-            
+
             <div class="row g-2 p-2 mt-1">
               <div class="col rf_assinatura">
                 <span>Gerente: {{ g_menu_gerente }}</span>
@@ -9468,7 +9468,7 @@ export default {
         if (this.btn_filtro_11 == 1) {
           this.icon_11 = "bi bi-sort-alpha-down-alt";
         }
-
+        //this.ranqueamento_entrada_1();
         this.retrieveRanqueamentoEntrada1();
         //this.retrieveRanqueamentoEntrada2();
         //this.retrieveRanqueamentoEntrada3();
@@ -9522,7 +9522,7 @@ export default {
         if (this.btn_filtro_11 == 1) {
           this.icon_11 = "bi bi-sort-alpha-up";
         }
-
+        //this.ranqueamento_entrada_1();
         this.retrieveRanqueamentoEntrada1();
         //this.retrieveRanqueamentoEntrada2();
         //this.retrieveRanqueamentoEntrada3();
@@ -9534,22 +9534,26 @@ export default {
         this.sortDesc = "DESC";
         this.orderBy = 1;
         this.icon = "mdi-arrow-down";
-        this.retrieveRanqueamentoEntrada1();
+        //this.retrieveRanqueamentoEntrada1();
+        this.ranqueamento_entrada_1();
       } else {
         this.sortDesc = "ASC";
         this.orderBy = 0;
         this.icon = "bi bi-sort-alpha-up";
-        this.retrieveRanqueamentoEntrada1();
+        this.ranqueamento_entrada_1();
+        //this.retrieveRanqueamentoEntrada1();
       }
     },
     handlePageChangeEntrada1(value) {
       this.page_1 = value;
-      this.retrieveRanqueamentoEntrada1();
+      //this.retrieveRanqueamentoEntrada1();
+      this.ranqueamento_entrada_1();
     },
     handlePageSizeChangeEntrada1(size) {
       this.pageSize_1 = size;
       this.page_1 = 1;
-      this.retrieveRanqueamentoEntrada1();
+      //this.retrieveRanqueamentoEntrada1();
+      this.ranqueamento_entrada_1();
     },
     getRequestParamsEntrada1(
       filtro_tipo_veiculo,
@@ -9660,11 +9664,9 @@ export default {
     },
     /**Após retorno positivo do ranqueamento essa função monta as taxas do primeiro bloco de entrada */
     async ranqueamento_entrada_1() {
-      
-
-      /**faço uma consulta na tabela TempTaxas chamando a função ranqueamento_entrada_1 */
-
-      const ranqueamento_coluna_1 = await axios.get(
+      try{
+        console.log("Buscando ranqueamento 1")
+        const resposta = await axios.get(
         `${process.env.VUE_APP_API_URL}taxas/ranqueamento_entrada_1`,
         {
           params: {         
@@ -9687,9 +9689,10 @@ export default {
           },
         }
       );
-      const { parcelas, totalPages, totalItems } = ranqueamento_coluna_1.data;
-        console.log("Taxas recuperadas", ranqueamento_coluna_1.data);
+      const { parcelas, totalPages, totalItems } = resposta.data;
+        console.log("Taxas recuperadas", resposta);
         this.parcelamento_1 = parcelas;
+        console.log("Parcelas", this.parcelamento_1);
         this.totalPages_1 = totalPages;
         this.totalItems_1 = totalItems;
 
@@ -9706,7 +9709,11 @@ export default {
         this.Valor_Financiado_2 = this.currency(fin_2);
         this.Valor_Entrada_3 = this.currency(ent_3);
         this.Valor_Financiado_3 = this.currency(fin_3);
-       console.log(ranqueamento_coluna_1.data) 
+        //await this.ranqueamento_entrada_2();
+      }catch (error) {
+        console.error("Erro ao buscar ranqueamento_1:", error);
+        this.errorMsg = "Erro ao buscar dados de ranqueamento. Tente novamente mais tarde.";
+      }
       // userService.getRanqueamento_1(params).then((response) => {
       //   const { parcelas, totalPages, totalItems } = response.data;
       //   console.log("Taxas recuperadas", response.data);
@@ -9752,21 +9759,25 @@ export default {
       if (this.orderBy_2 == this.sortDesc_2) {
         this.sortDesc_2 = "DESC";
         this.orderBy_2 = 1;
-        this.retrieveRanqueamentoEntrada2();
+        //this.retrieveRanqueamentoEntrada2();
+        this.ranqueamento_entrada_2();
       } else {
         this.sortDesc_2 = "ASC";
         this.orderBy_2 = 0;
-        this.retrieveRanqueamentoEntrada2();
+        //this.retrieveRanqueamentoEntrada2();
+        this.ranqueamento_entrada_2();
       }
     },
     handlePageChangeEntrada2(value) {
       this.page_2 = value;
-      this.retrieveRanqueamentoEntrada2();
+      //this.retrieveRanqueamentoEntrada2();
+      this.ranqueamento_entrada_2();
     },
     handlePageSizeChangeEntrada2(size) {
       this.pageSize_2 = size;
       this.page_2 = 1;
-      this.retrieveRanqueamentoEntrada2();
+      //this.retrieveRanqueamentoEntrada2();
+      this.ranqueamento_entrada_2();
     },
     getRequestParamsEntrada2(
       filtro_tipo_veiculo,
@@ -9876,58 +9887,42 @@ export default {
       }
     },
     async ranqueamento_entrada_2() {
-      const ranqueamento_coluna_2 = await axios.get(
-        `${process.env.VUE_APP_API_URL}taxas/ranqueamento_entrada_2`,
-        {
-          params: {         
-            filtro_tipo_veiculo: this.filtro_tipo_veiculo,
-            filtro_tipo_tabela: this.filtro_tipo_tabela,
-            filtro_spf: this.filtro_spf,
-            razao_financiamento: this.razao_financiamento,
-            plano: this.plano,
-            page_2: this.page_2,
-            pageSize_2: this.pageSize_2,
-            id_proposta: this.id_proposta,
-            id_coluna: this.id_coluna,
-            sortBy:   this.sortBy,
-            sortDesc:  this.sortDesc,
-            parcela: this.parcela,
-            Valor_Total_Venda: this.Valor_Total_Venda,
-            entrada: this.entrada_2,
-            entrada_per_2: this.entrada_perc_2_padronizada,
-            valor_avaliacao: this.valor_avaliacao
-          },
-        }
-      );
-      const { parcelas, totalPages, totalItems } = ranqueamento_coluna_2.data;
-      this.parcelamento_2 = parcelas;
+      try {
+        const ranqueamento_coluna_2 = await axios.get(
+          `${process.env.VUE_APP_API_URL}taxas/ranqueamento_entrada_2`,
+          {
+            params: {
+              filtro_tipo_veiculo: this.filtro_tipo_veiculo,
+              filtro_tipo_tabela: this.filtro_tipo_tabela,
+              filtro_spf: this.filtro_spf,
+              razao_financiamento: this.razao_financiamento,
+              plano: this.plano,
+              page_2: this.page_2,
+              pageSize_2: this.pageSize_2,
+              id_proposta: this.id_proposta,
+              id_coluna: this.id_coluna,
+              sortBy: this.sortBy,
+              sortDesc: this.sortDesc,
+              parcela: this.parcela,
+              Valor_Total_Venda: this.Valor_Total_Venda,
+              entrada: this.entrada_2,
+              entrada_per_2: this.entrada_perc_2_padronizada,
+              valor_avaliacao: this.valor_avaliacao
+            },
+          }
+        );
+
+        const { parcelas, totalPages, totalItems } = ranqueamento_coluna_2.data;
+        this.parcelamento_2 = parcelas;
         this.totalPages_2 = totalPages;
         this.totalItems_2 = totalItems;
-      // const params = this.getRequestParamsEntrada2(
-      //   this.filtro_tipo_veiculo,
-      //   this.filtro_tipo_tabela,
-      //   this.filtro_spf,
-      //   this.razao_financiamento,
-      //   this.plano,
-      //   this.page_2,
-      //   this.pageSize_2,
-      //   this.id_proposta,
-      //   this.id_coluna,
-      //   this.sortBy_2,
-      //   this.sortDesc_2,
-      //   this.parcela,
-      //   this.Valor_Total_Venda,
-      //   this.entrada_2,
-      //   this.entrada_perc_2_padronizada,
-      //   this.valor_avaliacao
-      // );
-      // userService.getRanqueamento_2(params).then((response) => {
-      //   const { parcelas, totalPages, totalItems } = response.data;
-      //   this.parcelamento_2 = parcelas;
-      //   this.totalPages_2 = totalPages;
-      //   this.totalItems_2 = totalItems;
-      // });
-    },
+        //await this.ranqueamento_entrada_3();
+      } catch (error) {
+        console.error("Erro ao buscar ranqueamento_2:", error);
+        this.errorMsg = "Erro ao buscar dados de ranqueamento. Tente novamente mais tarde.";
+      }
+  },
+
     ranqueamento_2() {
       this.parcela = this.parcela_2;
       this.id_coluna = 2;
@@ -9948,21 +9943,25 @@ export default {
       if (this.orderBy_3 == this.sortDesc_3) {
         this.sortDesc_3 = "DESC";
         this.orderBy_3 = 1;
-        this.retrieveRanqueamentoEntrada3();
+        //this.retrieveRanqueamentoEntrada3();
+        this.ranqueamento_entrada_3();
       } else {
         this.sortDesc_3 = "ASC";
         this.orderBy_3 = 0;
-        this.retrieveRanqueamentoEntrada3();
+        //this.retrieveRanqueamentoEntrada3();
+        this.ranqueamento_entrada_3();
       }
     },
     handlePageChangeEntrada3(value) {
       this.page_3 = value;
-      this.retrieveRanqueamentoEntrada3();
+      //this.retrieveRanqueamentoEntrada3();
+      this.ranqueamento_entrada_3();
     },
     handlePageSizeChangeEntrada3(size) {
       this.pageSize_3 = size;
       this.page_3 = 1;
-      this.retrieveRanqueamentoEntrada3();
+      //this.retrieveRanqueamentoEntrada3();
+      this.ranqueamento_entrada_3();
     },
     getRequestParamsEntrada3(
       filtro_tipo_veiculo,
@@ -10077,25 +10076,8 @@ export default {
    
     },
     async ranqueamento_entrada_3() {
-      const params = this.getRequestParamsEntrada3(
-        this.filtro_tipo_veiculo,
-        this.filtro_tipo_tabela,
-        this.filtro_spf,
-        this.razao_financiamento,
-        this.plano,
-        this.page_3,
-        this.pageSize_3,
-        this.id_proposta,
-        this.id_coluna,
-        this.sortBy_3,
-        this.sortDesc_3,
-        this.parcela,
-        this.Valor_Total_Venda,
-        this.entrada_3,
-        this.entrada_perc_3_padronizada,
-        this.valor_avaliacao
-      );
-      const ranqueamento_coluna_3 = await axios.get(
+      try{
+        const ranqueamento_coluna_3 = await axios.get(
         `${process.env.VUE_APP_API_URL}taxas/ranqueamento_entrada_3`,
         {
           params: {         
@@ -10104,7 +10086,7 @@ export default {
             filtro_spf: this.filtro_spf,
             razao_financiamento: this.razao_financiamento,
             plano: this.plano,
-            page_3: this.page_1,
+            page_3: this.page_3,
             pageSize_3: this.pageSize_3,
             id_proposta: this.id_proposta,
             id_coluna: this.id_coluna,
@@ -10113,22 +10095,20 @@ export default {
             parcela: this.parcela,
             Valor_Total_Venda: this.Valor_Total_Venda,
             entrada: this.entrada_3,
-            entrada_per_: this.entrada_perc_3_padronizada,
+            entrada_per_3: this.entrada_perc_3_padronizada,
             valor_avaliacao: this.valor_avaliacao
           },
         }
       );
       const { parcelas, totalPages, totalItems } = ranqueamento_coluna_3.data;
       this.parcelamento_3 = parcelas;
+      console.log("Parcelas 3 ", this.parcelamento_3);
         this.totalPages_3 = totalPages;
         this.totalItems_3 = totalItems;
-      userService.getRanqueamento_3(params).then((response) => {
-        const { parcelas, totalPages, totalItems } = response.data;
-        this.parcelamento_3 = parcelas;
-        this.totalPages_3 = totalPages;
-        this.totalItems_3 = totalItems;
-        this.Total_Financiado_3 = this.parcelamento_3["total_financiado"];
-      });
+      }catch (error) {
+        console.error("Erro ao buscar ranqueamento_3:", error);
+        this.errorMsg = "Erro ao buscar dados de ranqueamento. Tente novamente mais tarde.";
+      }
     },
     ranqueamento_3() {
       this.parcela = this.parcela_3;
@@ -10253,33 +10233,43 @@ export default {
       return params;
     },
     async retrieveRanqueamento() {
-      const params = this.getRequestParamsTaxas(
-        this.parcela,
-        this.entrada_1,
-        this.entrada_2,
-        this.entrada_3,
-        this.entrada_perc_1_padronizada,
-        this.entrada_perc_2_padronizada,
-        this.entrada_perc_3_padronizada,
-        this.page,
-        this.pageSize,
-        this.id_proposta,
-        this.id_coluna,
-        this.incluir_acessorios,
-        this.company_id,
-        this.valor_avaliacao
-      );
-      /**Chama o método ranqueamento que cria as taxas na tabela tempTaxas e retorna um ok  */
-      userService.getTaxas(params).then((response) => {
-        const cod = response;
-
-        if (cod.status == 200) {
-          /**Caso a resposta seja ok chamo os métodos abaixo */
-          this.ranqueamento_entrada_1();
-          this.ranqueamento_entrada_2();
-          this.ranqueamento_entrada_3();
+      const rank = await axios.get(
+        `${process.env.VUE_APP_API_URL}taxas/ranqueamento`,
+        {
+          params: {         
+            parcela: this.parcela,
+            entrada_1: this.entrada_1,
+            entrada_2: this.entrada_2,
+            entrada_3: this.entrada_3,
+            entrada_per_1: this.entrada_perc_1_padronizada,
+            entrada_per_2: this.entrada_perc_2_padronizada,
+            entrada_per_3: this.entrada_perc_3_padronizada,
+            page: this.page,
+            pageSize: this.pageSize,
+            id_proposta:   this.id_proposta,
+            id_coluna:  this.id_coluna,
+            incluir_acessorios: this.incluir_acessorios,
+            empresa_id: this.company_id,
+            entrada_avaliacao: this.valor_avaliacao
+        
+          },
         }
-      });
+      );
+
+       console.log("Resultado do ranqueamento")
+       console.log(rank) 
+
+      /**Chama o método ranqueamento que cria as taxas na tabela tempTaxas e retorna um ok  */
+      // userService.getTaxas(params).then((response) => {
+      //   const cod = response;
+
+        if (rank.status == 200) {
+          /**Caso a resposta seja ok chamo os métodos abaixo */
+          await this.ranqueamento_entrada_1();
+         await this.ranqueamento_entrada_2();
+          await this.ranqueamento_entrada_3();
+        }
+      
     },
     async retrieveFiltroRanqueamento() {
       const params = this.getRequestParamsFiltroTaxas(
