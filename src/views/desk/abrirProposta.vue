@@ -1200,7 +1200,7 @@
                     v-for="item in metodo_pagamento_vista"
                     :value="item.id"
                     :key="item.id"
-                    :disabled="item.descricao === 'FINANCIAMENTO'"
+                    :disabled="item.descricao === 'FINANCIAMENTO' || item.descricao === 'VEÍCULO TROCA'"
                   >
                     {{ item.descricao }}
                   </option>
@@ -3940,7 +3940,7 @@
                       >Tipo Pagamento</label
                     >
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      tipoPagamento
+                      metodo_pagamento
                     }}</span>
                   </div>
                 </div>
@@ -4620,7 +4620,7 @@
                       >Tipo Pagamento</label
                     >
                     <span class="rf_texto_menu_desk rf_texto_pdf">{{
-                      tipoPagamento
+                      metodo_pagamento
                     }}</span>
                   </div>
                 </div>
@@ -4816,7 +4816,7 @@
                 </div>         
                 
                 
-                <div class="col">
+                <div class="col-3">
                   <div
                     class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
                   >
@@ -4828,7 +4828,7 @@
                     }}</span>
                   </div>
                 </div>
-                <div class="col">
+                <div class="col-3">
                   <div
                     class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
                   >
@@ -4840,7 +4840,7 @@
                     }}</span>
                   </div>
                 </div>
-                <div class="col">
+                <!-- <div class="col">
                   <div
                     class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
                   >
@@ -4851,8 +4851,8 @@
                      this.currency(this.entrada_escolhida)
                     }}</span>
                   </div>
-                </div>
-                <div class="col">
+                </div> -->
+                <!-- <div class="col">
                   <div
                     class="row rf_bg_form_menu_desk rf_bg_form_menu_desk_imp"
                   >
@@ -4863,7 +4863,7 @@
                      Valor_Entrada
                     }}</span>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
         
@@ -5585,7 +5585,8 @@ export default {
       hab_avista : false,
       hab_financiamento: false,
       forma_pagamento: false,
-      cliente_pcd:""
+      cliente_pcd:"",
+      metodo_pagamento:""
     };
   },
   watch: {
@@ -5608,11 +5609,11 @@ export default {
       this.modeloId = modelo ? modelo.id : null;
     },
   },
-  computed: {
-    tipoPagamento() {
-      return this.pagamento ? "Pagamento à Vista" : "Financiamento";
-    },
-  },
+  // computed: {
+  //   tipoPagamento() {
+  //     return this.pagamento ? "Pagamento à Vista" : "Financiamento";
+  //   },
+  // },
 
   mounted() {
     /**Ao abrir a tela de proposta chamar o método habilitar_proposta ele é responsável por startar o atendimento */
@@ -5668,7 +5669,8 @@ export default {
             tel: this.dados_proposta.clientes["tel"],
             cel: this.dados_proposta.clientes["cel"],
             midia: this.dados_proposta.midias["descricao"],
-            cliente_pcd: this.dados_proposta["cliente_pcd"],
+            cliente_pcd: this.dados_proposta["cliente_pcd"] == 1 ? "Sim" : "Não",
+
           };
           this.id_cliente = dados_cliente.id_cliente;
           //Alterações Histórico do cliente
@@ -5689,6 +5691,7 @@ export default {
           this.tel = dados_cliente.tel;
           this.cel = dados_cliente.cel;
           this.midia_informada = dados_cliente.midia;
+          this.cliente_pcd = dados_cliente.cliente_pcd;
           /** */
 
           /**Bloco de dados com informações da proposta */
@@ -5964,12 +5967,14 @@ export default {
         this.venda_financiamento = false;
         this.incluir_acessorios = false;
         this.incluir_financiamento = false;
+        this.metodo_pagamento = "A Vista"
         this.inserir_pagamento_avaliacao();
         if (!this.pagamentoVistaJaChamado){
           this.retrievePagamentosDesk();
         }
         
       } else {
+         this.metodo_pagamento = "Financiamento"
         this.venda_vista = false;
         this.venda_financiamento = true;
         this.incluir_acessorios = true;
@@ -6099,6 +6104,57 @@ export default {
         }
       }
     },
+
+    async limpar_pagamento_vista() {    
+
+    try {
+      const id = this.id_proposta;
+      await fetch(`${process.env.VUE_APP_API_URL}limpar_pagamento_desk/${id}`, {
+        method: "PUT",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: id,    
+          status: 0
+        }),
+      })
+        .then((data) => {
+          if (!data.ok) {
+            throw Error(data.status);
+          }
+          return data.json();
+        })
+        .then((resposta) => {
+          console.log("Resposta da atualização", resposta);
+          // if (resposta.StatusOk === 200) {
+          //   this.hab_avista = true;
+          //   this.msg = resposta.message;
+          //   setTimeout(() => (this.hab_avista = false), 3000);
+          //   console.log("Chamando retrievePagamentosDesk após excluir um registro")
+          //   this.retrievePagamentosDesk();
+          // }
+        });
+    } catch (error) {
+      console.error("Verificando log", error.message);
+
+      if (error.response && error.response.status === 500) {
+        this.hab_avista = true;
+        this.msg = "Erro interno do servidor";
+        setTimeout(() => (this.hab_avista = false), 4000);
+      } else {
+        // Tratar outros erros
+        this.hab_avista = true;
+        (this.msg = "Erro:"), error.message;
+        (this.msg = "Status:"), error.response.status;
+        (this.msg = "Dados:"), error.response.data;
+        (this.msg = "Cabeçalhos:"), error.response.headers;
+        setTimeout(() => (this.hab_avista = false), 4000);
+      }
+    }
+    },
+
     async inserir_pagamento() {
       var somatorio_parcelas = "";
       var total_pagamento = "";
@@ -7393,7 +7449,8 @@ export default {
         const createdAt = data?.data?.rows[0]?.createdAt;
 
         console.log(data);
-
+        this.limpar_pagamento_vista();
+        this.metodo_pagamento = "Financiamento";
         const cliente = data?.data?.rows[0]?.clientes || {};
         const veiculo = data?.data?.rows[0]?.proposta_veiculo || {};
         const veiculoAvaliacao = data?.data?.rows[0]?.veiculos_usados || {};
@@ -7503,11 +7560,11 @@ export default {
         const createdAt = data?.data?.rows[0]?.createdAt;
 
         console.log(data);
-
+        this.limpar_financiamento();
         const cliente = data?.data?.rows[0]?.clientes || {};
         const veiculo = data?.data?.rows[0]?.proposta_veiculo || {};
         const veiculoAvaliacao = data?.data?.rows[0]?.veiculos_usados || {};
-
+    
         // Informações do Cliente
         this.g_menu_cliente = cliente.nome ?? "";
         this.g_menu_cpfCnpj = cliente.cpfCnpj ?? "";
