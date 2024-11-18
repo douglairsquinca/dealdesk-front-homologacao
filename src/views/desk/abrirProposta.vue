@@ -3361,11 +3361,9 @@
                     {{
                       currency(
                         (parseFloat(
-                          Valor_Financiado.replace(/[^\d,]+/g, "").replace(
-                            ",",
-                            "."
+                            (Valor_Financiado || "0").replace(/[^\d,]+/g, "").replace(",", ".")
                           )
-                        ) +
+                         +
                           item.tc_cob) *
                           item.descontoCoeficiente
                       )
@@ -3449,10 +3447,7 @@
                     {{
                       currency(
                         (parseFloat(
-                          Valor_Financiado_2.replace(/[^\d,]+/g, "").replace(
-                            ",",
-                            "."
-                          )
+                          (Valor_Financiado_2 || "0").replace(/[^\d,]+/g, "").replace(",",".")
                         ) +
                           item.tc_cob) *
                           item.descontoCoeficiente
@@ -3537,7 +3532,7 @@
                     {{
                       currency(
                         (parseFloat(
-                          Valor_Financiado_3.replace(/[^\d,]+/g, "").replace(
+                          (Valor_Financiado_3 || "0").replace(/[^\d,]+/g, "").replace(
                             ",",
                             "."
                           )
@@ -7675,22 +7670,20 @@ export default {
     calcular_perc_1() {
       let calc_entrada1 = this.entrada_1_perc / 100;
       //let valor_original = this.valor_sugerido_original;
-      let valor_original = parseFloat(
+      let valor_original = this.Valor_Total_Venda ? parseFloat(
         this.Valor_Total_Venda.replace(/[^\d,]+/g, "").replace(",", ".")
-      );
+      ) : 0;
       this.entrada_1 = this.currency(valor_original * calc_entrada1);
     },
     calcular_real_1() {
       if (this.entrada_1 != "") {
-        let valor_original = parseFloat(
-          this.Valor_Total_Venda.replace(/[^\d,]+/g, "").replace(",", ".")
-        );
-        let valor_numerico = parseFloat(
+        let valor_original = this.Valor_Total_Venda ? parseFloat(
+        this.Valor_Total_Venda.replace(/[^\d,]+/g, "").replace(",", ".")
+      ) : 0;
+        let valor_numerico = this.entrada_1 ? parseFloat(
           this.entrada_1.replace(/[^\d,]+/g, "").replace(",", ".")
-        );
-        // let valor_numerico_avaliacao = parseFloat(
-        //   this.valor_avaliacao.replace(/[^\d,]+/g, "").replace(",", ".")
-        // );
+        ):0;
+   
         let valor_numerico_avaliacao = parseFloat(this.valor_avaliacao);
         let entrada_perc =
           ((valor_numerico + valor_numerico_avaliacao) / valor_original) * 100;
@@ -7705,22 +7698,20 @@ export default {
     },
     calcular_perc_2() {
       let calc_entrada2 = this.entrada_2_perc / 100;
-      let valor_original = parseFloat(
+      let valor_original = this.Valor_Total_Venda ? parseFloat(
         this.Valor_Total_Venda.replace(/[^\d,]+/g, "").replace(",", ".")
-      );
+      ):0;
       this.entrada_2 = this.currency(valor_original * calc_entrada2);
     },
     calcular_real_2() {
       if (this.entrada_2 != "") {
-        let valor_original = parseFloat(
+        let valor_original = this.Valor_Total_Venda ? parseFloat(
           this.Valor_Total_Venda.replace(/[^\d,]+/g, "").replace(",", ".")
-        );
-        let valor_numerico = parseFloat(
+        ) : 0;
+        let valor_numerico = this.entrada_2 ? parseFloat(
           this.entrada_2.replace(/[^\d,]+/g, "").replace(",", ".")
-        );
-        // let valor_numerico_avaliacao = parseFloat(
-        //   this.valor_avaliacao.replace(/[^\d,]+/g, "").replace(",", ".")
-        // );
+        ) : 0;
+   
         let valor_numerico_avaliacao = parseFloat(this.valor_avaliacao);
         let entrada_perc =
           ((valor_numerico + valor_numerico_avaliacao) / valor_original) * 100;
@@ -7735,15 +7726,13 @@ export default {
     },
     calcular_real_3() {
       if (this.entrada_3 != "") {
-        let valor_original = parseFloat(
+        let valor_original = this.Valor_Total_Venda ? parseFloat(
           this.Valor_Total_Venda.replace(/[^\d,]+/g, "").replace(",", ".")
-        );
-        let valor_numerico = parseFloat(
+        ) : 0;
+        let valor_numerico = this.entrada_3 ? parseFloat(
           this.entrada_3.replace(/[^\d,]+/g, "").replace(",", ".")
-        );
-        // let valor_numerico_avaliacao = parseFloat(
-        //   this.valor_avaliacao.replace(/[^\d,]+/g, "").replace(",", ".")
-        // );
+        ) : 0;
+    
         let valor_numerico_avaliacao = parseFloat(this.valor_avaliacao);
         let entrada_perc =
           ((valor_numerico + valor_numerico_avaliacao) / valor_original) * 100;
@@ -7758,20 +7747,20 @@ export default {
     },
     calcular_perc_3() {
       let calc_entrada3 = this.entrada_3_perc / 100;
-      let valor_original = parseFloat(
+      let valor_original = this.Valor_Total_Venda ? parseFloat(
         this.Valor_Total_Venda.replace(/[^\d,]+/g, "").replace(",", ".")
-      );
+      ) : 0;
       this.entrada_3 = this.currency(valor_original * calc_entrada3);
     },
 
     calcular_entrada_gerar_menu() {
    
-        let valor_original = parseFloat(
+        let valor_original = this.Valor_Entrada ? parseFloat(
           this.Valor_Entrada.replace(/[^\d,]+/g, "").replace(",", ".")
-        );
-        let valor_numerico = parseFloat(
+        ) : 0;
+        let valor_numerico = this.g_menu_valor_avaliacao_final ? parseFloat(
           this.g_menu_valor_avaliacao_final.replace(/[^\d,]+/g, "").replace(",", ".")
-        );
+        ) : 0;
  
         
         let entrada_perc =
@@ -10493,10 +10482,10 @@ export default {
           })
           .then((resposta) => {
             console.log(resposta);
-            if (resposta.StatusOk == 200) {
-              this.excluir_todos_item_ac();
-              window.location.reload();
-            }
+            // if (resposta.StatusOk == 200) {
+            //   this.excluir_todos_item_ac();
+            //   window.location.reload();
+            // }
           });
       } catch (error) {
         if (error.response.status == 400) {
