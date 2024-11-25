@@ -553,6 +553,36 @@
           </div>
           <div class="row g-2 p-2"></div>
         </form>
+
+        <div v-if="mesmo_veiculo" class="d-flex justify-content-center align-items-center flex-column">
+        <div class="alert alert-warning text-center" role="alert">
+          <span><strong>Veículo encontra-se finalizado!</strong></span><br>
+          {{ msg_conteudo }}
+          <br>
+          <span><strong>Deseja inserir o veículo nesse atendimento?</strong></span><br>
+          
+          <div class="row justify-content-center mt-3">
+            <div class="col-3 text-center">
+              <button
+                class="btn btn-lg btn-desk-filtro"
+                @click="propostaMesmoVeiculo()"
+              >
+                <span class="rf_texto_btn">Sim</span>
+              </button>
+            </div>
+            <div class="col-3 text-center">
+              <button
+                class="btn btn-lg btn-desk-filtro"
+                @click="atualizarPagina"
+              >
+                <span class="rf_texto_btn">Não</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
         <!--Acessórios e Cortesia-->
         <div class="row g-2 p-2">
           <div class="card-title gy-4">
@@ -879,6 +909,7 @@
         </div> -->
       </div>
     </div>
+    
   </div>
   <!--Bloco Resumo da Proposta-->
   <div class="card card-filtro">
@@ -1658,7 +1689,7 @@
             <Message :msg="msg" v-show="msg" />
           </div>
           <div>
-            <!-- <button @click="openModal('Sua mensagem aqui')">Abrir Modal</button> -->
+           
             <Aviso :msg="modalMessage" :visible="showModal" @close="closeModal" />
           </div>
           <div v-if="abrir_modal_atualizar">
@@ -1738,8 +1769,9 @@
       </div>
     
   </div>  
-
+  <!--Modal para confirmar inclusão de veículo em mais de uma proposta-->
  
+  
  
 
 
@@ -5581,7 +5613,10 @@ export default {
       hab_financiamento: false,
       forma_pagamento: false,
       cliente_pcd:"",
-      metodo_pagamento:""
+      metodo_pagamento:"",
+      mesmo_veiculo: false,
+      msg_conteudo: "",
+      atendimento_anterior:""
     };
   },
   watch: {
@@ -6448,6 +6483,52 @@ export default {
         setTimeout(() => (this.abrir_modal = false), 4000);
       }
     },
+    async propostaMesmoVeiculo() {
+      try {
+        const alterar_veiculo = await fetch(
+          `${process.env.VUE_APP_API_URL}veiculo_proposta`,
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              venda_futura: this.venda_futura,
+              empresa: this.empresa,
+              categoria: this.categoria,
+              chassis: "",
+              modelo_veiculo: this.modelo_proposta,
+              pps_valor: this.pps_valor,
+              valor_veiculo: this.valor_veiculo,
+              dias_em_estoque: this.dias_em_estoque,
+              cor: this.cor_proposta,
+              marca: this.marca_proposta,
+              ano_modelo: this.anoModelo_proposta,
+              ano_fabricacao: this.anoFabricacao_proposta,
+              kilometragem: "",
+              placa: this.placa,
+              combustivel: this.combustivel_proposta,
+              numero_veiculo: this.numero_veiculo_proposta,
+              status_veiculo: this.status_veiculo,
+              proposta_id: this.id_proposta,
+              valorcustocontabil: this.valor_custo_contabil,
+              atendimento_anterior: this.atendimento_anterior
+            }),
+          }
+        );
+
+        if (alterar_veiculo.ok) {
+          this.adicional = "0.00";
+          this.desconto = "0.00";
+          this.atualizar_valor_total();
+          this.update_entradas();
+          //window.location.reload();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async propostaVeiculo() {
       try {
         const alterar_veiculo = await fetch(
@@ -6531,6 +6612,9 @@ export default {
       this.showModal = false;
       window.location.reload();
     },
+    atualizarPagina() {
+      window.location.reload(); // Recarrega a página
+    },
     async carregarVeiculo(item) {
       try {
         if (item.estadoveiculo == "NOVO") {
@@ -6576,6 +6660,9 @@ export default {
         );
 
         if (verificar_veiculo.data.statusOk == 1) {
+          this.mesmo_veiculo = true;
+          this.atendimento_anterior = verificar_veiculo.data.data[0].id;
+          console.log("Dados do atendimento do mesmo véiculo")
           console.log(verificar_veiculo.data.data);
           const Filial = verificar_veiculo.data.data[0].empresa_proposta.nome;
           const Gerente = verificar_veiculo.data.data[0].gerentes.username;
@@ -6589,11 +6676,13 @@ export default {
 
           const formattedDate = `${day}/${month}/${year}`;
 
-          const Mensagem = `Veículo encontra-se finalizado!
+          const Mensagem = `
                             Empresa: ${Filial} 
                             Gerente: ${Gerente}
                             Data: ${formattedDate}`;
-          this.openModal(Mensagem);
+          //this.openModal(Mensagem);
+          this.msg_conteudo = Mensagem
+          //this.propostaMesmoVeiculo();
           return;
         }
 
@@ -10917,19 +11006,19 @@ export default {
     },
 
     async finalizar_venda() {
-      const verificar_veiculo = await axios.get(
-        `${process.env.VUE_APP_API_URL}verificar_veiculo_finalizar`,
-        {
-          params: { id: this.id_proposta },
-        }
-      );
-      //console.log(verificar_veiculo.data.data[0].empresa_proposta.nome)
-      if (verificar_veiculo.data.statusOk == 1) {
-        this.abrir_modal = true;
-        this.msg = `Proposta não pode ser finalizada, o veículo já se encontra vendido no atendimento ${verificar_veiculo.data.data[0].id} da loja ${verificar_veiculo.data.data[0].empresa_proposta.nome}`;
-        setTimeout(() => (this.abrir_modal = false), 8000);
-        return;
-      }
+      // const verificar_veiculo = await axios.get(
+      //   `${process.env.VUE_APP_API_URL}verificar_veiculo_finalizar`,
+      //   {
+      //     params: { id: this.id_proposta },
+      //   }
+      // );
+      // //console.log(verificar_veiculo.data.data[0].empresa_proposta.nome)
+      // if (verificar_veiculo.data.statusOk == 1) {
+      //   this.abrir_modal = true;
+      //   this.msg = `Proposta não pode ser finalizada, o veículo já se encontra vendido no atendimento ${verificar_veiculo.data.data[0].id} da loja ${verificar_veiculo.data.data[0].empresa_proposta.nome}`;
+      //   setTimeout(() => (this.abrir_modal = false), 8000);
+      //   return;
+      // }
       console.log("Nenhum veículo encontrado");
       const id = this.id_proposta;
       const lucro_bruto = this.Lucro_Bruto;
