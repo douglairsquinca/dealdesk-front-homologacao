@@ -1746,8 +1746,10 @@
         <div v-if="venda_financiamento" class="col-3 p-1">
           <button
             class="btn btn-lg btn-desk-filtro"
+            data-bs-toggle="modal"
+            data-bs-target="#previsaoFaturamento"
             :disabled="btn_finalizar_venda"
-            @click="finalizar_venda"
+ 
           >
             <span class="rf_texto_btn_desk">FINALIZAR VENDA</span>
           </button>
@@ -1755,8 +1757,10 @@
         <div v-if="venda_vista" class="col-3 p-1">
           <button
             class="btn btn-lg btn-desk-filtro"
+            data-bs-toggle="modal"
+            data-bs-target="#previsaoFaturamento"
             :disabled="btn_finalizar_venda_vista"
-            @click="finalizar_venda"
+  
           >
             <span class="rf_texto_btn_desk">FINALIZAR VENDA</span>
           </button>
@@ -1772,7 +1776,64 @@
   <!--Modal para confirmar inclusão de veículo em mais de uma proposta-->
  
   
- 
+  <!--Modal Previsão de Faturamento-->
+  <div
+    class="modal fade"
+    id="previsaoFaturamento"
+    tabindex="-1"
+    aria-labelledby="confirmModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content card-container rf_texto">
+        <div class="modal-header">
+          <div class="card-title gy-4">
+            <i class="bi bi-tools fs-5 icone_kit"
+              ><span class="texto_kit">Previsão de Faturamento</span></i
+            >
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="row g-2 p-2">
+            <div class="col">
+          <div class="form-floating">
+            <input
+              type="date"
+              class="form-control rf_bg_form rf_texto"
+              v-model="previsao_faturamento"        
+              autocomplete="off"
+            />
+            <label class="rf_texto">Previsão de Faturamento</label>
+          </div>
+        </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn btn-lg btn-filtro"
+                data-bs-dismiss="modal"
+              >
+                Cancelar
+              </button>
+            </div>
+            <div class="col-6">
+              <button
+                type="button"
+                class="btn btn-lg btn-filtro"
+                data-bs-dismiss="modal"
+                @click="finalizar_venda"
+              >
+                Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
       <!--Modal Exclusão pagamento-->
@@ -5616,7 +5677,8 @@ export default {
       metodo_pagamento:"",
       mesmo_veiculo: false,
       msg_conteudo: "",
-      atendimento_anterior:""
+      atendimento_anterior:"",
+      previsao_faturamento:""
     };
   },
   watch: {
@@ -11054,6 +11116,9 @@ export default {
       if (!this.tel) {
         erros.tel = "Campo 'Telefone' é obrigatório.";
       }
+      if (!this.previsao_faturamento) {
+        erros.previsao_faturamento = "Campo 'Previsão de Faturamento' é obrigatório.";
+      }
 
       // Verifique se há erros
       if (Object.keys(erros).length > 0) {
@@ -11087,6 +11152,7 @@ export default {
           val_financiamento: val_financiamento,
           tipo_pagamento: tipo_pagamento,
           empresa_id: this.company_id,
+          previsao_faturamento: this.previsao_faturamento
         }),
       })
         .then((data) => {
