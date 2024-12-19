@@ -6,11 +6,11 @@
           <div class="card  border-0 mb-0" style="margin-top: 180px;">
             <div class="card-body px-lg-5 py-lg-5 "><!----><!---->
               <div class="text-center text-muted mb-4">
-                <img id="profile-img" src="../assets/logo.png" class=" img-fluid" />
+                <img id="profile-img" src="../assets/logo.png" class=" img-fluid" alt="Homologação" />
               </div>
               <Form @submit="handleLogin" :validation-schema="schema">
                 <div class="form-group">
-                  <label for="email">Email</label>
+                  <label for="email">Email Homologação</label>
 
                   <Field name="email" type="email" class="form-control" placeholder="Digite seu e-mail" />
                   <ErrorMessage name="email" class="error-feedback" />
