@@ -266,6 +266,7 @@
         <tr>
           <th scope="col" class="rf_header_table">Loja</th>
           <th scope="col" class="rf_header_table">Atendente</th>
+          <th scope="col" class="rf_header_table">Gerente</th>
           <th scope="col" class="rf_header_table">Data</th>
           <th scope="col" class="rf_header_table">Hora</th>
           <th scope="col" class="rf_header_table">Vendedor</th>
@@ -283,6 +284,7 @@
         <tr v-for="item in vendas_perdidas" :key="item.id">
           <td class="rf_header_table">{{ item.loja }}</td>
           <td class="rf_header_table">{{ item.atendente }}</td>
+          <td class="rf_header_table">{{ item.gerente }}</td>
           <td class="rf_header_table">{{ formattedCreatedAt(item.data) }}</td>
           <td class="rf_header_table">{{ formattedHoras(item.inicio_atendimento) }}</td>
           <td class="rf_header_table">{{ item.vendedor }}</td>
@@ -1394,6 +1396,7 @@ export default {
           const arr = {
             loja: rows[i].empresa_proposta.nome,
             atendente: rows[i].usuarios.username,
+            gerente: rows[i].gerentes.username,
             vendedor: rows[i].vendedores.username,
             cliente: rows[i].clientes.nome,
             telefone: rows[i].clientes.tel,
